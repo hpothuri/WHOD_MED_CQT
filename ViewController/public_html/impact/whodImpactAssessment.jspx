@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1" xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <f:view>
+        <af:document title="whodImpactAssessment.jspx" id="d1">
+            <af:form id="f1">
+            <af:pageTemplate viewId="/CSMQ.jspx" value="#{bindings.pageTemplateBinding}" id="pt1">
+                    <f:facet name="header">
+                        <af:group id="g2">
+                            <af:train value="#{controllerContext.currentViewPort.taskFlowContext.trainModel}" id="t1"/>
+                            <af:spacer width="10" height="10" id="s1"/>
+                        </af:group>
+                    </f:facet>
+                    <f:facet name="main">
+                        <af:group id="g1">
+                        
+                         
+                        
+                        
+              
+                            <af:panelBox id="pgl1" text="Details" showDisclosure="false"
+                                         inlineStyle="height:158px; width:1195px; padding:5px;">
+                                <af:panelGroupLayout id="pgl3" layout="horizontal" valign="top"/>
+                                <f:facet name="toolbar"/>
+                            </af:panelBox>
+                        </af:group>
+                    </f:facet>
+                    <f:facet name="pageBottom">
+                        <af:panelGroupLayout id="pgl2" layout="horizontal" inlineStyle="padding:3px;"/>
+                    </f:facet>
+                </af:pageTemplate>
+            </af:form>
+        </af:document>
+    </f:view>
+</jsp:root>

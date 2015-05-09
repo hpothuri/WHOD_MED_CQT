@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<adfc-config xmlns="http://xmlns.oracle.com/adf/controller" version="1.2">
+  <task-flow-definition id="whod-ia-publish-task-flow-definition">
+    <default-activity>promoteToPublished</default-activity>
+    <view id="promoteToPublished">      
+      <page>/workflow/whodIaPromoteToPublished.jspx</page>
+       <train-stop>
+       <display-name>Promote To Published</display-name>
+      </train-stop>
+    </view>
+    <view id="demoteToDraft">
+      <page>/workflow/whodIaDemoteToDraft.jspx</page>
+       <train-stop>
+        <display-name>Demote To Pending Impact Assessment</display-name>
+      </train-stop>
+    </view>
+    <task-flow-return id="cancelFlow">
+      <outcome>
+        <name>cancelFlow</name>
+      </outcome>
+    </task-flow-return>
+    <train/>
+    <control-flow-rule id="__1">
+      <from-activity-id>demoteToDraft</from-activity-id>
+      <control-flow-case id="__2">
+        <from-outcome>CLEARED</from-outcome>
+        <to-activity-id>cancelFlow</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+  </task-flow-definition>
+</adfc-config>

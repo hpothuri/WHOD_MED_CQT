@@ -1,0 +1,74 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<SDM>
+   <OverallProperties
+      id="OverallProperties1"/>
+   <View
+      id="View2">
+      <property
+         name="activityId">promoteToPublished</property>
+      <property
+         name="page">/workflow/whodIaPromoteToPublished.jspx</property>
+      <property
+         name="start">true</property>
+      <property
+         name="description">&lt;html>&lt;p>&lt;b>promoteToPublished&lt;/b> (Default Activity)&lt;/p>&lt;p>Activity Type:  View&lt;/p></property>
+      <property
+         name="trainStop">true</property>
+      <property
+         name="exceptionHandler">false</property>
+      <property
+         name="y">191.59766</property>
+      <property
+         name="x">121.0</property>
+   </View>
+   <View
+      id="View3">
+      <property
+         name="activityId">demoteToDraft</property>
+      <property
+         name="page">/workflow/whodIaDemoteToDraft.jspx</property>
+      <property
+         name="description">&lt;html>&lt;p>&lt;b>demoteToDraft&lt;/b>&lt;/p>&lt;p>Activity Type:  View&lt;/p></property>
+      <property
+         name="trainStop">true</property>
+      <property
+         name="exceptionHandler">false</property>
+      <property
+         name="y">188.89648</property>
+      <property
+         name="x">274.0</property>
+   </View>
+   <TrainFlow
+      islink="true"
+      id="TrainFlow4"
+      from="View2"
+      to="View3">
+      <property
+         name="sdm:polyPoints">R50,162.0,191.24707,233.0,188.5459,L50</property>
+   </TrainFlow>
+   <TaskFlowReturn
+      id="TaskFlowReturn5">
+      <property
+         name="activityId">cancelFlow</property>
+      <property
+         name="finish">true</property>
+      <property
+         name="description">&lt;html>&lt;p>&lt;b>cancelFlow&lt;/b>&lt;/p>&lt;p>Activity Type:  Task Flow Return&lt;/p>&lt;p>Outcome:  cancelFlow&lt;/p></property>
+      <property
+         name="exceptionHandler">false</property>
+      <property
+         name="y">178.94824</property>
+      <property
+         name="x">435.0</property>
+   </TaskFlowReturn>
+   <ControlFlowCase
+      islink="true"
+      id="ControlFlowCase6"
+      from="View3"
+      to="TaskFlowReturn5">
+      <property
+         name="fromOutcome">CLEARED</property>
+      <property
+         name="sdm:polyPoints">R50,315.0,188.5459,394.0,178.59766,L50</property>
+   </ControlFlowCase>
+</SDM>

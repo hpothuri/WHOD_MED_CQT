@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<adfc-config xmlns="http://xmlns.oracle.com/adf/controller" version="1.2">
+  <task-flow-definition id="whod-impact-task-flow-definition">
+    <default-activity>impactAssessment</default-activity>
+    <data-control-scope>
+      <shared/>
+    </data-control-scope>
+    <view id="impactAssessment">
+      <page>/impact/whodImpactAssessment.jspx</page>
+      <train-stop>
+    <display-name>Impact Assessment</display-name>
+      </train-stop>
+    </view>
+    <view id="addInformativeNotes">
+      <page>/create/addInformativeNotes.jspx</page>
+       <train-stop>
+        <display-name>Informative Notes</display-name>
+      </train-stop>
+    </view>
+    <view id="addDetails">
+      <page>/create/addDetails.jspx</page>
+       <train-stop>
+        <display-name>Details</display-name>
+      </train-stop>
+    </view>
+    <task-flow-return id="cancelFlow">
+      <outcome>
+        <name>cancelFlow</name>
+      </outcome>
+    </task-flow-return>
+    <train/>
+    <control-flow-rule id="__1">
+      <from-activity-id>addDetails</from-activity-id>
+      <control-flow-case id="__2">
+        <from-outcome>CLEARED</from-outcome>
+        <to-activity-id>cancelFlow</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+  </task-flow-definition>
+</adfc-config>
