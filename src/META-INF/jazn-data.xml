@@ -7,23 +7,24 @@
       <users>
         <user>
           <name>TEST_MQM</name>
-          <credentials>{903}BU7i7WQMhp+5nwEwqtWvC6Q9anNBFOpQFpEnf+hPTuQ=</credentials>
+          <credentials>{903}h7zFhh1LXSDRdfT2sdr5X+fhpQnLXJ/p</credentials>
         </user>
         <user>
           <name>TEST_USER</name>
-          <credentials>{903}GLrOUKmD+IsSisexlItJqxnCowggWh5Gvit4UVTfk2I=</credentials>
+          <credentials>{903}OrGpkGw92V72bM/M8ZAfI/tF08msofNC</credentials>
         </user>
         <user>
           <name>TEST_REQUESTOR</name>
-          <credentials>{903}H9h3k2TmH2UsbL+i4A+K4KCVSg6JYfGe9CrfDI24yjI=</credentials>
+          <credentials>{903}n9TpIrOqcSEXhIjSD5MkLti4pEmamHkl</credentials>
         </user>
         <user>
           <name>tstruzik</name>
-          <credentials>{903}bdFyUXDNNNWzrntyC2dNe12uQxsRU7JBuY0IDteLhNA=</credentials>
+          <credentials>{903}5gJ03nXxf4FHxaC7PHgsc/pgf8sIn0yP</credentials>
         </user>
         <user>
           <name>NMAT_REQUESTOR</name>
-          <credentials>{903}l7tC43CUnvaZiRjeczTVJMWRdXxiqGPwd1rEkzpfRX4=</credentials>
+          <description>welcome1</description>
+          <credentials>{903}EKH24LPuR0tPBz/fyLD1li2L/3hrswiX</credentials>
         </user>
       </users>
       <roles>
