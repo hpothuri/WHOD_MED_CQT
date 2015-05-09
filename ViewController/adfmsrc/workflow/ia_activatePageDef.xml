@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="11.1.2.60.81" id="ia_activatePageDef" Package="workflow">
+ <parameters/>
+    <executables>
+        <variableIterator id="variables"/>
+        <iterator Binds="ViewObjActivationErrors_Contents1" RangeSize="25" DataControl="PublishModuleDataControl"
+                  id="ViewObjActivationErrors_Contents1Iterator"/>
+        <iterator Binds="ViewObjActivationErrors_Relations1" RangeSize="25" DataControl="PublishModuleDataControl"
+                  id="ViewObjActivationErrors_Relations1Iterator"/>
+        <invokeAction Binds="RelationsList" id="EWPRelationsList" Refresh="renderModel"/>
+        <invokeAction id="EWPContentsList" Binds="ContentsList" Refresh="renderModel"/>
+    </executables>
+    <bindings>
+        <tree IterBinding="ViewObjActivationErrors_Contents1Iterator" id="ViewObjActivationErrors_Contents1">
+            <nodeDefinition DefName="com.dbms.csmq.model.publish.ViewObjActivationErrors_Contents"
+                            Name="ViewObjActivationErrors_Contents10">
+                <AttrNames>
+                    <Item Value="Term"/>
+                    <Item Value="ErrorMsg"/>
+                    <Item Value="PredictContentId"/>
+                    <Item Value="DEMOTE"/>
+                </AttrNames>
+            </nodeDefinition>
+        </tree>
+        <tree IterBinding="ViewObjActivationErrors_Relations1Iterator" id="ViewObjActivationErrors_Relations1">
+            <nodeDefinition DefName="com.dbms.csmq.model.publish.ViewObjActivationErrors_Relations"
+                            Name="ViewObjActivationErrors_Relations10">
+                <AttrNames>
+                    <Item Value="ErrorMsg"/>
+                    <Item Value="Term"/>
+                </AttrNames>
+            </nodeDefinition>
+        </tree>
+        <action IterBinding="ViewObjActivationErrors_Relations1Iterator" id="RelationsList"
+                InstanceName="PublishModuleDataControl.ViewObjActivationErrors_Relations1"
+                DataControl="PublishModuleDataControl" RequiresUpdateModel="true" Action="executeWithParams">
+            <NamedData NDName="predictContentID" NDValue="#{pageFlowScope.WorkflowBean.dictContentIDWithError}"
+                       NDType="java.lang.String"/>
+            <NamedData NDName="activationGroup" NDValue="#{CSMQBean.defaultPublishReleaseGroup}"
+                       NDType="java.lang.String"/>
+        </action>
+        <action IterBinding="ViewObjActivationErrors_Contents1Iterator" id="ContentsList"
+                InstanceName="PublishModuleDataControl.ViewObjActivationErrors_Contents1"
+                DataControl="PublishModuleDataControl" RequiresUpdateModel="true" Action="executeWithParams">
+            <NamedData NDName="activationGroup" NDValue="#{CSMQBean.defaultPublishReleaseGroup}"
+                       NDType="java.lang.String"/>
+        </action>
+    </bindings>
+</pageDefinition>
