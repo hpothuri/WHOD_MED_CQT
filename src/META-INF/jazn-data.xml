@@ -7,7 +7,7 @@
       <users>
         <user>
           <name>TEST_MQM</name>
-          <credentials>{903}h7zFhh1LXSDRdfT2sdr5X+fhpQnLXJ/p</credentials>
+          <credentials>{903}O/KKCb48MNRV6Lod9VbMZPeHSFawt+Ht</credentials>
         </user>
         <user>
           <name>TEST_USER</name>
@@ -439,6 +439,26 @@
                 <name>/WEB-INF/report-task-flow-definition.xml#report-task-flow-definition</name>
                 <actions>view</actions>
               </permission>
+              <permission>
+                <class>oracle.adf.controller.security.TaskFlowPermission</class>
+                <name>/WEB-INF/whod-task-flow-definition.xml#whod-task-flow-definition</name>
+                <actions>view</actions>
+              </permission>
+              <permission>
+                <class>oracle.adf.controller.security.TaskFlowPermission</class>
+                <name>/WEB-INF/whod-ia-publish-task-flow-definition.xml#whod-ia-publish-task-flow-definition</name>
+                <actions>view</actions>
+              </permission>
+              <permission>
+                <class>oracle.adf.controller.security.TaskFlowPermission</class>
+                <name>/WEB-INF/whod-publish-task-flow-definition.xml#whod-publish-task-flow-definition</name>
+                <actions>view</actions>
+              </permission>
+              <permission>
+                <class>oracle.adf.controller.security.TaskFlowPermission</class>
+                <name>/WEB-INF/whod-impact-task-flow-definition.xml#whod-impact-task-flow-definition</name>
+                <actions>view</actions>
+              </permission>
             </permissions>
           </grant>
           <grant>
@@ -614,6 +634,26 @@
               <permission>
                 <class>oracle.adf.controller.security.TaskFlowPermission</class>
                 <name>/WEB-INF/report-task-flow-definition.xml#report-task-flow-definition</name>
+                <actions>view</actions>
+              </permission>
+              <permission>
+                <class>oracle.adf.controller.security.TaskFlowPermission</class>
+                <name>/WEB-INF/whod-task-flow-definition.xml#whod-task-flow-definition</name>
+                <actions>view</actions>
+              </permission>
+              <permission>
+                <class>oracle.adf.controller.security.TaskFlowPermission</class>
+                <name>/WEB-INF/whod-ia-publish-task-flow-definition.xml#whod-ia-publish-task-flow-definition</name>
+                <actions>view</actions>
+              </permission>
+              <permission>
+                <class>oracle.adf.controller.security.TaskFlowPermission</class>
+                <name>/WEB-INF/whod-publish-task-flow-definition.xml#whod-publish-task-flow-definition</name>
+                <actions>view</actions>
+              </permission>
+              <permission>
+                <class>oracle.adf.controller.security.TaskFlowPermission</class>
+                <name>/WEB-INF/whod-impact-task-flow-definition.xml#whod-impact-task-flow-definition</name>
                 <actions>view</actions>
               </permission>
             </permissions>

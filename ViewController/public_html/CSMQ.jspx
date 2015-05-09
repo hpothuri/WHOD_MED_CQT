@@ -163,7 +163,9 @@
                                 <af:commandMenuItem text="NMQ" id="pt_cmi1" action="CREATE_NEW_NMQ"
                                                     inlineStyle="font-weight:#{UserBean.currentMenu eq 'CREATE_NEW_NMQ' ? 'bold' : 'normal'};"/>
                                 <af:commandMenuItem text="CQT" id="pt_cmi13" action="CREATE_NEW_CQT"
-                                                    inlineStyle="font-weight:#{UserBean.currentMenu eq 'CREATE_NEW_CQT' ? 'bold' : 'normal'};"/>
+                                                    inlineStyle="font-weight:#{UserBean.currentMenu eq 'CREATE_NEW_CQT' ? 'bold' : 'normal'};">
+                                    <af:setPropertyListener type="action" from="create" to="#{pageFlowScope.setMode}"/>
+                                </af:commandMenuItem>
                             </af:menu>
                             <af:menu text="Update" id="pt_m4"
                                      inlineStyle="font-weight:#{UserBean.currentMenu eq 'UPDATE_NMQ' or UserBean.currentMenu eq 'UPDATE_CQT' ? 'bold' : 'normal'};"
@@ -172,8 +174,10 @@
                                                 action="UPDATE_NMQ"
                                                 inlineStyle="font-weight:#{UserBean.currentMenu eq 'UPDATE_NMQ' ? 'bold' : 'normal'};"/>
                                 <af:commandMenuItem text="CQT" id="pt_cmi14"
-                                                action="CQT"
-                                                inlineStyle="font-weight:#{UserBean.currentMenu eq 'UPDATE_CQT' ? 'bold' : 'normal'};"/>
+                                                action="UPDATE_CQT"
+                                                inlineStyle="font-weight:#{UserBean.currentMenu eq 'UPDATE_CQT' ? 'bold' : 'normal'};">
+                                    <af:setPropertyListener to="#{pageFlowScope.setMode}" from="update" type="action"/>
+                                </af:commandMenuItem>
                             </af:menu>
                             <af:menu text="Copy" id="pt_m5"
                                      inlineStyle="font-weight:#{UserBean.currentMenu eq 'COPY_NMQ' or UserBean.currentMenu eq 'COPY_CQT' ? 'bold' : 'normal'};"
@@ -183,7 +187,9 @@
                                                 inlineStyle="font-weight:#{UserBean.currentMenu eq 'COPY_NMQ' ? 'bold' : 'normal'};"/>
                                 <af:commandMenuItem text="CQT" id="pt_cmi15"
                                                 action="COPY_CQT"
-                                                inlineStyle="font-weight:#{UserBean.currentMenu eq 'COPY_NMQ' ? 'bold' : 'normal'};"/>
+                                                inlineStyle="font-weight:#{UserBean.currentMenu eq 'COPY_CQT' ? 'bold' : 'normal'};">
+                                <af:setPropertyListener type="action" from="copy" to="#{pageFlowScope.setMode}"/>
+                                </af:commandMenuItem>
                             </af:menu>    
                             <af:menu text="Update SMQs" id="pt_m6"
                                      inlineStyle="font-weight:#{UserBean.currentMenu eq 'UPDATE_SMQ' or UserBean.currentMenu eq 'UPDATE_CQT' ? 'bold' : 'normal'};"
@@ -191,18 +197,22 @@
                                 <af:commandMenuItem text="Update SMQs ?" id="pt_cmi6" action="UPDATE_SMQ"
                                                 rendered='#{securityContext.userInRole["MQM"]}'
                                                 inlineStyle="font-weight:#{UserBean.currentMenu eq 'UPDATE_SMQ' ? 'bold' : 'normal'};"/>
-                                <af:commandMenuItem text="Update SMQs ?" id="pt_cmi16" action="UPDATE_CQT"
+                                <af:commandMenuItem text="Update SMQs ?" id="pt_cmi16" action="UPDATE_WHOD_SMQ"
                                                 rendered='#{securityContext.userInRole["MQM"]}'
-                                                inlineStyle="font-weight:#{UserBean.currentMenu eq 'UPDATE_SMQ' ? 'bold' : 'normal'};"/>
+                                                inlineStyle="font-weight:#{UserBean.currentMenu eq 'UPDATE_WHOD_SMQ' ? 'bold' : 'normal'};">
+                                <af:setPropertyListener type="action" from="updateSMQ" to="#{pageFlowScope.setMode}"/>
+                                </af:commandMenuItem>
                             </af:menu>
                             <af:menu text="Browse &amp; Search" id="pt_m7"
                                      inlineStyle="font-weight:#{UserBean.currentMenu eq 'UPDATE_SMQ' or UserBean.currentMenu eq 'UPDATE_CQT' ? 'bold' : 'normal'};">
-                                <af:commandMenuItem text="CQT" id="pt_cmi18" action="BROWSE_SEARCH_CQT"
-                                                    inlineStyle="font-weight:#{UserBean.currentMenu eq 'BROWSE_SEARCH_CQT' ? 'bold' : 'normal'};"
-                                                    useWindow="false"/>
                                 <af:commandMenuItem text="NMQ" id="pt_cmi17" action="BROWSE_SEARCH"
                                                     inlineStyle="font-weight:#{UserBean.currentMenu eq 'BROWSE_SEARCH' ? 'bold' : 'normal'};"
                                                     useWindow="false"/>
+                                <af:commandMenuItem text="CQT" id="pt_cmi18" action="BROWSE_SEARCH_CQT"
+                                                    inlineStyle="font-weight:#{UserBean.currentMenu eq 'BROWSE_SEARCH_CQT' ? 'bold' : 'normal'};"
+                                                    useWindow="false">
+                                 <af:setPropertyListener type="action" from="browseAndSearch" to="#{pageFlowScope.setMode}"/>
+                                </af:commandMenuItem>
                             </af:menu>
                             <af:commandMenuItem text="MQ Compare" id="pt_cmi11" action="DIFF"
                                                 inlineStyle="font-weight:#{UserBean.currentMenu eq 'DIFF' ? 'bold' : 'normal'};"

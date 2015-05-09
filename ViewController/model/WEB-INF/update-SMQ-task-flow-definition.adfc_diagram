@@ -210,7 +210,7 @@
       <property
          name="fromOutcome">CANCEL</property>
       <property
-         name="sdm:polyPoints">R50,601.3623,141.83716,972.97,179.76474,L50</property>
+         name="sdm:polyPoints">R50,601.3623,141.83716,972.7988,179.76474,L50</property>
    </ControlFlowCase>
    <ControlFlowCase
       islink="true"

@@ -74,6 +74,74 @@
       <id>report-task-flow-definition</id>
     </task-flow-reference>
   </task-flow-call>
+  <task-flow-call id="whod-task-flow-definition">
+    <task-flow-reference>
+      <document>/WEB-INF/whod-task-flow-definition.xml</document>
+      <id>whod-task-flow-definition</id>
+    </task-flow-reference>
+    <input-parameter id="__21">
+      <name>modeType</name>
+      <value>#{pageFlowScope.setMode}</value>
+    </input-parameter>
+  </task-flow-call>
+  <task-flow-call id="whod-task-flow-definition1">
+    <task-flow-reference>
+      <document>/WEB-INF/whod-task-flow-definition.xml</document>
+      <id>whod-task-flow-definition</id>
+    </task-flow-reference>
+    <input-parameter id="__61">
+      <name>modeType</name>
+      <value>#{pageFlowScope.setMode}</value>
+    </input-parameter>
+  </task-flow-call>
+  <task-flow-call id="whod-task-flow-definition2">
+    <task-flow-reference>
+      <document>/WEB-INF/whod-task-flow-definition.xml</document>
+      <id>whod-task-flow-definition</id>
+    </task-flow-reference>
+    <input-parameter id="__68">
+      <name>modeType</name>
+      <value>#{pageFlowScope.setMode}</value>
+    </input-parameter>
+  </task-flow-call>
+  <task-flow-call id="whod-task-flow-definition3">
+    <task-flow-reference>
+      <document>/WEB-INF/whod-task-flow-definition.xml</document>
+      <id>whod-task-flow-definition</id>
+    </task-flow-reference>
+    <input-parameter id="__69">
+      <name>modeType</name>
+      <value>#{pageFlowScope.setMode}</value>
+    </input-parameter>
+  </task-flow-call>
+  <task-flow-call id="whod-task-flow-definition4">
+    <task-flow-reference>
+      <document>/WEB-INF/whod-task-flow-definition.xml</document>
+      <id>whod-task-flow-definition</id>
+    </task-flow-reference>
+    <input-parameter id="__72">
+      <name>modeType</name>
+      <value>#{pageFlowScope.setMode}</value>
+    </input-parameter>
+  </task-flow-call>
+  <task-flow-call id="whod-publish-task-flow-definition">
+    <task-flow-reference>
+      <document>/WEB-INF/whod-publish-task-flow-definition.xml</document>
+      <id>whod-publish-task-flow-definition</id>
+    </task-flow-reference>
+  </task-flow-call>
+  <task-flow-call id="whod-ia-publish-task-flow-definition">
+    <task-flow-reference>
+      <document>/WEB-INF/whod-ia-publish-task-flow-definition.xml</document>
+      <id>whod-ia-publish-task-flow-definition</id>
+    </task-flow-reference>
+  </task-flow-call>
+  <task-flow-call id="whod-impact-task-flow-definition">
+    <task-flow-reference>
+      <document>/WEB-INF/whod-impact-task-flow-definition.xml</document>
+      <id>whod-impact-task-flow-definition</id>
+    </task-flow-reference>
+  </task-flow-call>
   <control-flow-rule id="__2">
     <control-flow-case id="__32">
       <from-outcome id="__33">CREATE_NEW_NMQ</from-outcome>
@@ -130,6 +198,38 @@
     <control-flow-case id="__62">
       <from-outcome>DIFF</from-outcome>
       <to-activity-id>diff</to-activity-id>
+    </control-flow-case>
+    <control-flow-case id="__5">
+      <from-outcome>CREATE_NEW_CQT</from-outcome>
+      <to-activity-id>whod-task-flow-definition</to-activity-id>
+    </control-flow-case>
+    <control-flow-case id="__46">
+      <from-outcome>UPDATE_CQT</from-outcome>
+      <to-activity-id>whod-task-flow-definition1</to-activity-id>
+    </control-flow-case>
+    <control-flow-case id="__65">
+      <from-outcome>COPY_CQT</from-outcome>
+      <to-activity-id>whod-task-flow-definition2</to-activity-id>
+    </control-flow-case>
+    <control-flow-case id="__66">
+      <from-outcome>UPDATE_WHOD_SMQ</from-outcome>
+      <to-activity-id>whod-task-flow-definition3</to-activity-id>
+    </control-flow-case>
+    <control-flow-case id="__67">
+      <from-outcome>BROWSE_SEARCH_CQT</from-outcome>
+      <to-activity-id>whod-task-flow-definition4</to-activity-id>
+    </control-flow-case>
+    <control-flow-case id="__73">
+      <from-outcome>CQT_NON_IMPACT_PUBLISH</from-outcome>
+      <to-activity-id>whod-publish-task-flow-definition</to-activity-id>
+    </control-flow-case>
+    <control-flow-case id="__74">
+      <from-outcome>CQT_IMPACT_PUBLISH</from-outcome>
+      <to-activity-id>whod-ia-publish-task-flow-definition</to-activity-id>
+    </control-flow-case>
+    <control-flow-case id="__75">
+      <from-outcome>CQT_MEDDRA_IMPACT_ASSESSMENT</from-outcome>
+      <to-activity-id>whod-impact-task-flow-definition</to-activity-id>
     </control-flow-case>
   </control-flow-rule>
   <control-flow-rule id="__52">
