@@ -248,7 +248,7 @@
                                                     inlineStyle="font-weight:#{UserBean.currentMenu eq 'CQT_REPORTS' ? 'bold' : 'normal'};"
                                                     disabled="false"/>
                             </af:menu>
-                            <af:menu text="Reports" id="pt_m9"
+                            <af:menu text="Impact Assessment" id="pt_m9"
                                      inlineStyle="font-weight:#{UserBean.currentMenu eq 'MEDDRA_IMPACT_ASSESSMENT' or UserBean.currentMenu eq 'CQT_MEDDRA_IMPACT_ASSESSMENT' ? 'bold' : 'normal'};">
                                 <af:commandMenuItem text="NMQ" id="pt_cmi10" action="MEDDRA_IMPACT_ASSESSMENT"
                                                     rendered='#{securityContext.userInRole["MQM"]}'
