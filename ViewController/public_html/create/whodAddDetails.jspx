@@ -2,13 +2,15 @@
 <jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1" xmlns:f="http://java.sun.com/jsf/core"
           xmlns:af="http://xmlns.oracle.com/adf/faces/rich">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
-    <f:view>
-        <af:document title="whodAddDetails.jspx" id="d1">
+    <f:view  beforePhase="#{WhodWizardUIBean.addDetailsPageLoad}">
+    <af:document id="d1" uncommittedDataWarning="on" title="Add Details">
+            <af:messages id="m1"/>
             <af:form id="f1">
-            <af:pageTemplate viewId="/CSMQ.jspx" value="#{bindings.pageTemplateBinding}" id="pt1">
+                <af:pageTemplate viewId="/CSMQ.jspx" value="#{bindings.pageTemplateBinding}" id="pt1">
                     <f:facet name="header">
                         <af:group id="g2">
-                            <af:train value="#{controllerContext.currentViewPort.taskFlowContext.trainModel}" id="t1"/>
+                            <af:train value="#{controllerContext.currentViewPort.taskFlowContext.trainModel}" id="t1"
+                                      binding="#{WhodWizardUIBean.cntrlTrain}"/>
                             <af:spacer width="10" height="10" id="s1"/>
                         </af:group>
                     </f:facet>
@@ -21,14 +23,256 @@
               
                             <af:panelBox id="pgl1" text="Details" showDisclosure="false"
                                          inlineStyle="height:158px; width:1195px; padding:5px;">
-                                <af:panelGroupLayout id="pgl3" layout="horizontal" valign="top"/>
-                                <f:facet name="toolbar"/>
+                                <af:panelGroupLayout id="pgl3" layout="horizontal" valign="top">
+                                    <af:panelGroupLayout id="pgl4" valign="top">
+                                        <af:panelFormLayout id="pfl1">
+                                            <af:selectOneChoice value="#{pageFlowScope.WhodWizardBean.currentExtension}" label="Extension"
+                                                                required="#{bindings.NMQExtentionListVO1.hints.mandatory}"
+                                                                shortDesc="#{bindings.NMQExtentionListVO1.hints.tooltip}" id="soc4"
+                                                                rendered="#{WhodRenderingRulesBean.wizardDetailsRenderExtension}"
+                                                                autoSubmit="true" valueChangeListener="#{WhodWizardUIBean.extensionChanged}"
+                                                                disabled="#{WhodRenderingRulesBean.wizardDetailsDisableExtention}"
+                                                                contentStyle="color:#000000;">
+                                                <af:forEach items="#{bindings.NMQExtentionListVO1.iteratorBinding.allRowsInRange}"
+                                                            var="row">
+                                                    <af:selectItem id="selectItem2" label="#{row.longValue}" value="#{row.longValue}"/>
+                                                </af:forEach>
+                                                <af:selectItem id="si24" label="SMQ" value="SMQ"
+                                                               rendered="#{WhodRenderingRulesBean.wizardDetailsShowSMQInSelectList}"/>
+                                            </af:selectOneChoice>
+                                            <af:inputText label="Name" id="it10" columns="75" showRequired="true"
+                                                          requiredMessageDetail="An MQ Name is required."
+                                                          binding="#{WhodWizardUIBean.controlMQName}"
+                                                          required="#{WhodRenderingRulesBean.wizardDetailsRenderSave}"
+                                                          value="#{pageFlowScope.WhodWizardBean.currentTermName}" immediate="false"
+                                                          readOnly="#{WhodRenderingRulesBean.wizardDetailsDisableNMQName}"
+                                                          labelStyle="white-space:nowrap" contentStyle="color:#000000;"/>
+                                            <af:inputText label="Filter Dictionary" id="it4"
+                                                          value="#{pageFlowScope.WhodWizardBean.currentFilterDictionaryShortName}"
+                                                          columns="50" binding="#{WhodWizardUIBean.ctrlActiveDictionary}"
+                                                          labelStyle="white-space:nowrap" readOnly="true" inlineStyle="color:Black;"
+                                                          contentStyle="color:#000000;"/>
+                                            <af:selectOneChoice label="Release Group" id="selectOneChoice2"
+                                                                binding="#{WhodWizardUIBean.controlReleaseGroup}" required="false"
+                                                                valueChangeListener="#{WhodWizardUIBean.releaseGroupChanged}"
+                                                                autoSubmit="false"
+                                                                value="#{pageFlowScope.WhodWizardBean.currentPredictGroups}"
+                                                                labelStyle="white-space:nowrap"
+                                                                readOnly="#{WhodRenderingRulesBean.wizardDetailsDisableReleaseGroup}"
+                                                                rendered="#{WhodRenderingRulesBean.wizardDetailsRenderReleaseGroup}"
+                                                                contentStyle="color:#000000;">
+                                                <af:forEach items="#{bindings.releaseGroups1.iteratorBinding.allRowsInRange}" var="row">
+                                                    <f:selectItem id="si18" itemLabel="#{row.description}" itemValue="#{row.name}"/>
+                                                </af:forEach>
+                                            </af:selectOneChoice>
+                                            <af:selectBooleanCheckbox label="Approved" id="sbc1"
+                                                                      value="#{pageFlowScope.WhodWizardBean.isApproved}"
+                                                                      contentStyle="color:#000000;"
+                                                                      rendered="#{WhodRenderingRulesBean.wizardDetailsRenderIsApproved}"
+                                                                      readOnly="true"/>
+                                            <af:inputText label="Release Status" id="it11" value="#{pageFlowScope.WhodWizardBean.currentStatus}"
+                                                          showRequired="true" readOnly="true" columns="20" rows="1" wrap="off"
+                                                          binding="#{WhodWizardUIBean.controlMQStatus}"
+                                                          rendered="#{WhodRenderingRulesBean.wizardDetailsRenderNMQStatus}"
+                                                          labelStyle="white-space:nowrap" contentStyle="color:#000000;"/>
+                                            <af:selectManyChoice label="Product" id="smc3" autoSubmit="true" valuePassThru="true"
+                                                                 binding="#{pageFlowScope.WhodWizardBean.productListControl}"
+                                                                 requiredMessageDetail="An MQ Product is required."
+                                                                 valueChangeListener="#{pageFlowScope.WhodWizardBean.productListValueChange}"
+                                                                 value="#{pageFlowScope.WhodWizardBean.productList}"
+                                                                 rendered="#{WhodRenderingRulesBean.wizardDetailsRenderNMQProduct}"
+                                                                 labelStyle="white-space:nowrap" selectAllVisible="false"
+                                                                 readOnly="#{WhodRenderingRulesBean.wizardDetailsDisableNMQProduct}"
+                                                                 showRequired="true" required="true" contentStyle="color:#000000;"
+                                                                 inlineStyle="width:130px;">
+                                                <af:selectItem id="si23" label="Standard" value="STANDARD"
+                                                               rendered="#{pageFlowScope.WhodWizardBean.isNMQ}"/>
+                                                <af:forEach items="#{bindings.ViewObj_ProductList1.iteratorBinding.allRowsInRange}"
+                                                            var="row">
+                                                    <af:selectItem id="groups" label="#{row.longValue}" value="#{row.shortVal}"/>
+                                                </af:forEach>
+                                                
+                                            </af:selectManyChoice>
+                                            <af:selectManyChoice label="Designee" id="smc1" autoSubmit="true" valuePassThru="true"
+                                                                 binding="#{pageFlowScope.WhodWizardBean.controlDesignee}"
+                                                                 valueChangeListener="#{WhodWizardUIBean.designeeValueChange}"
+                                                                 value="#{pageFlowScope.WhodWizardBean.designeeList}"
+                                                                 labelStyle="white-space:nowrap" selectAllVisible="false"
+                                                                 readOnly="#{WhodRenderingRulesBean.wizardDetailsDisableNMQProduct}"
+                                                                 rendered="#{WhodRenderingRulesBean.wizardDetailsShowDesigneeList}"
+                                                                 showRequired="#{pageFlowScope.WhodWizardBean.currentExtension ne 'NMQ'}"
+                                                                 required="#{pageFlowScope.WhodWizardBean.currentExtension ne 'NMQ'}"
+                                                                 contentStyle="color:#000000;" inlineStyle="width:130px;">
+                                                <!--<af:selectItem id="si19" label="#{UserBean.fullName}"
+                                                               value="#{UserBean.currentUser}"
+                                                               disabled="#{RenderingRulesBean.wizardDetialsDisableCurrentUserDesigneeSelectItem}"
+                                                               rendered="#{UserBean.userRole ne 'MQM'}"/>-->
+                                                <af:forEach items="#{bindings.designeeListVO1Iterator.allRowsInRange}" var="row">
+                                                    <af:selectItem id="si25" label="#{row.personName}" value="#{row.oaAccountName}"/>
+                                                </af:forEach>
+                                            </af:selectManyChoice>
+                                        </af:panelFormLayout>
+                                    </af:panelGroupLayout>
+                                    <af:panelGroupLayout id="pgl5">
+                                        <af:panelFormLayout id="pfl3">
+                                            <af:spacer width="10" height="10" id="s4"/>
+                                            <af:spacer width="10" height="10" id="s2"/>
+                                            <af:inputText label="Algorithm  " id="it14" binding="#{WhodWizardUIBean.controlMqAlgorithm}"
+                                                          maximumLength="300" value="#{pageFlowScope.WhodWizardBean.currentMQALGO}"
+                                                          required="#{WhodRenderingRulesBean.wizardDetailsRequireNMQAlgorithm}"
+                                                          requiredMessageDetail="An MQ Algorithm is required" columns="50" rows="2"
+                                                          labelStyle="white-space:nowrap"
+                                                          readOnly="#{WhodRenderingRulesBean.wizardDetailsDisableNMQAlgorithm}"
+                                                          rendered="#{WhodRenderingRulesBean.wizardDetailsRenderNMQAlgorithm}"
+                                                          showRequired="#{WhodRenderingRulesBean.wizardDetailsRequireNMQAlgorithm}"
+                                                          contentStyle="color:#000000;" visible="false"/>
+                                            <af:inputText value="#{pageFlowScope.WhodWizardBean.currentState}" label="State" id="it6"
+                                                          readOnly="true" binding="#{WhodWizardUIBean.controlMQState}"
+                                                          contentStyle="color:#000000;"/>
+                                            <af:selectOneChoice label="Critical Event" id="soc3"
+                                                                binding="#{pageFlowScope.WhodWizardBean.controlCriticalEvent}"
+                                                                value="#{pageFlowScope.WhodWizardBean.currentMQCRTEV}"
+                                                                labelStyle="white-space:nowrap"
+                                                                readOnly="#{WhodRenderingRulesBean.wizardDetailsDisableCriticalEvent}"
+                                                                rendered="#{WhodRenderingRulesBean.wizardDetailsRenderCriticalEvent}"
+                                                                contentStyle="color:#000000;">
+                                                <af:selectItem label="No" value="N" id="si22"/>
+                                                <af:selectItem label="Yes - Narrow" value="Y_NARROW" id="si21"/>
+                                                <af:selectItem label="Yes - Broad" value="Y_BROAD" id="si20"/>
+                                            </af:selectOneChoice>
+                                            <af:selectOneChoice label="Level" id="soc1" binding="#{WhodWizardUIBean.controlMQLevel}"
+                                                                value="#{pageFlowScope.WhodWizardBean.currentTermLevel}"
+                                                                labelStyle="white-space:nowrap"
+                                                               
+                                                             
+                                                                readOnly="#{WhodRenderingRulesBean.wizardDetailsDisableNMQLevel}">
+                                                <!-- @author MTW
+                        06/16/2014
+                        @fsds NMAT-UC01.01 & NMAT-UC11.01
+                    -->
+                                                <!--NMQ-->
+                                                <af:selectItem label="1" value="NMQ1" id="si1"
+                                                               rendered="#{WhodRenderingRulesBean.wizardDetailsRenderNMQSelItems}"/>
+                                                <af:selectItem label="2" value="NMQ2" id="si14"
+                                                               rendered="#{WhodRenderingRulesBean.wizardDetailsRenderNMQSelItems}"/>
+                                                <af:selectItem label="3" value="NMQ3" id="si16"
+                                                               rendered="#{WhodRenderingRulesBean.wizardDetailsRenderNMQSelItems}"/>
+                                                <af:selectItem label="4" value="NMQ4" id="si15"
+                                                               rendered="#{WhodRenderingRulesBean.wizardDetailsRenderNMQSelItems}"/>
+                                                <af:selectItem label="5" value="NMQ5" id="si13"
+                                                               rendered="#{WhodRenderingRulesBean.wizardDetailsRenderNMQSelItems}"/>
+                                                <!-- @author MTW
+                        06/16/2014
+                        @fsds NMAT-UC01.01 & NMAT-UC11.01
+                    -->
+                                                <!--CMQ-->
+                                                <af:selectItem label="1" value="MQ1" id="si5"
+                                                               rendered="#{WhodRenderingRulesBean.wizardDetailsRenderSMQSelItems}"/>
+                                                <af:selectItem label="2" value="MQ2" id="si6"
+                                                               rendered="#{WhodRenderingRulesBean.wizardDetailsRenderSMQSelItems}"/>
+                                                <af:selectItem label="3" value="MQ3" id="si7"
+                                                               rendered="#{WhodRenderingRulesBean.wizardDetailsRenderSMQSelItems}"/>
+                                                <af:selectItem label="4" value="MQ4" id="si8"
+                                                               rendered="#{WhodRenderingRulesBean.wizardDetailsRenderSMQSelItems}"/>
+                                                <af:selectItem label="5" value="MQ5" id="si9"
+                                                               rendered="#{WhodRenderingRulesBean.wizardDetailsRenderSMQSelItems}"/>
+                                                <af:selectItem label="SOC" value="SOC" id="si10"
+                                                               rendered="#{WhodRenderingRulesBean.wizardDetailsRenderMedDRASelItems}"/>
+                                                <af:selectItem label="HLGT" value="HLGT" id="si11"
+                                                               rendered="#{WhodRenderingRulesBean.wizardDetailsRenderMedDRASelItems}"/>
+                                                <af:selectItem label="HLT" value="HLT" id="si12"
+                                                               rendered="#{WhodRenderingRulesBean.wizardDetailsRenderMedDRASelItems}"/>
+                                                <af:selectItem label="PT" value="PT" id="si17"
+                                                               rendered="#{WhodRenderingRulesBean.wizardDetailsRenderMedDRASelItems}"/>
+                                            </af:selectOneChoice>
+                                            <af:selectOneChoice label="Scope" id="soc2" binding="#{WhodWizardUIBean.controlMQScope}"
+                                                                value="#{pageFlowScope.WhodWizardBean.currentScope}" showRequired="false"
+                                                                required="false" labelStyle="white-space:nowrap"
+                                                                readOnly="#{WhodRenderingRulesBean.wizardDetailsDisableNMQScope}"
+                                                                rendered="#{WhodRenderingRulesBean.wizardDetailsRenderNMQScope}"
+                                                                autoSubmit="true" valueChangeListener="#{WhodWizardUIBean.scopeChanged}"
+                                                                contentStyle="color:#000000;">
+                                                <af:selectItem label="Yes" value="Y" id="si2"/>
+                                                <af:selectItem label="No" value="N" id="si3"/>
+                                            </af:selectOneChoice>
+                                            <af:selectManyChoice label="Group" id="selectManyChoice1"
+                                                                 binding="#{pageFlowScope.WhodWizardBean.controlMQGroup}"
+                                                                 valuePassThru="true" requiredMessageDetail="An MQ Group is required."
+                                                                 required="#{WhodRenderingRulesBean.wizardDetailsRequireNMQGroup}"
+                                                                 valueChangeListener="#{WhodWizardUIBean.nmqGroupChanged}" autoSubmit="true"
+                                                                 value="#{pageFlowScope.WhodWizardBean.MQGroupList}"
+                                                                 showRequired="#{WhodRenderingRulesBean.wizardDetailsRequireNMQGroup}"
+                                                                 labelStyle="white-space:nowrap" inlineStyle="width:130px;"
+                                                                 readOnly="#{WhodRenderingRulesBean.wizardDetailsDisableNMQGroup}"
+                                                                 rendered="#{WhodRenderingRulesBean.wizardDetailsRenderNMQGroup}"
+                                                                 contentStyle="color:#000000;">
+                                                <!--   <f:selectItems value="#{bindings.MQGroupsVO1.items}" id="selectItems1"/> -->
+                                                <af:forEach items="#{bindings.MQGroupsVO1.iteratorBinding.allRowsInRange}" var="row">
+                                                    <f:selectItem id="si4" itemLabel="#{row.longValue}" itemValue="#{row.shortVal}"/>
+                                                </af:forEach>
+                                            </af:selectManyChoice>
+                                            <af:inputText label="Code" id="it7"
+                                                          
+                                                          readOnly="true" binding="#{WhodWizardUIBean.controlNMQCode}" columns="8" rows="1"
+                                                          labelStyle="white-space:nowrap" contentStyle="color:#000000;"
+                                                          value="#{(WhodRenderingRulesBean.wizardDetailsDisplayContentCode || pageFlowScope.WhodWizardBean.saved) ? pageFlowScope.WhodWizardBean.currentContentCode : null}"/>
+                                        </af:panelFormLayout>
+                                    </af:panelGroupLayout>
+                                    <af:panelGroupLayout id="pgl6">
+                                        <af:panelFormLayout id="pfl4"
+                                                            rendered="#{WhodRenderingRulesBean.wizardDetailsRenderInitalCreateInfo}">
+                                            <af:inputText value="#{pageFlowScope.WhodWizardBean.currentInitialCreationBy}"
+                                                          label="Initial Creation By " id="it2"
+                                                          rendered="#{WhodRenderingRulesBean.wizardDetailsRenderActivationInfo}"
+                                                          contentStyle="color:#000000;" readOnly="true" labelStyle="white-space:nowrap"
+                                                          columns="25"/>
+                                            <af:inputText value="#{pageFlowScope.WhodWizardBean.currentInitialCreationDate}"
+                                                          label="Initial Creation Date" id="it5"
+                                                          rendered="#{WhodRenderingRulesBean.wizardDetailsRenderActivationInfo}"
+                                                          contentStyle="color:#000000;" readOnly="true" labelStyle="white-space:nowrap"
+                                                          columns="20"/>
+                                            <af:inputText value="#{pageFlowScope.WhodWizardBean.currentActivationBy}"
+                                                          label="Last Activation By" id="it13"
+                                                          rendered="#{WhodRenderingRulesBean.wizardDetailsRenderActivationInfo}"
+                                                          contentStyle="color:#000000;" readOnly="true" labelStyle="white-space:nowrap"
+                                                          columns="25"/>
+                                            <af:inputText value="#{pageFlowScope.WhodWizardBean.currentLastActivationDate}"
+                                                          label="Last Activation Date" id="it12"
+                                                          rendered="#{WhodRenderingRulesBean.wizardDetailsRenderActivationInfo}"
+                                                          contentStyle="color:#000000;" readOnly="true" labelStyle="white-space:nowrap"
+                                                          columns="20"/>
+                                        </af:panelFormLayout>
+                                    </af:panelGroupLayout>
+                                </af:panelGroupLayout>
+                                <f:facet name="toolbar">
+                                    <af:commandButton text="Save" id="cb1" partialSubmit="true" action="#{WhodWizardUIBean.saveDetails}"
+                                                      rendered="#{WhodRenderingRulesBean.wizardDetailsRenderSave}"
+                                                      disabled="#{WhodRenderingRulesBean.wizardDetailsDisableSave}"/>
+                                </f:facet>
                             </af:panelBox>
                         </af:group>
                     </f:facet>
                     <f:facet name="pageBottom">
-                        <af:panelGroupLayout id="pgl2" layout="horizontal" inlineStyle="padding:3px;"/>
+                        <af:panelGroupLayout id="pgl2" layout="horizontal" inlineStyle="padding:3px;">
+                            <af:spacer width="10" height="10" id="s6"/>
+                            <af:trainButtonBar value="#{controllerContext.currentViewPort.taskFlowContext.trainModel}" id="tbb1"
+                                               binding="#{WhodWizardUIBean.cntrlTrainButtons}"/>
+                            <af:commandButton text="#{WhodRenderingRulesBean.wizardDetailsCancelButtonText}" id="cb1can" action="CANCEL"
+                                              immediate="true" shortDesc="#{WhodRenderingRulesBean.wizardDetailsCancelButtonHoverText}"/>
+                            <af:spacer width="20" height="10" id="s3"/>
+                            <!-- @author MTW
+                    06/16/2014
+                    @fsds NMAT-UC01.01 & NMAT-UC11.01
+                -->
+                            <af:inputText label="Filter Dictionary Version:" id="it1aw"
+                                          value="#{pageFlowScope.WhodWizardBean.activeDictionary} v#{pageFlowScope.WhodWizardBean.activeDictionaryVersion}"
+                                          readOnly="true" columns="200"/>
+                            <af:spacer width="10" height="10" id="s7"/>
+                            <af:inputText label="Name:" id="it3" value="#{pageFlowScope.WhodWizardBean.currentTermName}" readOnly="true"
+                                          binding="#{WhodWizardUIBean.controlCurrentTermName}" columns="75"/>
+                        </af:panelGroupLayout>
                     </f:facet>
+                    <f:attribute name="currentPage" value="Create New #{applicationScope.CSMQBean.customMQName} Wizard"/>
                 </af:pageTemplate>
             </af:form>
         </af:document>

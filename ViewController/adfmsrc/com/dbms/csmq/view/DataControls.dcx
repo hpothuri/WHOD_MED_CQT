@@ -121,4 +121,37 @@
       <bean-definition BeanClass="com.dbms.csmq.view.reports.ReportDownloadBean" xmlns="http://xmlns.oracle.com/adfm/adapter/bean"/>
     </Source>
   </AdapterDataControl>
+  <AdapterDataControl id="WhodWizardUIBean" FactoryClass="oracle.adf.model.adapter.DataControlFactoryImpl"
+                      ImplDef="oracle.adf.model.adapter.bean.BeanDCDefinition" SupportsTransactions="true"
+                      SupportsSortCollection="true" SupportsResetState="false" SupportsRangesize="false"
+                      SupportsFindMode="false" SupportsUpdates="true"
+                      Definition="com.dbms.csmq.view.backing.whod.WhodWizardUIBean"
+                      BeanClass="com.dbms.csmq.view.backing.whod.WhodWizardUIBean"
+                      xmlns="http://xmlns.oracle.com/adfm/datacontrol">
+    <CreatableTypes>
+      <TypeInfo FullName="com.dbms.csmq.view.backing.whod.WhodWizardBean"/>
+      <TypeInfo FullName="com.dbms.csmq.view.backing.whod.WhodWizardUIBean"/>
+    </CreatableTypes>
+    <Source>
+      <bean-definition BeanClass="com.dbms.csmq.view.backing.whod.WhodWizardUIBean"
+                       xmlns="http://xmlns.oracle.com/adfm/adapter/bean"/>
+    </Source>
+  </AdapterDataControl>
+  <AdapterDataControl id="WhodWizardBean" FactoryClass="oracle.adf.model.adapter.DataControlFactoryImpl"
+                      ImplDef="oracle.adf.model.adapter.bean.BeanDCDefinition" SupportsTransactions="true"
+                      SupportsSortCollection="true" SupportsResetState="false" SupportsRangesize="false"
+                      SupportsFindMode="false" SupportsUpdates="true"
+                      Definition="com.dbms.csmq.view.backing.whod.WhodWizardBean"
+                      BeanClass="com.dbms.csmq.view.backing.whod.WhodWizardBean"
+                      xmlns="http://xmlns.oracle.com/adfm/datacontrol">
+    <CreatableTypes>
+      <TypeInfo FullName="com.dbms.csmq.UserBean"/>
+      <TypeInfo FullName="com.dbms.csmq.CSMQBean"/>
+      <TypeInfo FullName="com.dbms.csmq.view.backing.whod.WhodWizardBean"/>
+    </CreatableTypes>
+    <Source>
+      <bean-definition BeanClass="com.dbms.csmq.view.backing.whod.WhodWizardBean"
+                       xmlns="http://xmlns.oracle.com/adfm/adapter/bean"/>
+    </Source>
+  </AdapterDataControl>
 </DataControlConfigs>

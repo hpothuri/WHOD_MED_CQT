@@ -8,27 +8,6 @@
          name="x">-128.0</property>
    </OverallProperties>
    <View
-      id="View2">
-      <property
-         name="activityId">search</property>
-      <property
-         name="start">false</property>
-      <property
-         name="page">/create/whodWizardSearch.jspx</property>
-      <property
-         name="description">&lt;html>&lt;p>&lt;b>search&lt;/b>&lt;/p>&lt;p>Activity Type:  View&lt;/p></property>
-      <property
-         name="trainStop">true</property>
-      <property
-         name="exceptionHandler">false</property>
-      <property
-         name="y">237.6377</property>
-      <property
-         name="pageFragment">false</property>
-      <property
-         name="x">-686.0</property>
-   </View>
-   <View
       id="View3">
       <property
          name="activityId">whodAddDetails</property>
@@ -41,20 +20,12 @@
       <property
          name="exceptionHandler">false</property>
       <property
-         name="y">238.88477</property>
-      <property
-         name="x">-564.0</property>
+         name="y">240.48242</property>
       <property
          name="pageFragment">false</property>
-   </View>
-   <TrainFlow
-      islink="true"
-      id="TrainFlow4"
-      from="View2"
-      to="View3">
       <property
-         name="sdm:polyPoints">R50,-645.0,237.28711,-605.0,238.53418,L50</property>
-   </TrainFlow>
+         name="x">-656.0</property>
+   </View>
    <View
       id="View5">
       <property
@@ -68,11 +39,11 @@
       <property
          name="exceptionHandler">false</property>
       <property
-         name="y">237.83301</property>
-      <property
-         name="x">-432.0</property>
+         name="y">236.13184</property>
       <property
          name="pageFragment">false</property>
+      <property
+         name="x">-476.0</property>
    </View>
    <TrainFlow
       islink="true"
@@ -80,7 +51,7 @@
       from="View3"
       to="View5">
       <property
-         name="sdm:polyPoints">R50,-523.0,238.53418,-473.0,237.48242,L50</property>
+         name="sdm:polyPoints">R50,-615.0,240.13184,-517.0,235.78125,L50</property>
    </TrainFlow>
    <View
       id="View7">
@@ -95,11 +66,11 @@
       <property
          name="exceptionHandler">false</property>
       <property
-         name="y">233.93652</property>
-      <property
-         name="x">-284.0</property>
+         name="y">233.58594</property>
       <property
          name="pageFragment">false</property>
+      <property
+         name="x">-294.0</property>
    </View>
    <TrainFlow
       islink="true"
@@ -107,7 +78,7 @@
       from="View5"
       to="View7">
       <property
-         name="sdm:polyPoints">R50,-391.0,237.48242,-325.0,233.58594,L50</property>
+         name="sdm:polyPoints">R50,-435.0,235.78125,-331.0,233.58594,L50</property>
    </TrainFlow>
    <View
       id="View9">
@@ -124,9 +95,9 @@
       <property
          name="y">237.53418</property>
       <property
-         name="x">-144.0</property>
-      <property
          name="pageFragment">false</property>
+      <property
+         name="x">-144.0</property>
    </View>
    <TrainFlow
       islink="true"
@@ -134,7 +105,7 @@
       from="View7"
       to="View9">
       <property
-         name="sdm:polyPoints">R50,-243.0,233.58594,-185.0,237.1836,L50</property>
+         name="sdm:polyPoints">R50,-249.0,233.58594,-185.0,237.1836,L50</property>
    </TrainFlow>
    <TaskFlowReturn
       id="TaskFlowReturn13">
@@ -178,12 +149,12 @@
    </MethodCall>
    <ControlFlowCase
       islink="true"
-      id="ControlFlowCase16"
+      id="ControlFlowCase17"
       from="MethodCall15"
-      to="View2">
+      to="View3">
       <property
          name="fromOutcome">*</property>
       <property
-         name="sdm:polyPoints">R50,-797.0,239.49414,-727.0,237.28711,L50</property>
+         name="sdm:polyPoints">R50,-797.0,239.49414,-697.0,240.13184,L50</property>
    </ControlFlowCase>
 </SDM>

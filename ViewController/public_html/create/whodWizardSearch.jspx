@@ -21,7 +21,9 @@
               
                             <af:panelBox id="pgl1" text="Details" showDisclosure="false"
                                          inlineStyle="height:158px; width:1195px; padding:5px;">
-                                <af:panelGroupLayout id="pgl3" layout="horizontal" valign="top"/>
+                                <af:panelGroupLayout id="pgl3" layout="horizontal" valign="top">
+                                    <af:activeOutputText value="This is search Page" id="aot1"/>
+                                </af:panelGroupLayout>
                                 <f:facet name="toolbar"/>
                             </af:panelBox>
                         </af:group>

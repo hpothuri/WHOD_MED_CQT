@@ -366,4 +366,14 @@
     <managed-bean-class>com.dbms.csmq.view.reports.ReportDownloadBean</managed-bean-class>
     <managed-bean-scope>request</managed-bean-scope>
   </managed-bean>
+  <managed-bean id="__76">
+    <managed-bean-name>WhodWizardBean</managed-bean-name>
+    <managed-bean-class>com.dbms.csmq.view.backing.whod.WhodWizardBean</managed-bean-class>
+    <managed-bean-scope>pageFlow</managed-bean-scope>
+  </managed-bean>
+  <managed-bean id="__77">
+    <managed-bean-name>WhodWizardUIBean</managed-bean-name>
+    <managed-bean-class>com.dbms.csmq.view.backing.whod.WhodWizardUIBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
 </adfc-config>

@@ -15,22 +15,55 @@
       <required/>
     </input-parameter-definition>
     <managed-bean id="__1">
-      <managed-bean-name>CQTWizardBean</managed-bean-name>
-      <managed-bean-class>com.dbms.csmq.view.backing.CQT.CQTWizardBean</managed-bean-class>
+      <managed-bean-name>WhodWizardBean</managed-bean-name>
+      <managed-bean-class>com.dbms.csmq.view.backing.whod.WhodWizardBean</managed-bean-class>
       <managed-bean-scope>pageFlow</managed-bean-scope>
+    </managed-bean>
+    <managed-bean id="__2">
+      <managed-bean-name>WhodWizardUIBean</managed-bean-name>
+      <managed-bean-class>com.dbms.csmq.view.backing.whod.WhodWizardUIBean</managed-bean-class>
+      <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean id="__8">
+      <managed-bean-name>WhodRenderingRulesBean</managed-bean-name>
+      <managed-bean-class>com.dbms.csmq.view.WhodRenderingRulesBean</managed-bean-class>
+      <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
     <managed-bean id="__9">
-      <managed-bean-name>NMQWizardBean</managed-bean-name>
-      <managed-bean-class>com.dbms.csmq.view.backing.NMQ.NMQWizardBean</managed-bean-class>
+      <managed-bean-name>WhodSourceTermSearchUIBean</managed-bean-name>
+      <managed-bean-class>com.dbms.csmq.view.backing.whod.WhodSourceTermSearchUIBean</managed-bean-class>
+      <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean id="__10">
+      <managed-bean-name>WhodSourceTermSearchBean</managed-bean-name>
+      <managed-bean-class>com.dbms.csmq.view.backing.whod.WhodSourceTermSearchBean</managed-bean-class>
       <managed-bean-scope>pageFlow</managed-bean-scope>
     </managed-bean>
-    <view id="search">
-      <page>/create/whodWizardSearch.jspx</page>
-      <train-stop>
-      <display-name>Search</display-name>
-        <ignore>#{pageFlowScope.setMode == 'create'}</ignore>
-      </train-stop>
-    </view>
+    <managed-bean id="__11">
+      <managed-bean-name>WhodHierarchyExportBean</managed-bean-name>
+      <managed-bean-class>com.dbms.csmq.view.reports.WhodHierarchyExportBean</managed-bean-class>
+      <managed-bean-scope>pageFlow</managed-bean-scope>
+    </managed-bean>
+    <managed-bean id="__12">
+      <managed-bean-name>WhodTermHierarchyBean</managed-bean-name>
+      <managed-bean-class>com.dbms.csmq.view.hierarchy.WhodTermHierarchyBean</managed-bean-class>
+      <managed-bean-scope>pageFlow</managed-bean-scope>
+    </managed-bean>
+    <managed-bean id="__13">
+      <managed-bean-name>WhodAddRelationsRenderingRulesBean</managed-bean-name>
+      <managed-bean-class>com.dbms.csmq.view.WhodAddRelationsRenderingRulesBean</managed-bean-class>
+      <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean id="__14">
+      <managed-bean-name>WhodHierarchySearchResultsBean</managed-bean-name>
+      <managed-bean-class>com.dbms.csmq.view.hierarchy.WhodHierarchySearchResultsBean</managed-bean-class>
+      <managed-bean-scope>pageFlow</managed-bean-scope>
+    </managed-bean>
+    <managed-bean id="__15">
+      <managed-bean-name>WhodTermHierarchySourceBean</managed-bean-name>
+      <managed-bean-class>com.dbms.csmq.view.hierarchy.WhodTermHierarchySourceBean</managed-bean-class>
+      <managed-bean-scope>pageFlow</managed-bean-scope>
+    </managed-bean>
     <view id="whodAddDetails">
       <page>/create/whodAddDetails.jspx</page>
       <train-stop>
@@ -67,7 +100,7 @@
       </outcome>
     </task-flow-return>
     <method-call id="setMode">
-      <method>#{pageFlowScope.CQTWizardBean.setMode}</method>
+      <method>#{pageFlowScope.WhodWizardBean.setMode}</method>
       <outcome id="__39">
         <to-string/>
       </outcome>
@@ -80,10 +113,10 @@
         <to-activity-id>taskFlowReturn1</to-activity-id>
       </control-flow-case>
     </control-flow-rule>
-    <control-flow-rule id="__7">
+    <control-flow-rule id="__3">
       <from-activity-id>setMode</from-activity-id>
-      <control-flow-case id="__8">
-        <to-activity-id>search</to-activity-id>
+      <control-flow-case id="__7">
+        <to-activity-id>whodAddDetails</to-activity-id>
       </control-flow-case>
     </control-flow-rule>
     <critical/>
