@@ -74,7 +74,7 @@
       <id>report-task-flow-definition</id>
     </task-flow-reference>
   </task-flow-call>
-  <task-flow-call id="whod-task-flow-definition">
+  <task-flow-call id="whod-create-new-task-flow-definition">
     <task-flow-reference>
       <document>/WEB-INF/whod-task-flow-definition.xml</document>
       <id>whod-task-flow-definition</id>
@@ -84,7 +84,7 @@
       <value>#{pageFlowScope.setMode}</value>
     </input-parameter>
   </task-flow-call>
-  <task-flow-call id="whod-task-flow-definition1">
+  <task-flow-call id="whod-update-task-flow-definition">
     <task-flow-reference>
       <document>/WEB-INF/whod-task-flow-definition.xml</document>
       <id>whod-task-flow-definition</id>
@@ -94,7 +94,7 @@
       <value>#{pageFlowScope.setMode}</value>
     </input-parameter>
   </task-flow-call>
-  <task-flow-call id="whod-task-flow-definition2">
+  <task-flow-call id="whod-copy-task-flow-definition">
     <task-flow-reference>
       <document>/WEB-INF/whod-task-flow-definition.xml</document>
       <id>whod-task-flow-definition</id>
@@ -104,7 +104,7 @@
       <value>#{pageFlowScope.setMode}</value>
     </input-parameter>
   </task-flow-call>
-  <task-flow-call id="whod-task-flow-definition3">
+  <task-flow-call id="whod-update-SDG-task-flow-definition">
     <task-flow-reference>
       <document>/WEB-INF/whod-task-flow-definition.xml</document>
       <id>whod-task-flow-definition</id>
@@ -114,7 +114,7 @@
       <value>#{pageFlowScope.setMode}</value>
     </input-parameter>
   </task-flow-call>
-  <task-flow-call id="whod-task-flow-definition4">
+  <task-flow-call id="whod-browse-search-task-flow-definition">
     <task-flow-reference>
       <document>/WEB-INF/whod-task-flow-definition.xml</document>
       <id>whod-task-flow-definition</id>
@@ -200,35 +200,35 @@
       <to-activity-id>diff</to-activity-id>
     </control-flow-case>
     <control-flow-case id="__5">
-      <from-outcome>CREATE_NEW_CQT</from-outcome>
-      <to-activity-id>whod-task-flow-definition</to-activity-id>
+      <from-outcome>CREATE_NEW_CDG</from-outcome>
+      <to-activity-id>whod-create-new-task-flow-definition</to-activity-id>
     </control-flow-case>
     <control-flow-case id="__46">
-      <from-outcome>UPDATE_CQT</from-outcome>
-      <to-activity-id>whod-task-flow-definition1</to-activity-id>
+      <from-outcome>UPDATE_CDG</from-outcome>
+      <to-activity-id>whod-update-task-flow-definition</to-activity-id>
     </control-flow-case>
     <control-flow-case id="__65">
-      <from-outcome>COPY_CQT</from-outcome>
-      <to-activity-id>whod-task-flow-definition2</to-activity-id>
+      <from-outcome>COPY_CDG</from-outcome>
+      <to-activity-id>whod-copy-task-flow-definition</to-activity-id>
     </control-flow-case>
     <control-flow-case id="__66">
       <from-outcome>UPDATE_WHOD_SMQ</from-outcome>
-      <to-activity-id>whod-task-flow-definition3</to-activity-id>
+      <to-activity-id>whod-update-SDG-task-flow-definition</to-activity-id>
     </control-flow-case>
     <control-flow-case id="__67">
-      <from-outcome>BROWSE_SEARCH_CQT</from-outcome>
-      <to-activity-id>whod-task-flow-definition4</to-activity-id>
+      <from-outcome>BROWSE_SEARCH_CDG</from-outcome>
+      <to-activity-id>whod-browse-search-task-flow-definition</to-activity-id>
     </control-flow-case>
     <control-flow-case id="__73">
-      <from-outcome>CQT_NON_IMPACT_PUBLISH</from-outcome>
+      <from-outcome>CDG_NON_IMPACT_PUBLISH</from-outcome>
       <to-activity-id>whod-publish-task-flow-definition</to-activity-id>
     </control-flow-case>
     <control-flow-case id="__74">
-      <from-outcome>CQT_IMPACT_PUBLISH</from-outcome>
+      <from-outcome>CDG_IMPACT_PUBLISH</from-outcome>
       <to-activity-id>whod-ia-publish-task-flow-definition</to-activity-id>
     </control-flow-case>
     <control-flow-case id="__75">
-      <from-outcome>CQT_MEDDRA_IMPACT_ASSESSMENT</from-outcome>
+      <from-outcome>CDG_MEDDRA_IMPACT_ASSESSMENT</from-outcome>
       <to-activity-id>whod-impact-task-flow-definition</to-activity-id>
     </control-flow-case>
   </control-flow-rule>
