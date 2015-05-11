@@ -64,6 +64,11 @@
       <managed-bean-class>com.dbms.csmq.view.hierarchy.WhodTermHierarchySourceBean</managed-bean-class>
       <managed-bean-scope>pageFlow</managed-bean-scope>
     </managed-bean>
+    <managed-bean id="__16">
+      <managed-bean-name>WhodWorkflowBean</managed-bean-name>
+      <managed-bean-class>com.dbms.csmq.view.backing.publish.WhodWorkflowBean</managed-bean-class>
+      <managed-bean-scope>pageFlow</managed-bean-scope>
+    </managed-bean>
     <view id="whodAddDetails">
       <page>/create/whodAddDetails.jspx</page>
       <train-stop>

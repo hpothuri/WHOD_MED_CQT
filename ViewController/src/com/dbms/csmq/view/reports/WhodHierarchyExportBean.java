@@ -7,7 +7,7 @@ import com.dbms.csmq.view.backing.impact.ImpactAnalysisBean;
 import com.dbms.csmq.view.backing.impact.ImpactAnalysisUIBean;
 import com.dbms.csmq.view.backing.whod.WhodWizardBean;
 import com.dbms.csmq.view.hierarchy.GenericTreeNode;
-import com.dbms.csmq.view.hierarchy.TermHierarchyBean;
+import com.dbms.csmq.view.hierarchy.WhodTermHierarchyBean;
 
 import java.io.OutputStream;
 
@@ -101,7 +101,7 @@ public class WhodHierarchyExportBean {
     
     public void export(FacesContext facesContext, OutputStream outputStream) {
         //SmallTreeVO1Iterator
-        TermHierarchyBean termHierarchyBean = (TermHierarchyBean)AdfFacesContext.getCurrentInstance().getPageFlowScope().get("TermHierarchyBean");
+        WhodTermHierarchyBean termHierarchyBean = (WhodTermHierarchyBean)AdfFacesContext.getCurrentInstance().getPageFlowScope().get("WhodTermHierarchyBean");
         doExport(facesContext, outputStream, false, getVisableRowsFromTable(termHierarchyBean.getTargetTree()), null);
         }
 
