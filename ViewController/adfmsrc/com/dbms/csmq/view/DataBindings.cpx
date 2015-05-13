@@ -29,6 +29,8 @@
         <page path="/diff/diff.jspx" usageId="com_dbms_csmq_view_diffPageDef"/>
         <page path="/create/whodAddDetails.jspx" usageId="com_dbms_csmq_view_whodAddDetailsPageDef"/>
         <page path="/create/whodAddRelations.jspx" usageId="com_dbms_csmq_view_whodAddRelationsPageDef"/>
+        <page path="/create/whodConfirm.jspx" usageId="com_dbms_csmq_view_whodConfirmPageDef"/>
+        <page path="/create/whodWizardSearch.jspx" usageId="com_dbms_csmq_view_whodWizardSearchPageDef"/>
     </pageMap>
     <pageDefinitionUsages>
         <page id="com_dbms_csmq_view_loginPageDef" path="com.dbms.csmq.view.pageDefs.loginPageDef"/>
@@ -100,6 +102,8 @@
         <page id="com_dbms_csmq_view_diffPageDef" path="diff.diffPageDef"/>
         <page id="com_dbms_csmq_view_whodAddDetailsPageDef" path="create.whodAddDetailsPageDef"/>
         <page id="com_dbms_csmq_view_whodAddRelationsPageDef" path="create.whodAddRelationsPageDef"/>
+        <page id="com_dbms_csmq_view_whodConfirmPageDef" path="create.whodConfirmPageDef"/>
+        <page id="com_dbms_csmq_view_whodWizardSearchPageDef" path="create.whodWizardSearchPageDef"/>
     </pageDefinitionUsages>
     <dataControlUsages>
         <dc id="ReportDownloadBean" path="com.dbms.csmq.view.ReportDownloadBean"/>

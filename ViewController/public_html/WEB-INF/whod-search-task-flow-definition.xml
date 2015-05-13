@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="windows-1252" ?>
 <adfc-config xmlns="http://xmlns.oracle.com/adf/controller" version="1.2">
-  <task-flow-definition id="whod-task-flow-definition">
+  <task-flow-definition id="search-whod-task-flow-definition">
     <default-activity>setMode</default-activity>
     <transaction>
       <new-transaction/>
     </transaction>
     <data-control-scope>
-      <shared/>
+      <isolated/>
     </data-control-scope>
     <input-parameter-definition id="__6">
       <name>modeType</name>
@@ -69,61 +69,66 @@
       <managed-bean-class>com.dbms.csmq.view.backing.publish.WhodWorkflowBean</managed-bean-class>
       <managed-bean-scope>pageFlow</managed-bean-scope>
     </managed-bean>
+    <managed-bean id="__5">
+      <managed-bean-name>WhodWizardSearchBean</managed-bean-name>
+      <managed-bean-class>com.dbms.csmq.view.backing.whod.WhodWizardSearchBean</managed-bean-class>
+      <managed-bean-scope>pageFlow</managed-bean-scope>
+    </managed-bean>
+    <view id="whodWizardSearch">
+      <page>/create/whodWizardSearch.jspx</page>
+      <train-stop>
+      <display-name>Search</display-name>
+      </train-stop>
+    </view>
     <view id="whodAddDetails">
       <page>/create/whodAddDetails.jspx</page>
       <train-stop>
-        <display-name>#{(pageFlowScope.setMode == 'browseAndSearch') ? 'Details' : 'Add Details'}</display-name>
-        <sequential>#{pageFlowScope.setMode == 'copy'}</sequential>
+       <display-name>#{(pageFlowScope.setMode == 'browseAndSearch') ? 'Details' : 'Add Details'}</display-name>
       </train-stop>
     </view>
     <view id="whodAddInformativeNotes">
       <page>/create/whodAddInformativeNotes.jspx</page>
       <train-stop>
-       <display-name>#{(pageFlowScope.setMode == 'browseAndSearch') ? 'Informative Notes' : ((pageFlowScope.setMode == 'updateSMQ') ? 'View Informative Notes' : 'Add Informative Notes')}</display-name>
-        <sequential>#{pageFlowScope.setMode == 'create'}</sequential>
+      <display-name>#{(pageFlowScope.setMode == 'browseAndSearch') ? 'Informative Notes' : ((pageFlowScope.setMode == 'updateSMQ') ? 'View Informative Notes' : 'Add Informative Notes')}</display-name>
       </train-stop>
     </view>
     <view id="whodAddRelations">
       <page>/create/whodAddRelations.jspx</page>
       <train-stop>
-        <display-name>#{(pageFlowScope.setMode == 'browseAndSearch') ? 'Relations' : ((pageFlowScope.setMode == 'updateSMQ') ? 'View Relations' : 'Add Relations')}</display-name>
-        <sequential>#{pageFlowScope.setMode == 'create'}</sequential>
+      <display-name>#{(pageFlowScope.setMode == 'browseAndSearch') ? 'Relations' : ((pageFlowScope.setMode == 'updateSMQ') ? 'View Relations' : 'Add Relations')}</display-name>
       </train-stop>
     </view>
     <view id="whodConfirm">
       <page>/create/whodConfirm.jspx</page>
       <train-stop>
-        <display-name>Confirm</display-name>
-        <sequential>#{pageFlowScope.setMode == 'create'}</sequential>
-        <ignore>#{pageFlowScope.setMode == 'browseAndSearch'}</ignore>
+       <display-name>Confirm</display-name>
       </train-stop>
     </view>
-    <task-flow-return id="cancelFlow">
-      <outcome>
-        <name>commitFlow</name>
-        <commit/>
-      </outcome>
-    </task-flow-return>
     <method-call id="setMode">
       <method>#{pageFlowScope.WhodWizardBean.setMode}</method>
       <outcome id="__39">
         <to-string/>
       </outcome>
     </method-call>
+    <task-flow-return id="cancelFlow">
+      <outcome>
+        <name>cancelFlow</name>
+        <commit/>
+      </outcome>
+    </task-flow-return>
     <train/>
-    <control-flow-rule id="__4">
+    <control-flow-rule id="__101">
+      <from-activity-id>setMode</from-activity-id>
+      <control-flow-case id="__20">
+        <to-activity-id>whodWizardSearch</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__3">
       <from-activity-id>whodConfirm</from-activity-id>
-      <control-flow-case id="__5">
+      <control-flow-case id="__4">
         <from-outcome>CLEARED</from-outcome>
         <to-activity-id>cancelFlow</to-activity-id>
       </control-flow-case>
     </control-flow-rule>
-    <control-flow-rule id="__3">
-      <from-activity-id>setMode</from-activity-id>
-      <control-flow-case id="__7">
-        <to-activity-id>whodAddDetails</to-activity-id>
-      </control-flow-case>
-    </control-flow-rule>
-    <critical/>
   </task-flow-definition>
 </adfc-config>

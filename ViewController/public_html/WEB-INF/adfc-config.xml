@@ -84,46 +84,6 @@
       <value>#{pageFlowScope.setMode}</value>
     </input-parameter>
   </task-flow-call>
-  <task-flow-call id="whod-update-task-flow-definition">
-    <task-flow-reference>
-      <document>/WEB-INF/whod-task-flow-definition.xml</document>
-      <id>whod-task-flow-definition</id>
-    </task-flow-reference>
-    <input-parameter id="__61">
-      <name>modeType</name>
-      <value>#{pageFlowScope.setMode}</value>
-    </input-parameter>
-  </task-flow-call>
-  <task-flow-call id="whod-copy-task-flow-definition">
-    <task-flow-reference>
-      <document>/WEB-INF/whod-task-flow-definition.xml</document>
-      <id>whod-task-flow-definition</id>
-    </task-flow-reference>
-    <input-parameter id="__68">
-      <name>modeType</name>
-      <value>#{pageFlowScope.setMode}</value>
-    </input-parameter>
-  </task-flow-call>
-  <task-flow-call id="whod-update-SDG-task-flow-definition">
-    <task-flow-reference>
-      <document>/WEB-INF/whod-task-flow-definition.xml</document>
-      <id>whod-task-flow-definition</id>
-    </task-flow-reference>
-    <input-parameter id="__69">
-      <name>modeType</name>
-      <value>#{pageFlowScope.setMode}</value>
-    </input-parameter>
-  </task-flow-call>
-  <task-flow-call id="whod-browse-search-task-flow-definition">
-    <task-flow-reference>
-      <document>/WEB-INF/whod-task-flow-definition.xml</document>
-      <id>whod-task-flow-definition</id>
-    </task-flow-reference>
-    <input-parameter id="__72">
-      <name>modeType</name>
-      <value>#{pageFlowScope.setMode}</value>
-    </input-parameter>
-  </task-flow-call>
   <task-flow-call id="whod-publish-task-flow-definition">
     <task-flow-reference>
       <document>/WEB-INF/whod-publish-task-flow-definition.xml</document>
@@ -141,6 +101,46 @@
       <document>/WEB-INF/whod-impact-task-flow-definition.xml</document>
       <id>whod-impact-task-flow-definition</id>
     </task-flow-reference>
+  </task-flow-call>
+  <task-flow-call id="whod-update-SDG-task-flow-definition">
+    <task-flow-reference>
+      <document>/WEB-INF/whod-search-task-flow-definition.xml</document>
+      <id>search-whod-task-flow-definition</id>
+    </task-flow-reference>
+    <input-parameter id="__69">
+      <name>modeType</name>
+      <value>#{pageFlowScope.setMode}</value>
+    </input-parameter>
+  </task-flow-call>
+  <task-flow-call id="whod-update-task-flow-definition">
+    <task-flow-reference>
+      <document>/WEB-INF/whod-search-task-flow-definition.xml</document>
+      <id>search-whod-task-flow-definition</id>
+    </task-flow-reference>
+    <input-parameter id="__78">
+      <name>modeType</name>
+      <value>#{pageFlowScope.setMode}</value>
+    </input-parameter>
+  </task-flow-call>
+  <task-flow-call id="whod-copy-task-flow-definition">
+    <task-flow-reference>
+      <document>/WEB-INF/whod-search-task-flow-definition.xml</document>
+      <id>search-whod-task-flow-definition</id>
+    </task-flow-reference>
+    <input-parameter id="__79">
+      <name>modeType</name>
+      <value>#{pageFlowScope.setMode}</value>
+    </input-parameter>
+  </task-flow-call>
+  <task-flow-call id="whod-browse-search-task-flow-definition">
+    <task-flow-reference>
+      <document>/WEB-INF/whod-search-task-flow-definition.xml</document>
+      <id>search-whod-task-flow-definition</id>
+    </task-flow-reference>
+    <input-parameter id="__80">
+      <name>modeType</name>
+      <value>#{pageFlowScope.setMode}</value>
+    </input-parameter>
   </task-flow-call>
   <control-flow-rule id="__2">
     <control-flow-case id="__32">

@@ -5,6 +5,7 @@ import com.dbms.csmq.UserBean;
 import com.dbms.csmq.view.backing.NMQ.NMQUtils;
 import com.dbms.csmq.view.hierarchy.TermHierarchyBean;
 
+import com.dbms.csmq.view.hierarchy.WhodTermHierarchyBean;
 import com.dbms.util.dml.DMLUtils;
 
 import java.sql.CallableStatement;
@@ -724,8 +725,8 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
         ViewObject vo = dciterb.getViewObject();
         vo.setNamedWhereClauseParam("dictContentID", CSMQBean.HIERARCHY_KILL_SWITCH);
         vo.executeQuery();
-        TermHierarchyBean termHierarchyBean =
-            (TermHierarchyBean)AdfFacesContext.getCurrentInstance().getPageFlowScope().get("TermHierarchyBean");
+        WhodTermHierarchyBean termHierarchyBean =
+            (WhodTermHierarchyBean)AdfFacesContext.getCurrentInstance().getPageFlowScope().get("WhodTermHierarchyBean");
         termHierarchyBean.init(false);
         return;
     }

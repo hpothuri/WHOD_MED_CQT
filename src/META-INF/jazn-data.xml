@@ -459,6 +459,11 @@
                 <name>/WEB-INF/whod-impact-task-flow-definition.xml#whod-impact-task-flow-definition</name>
                 <actions>view</actions>
               </permission>
+              <permission>
+                <class>oracle.adf.controller.security.TaskFlowPermission</class>
+                <name>/WEB-INF/whod-search-task-flow-definition.xml#search-whod-task-flow-definition</name>
+                <actions>view</actions>
+              </permission>
             </permissions>
           </grant>
           <grant>
@@ -654,6 +659,11 @@
               <permission>
                 <class>oracle.adf.controller.security.TaskFlowPermission</class>
                 <name>/WEB-INF/whod-impact-task-flow-definition.xml#whod-impact-task-flow-definition</name>
+                <actions>view</actions>
+              </permission>
+              <permission>
+                <class>oracle.adf.controller.security.TaskFlowPermission</class>
+                <name>/WEB-INF/whod-search-task-flow-definition.xml#search-whod-task-flow-definition</name>
                 <actions>view</actions>
               </permission>
             </permissions>
