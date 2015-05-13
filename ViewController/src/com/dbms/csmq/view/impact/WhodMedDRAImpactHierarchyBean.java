@@ -1,12 +1,10 @@
 package com.dbms.csmq.view.impact;
 
-
 import com.dbms.csmq.CSMQBean;
-import com.dbms.csmq.view.backing.impact.ImpactAnalysisBean;
+import com.dbms.csmq.view.backing.impact.WhodImpactAnalysisBean;
 import com.dbms.csmq.view.backing.impact.ImpactAnalysisUIBean;
 import com.dbms.csmq.view.hierarchy.GenericTreeNode;
 import com.dbms.csmq.view.hierarchy.Hierarchy;
-
 import com.dbms.util.Utils;
 
 import java.util.ArrayList;
@@ -23,11 +21,9 @@ import oracle.adf.share.ADFContext;
 import oracle.adf.view.rich.component.rich.data.RichTreeTable;
 import oracle.adf.view.rich.component.rich.input.RichInputText;
 import oracle.adf.view.rich.component.rich.input.RichSelectOneChoice;
-
 import oracle.adf.view.rich.context.AdfFacesContext;
 
 import oracle.jbo.Row;
-
 import oracle.jbo.ViewObject;
 
 import org.apache.myfaces.trinidad.model.ChildPropertyTreeModel;
@@ -35,9 +31,7 @@ import org.apache.myfaces.trinidad.model.RowKeySet;
 import org.apache.myfaces.trinidad.model.RowKeySetTreeImpl;
 import org.apache.myfaces.trinidad.model.TreeModel;
 
-
-public class MedDRAImpactHierarchyBean extends Hierarchy {
-
+public class WhodMedDRAImpactHierarchyBean extends Hierarchy{
     private TreeModel treemodel;
     //private GenericTreeNode root;
     private Enumeration rows;
@@ -50,11 +44,11 @@ public class MedDRAImpactHierarchyBean extends Hierarchy {
     private RichInputText term;
     //private RichTreeTable targetTree;
     //private RichTreeTable sourceTree;
-    ImpactAnalysisBean impactAnalysisBean;
+    WhodImpactAnalysisBean impactAnalysisBean;
     
-    public MedDRAImpactHierarchyBean() {
+    public WhodMedDRAImpactHierarchyBean() {
         CSMQBean.logger.info ("@ NEW MedDRAImpactHierarchyBean()");
-        impactAnalysisBean = (ImpactAnalysisBean) AdfFacesContext.getCurrentInstance().getPageFlowScope().get("ImpactAnalysisBean");
+        impactAnalysisBean = (WhodImpactAnalysisBean) AdfFacesContext.getCurrentInstance().getPageFlowScope().get("WhodImpactAnalysisBean");
         }
     
     public void init () {  

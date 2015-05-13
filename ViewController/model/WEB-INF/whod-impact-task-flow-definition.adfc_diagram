@@ -28,7 +28,7 @@
       <property
          name="activityId">addInformativeNotes</property>
       <property
-         name="page">/create/addInformativeNotes.jspx</property>
+         name="page">/create/whodAddInformativeNotes.jspx</property>
       <property
          name="description">&lt;html>&lt;p>&lt;b>addInformativeNotes&lt;/b>&lt;/p>&lt;p>Activity Type:  View&lt;/p></property>
       <property
@@ -53,7 +53,7 @@
       <property
          name="activityId">addDetails</property>
       <property
-         name="page">/create/addDetails.jspx</property>
+         name="page">/create/whodAddDetails.jspx</property>
       <property
          name="description">&lt;html>&lt;p>&lt;b>addDetails&lt;/b>&lt;/p>&lt;p>Activity Type:  View&lt;/p></property>
       <property

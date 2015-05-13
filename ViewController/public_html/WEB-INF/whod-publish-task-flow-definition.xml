@@ -2,6 +2,11 @@
 <adfc-config xmlns="http://xmlns.oracle.com/adf/controller" version="1.2">
   <task-flow-definition id="whod-publish-task-flow-definition">
     <default-activity>whodPromoteToPublished</default-activity>
+    <managed-bean id="__1">
+      <managed-bean-name>WhodWorkflowBean</managed-bean-name>
+      <managed-bean-class>com.dbms.csmq.view.backing.publish.WhodWorkflowBean</managed-bean-class>
+      <managed-bean-scope>pageFlow</managed-bean-scope>
+    </managed-bean>
     <task-flow-return id="cancelFlow">
       <outcome>
         <name>cancelFlow</name>

@@ -31,6 +31,13 @@
         <page path="/create/whodAddRelations.jspx" usageId="com_dbms_csmq_view_whodAddRelationsPageDef"/>
         <page path="/create/whodConfirm.jspx" usageId="com_dbms_csmq_view_whodConfirmPageDef"/>
         <page path="/create/whodWizardSearch.jspx" usageId="com_dbms_csmq_view_whodWizardSearchPageDef"/>
+        <page path="/impact/whodImpactAssessment.jspx" usageId="com_dbms_csmq_view_whodImpactAssessmentPageDef"/>
+        <page path="/workflow/whodActivateod.jspx" usageId="com_dbms_csmq_view_whodActivateodPageDef"/>
+        <page path="/workflow/whodDemoteToDraft.jspx" usageId="com_dbms_csmq_view_whodDemoteToDraftPageDef"/>
+        <page path="/workflow/whodPromoteToPublished.jspx" usageId="com_dbms_csmq_view_whodPromoteToPublishedPageDef"/>
+        <page path="/workflow/whodIaPromoteToPublished.jspx"
+              usageId="com_dbms_csmq_view_whodIaPromoteToPublishedPageDef"/>
+        <page path="/workflow/whodIaDemoteToDraft.jspx" usageId="com_dbms_csmq_view_whodIaDemoteToDraftPageDef"/>
     </pageMap>
     <pageDefinitionUsages>
         <page id="com_dbms_csmq_view_loginPageDef" path="com.dbms.csmq.view.pageDefs.loginPageDef"/>
@@ -104,6 +111,12 @@
         <page id="com_dbms_csmq_view_whodAddRelationsPageDef" path="create.whodAddRelationsPageDef"/>
         <page id="com_dbms_csmq_view_whodConfirmPageDef" path="create.whodConfirmPageDef"/>
         <page id="com_dbms_csmq_view_whodWizardSearchPageDef" path="create.whodWizardSearchPageDef"/>
+        <page id="com_dbms_csmq_view_whodImpactAssessmentPageDef" path="impact.whodImpactAssessmentPageDef"/>
+        <page id="com_dbms_csmq_view_whodActivateodPageDef" path="workflow.whodActivateodPageDef"/>
+        <page id="com_dbms_csmq_view_whodDemoteToDraftPageDef" path="workflow.whodDemoteToDraftPageDef"/>
+        <page id="com_dbms_csmq_view_whodPromoteToPublishedPageDef" path="workflow.whodPromoteToPublishedPageDef"/>
+        <page id="com_dbms_csmq_view_whodIaPromoteToPublishedPageDef" path="workflow.whodIaPromoteToPublishedPageDef"/>
+        <page id="com_dbms_csmq_view_whodIaDemoteToDraftPageDef" path="workflow.whodIaDemoteToDraftPageDef"/>
     </pageDefinitionUsages>
     <dataControlUsages>
         <dc id="ReportDownloadBean" path="com.dbms.csmq.view.ReportDownloadBean"/>

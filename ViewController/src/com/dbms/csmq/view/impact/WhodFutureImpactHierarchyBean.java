@@ -1,12 +1,10 @@
 package com.dbms.csmq.view.impact;
 
-
 import com.dbms.csmq.CSMQBean;
 import com.dbms.csmq.view.backing.impact.ImpactAnalysisBean;
 import com.dbms.csmq.view.backing.impact.ImpactAnalysisUIBean;
 import com.dbms.csmq.view.hierarchy.GenericTreeNode;
 import com.dbms.csmq.view.hierarchy.Hierarchy;
-
 import com.dbms.util.Utils;
 
 import java.util.ArrayList;
@@ -23,41 +21,39 @@ import oracle.adf.share.ADFContext;
 import oracle.adf.view.rich.component.rich.data.RichTreeTable;
 import oracle.adf.view.rich.component.rich.input.RichInputText;
 import oracle.adf.view.rich.component.rich.input.RichSelectOneChoice;
-
 import oracle.adf.view.rich.context.AdfFacesContext;
 
 import oracle.jbo.Row;
-
 import oracle.jbo.ViewObject;
 
+import org.apache.myfaces.trinidad.event.AttributeChangeEvent;
 import org.apache.myfaces.trinidad.model.ChildPropertyTreeModel;
 import org.apache.myfaces.trinidad.model.RowKeySet;
 import org.apache.myfaces.trinidad.model.RowKeySetTreeImpl;
 import org.apache.myfaces.trinidad.model.TreeModel;
 
-
-public class MedDRAImpactHierarchyBean extends Hierarchy {
+public class WhodFutureImpactHierarchyBean extends Hierarchy{
 
     private TreeModel treemodel;
-    //private GenericTreeNode root;
     private Enumeration rows;
     private HashMap parentNodesByLevel;
     private boolean editable;
-    private boolean hasData = false;
     
     private RichSelectOneChoice dictionaryVersion;
     private RichSelectOneChoice levelList;
     private RichInputText term;
-    //private RichTreeTable targetTree;
-    //private RichTreeTable sourceTree;
-    ImpactAnalysisBean impactAnalysisBean;
+    private int numberOfTermsToBeDeleted;
+    private boolean hasScope = false;
     
-    public MedDRAImpactHierarchyBean() {
-        CSMQBean.logger.info ("@ NEW MedDRAImpactHierarchyBean()");
-        impactAnalysisBean = (ImpactAnalysisBean) AdfFacesContext.getCurrentInstance().getPageFlowScope().get("ImpactAnalysisBean");
+    
+    public WhodFutureImpactHierarchyBean() {
+        System.out.println("START: FutureImpactHierarchyBean");
+        System.out.println("END: FutureImpactHierarchyBean");  
         }
+
     
-    public void init () {  
+    public void init (boolean hasScope) {
+        this.hasScope = hasScope;
         parentNodesByLevel = new HashMap();
         createTree();
         List nodes = new ArrayList();
@@ -69,19 +65,15 @@ public class MedDRAImpactHierarchyBean extends Hierarchy {
                 }
             }; 
         }
-    
-    
+
     private void createTree() {
-        hasData = false;
+      
         BindingContext bc = BindingContext.getCurrent();
-        DCBindingContainer binding = (DCBindingContainer)bc.getCurrentBindingsEntry(); 
-        DCIteratorBinding dciterb = (DCIteratorBinding)binding.get("MedDRAImpactVO1Iterator1");
+        DCBindingContainer binding = (DCBindingContainer)bc.getCurrentBindingsEntry();
+        DCIteratorBinding dciterb = (DCIteratorBinding)binding.get("DraftImpactVO1Iterator1");
 
         rows = dciterb.getRowSetIterator().enumerateRowsInRange();
-        
-        if (!rows.hasMoreElements()) return;  // the left side will not return records in some cases - this ok
-        hasData = true;
-        
+    
         Row row = (Row)rows.nextElement();
 
         root = new GenericTreeNode();
@@ -94,20 +86,18 @@ public class MedDRAImpactHierarchyBean extends Hierarchy {
         root.setDictShortName(Utils.getAsString(row,"DictShortName"));
         root.setDictContentId(Utils.getAsString(row,"DictContentId"));
         root.setDictContentCode(Utils.getAsString(row,"DictContentCode"));
-
         root.setApprovedFlag(Utils.getAsString(row,"ApprovedFlag"));
         root.setDictContentAltCode(Utils.getAsString(row,"DictContentAltCode"));
         root.setStatus(Utils.getAsString(row,"Status"));
         root.setPredictGroupId(Utils.getAsNumber(row,"PredictGroupId"));
         root.setPath(Utils.getAsString(row,"TermPath"));
-        
         root.setTermCategory(Utils.getAsString(row,"Termcat"));
-        root.setTermLevel(row.getAttribute("Termlvl").toString());
+        root.setTermLevel(Utils.getAsString(row, "Termlvl"));
         root.setTermScope(Utils.getAsNumber(row,"Termscp"));
         root.setTermWeight(Utils.getAsString(row,"Termweig"));
         root.setPath(Utils.getAsString(row,"TermPath"));
         root.setFormattedScope(Utils.getAsString(row,"FormattedScope"));
-        
+        root.setHasScope(hasScope);
         
         if (root.getLevelName().contains (CSMQBean.NMQ)) {
             root.setMqType(CSMQBean.NMQ);
@@ -118,9 +108,10 @@ public class MedDRAImpactHierarchyBean extends Hierarchy {
             root.setMqType(CSMQBean.SMQ);
             root.setEditable(false);
             this.editable = false;
-            }       
+            }
         
-        Object displayAttribute = row.getAttribute("DisplayAttribute");
+        //NEW FOR IMPACT
+        Object displayAttribute = Utils.getAsString(row, "DisplayAttribute");
         if (displayAttribute != null) {
             String code = Utils.getAsString(row,"DisplayAttribute");
             String description = CSMQBean.getProperty("Impact_" + root.getMqType() + "_" + code);
@@ -130,22 +121,20 @@ public class MedDRAImpactHierarchyBean extends Hierarchy {
             root.setIcon(code); // SET THE MATCHING ICON - IF IT'S NULL IT WON'T SHOW
             }
 
-
         root.setShowHasChildrenButton(false); //don't show it for the root
-
-
-        CSMQBean.logger.info(userBean.getCaller() + " ADDING ROOT: " + root.toString());
         
+        CSMQBean.logger.info(userBean.getCaller() + " ADDING ROOT: " + root.toString() + ";EDITABLE=" + this.editable);
+
         populateTreeNodes(root);
         //clean up the hashmap
         parentNodesByLevel = null;
+
     }
 
     private GenericTreeNode populateTreeNodes(GenericTreeNode node) {
 
         //store node and level
         if (parentNodesByLevel == null) return null;
-        
         if (node != null)
             parentNodesByLevel.put(node.getDictContentId(), node);
 
@@ -166,36 +155,20 @@ public class MedDRAImpactHierarchyBean extends Hierarchy {
             termNode.setPredictGroupId(Utils.getAsNumber(row,"PredictGroupId"));
             termNode.setPath(Utils.getAsString(row,"TermPath"));
             termNode.setTermCategory(Utils.getAsString(row,"Termcat"));
-            termNode.setTermLevel(row.getAttribute("Termlvl").toString());
+            termNode.setTermLevel(Utils.getAsString(row, "Termlvl"));
             termNode.setTermScope(Utils.getAsNumber(row,"Termscp"));
             termNode.setTermWeight(Utils.getAsString(row,"Termweig"));
-            
-            if (row.getAttribute("FormattedScope") != null)
-                termNode.setFormattedScope(row.getAttribute("FormattedScope").toString());
-            ////
-            ////
-            /// FIX - ADD NEW CMQ NAME
-            
-            
-            if (termNode.getLevelName().contains (CSMQBean.customMQName)) {
-                termNode.setMqType(CSMQBean.customMQName);
-                termNode.setEditable(true);
-                this.editable = true;
-                }
-            else {
-                termNode.setMqType(CSMQBean.SMQ);
-                termNode.setEditable(false);
-                this.editable = false;
-                }
-            
+            termNode.setFormattedScope(Utils.getAsString(row,"FormattedScope"));
             termNode.setMqType(root.getMqType()); // set the query type the same as the parent
+            termNode.setHasScope(this.hasScope);
+            termNode.setEditable(this.editable); // 4.APR.2014
             Object displayAttribute = row.getAttribute("DisplayAttribute");
-            
+                        
             GenericTreeNode parentNode = (GenericTreeNode)parentNodesByLevel.get(termNode.getParent());
             parentNode.getChildren().add(termNode);  // add to the parent
             termNode.setParentNode(parentNode);      // set the parent for the child
-            if (parentNode.isIsRoot()) termNode.setDeletable(true); //it's a child of the root - it can be deleted            
-            
+            if (parentNode.isIsRoot()) termNode.setDeletable(true); //it's a child of the root - it can be deleted
+            if (root.equals(parentNode)) termNode.setIsDirectRelation(true); // it's a direct relation
             
             if (displayAttribute != null) {
                 String code = Utils.getAsString(row,"DisplayAttribute");
@@ -205,33 +178,32 @@ public class MedDRAImpactHierarchyBean extends Hierarchy {
                 termNode.setStyle(cssClass); // THIS IS USED TO CALL THE CORRECT STYLE
                 termNode.setIcon(code); // SET THE MATCHING ICON - IF IT'S NULL IT WON'T SHOW
                 //FILTER OUT THESE CODES
-                if (  //code.equals(CSMQBean.NON_CURRENT_LLT)
-                    //|| code.equals(CSMQBean.MEDDRA_INSERTED_ADDED_TERM_RELATION)
-                     code.equals(CSMQBean.CHANGE_IN_TERMSCP)
-                    || code.equals(CSMQBean.MQM_INSERTED_ADDED_TERM_RELATION_NEW)
-                    || code.equals(CSMQBean.MQM_INSERTED_ADDED_TERM_RELATION_EXISTING)) {
-                    CSMQBean.logger.info(userBean.getCaller() + " CURRENT: IGNORING " + termNode);
+                if (code.equals(CSMQBean.DELETED_MERGED_MOVED_TERM_RELATION)) {
+                    CSMQBean.logger.info(userBean.getCaller() + " FUTURE: IGNORING " + termNode);
                     termNode.getParentNode().getChildren().remove(termNode); //remove it from it's parent
-                    }
+                    } 
                 }
             //REMOVE LLTs FROM THTE ROOT
             if (parentNode.isIsRoot() && termNode.getLevelName().equals("LLT")) {
                 termNode.getParentNode().getChildren().remove(termNode); //remove it from it's parent
                 CSMQBean.logger.info(userBean.getCaller() + " REMOVING LLT " + termNode);
                 }
-            
+               
             // FOR 'LAZY' LOADING          
             boolean showMoreChildren = Utils.getAsBoolean(row,"ChildExists");
             if (showMoreChildren) 
                 termNode.setShowHasChildrenButton(true);
-                
-    
+               
+            
+            
+               
             setDerivedRelations(termNode);
-            CSMQBean.logger.info(userBean.getCaller() + " CURRENT ADDING NODE: " + termNode);
+            CSMQBean.logger.info(userBean.getCaller() + " FUTURE ADDING NODE: " + termNode);
             populateTreeNodes(termNode);
-        }
+            }
         return node;
-    }
+        }
+
 
     public void setTreemodel(TreeModel treemodel) {
         this.treemodel = treemodel;
@@ -266,6 +238,18 @@ public class MedDRAImpactHierarchyBean extends Hierarchy {
         return term;
     }
 
+    public void setNumberOfTermsToBeDeleted(int numberOfTermsToBeDeleted) {
+        this.numberOfTermsToBeDeleted = numberOfTermsToBeDeleted;
+    }
+
+    public int getNumberOfTermsToBeDeleted() {
+        return numberOfTermsToBeDeleted;
+    }
+
+    public void sortByLevel(AttributeChangeEvent attributeChangeEvent) {
+        CSMQBean.logger.info ("SORT LEVEL");
+    }
+
     public void setEditable(boolean editable) {
         this.editable = editable;
     }
@@ -279,8 +263,10 @@ public class MedDRAImpactHierarchyBean extends Hierarchy {
         }
     
     private void showChildren() {
+        
         ImpactAnalysisUIBean impactAnalysisUIBean = (ImpactAnalysisUIBean)ADFContext.getCurrent().getRequestScope().get("ImpactAnalysisUIBean");
-        RichTreeTable targetTree = impactAnalysisBean.getMedDRATree();        
+        ImpactAnalysisBean impactAnalysisBean = (ImpactAnalysisBean) AdfFacesContext.getCurrentInstance().getPageFlowScope().get("ImpactAnalysisBean");
+        RichTreeTable targetTree = impactAnalysisBean.getFutureTree();        
        // Clear keys
         
        if (targetTree != null && targetTree.getDisclosedRowKeys()!=null )
@@ -354,68 +340,73 @@ public class MedDRAImpactHierarchyBean extends Hierarchy {
        // REQUERY AND GET THE CHILDREN
        BindingContext bc = BindingContext.getCurrent();
        DCBindingContainer binding = (DCBindingContainer)bc.getCurrentBindingsEntry();
-       DCIteratorBinding dciterb = (DCIteratorBinding)binding.get("MedDRAImpactVO1Iterator1");
+       DCIteratorBinding dciterb = (DCIteratorBinding)binding.get("DraftImpactVO1Iterator1");
        ViewObject vo = dciterb.getViewObject();
        String parentTermScope = "0";
        if (newRootNode != null)
            parentTermScope = newRootNode.getFormattedScope();
            //parentTermScope = newRootNode.getParentNode().getFormattedScope();
-            //  18MAR change -- parentTermScope = newRootNode.getFormattedScope();  // TODO test fix for term scope error
+           //  18MAR change -- parentTermScope = newRootNode.getFormattedScope();  // TODO test fix for term scope error
            
        
        //String bothGroups = this.defaultDraftGroupName + "," + this.defaultMedDRAGroupName;
        CSMQBean.logger.info(userBean.getCaller() + " \nUPDATING: " +  impactAnalysisBean.getAllGroups());     
         
-        vo.setNamedWhereClauseParam("activationGroup", impactAnalysisBean.getAllGroups());
-        vo.setNamedWhereClauseParam("dictContentID", newRootNode.getDictContentId());
-        vo.setNamedWhereClauseParam("sortKey", impactAnalysisBean.getParamMedDRASort());
-        vo.setNamedWhereClauseParam("showNonImpacted", impactAnalysisBean.getParamMedDRAShowNonImpacted());
-        vo.setNamedWhereClauseParam("returnPrimLinkPath", impactAnalysisBean.getParamMedDRAPrimaryOnly());
-        //vo.setNamedWhereClauseParam("termScopeFilter", impactAnalysisBean.getParamMedDRAScope());  ??  TODO: FIX?
-        vo.setNamedWhereClauseParam("maxLevels", CSMQBean.getProperty("HIERARCHY_SUBSEQUENT_FETCH"));
-        vo.setNamedWhereClauseParam("startLevel", newRootNode.getLevel());
-        vo.setNamedWhereClauseParam("scopeFilter", parentTermScope);
+       vo.setNamedWhereClauseParam("activationGroup", impactAnalysisBean.getAllGroups());
+       vo.setNamedWhereClauseParam("dictContentID", newRootNode.getDictContentId());
+       vo.setNamedWhereClauseParam("sortKey", impactAnalysisBean.getParamFutureSort());
+       vo.setNamedWhereClauseParam("showNonImpacted", impactAnalysisBean.getParamFutureShowNonImpacted());
+       vo.setNamedWhereClauseParam("returnPrimLinkPath", impactAnalysisBean.getParamFuturePrimaryOnly());
+       
+       
+       // 18 MAR Fix
+       //vo.setNamedWhereClauseParam("termScopeFilter", impactAnalysisBean.getParamFutureScope());
+      
+       vo.setNamedWhereClauseParam("scopeFilter", parentTermScope);
+       vo.setNamedWhereClauseParam("maxLevels", CSMQBean.getProperty("HIERARCHY_SUBSEQUENT_FETCH"));
+       vo.setNamedWhereClauseParam("startLevel", newRootNode.getLevel());
         
-        CSMQBean.logger.info(userBean.getCaller() + " ** REQUERY **");
-        CSMQBean.logger.info(userBean.getCaller() + " Iterator: MedDRAImpactVO1Iterator1");
-        CSMQBean.logger.info(userBean.getCaller() + " activationGroup: " + impactAnalysisBean.getAllGroups());
-        CSMQBean.logger.info(userBean.getCaller() + " dictContentID: " +  newRootNode.getDictContentId());
-        CSMQBean.logger.info(userBean.getCaller() + " maxLevels: " +  CSMQBean.getProperty("HIERARCHY_SUBSEQUENT_FETCH"));
-        CSMQBean.logger.info(userBean.getCaller() + " sortKey: " +  impactAnalysisBean.getParamMedDRASort());
-        CSMQBean.logger.info(userBean.getCaller() + " showNonImpacted: " +  impactAnalysisBean.getParamMedDRAShowNonImpacted());
-        CSMQBean.logger.info(userBean.getCaller() + " returnPrimLinkPath: " +  impactAnalysisBean.getParamMedDRAPrimaryOnly());
-        CSMQBean.logger.info(userBean.getCaller() + " scopeFilter: " + parentTermScope);
-        CSMQBean.logger.info(userBean.getCaller() + " startLevel: " +  newRootNode.getLevel());
-        vo.executeQuery();
-        
-        rows = dciterb.getRowSetIterator().enumerateRowsInRange();
-        
-        // skip the first row, since it is the parent
-        rows.nextElement();
+       
+       CSMQBean.logger.info(userBean.getCaller() + " ** REQUERY **");
+       CSMQBean.logger.info(userBean.getCaller() + " Iterator: DraftImpactVO1Iterator1");
+       CSMQBean.logger.info(userBean.getCaller() + " activationGroup: " + impactAnalysisBean.getAllGroups());
+       CSMQBean.logger.info(userBean.getCaller() + " dictContentID: " +  newRootNode.getDictContentId());
+       CSMQBean.logger.info(userBean.getCaller() + " maxLevels: " +  CSMQBean.getProperty("HIERARCHY_SUBSEQUENT_FETCH"));
+       CSMQBean.logger.info(userBean.getCaller() + " sortKey: " +  impactAnalysisBean.getParamFutureSort());
+       CSMQBean.logger.info(userBean.getCaller() + " showNonImpacted: " +  impactAnalysisBean.getParamFutureShowNonImpacted());
+       CSMQBean.logger.info(userBean.getCaller() + " returnPrimLinkPath: " +  impactAnalysisBean.getParamFuturePrimaryOnly());
+       CSMQBean.logger.info(userBean.getCaller() + " scopeFilter: " +  parentTermScope);
+       
+       CSMQBean.logger.info(userBean.getCaller() + " startLevel: " +  newRootNode.getLevel());
+       vo.executeQuery();
+       
+       rows = dciterb.getRowSetIterator().enumerateRowsInRange();
+       
+       // skip the first row, since it is the parent
+       rows.nextElement();
                
-        parentNodesByLevel = new HashMap();
-        populateTreeNodes(newRootNode);
-        
-        //newRootNode.setIcon(null); // get rid of the icon
-        newRootNode.setIsExpanded(true); // prevent it from being called again
-        newRootNode.setShowHasChildrenButton(false);
-        
-        RowKeySet rks = new RowKeySetTreeImpl(true);
-        rks.setCollectionModel(treemodel);
-        tree.setDisclosedRowKeys(rks);
-        
-        
-        
-        AdfFacesContext.getCurrentInstance().addPartialTarget(tree); 
-        AdfFacesContext.getCurrentInstance().partialUpdateNotify(tree);
+       parentNodesByLevel = new HashMap();
+       populateTreeNodes(newRootNode);
+       
+       //newRootNode.setIcon(null); // get rid of the icon
+       newRootNode.setIsExpanded(true); // prevent it from being called again
+       newRootNode.setShowHasChildrenButton(false);
+       
+       RowKeySet rks = new RowKeySetTreeImpl(true);
+       rks.setCollectionModel(treemodel);
+       tree.setDisclosedRowKeys(rks);
+
+       AdfFacesContext.getCurrentInstance().addPartialTarget(tree); 
+       AdfFacesContext.getCurrentInstance().partialUpdateNotify(tree);
     }
 
-
-    public void setHasData(boolean hasData) {
-        this.hasData = hasData;
+    public void setHasScope(boolean hasScope) {
+        this.hasScope = hasScope;
     }
 
-    public boolean isHasData() {
-        return hasData;
+    public boolean isHasScope() {
+        return hasScope;
     }
+
+    
 }

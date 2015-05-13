@@ -5,6 +5,76 @@
     <data-control-scope>
       <shared/>
     </data-control-scope>
+    <managed-bean id="__3">
+      <managed-bean-name>WhodSourceTermSearchBean</managed-bean-name>
+      <managed-bean-class>com.dbms.csmq.view.backing.whod.WhodSourceTermSearchBean</managed-bean-class>
+      <managed-bean-scope>pageFlow</managed-bean-scope>
+    </managed-bean>
+    <managed-bean id="__4">
+      <managed-bean-name>WhodWizardBean</managed-bean-name>
+      <managed-bean-class>com.dbms.csmq.view.backing.whod.WhodWizardBean</managed-bean-class>
+      <managed-bean-scope>pageFlow</managed-bean-scope>
+    </managed-bean>
+    <managed-bean id="__5">
+      <managed-bean-name>WhodTermHierarchySourceBean</managed-bean-name>
+      <managed-bean-class>com.dbms.csmq.view.hierarchy.WhodTermHierarchySourceBean</managed-bean-class>
+      <managed-bean-scope>pageFlow</managed-bean-scope>
+    </managed-bean>
+    <managed-bean id="__6">
+      <managed-bean-name>WhodWizardSearchBean</managed-bean-name>
+      <managed-bean-class>com.dbms.csmq.view.backing.whod.WhodWizardSearchBean</managed-bean-class>
+      <managed-bean-scope>pageFlow</managed-bean-scope>
+    </managed-bean>
+    <managed-bean id="__8">
+      <managed-bean-name>WhodWizardUIBean</managed-bean-name>
+      <managed-bean-class>com.dbms.csmq.view.backing.whod.WhodWizardUIBean</managed-bean-class>
+      <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean id="__9">
+      <managed-bean-name>WhodSourceTermSearchUIBean</managed-bean-name>
+      <managed-bean-class>com.dbms.csmq.view.backing.whod.WhodSourceTermSearchUIBean</managed-bean-class>
+      <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean id="__10">
+      <managed-bean-name>WhodHierarchyExportBean</managed-bean-name>
+      <managed-bean-class>com.dbms.csmq.view.reports.WhodHierarchyExportBean</managed-bean-class>
+      <managed-bean-scope>pageFlow</managed-bean-scope>
+    </managed-bean>
+    <managed-bean id="__11">
+      <managed-bean-name>WhodNewPTListBean</managed-bean-name>
+      <managed-bean-class>com.dbms.csmq.view.hierarchy.WhodNewPTListBean</managed-bean-class>
+      <managed-bean-scope>pageFlow</managed-bean-scope>
+    </managed-bean>
+    <managed-bean id="__12">
+      <managed-bean-name>WhodFutureImpactHierarchyBean</managed-bean-name>
+      <managed-bean-class>com.dbms.csmq.view.impact.WhodFutureImpactHierarchyBean</managed-bean-class>
+      <managed-bean-scope>pageFlow</managed-bean-scope>
+    </managed-bean>
+    <managed-bean id="__13">
+      <managed-bean-name>WhodImpactAssessmentRenderingRulesBean</managed-bean-name>
+      <managed-bean-class>com.dbms.csmq.view.WhodImpactAssessmentRenderingRulesBean</managed-bean-class>
+      <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean id="__14">
+      <managed-bean-name>WhodImpactAnalysisBean</managed-bean-name>
+      <managed-bean-class>com.dbms.csmq.view.backing.impact.WhodImpactAnalysisBean</managed-bean-class>
+      <managed-bean-scope>pageFlow</managed-bean-scope>
+    </managed-bean>
+    <managed-bean id="__15">
+      <managed-bean-name>WhodMedDRAImpactHierarchyBean</managed-bean-name>
+      <managed-bean-class>com.dbms.csmq.view.impact.WhodMedDRAImpactHierarchyBean</managed-bean-class>
+      <managed-bean-scope>pageFlow</managed-bean-scope>
+    </managed-bean>
+    <managed-bean id="__16">
+      <managed-bean-name>ImpactAnalysisUIBean</managed-bean-name>
+      <managed-bean-class>com.dbms.csmq.view.backing.impact.ImpactAnalysisUIBean</managed-bean-class>
+      <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean id="__17">
+      <managed-bean-name>WhodRenderingRulesBean</managed-bean-name>
+      <managed-bean-class>com.dbms.csmq.view.WhodRenderingRulesBean</managed-bean-class>
+      <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
     <view id="impactAssessment">
       <page>/impact/whodImpactAssessment.jspx</page>
       <train-stop>
@@ -12,13 +82,13 @@
       </train-stop>
     </view>
     <view id="addInformativeNotes">
-      <page>/create/addInformativeNotes.jspx</page>
+      <page>/create/whodAddInformativeNotes.jspx</page>
        <train-stop>
         <display-name>Informative Notes</display-name>
       </train-stop>
     </view>
     <view id="addDetails">
-      <page>/create/addDetails.jspx</page>
+      <page>/create/whodAddDetails.jspx</page>
        <train-stop>
         <display-name>Details</display-name>
       </train-stop>

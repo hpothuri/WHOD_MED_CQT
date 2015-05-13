@@ -2,6 +2,16 @@
 <adfc-config xmlns="http://xmlns.oracle.com/adf/controller" version="1.2">
   <task-flow-definition id="whod-ia-publish-task-flow-definition">
     <default-activity>promoteToPublished</default-activity>
+    <managed-bean id="__3">
+      <managed-bean-name>WhodWorkflowBean</managed-bean-name>
+      <managed-bean-class>com.dbms.csmq.view.backing.publish.WhodWorkflowBean</managed-bean-class>
+      <managed-bean-scope>pageFlow</managed-bean-scope>
+    </managed-bean>
+    <managed-bean id="__4">
+      <managed-bean-name>CSMQBean</managed-bean-name>
+      <managed-bean-class>com.dbms.csmq.CSMQBean</managed-bean-class>
+      <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
     <view id="promoteToPublished">      
       <page>/workflow/whodIaPromoteToPublished.jspx</page>
        <train-stop>
