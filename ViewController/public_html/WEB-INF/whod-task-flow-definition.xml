@@ -105,7 +105,7 @@
       </outcome>
     </task-flow-return>
     <method-call id="setMode">
-      <method>#{pageFlowScope.WhodWizardBean.setMode}</method>
+      <method>#{pageFlowScope.WhodWizardBean.setModeInsertNew}</method>
       <outcome id="__39">
         <to-string/>
       </outcome>

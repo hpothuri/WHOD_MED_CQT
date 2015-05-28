@@ -160,5 +160,10 @@
                          FactoryClass="oracle.adf.model.bc4j.DataControlFactoryImpl" SupportsTransactions="true" SupportsFindMode="true"
                          SupportsRangesize="true" SupportsResetState="true" SupportsSortCollection="true"
                          Configuration="UserAccountsListModuleLocal" syncMode="Immediate" xmlns="http://xmlns.oracle.com/adfm/datacontrol"/>
+        <BC4JDataControl id="WHODModuleDataControl" Package="com.dbms.csmq.model.WHOD"
+                         FactoryClass="oracle.adf.model.bc4j.DataControlFactoryImpl" SupportsTransactions="true"
+                         SupportsFindMode="true" SupportsRangesize="true" SupportsResetState="true"
+                         SupportsSortCollection="true" Configuration="WHODModuleLocal" syncMode="Immediate"
+                         xmlns="http://xmlns.oracle.com/adfm/datacontrol"/>
     </dataControlUsages>
 </Application>

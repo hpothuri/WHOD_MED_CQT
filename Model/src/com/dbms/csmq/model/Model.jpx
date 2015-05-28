@@ -27,6 +27,7 @@
       <Attr Name="_appModuleNames12" Value="com.dbms.csmq.model.diff.DiffModule"/>
       <Attr Name="_appModuleNames13" Value="com.dbms.csmq.model.userAccountsList.UserAccountsListModule"/>
       <Attr Name="_appModuleNames14" Value="com.dbms.csmq.model.designee.DesigneeModule"/>
+      <Attr Name="_appModuleNames15" Value="com.dbms.csmq.model.WHOD.WHODModule"/>
    </DesignTime>
    <Containee
       Name="config"
@@ -162,6 +163,15 @@
    <Containee
       Name="userAccountsList"
       PackageName="com.dbms.csmq.model.userAccountsList"
+      ObjectType="JboPackage">
+      <DesignTime>
+         <Attr Name="_VO" Value="true"/>
+         <Attr Name="_AM" Value="true"/>
+      </DesignTime>
+   </Containee>
+   <Containee
+      Name="WHOD"
+      PackageName="com.dbms.csmq.model.WHOD"
       ObjectType="JboPackage">
       <DesignTime>
          <Attr Name="_VO" Value="true"/>
