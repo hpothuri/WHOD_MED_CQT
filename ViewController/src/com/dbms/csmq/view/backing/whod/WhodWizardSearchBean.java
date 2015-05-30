@@ -1256,116 +1256,125 @@ public class WhodWizardSearchBean {
     }
     
     private void processSearchResults (Row row) {
-        currentTermName = Utils.getAsString(row, "Mqterm");
+        currentTermName = Utils.getAsString(row, "Term");
         CSMQBean.logger.info(userBean.getCaller() + " currentTermName:" + currentTermName);
         
-        currentMqlevel = Utils.getAsString(row, "Mqlevel");
-        CSMQBean.logger.info(userBean.getCaller() + " currentMqlevel:" + currentMqlevel);
+//        currentMqlevel = Utils.getAsString(row, "Mqlevel");
+//        CSMQBean.logger.info(userBean.getCaller() + " currentMqlevel:" + currentMqlevel);
         
-        currentMqcode = Utils.getAsString(row, "Mqcode");
+        currentMqcode = Utils.getAsString(row, "DictContentCode");
         CSMQBean.logger.info(userBean.getCaller() + " currentMqcode:" + currentMqcode);
         
-        currentMqalgo = Utils.getAsString(row, "Mqalgo");
+//        currentMqalgo = Utils.getAsString(row, "Mqalgo");
             
-        if (currentMqalgo == null || currentMqalgo.length() < 1)
-            currentMqalgo = CSMQBean.DEFAULT_ALGORITHM;
-            
-        CSMQBean.logger.info(userBean.getCaller() + " currentMqalgo:" + currentMqalgo);
+//        if (currentMqalgo == null || currentMqalgo.length() < 1)
+//            currentMqalgo = CSMQBean.DEFAULT_ALGORITHM;
+//            
+//        CSMQBean.logger.info(userBean.getCaller() + " currentMqalgo:" + currentMqalgo);
 
-        Utils.getAsString(row, "Mqaltcode");
-        CSMQBean.logger.info(userBean.getCaller() + " currentMqaltcode:" + currentMqaltcode);
+//        Utils.getAsString(row, "Mqaltcode");
+//        CSMQBean.logger.info(userBean.getCaller() + " currentMqaltcode:" + currentMqaltcode);
 
-        currentDictionary = getParamDictName();
+        
+        //currentDictionary = getParamDictName();
+        currentDictionary = Utils.getAsString(row, "DictionaryName");
         CSMQBean.logger.info(userBean.getCaller() + " currentDictionary:" + currentDictionary);
         
         // TEST 9-MAY
         //currentReleaseGroup = getParamReleaseGroup();
-        currentReleaseGroup = Utils.getAsString(row, "Groupname");
+        currentReleaseGroup = Utils.getAsString(row, "RelaeaseGroup");
         CSMQBean.logger.info(userBean.getCaller() + " currentReleaseGroup:" + currentReleaseGroup);
 
-        currentMqstatus = Utils.getAsString(row, "Mqstatus");
-        CSMQBean.logger.info(userBean.getCaller() + " currentMqstatus:" + currentMqstatus);
+//        currentMqstatus = Utils.getAsString(row, "Mqstatus");
+//        CSMQBean.logger.info(userBean.getCaller() + " currentMqstatus:" + currentMqstatus);
 
-        currentDictContentID = Utils.getAsString(row, "ContentId");
+        currentDictContentID = Utils.getAsString(row, "DictContentId");
         CSMQBean.logger.info(userBean.getCaller() + " currentDictContentID:" + currentDictContentID);
         
-        currentApprovalFlag = Utils.getAsString(row, "ApprFlag");
-        CSMQBean.logger.info(userBean.getCaller() + " currentApprovalFlag:" + currentApprovalFlag);
+//        currentApprovalFlag = Utils.getAsString(row, "ApprFlag");
+//        CSMQBean.logger.info(userBean.getCaller() + " currentApprovalFlag:" + currentApprovalFlag);
 
-        currentVersion = Utils.getAsString(row, "Version");
+        currentVersion = Utils.getAsString(row, "DictionaryVersion");
         CSMQBean.logger.info(userBean.getCaller() + " currentVersion:" + currentVersion);
 
         currentSubType = Utils.getAsString(row, "TermSubtype");
         CSMQBean.logger.info(userBean.getCaller() + " currentSubType:" + currentSubType);
 
-        currentMqscp = Utils.getAsString(row, "Mqscp");
-        CSMQBean.logger.info(userBean.getCaller() + " currentMqscp:" + currentMqscp);
+//        currentMqscp = Utils.getAsString(row, "Mqscp");
+//        CSMQBean.logger.info(userBean.getCaller() + " currentMqscp:" + currentMqscp);
 
-        currentMqgroups = Utils.getAsString(row, "Mqgroup");
-        CSMQBean.logger.info(userBean.getCaller() + " currentMqgroups:" + currentMqgroups);
+//        currentMqgroups = Utils.getAsString(row, "Mqgroup");
+//        CSMQBean.logger.info(userBean.getCaller() + " currentMqgroups:" + currentMqgroups);
 
-        currentMqproduct = Utils.getAsString(row, "Mqprodct");
-        CSMQBean.logger.info(userBean.getCaller() + " currentMqproduct:" + currentMqproduct);
+//        currentMqproduct = Utils.getAsString(row, "Mqprodct");
+//        CSMQBean.logger.info(userBean.getCaller() + " currentMqproduct:" + currentMqproduct);
 
-        currentCriticalEvent = Utils.getAsString(row, "Mqcrtev");
-        CSMQBean.logger.info(userBean.getCaller() + " currentCriticalEvent:" + currentCriticalEvent);
+//        currentCriticalEvent = Utils.getAsString(row, "Mqcrtev");
+//        CSMQBean.logger.info(userBean.getCaller() + " currentCriticalEvent:" + currentCriticalEvent);
         
-        currentStatus = Utils.getAsString(row, "CurPendStatus");
-        CSMQBean.logger.info(userBean.getCaller() + " currentStatus:" + currentStatus);
+//        currentStatus = Utils.getAsString(row, "CurPendStatus");
+//        CSMQBean.logger.info(userBean.getCaller() + " currentStatus:" + currentStatus);
         
-        currentState = Utils.getAsString(row, "State");
-        CSMQBean.logger.info(userBean.getCaller() + " currentState:" + currentState);
+//        currentState = Utils.getAsString(row, "State");
+//        CSMQBean.logger.info(userBean.getCaller() + " currentState:" + currentState);
         
-        requestedByDate = Utils.getAsDate(row, "DueDate");
-        CSMQBean.logger.info(userBean.getCaller() + " requestedByDate:" + requestedByDate);
+//        requestedByDate = Utils.getAsDate(row, "DueDate");
+//        CSMQBean.logger.info(userBean.getCaller() + " requestedByDate:" + requestedByDate);
         
-        currentDateRequested = Utils.getAsDate(row, "Dates");
-        CSMQBean.logger.info(userBean.getCaller() + " currentDateRequested:" + currentDateRequested);
+//        currentDateRequested = Utils.getAsDate(row, "Dates");
+//        CSMQBean.logger.info(userBean.getCaller() + " currentDateRequested:" + currentDateRequested);
+//        
+//        currentReasonForRequest = Utils.getAsString(row, "ReasonForRequest");
+//        CSMQBean.logger.info(userBean.getCaller() + " currentReasonForRequest:" + currentReasonForRequest);
+//        
+//        currentReasonForApproval = Utils.getAsString(row, "ReasonForApproval");
+//        CSMQBean.logger.info(userBean.getCaller() + " currentReasonForApproval:" + currentReasonForApproval);
+//        
+        //isApproved = Utils.getAsBoolean(row, "ApprFlag");
+        //CSMQBean.logger.info(userBean.getCaller() + " isApproved:" + isApproved);
         
-        currentReasonForRequest = Utils.getAsString(row, "ReasonForRequest");
-        CSMQBean.logger.info(userBean.getCaller() + " currentReasonForRequest:" + currentReasonForRequest);
+//        currentCutOffDate = Utils.getAsString(row, "CutOffDate");
+//        CSMQBean.logger.info(userBean.getCaller() + " currentCutOffDate:" + currentCutOffDate);
+//        
+//        currentUntilDate = Utils.getAsString(row, "NmatUntildt");
+//        CSMQBean.logger.info(userBean.getCaller() + " currentUntilDate:" + currentUntilDate);
+//
+//        currentCreateDate = Utils.getAsString(row, "NmatCreatedt");
+//        CSMQBean.logger.info(userBean.getCaller() + " currentCreateDate:" + currentCreateDate);
         
-        currentReasonForApproval = Utils.getAsString(row, "ReasonForApproval");
-        CSMQBean.logger.info(userBean.getCaller() + " currentReasonForApproval:" + currentReasonForApproval);
-        
-        isApproved = Utils.getAsBoolean(row, "ApprFlag");
-        CSMQBean.logger.info(userBean.getCaller() + " isApproved:" + isApproved);
-        
-        currentCutOffDate = Utils.getAsString(row, "CutOffDate");
-        CSMQBean.logger.info(userBean.getCaller() + " currentCutOffDate:" + currentCutOffDate);
-        
-        currentUntilDate = Utils.getAsString(row, "NmatUntildt");
-        CSMQBean.logger.info(userBean.getCaller() + " currentUntilDate:" + currentUntilDate);
-
-        currentCreateDate = Utils.getAsString(row, "NmatCreatedt");
-        CSMQBean.logger.info(userBean.getCaller() + " currentCreateDate:" + currentCreateDate);
-        
-        currentCreatedBy = Utils.getAsString(row, "Createdby");
+        currentCreatedBy = Utils.getAsString(row, "CreatedBy");
         CSMQBean.logger.info(userBean.getCaller() + " Createdby:" + currentCreatedBy);
         
-        currentExtension = Utils.getAsString(row, "Extension");
+       // currentExtension = Utils.getAsString(row, "Extension");
+        currentExtension = "SDG";
         CSMQBean.logger.info(userBean.getCaller() + " Extension:" + currentExtension);
         
-        
-        
+        nMQWizardBean.setCurrentExtension(currentExtension);
         nMQWizardBean.setCurrentTermName(currentTermName);
-        nMQWizardBean.setCurrentFilterDictionaryShortName(this.currentDictionary);
+        nMQWizardBean.setCurrentFilterDictionaryShortName(this.currentDictionary); 
+        nMQWizardBean.setCurrentPredictGroups(currentReleaseGroup);  //<--test
+        nMQWizardBean.setIsApproved(isApproved);
+        nMQWizardBean.setCurrentMQALGO(currentMqalgo);
+        nMQWizardBean.setCurrentState(currentState);
+        nMQWizardBean.setCurrentMQCRTEV(currentCriticalEvent); 
+        nMQWizardBean.setCurrentTermLevel("1");
+        nMQWizardBean.setCurrentScope(currentMqscp);
+        nMQWizardBean.setCurrentContentCode(currentMqcode);
+        
         nMQWizardBean.getDictionaryInfo(); // GET BASE DICT INFO FROM FILTER
         
         //UPDATE THE WIZARD WITH THE RESULTS
-        nMQWizardBean.setCurrentContentCode(currentMqcode);
+        
         nMQWizardBean.setCurrentDictContentID(currentDictContentID);
         nMQWizardBean.setActiveDictionary(currentDictionary);
         nMQWizardBean.setCurrentMQALGO(currentMqalgo);
-        nMQWizardBean.setCurrentMQCRTEV(currentCriticalEvent);
         nMQWizardBean.setCurrentMQGROUP(currentMqgroups);
-        //nMQWizardBean.setCurrentPredictGroups(currentReleaseGroup);  //<--test
+        
         nMQWizardBean.setCurrentProduct(currentMqproduct);
-        nMQWizardBean.setCurrentScope(currentMqscp);
+       
         nMQWizardBean.setCurrentMQStatus(currentMqstatus);
-        nMQWizardBean.setCurrentTermLevel(currentMqlevel);
         nMQWizardBean.setCurrentStatus(currentStatus);
-        nMQWizardBean.setCurrentState(currentState);
+       
         nMQWizardBean.setCurrentDateRequested(currentDateRequested);
         nMQWizardBean.setCurrentRequestedByDate(requestedByDate);
         nMQWizardBean.setCurrentReasonForRequest(currentReasonForRequest);

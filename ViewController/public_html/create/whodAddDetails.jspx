@@ -26,7 +26,7 @@
                                 <af:panelGroupLayout id="pgl3" layout="horizontal" valign="top">
                                     <af:panelGroupLayout id="pgl4" valign="top">
                                         <af:panelFormLayout id="pfl1">
-                                            <af:selectOneChoice value="#{pageFlowScope.WhodWizardBean.currentExtension}" label="Extension"
+                                            <!--<af:selectOneChoice value="#{pageFlowScope.WhodWizardBean.currentExtension}" label="Extension"
                                                                 required="#{bindings.NMQExtentionListVO1.hints.mandatory}"
                                                                 shortDesc="#{bindings.NMQExtentionListVO1.hints.tooltip}" id="soc4"
                                                                 rendered="#{WhodRenderingRulesBean.wizardDetailsRenderExtension}"
@@ -39,6 +39,18 @@
                                                 </af:forEach>
                                                 <af:selectItem id="si24" label="SMQ" value="SMQ"
                                                                rendered="#{WhodRenderingRulesBean.wizardDetailsShowSMQInSelectList}"/>
+                                            </af:selectOneChoice>-->
+                                            <af:selectOneChoice value="#{pageFlowScope.WhodWizardBean.currentExtension}"
+                                                                label="Extension"
+                                                                required="#{bindings.WHODExtentionListVO1.hints.mandatory}"
+                                                                shortDesc="#{bindings.WHODExtentionListVO1.hints.tooltip}"
+                                                                id="soc5" autoSubmit="true"
+                                                                rendered="#{WhodRenderingRulesBean.wizardDetailsRenderExtension}"
+                                                                contentStyle="color:#000000;"
+                                                                valueChangeListener="#{WhodWizardUIBean.extensionChanged}"
+                                                                disabled="#{WhodRenderingRulesBean.wizardDetailsDisableExtention}">
+                                                <f:selectItems value="#{bindings.WHODExtentionListVO1.items}"
+                                                               id="si19"/>
                                             </af:selectOneChoice>
                                             <af:inputText label="Name" id="it10" columns="75" showRequired="true"
                                                           requiredMessageDetail="An MQ Name is required."
@@ -65,17 +77,17 @@
                                                     <f:selectItem id="si18" itemLabel="#{row.description}" itemValue="#{row.name}"/>
                                                 </af:forEach>
                                             </af:selectOneChoice>
-                                            <af:selectBooleanCheckbox label="Approved" id="sbc1"
+                                           <!-- <af:selectBooleanCheckbox label="Approved" id="sbc1"
                                                                       value="#{pageFlowScope.WhodWizardBean.isApproved}"
                                                                       contentStyle="color:#000000;"
                                                                       rendered="#{WhodRenderingRulesBean.wizardDetailsRenderIsApproved}"
-                                                                      readOnly="true"/>
+                                                                      readOnly="true"/>-->
                                             <af:inputText label="Release Status" id="it11" value="#{pageFlowScope.WhodWizardBean.currentStatus}"
                                                           showRequired="true" readOnly="true" columns="20" rows="1" wrap="off"
                                                           binding="#{WhodWizardUIBean.controlMQStatus}"
                                                           rendered="#{WhodRenderingRulesBean.wizardDetailsRenderNMQStatus}"
                                                           labelStyle="white-space:nowrap" contentStyle="color:#000000;"/>
-                                            <af:selectManyChoice label="Product" id="smc3" autoSubmit="true" valuePassThru="true"
+                                          <!--  <af:selectManyChoice label="Product" id="smc3" autoSubmit="true" valuePassThru="true"
                                                                  binding="#{pageFlowScope.WhodWizardBean.productListControl}"
                                                                  requiredMessageDetail="An MQ Product is required."
                                                                  valueChangeListener="#{pageFlowScope.WhodWizardBean.productListValueChange}"
@@ -92,6 +104,19 @@
                                                     <af:selectItem id="groups" label="#{row.longValue}" value="#{row.shortVal}"/>
                                                 </af:forEach>
                                                 
+                                            </af:selectManyChoice>-->
+                                            <af:selectManyChoice value="#{pageFlowScope.WhodWizardBean.productList}"
+                                                                 label="Product" id="smc2" autoSubmit="true"
+                                                                 valuePassThru="true"
+                                                                 requiredMessageDetail="An Product is required."
+                                                                 valueChangeListener="#{pageFlowScope.WhodWizardBean.productListValueChange}"
+                                                                 rendered="#{WhodRenderingRulesBean.wizardDetailsRenderNMQProduct}"
+                                                                 labelStyle='white-space:nowrap" selectAllVisible="false'
+                                                                 readOnly="#{WhodRenderingRulesBean.wizardDetailsDisableNMQProduct}"
+                                                                 showRequired="true" required="true"
+                                                                 contentStyle="color:#000000;"
+                                                                 inlineStyle="width:130px;">
+                                                <f:selectItems value="#{bindings.WHODProductList1.items}" id="si20"/>
                                             </af:selectManyChoice>
                                             <af:selectManyChoice label="Designee" id="smc1" autoSubmit="true" valuePassThru="true"
                                                                  binding="#{pageFlowScope.WhodWizardBean.controlDesignee}"
@@ -129,7 +154,7 @@
                                             <af:inputText value="#{pageFlowScope.WhodWizardBean.currentState}" label="State" id="it6"
                                                           readOnly="true" binding="#{WhodWizardUIBean.controlMQState}"
                                                           contentStyle="color:#000000;"/>
-                                            <af:selectOneChoice label="Critical Event" id="soc3"
+                                           <!-- <af:selectOneChoice label="Critical Event" id="soc3"
                                                                 binding="#{pageFlowScope.WhodWizardBean.controlCriticalEvent}"
                                                                 value="#{pageFlowScope.WhodWizardBean.currentMQCRTEV}"
                                                                 labelStyle="white-space:nowrap"
@@ -139,7 +164,7 @@
                                                 <af:selectItem label="No" value="N" id="si22"/>
                                                 <af:selectItem label="Yes - Narrow" value="Y_NARROW" id="si21"/>
                                                 <af:selectItem label="Yes - Broad" value="Y_BROAD" id="si20"/>
-                                            </af:selectOneChoice>
+                                            </af:selectOneChoice>-->
                                             <af:selectOneChoice label="Level" id="soc1" binding="#{WhodWizardUIBean.controlMQLevel}"
                                                                 value="#{pageFlowScope.WhodWizardBean.currentTermLevel}"
                                                                 labelStyle="white-space:nowrap"
@@ -195,7 +220,7 @@
                                                 <af:selectItem label="Yes" value="Y" id="si2"/>
                                                 <af:selectItem label="No" value="N" id="si3"/>
                                             </af:selectOneChoice>
-                                            <af:selectManyChoice label="Group" id="selectManyChoice1"
+                                           <!-- <af:selectManyChoice label="Group" id="selectManyChoice1"
                                                                  binding="#{pageFlowScope.WhodWizardBean.controlMQGroup}"
                                                                  valuePassThru="true" requiredMessageDetail="An MQ Group is required."
                                                                  required="#{WhodRenderingRulesBean.wizardDetailsRequireNMQGroup}"
@@ -206,10 +231,23 @@
                                                                  readOnly="#{WhodRenderingRulesBean.wizardDetailsDisableNMQGroup}"
                                                                  rendered="#{WhodRenderingRulesBean.wizardDetailsRenderNMQGroup}"
                                                                  contentStyle="color:#000000;">
-                                                <!--   <f:selectItems value="#{bindings.MQGroupsVO1.items}" id="selectItems1"/> -->
+                                                   <f:selectItems value="#{bindings.MQGroupsVO1.items}" id="selectItems1"/> 
                                                 <af:forEach items="#{bindings.MQGroupsVO1.iteratorBinding.allRowsInRange}" var="row">
                                                     <f:selectItem id="si4" itemLabel="#{row.longValue}" itemValue="#{row.shortVal}"/>
                                                 </af:forEach>
+                                            </af:selectManyChoice>-->
+                                            <af:selectManyChoice value="#{pageFlowScope.WhodWizardBean.MQGroupList}"
+                                                                 label="Group" id="smc3" valuePassThru="true"
+                                                                 requiredMessageDetail="An Group is required."
+                                                                 rendered="#{WhodRenderingRulesBean.wizardDetailsRenderNMQGroup}"
+                                                                 valueChangeListener="#{WhodWizardUIBean.nmqGroupChanged}"
+                                                                 autoSubmit="true"
+                                                                 showRequired="#{WhodRenderingRulesBean.wizardDetailsRequireNMQGroup}"
+                                                                 labelStyle='white-space:nowrap" inlineStyle="width:130px;'
+                                                                 readOnly="#{WhodRenderingRulesBean.wizardDetailsDisableNMQGroup}"
+                                                                 required="#{WhodRenderingRulesBean.wizardDetailsRequireNMQGroup}"
+                                                                 contentStyle="color:#000000;">
+                                                <f:selectItems value="#{bindings.WHODGroupList1.items}" id="si21"/>
                                             </af:selectManyChoice>
                                             <af:inputText label="Code" id="it7"
                                                           

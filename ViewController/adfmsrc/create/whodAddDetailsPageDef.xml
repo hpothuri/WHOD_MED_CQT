@@ -33,6 +33,11 @@
               id="userAccountsListVO1_1Iterator"/>
     <iterator Binds="designeesByMQ1" RangeSize="-1" DataControl="UserAccountsListModuleDataControl" id="designeesByMQ1Iterator"/>
     <iterator Binds="designeeListVO1" RangeSize="-1" DataControl="DesigneeModuleDataControl" id="designeeListVO1Iterator"/>
+    <iterator Binds="WHODExtentionListVO1" RangeSize="25" DataControl="WHODModuleDataControl"
+              id="WHODExtentionListVO1Iterator"/>
+    <iterator Binds="WHODProductList1" RangeSize="25" DataControl="WHODProductModuleDataControl"
+              id="WHODProductList1Iterator"/>
+    <iterator Binds="WHODGroupList1" RangeSize="25" DataControl="WHODMQGroupsDataControl" id="WHODGroupList1Iterator"/>
   </executables>
   <bindings>
   <tree IterBinding="SmallTreeVO1Iterator" id="SmallTreeVO1">
@@ -137,6 +142,30 @@
       </nodeDefinition>
     </tree>
     <list ListOperMode="multiSelect" IterBinding="ViewObj_ProductList1Iterator" id="ShortVal">
+      <AttrNames>
+        <Item Value="ShortVal"/>
+      </AttrNames>
+      <ListDisplayAttrNames>
+        <Item Value="LongValue"/>
+      </ListDisplayAttrNames>
+    </list>
+    <list IterBinding="WHODExtentionListVO1Iterator" ListOperMode="navigation" ListIter="WHODExtentionListVO1Iterator"
+          id="WHODExtentionListVO1" DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LongValue"/>
+      </AttrNames>
+    </list>
+    <list IterBinding="WHODProductList1Iterator" ListOperMode="multiSelect" ListIter="WHODProductList1Iterator"
+          id="WHODProductList1" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="ShortVal"/>
+      </AttrNames>
+      <ListDisplayAttrNames>
+        <Item Value="LongValue"/>
+      </ListDisplayAttrNames>
+    </list>
+    <list IterBinding="WHODGroupList1Iterator" ListOperMode="multiSelect" ListIter="WHODGroupList1Iterator"
+          id="WHODGroupList1" SelectItemValueMode="ListObject">
       <AttrNames>
         <Item Value="ShortVal"/>
       </AttrNames>
