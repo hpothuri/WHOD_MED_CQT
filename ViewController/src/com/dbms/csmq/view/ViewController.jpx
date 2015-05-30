@@ -14,6 +14,7 @@
     <Attr Name="_appModuleNames0" Value="com.dbms.csmq.model.product.ProductModule"/>
     <Attr Name="_appModuleNames1" Value="com.dbms.csmq.model.NMQ.NMQModule"/>
     <Attr Name="_appModuleNames2" Value="com.dbms.csmq.model.designee.DesigneeModule"/>
+    <Attr Name="_appModuleNames3" Value="com.dbms.csmq.model.product.WHODProductModule"/>
   </DesignTime>
   <Containee
     Name="designee"

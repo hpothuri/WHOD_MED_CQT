@@ -180,7 +180,7 @@
       <property
          name="fromOutcome">CANCEL</property>
       <property
-         name="sdm:polyPoints">T50,729.749,212.24185,835.27344,129.28267,L54</property>
+         name="sdm:polyPoints">T50,729.749,211.89127,835.27344,129.28267,L54</property>
    </ControlFlowCase>
    <ControlFlowCase
       islink="true"

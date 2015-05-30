@@ -19,21 +19,80 @@
         ResId="com.dbms.csmq.model.search.WHODSimpleSearch_LABEL"/>
     </SchemaBasedProperties>
   </Properties>
+  <Variable
+    Name="levelName"
+    Kind="where"
+    Type="java.lang.String"/>
+  <Variable
+    Name="subLevelName"
+    Kind="where"
+    Type="java.lang.String"
+    DefaultValue="%"/>
+  <Variable
+    Name="approvedFlag"
+    Kind="where"
+    Type="java.lang.String"/>
+  <Variable
+    Name="createdBy"
+    Kind="where"
+    Type="java.lang.String"
+    DefaultValue="%"/>
+  <Variable
+    Name="dictContentID"
+    Kind="where"
+    Type="java.lang.String"
+    DefaultValue="%"/>
+  <Variable
+    Name="dictContentCode"
+    Kind="where"
+    Type="java.lang.String"
+    DefaultValue="%"/>
+  <Variable
+    Name="termUpper"
+    Kind="where"
+    Type="java.lang.String"/>
+  <Variable
+    Name="dGDMLVersion"
+    Kind="where"
+    Type="java.lang.String"
+    DefaultValue="%"/>
+  <Variable
+    Name="dGScopeFlag"
+    Kind="where"
+    Type="java.lang.String"
+    DefaultValue="%"/>
+  <Variable
+    Name="dGTransID"
+    Kind="where"
+    Type="java.lang.String"
+    DefaultValue="%"/>
+  <Variable
+    Name="dGActiveStatus"
+    Kind="where"
+    Type="java.lang.String"/>
+  <Variable
+    Name="dGProductLIST"
+    Kind="where"
+    Type="java.lang.String"/>
+  <Variable
+    Name="dGGroupLIST"
+    Kind="where"
+    Type="java.lang.String"/>
   <SQLQuery><![CDATA[SELECT *
    FROM TABLE(cqt_whod_ui_tms_utils.pipe_contents_curr_custom
-      (pLevelName       => 'SDG%',
-       pSubLevelName    => '%',
-       pApprovedFlag    => '%',
-       pCreatedBy       => '%',
-       pDictContentID   => '%',
-       pDictContentCode => '%',
-       pTermUpper       => '%',
-       pDGDMLVersion    => '%',
-       pDGScopeFlag     => '%',
-       pDGTransID       => '%',
-       pDGActiveStatus  => '%',
-       pDGProductLIST   => '%',
-       pDGGroupLIST     => '%'))]]></SQLQuery>
+      (pLevelName       => :levelName,
+       pSubLevelName    => :subLevelName,
+       pApprovedFlag    => :approvedFlag,
+       pCreatedBy       => :createdBy,
+       pDictContentID   => :dictContentID,
+       pDictContentCode => :dictContentCode,
+       pTermUpper       => :termUpper,
+       pDGDMLVersion    => :dGDMLVersion,
+       pDGScopeFlag     => :dGScopeFlag,
+       pDGTransID       => :dGTransID,
+       pDGActiveStatus  => :dGActiveStatus,
+       pDGProductLIST   => :dGProductLIST,
+       pDGGroupLIST     => :dGGroupLIST))]]></SQLQuery>
   <ViewAttribute
     Name="DictionaryName"
     IsUpdateable="false"
@@ -192,7 +251,7 @@
     ColumnType="DATE"
     AliasName="DICT_CONTENT_ENTRY_TS"
     Expression="DICT_CONTENT_ENTRY_TS"
-    SQLType="TIMESTAMP">
+    SQLType="DATE">
     <DesignTime>
       <Attr Name="_DisplaySize" Value="7"/>
     </DesignTime>
@@ -206,7 +265,7 @@
     ColumnType="DATE"
     AliasName="END_TS"
     Expression="END_TS"
-    SQLType="TIMESTAMP">
+    SQLType="DATE">
     <DesignTime>
       <Attr Name="_DisplaySize" Value="7"/>
     </DesignTime>

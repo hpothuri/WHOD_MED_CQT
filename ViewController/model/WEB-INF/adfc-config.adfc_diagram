@@ -211,7 +211,7 @@
       <property
          name="fromOutcome">ADMIN</property>
       <property
-         name="sdm:polyPoints">R32,97.25378,-207.03795,2672.2568,196.85059,T50</property>
+         name="sdm:polyPoints">R32,97.38051,-206.88853,2672.2568,196.85059,T50</property>
    </ControlFlowCase>
    <ControlFlowCase
       islink="true"
@@ -221,7 +221,7 @@
       <property
          name="fromOutcome">CANCEL</property>
       <property
-         name="sdm:polyPoints">B36,43.0,-149.89197,70.5,196.85059,T50</property>
+         name="sdm:polyPoints">B36,43.0,-149.74146,70.5,196.85059,T50</property>
    </ControlFlowCase>
    <ControlFlowCase
       islink="true"
@@ -231,7 +231,7 @@
       <property
          name="fromOutcome">UPDATE_SMQ</property>
       <property
-         name="sdm:polyPoints">R39,96.64584,-202.46652,2423.204,250.85059,L50</property>
+         name="sdm:polyPoints">R39,96.77278,-202.31711,2423.204,250.85059,L50</property>
    </ControlFlowCase>
    <ControlFlowCase
       islink="true"
@@ -251,7 +251,7 @@
       <property
          name="fromOutcome">COPY_NMQ</property>
       <property
-         name="sdm:polyPoints">R46,95.90311,-197.8951,1762.7021,196.85059,T50</property>
+         name="sdm:polyPoints">R46,95.965355,-197.74568,1721.7021,250.85059,L50</property>
    </ControlFlowCase>
    <ControlFlowCase
       islink="true"
@@ -261,7 +261,7 @@
       <property
          name="fromOutcome">MEDDRA_IMPACT_ASSESSMENT</property>
       <property
-         name="sdm:polyPoints">R61,94.01996,-188.75223,1489.9805,250.85059,L50</property>
+         name="sdm:polyPoints">R61,94.01785,-188.60281,1489.9805,250.85059,L50</property>
    </ControlFlowCase>
    <ControlFlowCase
       islink="true"
@@ -281,7 +281,7 @@
       <property
          name="fromOutcome">REPORTS</property>
       <property
-         name="sdm:polyPoints">R82,89.92642,-175.03796,1263.3594,471.79883,L50</property>
+         name="sdm:polyPoints">R82,89.92537,-174.88855,1263.3594,471.79883,L50</property>
    </ControlFlowCase>
    <ControlFlowCase
       islink="true"
@@ -291,7 +291,7 @@
       <property
          name="fromOutcome">NON_IMPACT_PUBLISH</property>
       <property
-         name="sdm:polyPoints">R89,88.100464,-170.46652,876.1914,280.1494,L50</property>
+         name="sdm:polyPoints">R89,88.09985,-170.31711,876.1914,280.1494,L50</property>
    </ControlFlowCase>
    <ControlFlowCase
       islink="true"
@@ -301,7 +301,7 @@
       <property
          name="fromOutcome">IMPACT_PUBLISH</property>
       <property
-         name="sdm:polyPoints">R96,86.0,-165.89511,638.125,250.85059,L50</property>
+         name="sdm:polyPoints">R96,86.0,-165.7457,638.125,250.85059,L50</property>
    </ControlFlowCase>
    <ControlFlowCase
       islink="true"
@@ -311,7 +311,7 @@
       <property
          name="fromOutcome">UPDATE_NMQ</property>
       <property
-         name="sdm:polyPoints">B64,57.0,-153.10938,424.3789,196.85059,T50</property>
+         name="sdm:polyPoints">B64,57.0,-152.95996,424.3789,196.85059,T50</property>
    </ControlFlowCase>
    <ControlFlowCase
       islink="true"
@@ -321,7 +321,7 @@
       <property
          name="fromOutcome">HOME</property>
       <property
-         name="sdm:polyPoints">B50,50.0,-152.92165,216.5,196.85059,T50</property>
+         name="sdm:polyPoints">B50,50.0,-150.66928,216.5,196.85059,T50</property>
    </ControlFlowCase>
    <ControlFlowCase
       islink="true"
@@ -331,7 +331,7 @@
       <property
          name="fromOutcome">SHOW_HISTORICAL_IMPACT</property>
       <property
-         name="sdm:polyPoints">T50,2831.29,193.73108,2827.79,137.35443,B44</property>
+         name="sdm:polyPoints">T50,2831.29,193.73093,2827.79,137.35443,B44</property>
    </ControlFlowCase>
    <ControlFlowCase
       islink="true"
@@ -341,7 +341,7 @@
       <property
          name="fromOutcome">SEARCH</property>
       <property
-         name="sdm:polyPoints">B56,2834.79,137.14941,2838.29,193.52573,T61</property>
+         name="sdm:polyPoints">B56,2834.79,137.14941,2838.29,193.52556,T61</property>
    </ControlFlowCase>
    <TaskFlowCall
       id="TaskFlowCall35">
@@ -497,7 +497,7 @@
       <property
          name="fromOutcome">CDG_MEDDRA_IMPACT_ASSESSMENT</property>
       <property
-         name="sdm:polyPoints">R4,86.0,-225.32365,488.69922,-478.4082,B50</property>
+         name="sdm:polyPoints">R4,86.0,-225.17424,488.69922,-478.4082,B50</property>
    </ControlFlowCase>
    <ControlFlowCase
       islink="true"
@@ -507,7 +507,7 @@
       <property
          name="fromOutcome">CREATE_NEW_CDG</property>
       <property
-         name="sdm:polyPoints">T36,43.0,-238.10938,-214.29199,-526.4082,B50</property>
+         name="sdm:polyPoints">T36,43.0,-237.95996,-214.29199,-526.4082,B50</property>
    </ControlFlowCase>
    <ControlFlowCase
       islink="true"
@@ -517,7 +517,7 @@
       <property
          name="fromOutcome">UPDATE_CDG</property>
       <property
-         name="sdm:polyPoints">L45,14.0,-199.10938,-339.96387,-416.35645,R50</property>
+         name="sdm:polyPoints">L45,14.0,-198.95996,-339.96387,-416.35645,R50</property>
    </ControlFlowCase>
    <ControlFlowCase
       islink="true"
@@ -527,7 +527,7 @@
       <property
          name="fromOutcome">CDG_NON_IMPACT_PUBLISH</property>
       <property
-         name="sdm:polyPoints">R11,87.59323,-220.75223,597.041,-396.4082,L50</property>
+         name="sdm:polyPoints">R11,87.59421,-220.60281,597.041,-396.4082,L50</property>
    </ControlFlowCase>
    <ControlFlowCase
       islink="true"
@@ -537,7 +537,7 @@
       <property
          name="fromOutcome">UPDATE_WHOD_SMQ</property>
       <property
-         name="sdm:polyPoints">L55,12.6729355,-192.10938,-360.96387,-265.35645,R50</property>
+         name="sdm:polyPoints">L55,12.671679,-191.95996,-360.96387,-265.35645,R50</property>
    </ControlFlowCase>
    <ControlFlowCase
       islink="true"
@@ -547,7 +547,7 @@
       <property
          name="fromOutcome">BROWSE_SEARCH_CDG</property>
       <property
-         name="sdm:polyPoints">T64,57.0,-238.10938,208.03613,-509.65527,B50</property>
+         name="sdm:polyPoints">T64,57.0,-237.95996,208.03613,-509.65527,B50</property>
    </ControlFlowCase>
    <ControlFlowCase
       islink="true"
@@ -557,7 +557,7 @@
       <property
          name="fromOutcome">COPY_CDG</property>
       <property
-         name="sdm:polyPoints">T50,50.0,-239.98003,-9.963867,-429.3047,B50</property>
+         name="sdm:polyPoints">T50,50.0,-239.8297,-9.963867,-429.3047,B50</property>
    </ControlFlowCase>
    <ControlFlowCase
       islink="true"
@@ -567,7 +567,7 @@
       <property
          name="fromOutcome">CDG_IMPACT_PUBLISH</property>
       <property
-         name="sdm:polyPoints">R18,88.30713,-216.1808,593.709,-253.70703,L50</property>
+         name="sdm:polyPoints">R18,88.30909,-216.03139,593.709,-253.70703,L50</property>
    </ControlFlowCase>
    <TaskFlowCall
       id="TaskFlowCall166">

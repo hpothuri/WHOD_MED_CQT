@@ -4,6 +4,7 @@ import com.dbms.csmq.CSMQBean;
 import com.dbms.csmq.UserBean;
 import com.dbms.csmq.view.RenderingRulesBean;
 import com.dbms.csmq.view.hierarchy.WhodTermHierarchyBean;
+import com.dbms.csmq.view.util.ADFUtils;
 import com.dbms.util.Utils;
 
 import java.text.Format;
@@ -105,7 +106,7 @@ public class WhodWizardSearchBean {
     private String paramApproved = CSMQBean.WILDCARD;
     private String searchIterator = "";
     private String dictionaryVersion = "CURRENT";
-    
+
 
     // CURRENT SELECTED DATA
     private String currentDictContentID;
@@ -128,7 +129,7 @@ public class WhodWizardSearchBean {
     private String currentMqproduct;
     private String currentDictionaryType;
     private String currentStatus;
-    private String currentState; 
+    private String currentState;
     private oracle.jbo.domain.Date requestedByDate;
     private String currentReasonForRequest;
     private String currentReasonForApproval;
@@ -138,24 +139,24 @@ public class WhodWizardSearchBean {
     private String currentCreateDate;
     private String currentCreatedBy;
     private String currentExtension;
-    
-    
-    
-    private List <String> mQGroupList = new ArrayList <String>();
-    private List <String> productList = new ArrayList <String>();
-    
-    private ArrayList <SelectItem> releaseGroupSelectItems;
-    private ArrayList <SelectItem> getLevelsForQueryType;
-    
+
+
+    private List<String> mQGroupList = new ArrayList<String>();
+    private List<String> productList = new ArrayList<String>();
+
+    private ArrayList<SelectItem> releaseGroupSelectItems;
+    private ArrayList<SelectItem> getLevelsForQueryType;
+
     public static final String SMQ_LABEL = CSMQBean.SMQ_NAME;
     public static final String NMQ_LABEL = CSMQBean.customMQName;
     public static final String NMQ_SMQ_LABEL = NMQ_LABEL + "/" + SMQ_LABEL;
-    
-    
-    private String searchLabelPrefix = NMQ_SMQ_LABEL;  // this is needed because SMQs are AKA MQs, but NMQs are always NMQs
+
+
+    private String searchLabelPrefix =
+        NMQ_SMQ_LABEL; // this is needed because SMQs are AKA MQs, but NMQs are always NMQs
     private String detailsLabelPrefix = NMQ_SMQ_LABEL;
-    
-    
+
+
     // ** CURRENT INF NOTES
     private String currentInfNoteDescription;
     private String currentInfNoteSource;
@@ -163,10 +164,10 @@ public class WhodWizardSearchBean {
 
 
     private Format formatter = new SimpleDateFormat("dd-MMM-yyyy");
-    
+
     // BEANS USED
     private WhodWizardBean nMQWizardBean;
-    private UserBean userBean;    
+    private UserBean userBean;
     private CSMQBean cSMQBean;
     private WhodTermHierarchyBean termHierarchyBean;
     private RenderingRulesBean renderingRulesBean;
@@ -174,19 +175,24 @@ public class WhodWizardSearchBean {
     private RichSelectOneChoice cntrlApproved;
     private RichColumn cntrlApprovedColumn;
     private WhodWizardUIBean nMQWizardUIBean;
-    
-    
+
+
     //private String clearSearch;
 
     private boolean IASearch = false;
-    private boolean MEDDraSearch = false; 
+    private boolean MEDDraSearch = false;
     private RichPanelGroupLayout cntrlResultsPanel;
     private RichSelectOneChoice cntrlDictionaryVersion;
     private RichPanelGroupLayout cntrlParamPanel;
     private RichSpacer cntrlReleaseGroupSpacer;
     private String paramExtension = CSMQBean.ALL_EXTENSIONS;
-    private String paramLevel = CSMQBean.FILTER_LEVEL_ONE;;
+    private String paramLevel = CSMQBean.FILTER_LEVEL_ONE;
     private RichSelectOneChoice controlMQLevel;
+
+    private List<SelectItem> whodExtensionSI;
+    private List<SelectItem> whodReleaseGroupSI;
+    private List<SelectItem> whodProductSI;
+    private List<SelectItem> whodGroupSI;
 
     public void setCtrlDictionaryTypeSearch(RichSelectOneChoice dictionaryTypeSearch) {
         this.ctrlDictionaryTypeSearch = dictionaryTypeSearch;
@@ -202,54 +208,56 @@ public class WhodWizardSearchBean {
         cSMQBean = (CSMQBean)ADFContext.getCurrent().getApplicationScope().get("CSMQBean");
         nMQWizardBean = (WhodWizardBean)AdfFacesContext.getCurrentInstance().getPageFlowScope().get("WhodWizardBean");
         userBean = (UserBean)ADFContext.getCurrent().getSessionScope().get("UserBean");
-        termHierarchyBean = (WhodTermHierarchyBean)AdfFacesContext.getCurrentInstance().getPageFlowScope().get("WhodTermHierarchyBean");
-         
-        nMQWizardUIBean = (WhodWizardUIBean) FacesContext.getCurrentInstance().getApplication().evaluateExpressionGet(FacesContext.getCurrentInstance(), "#{WhodWizardUIBean}", WhodWizardUIBean.class);
-           
-           
+        termHierarchyBean =
+                (WhodTermHierarchyBean)AdfFacesContext.getCurrentInstance().getPageFlowScope().get("WhodTermHierarchyBean");
+
+        nMQWizardUIBean =
+                (WhodWizardUIBean)FacesContext.getCurrentInstance().getApplication().evaluateExpressionGet(FacesContext.getCurrentInstance(),
+                                                                                                           "#{WhodWizardUIBean}",
+                                                                                                           WhodWizardUIBean.class);
+
+
         setUIDefaults();
-        }
+    }
 
     BindingContext bc = BindingContext.getCurrent();
     DCBindingContainer binding = (DCBindingContainer)bc.getCurrentBindingsEntry();
 
-    private void setUIDefaults () {
-        
-        
+    private void setUIDefaults() {
+
+
         this.paramUserName = userBean.getCurrentUser();
         // Added user name empty to check to fix adf error - Venkat
-        if (userBean.isMQM()|| this.paramUserName.isEmpty()) {
+        if (userBean.isMQM() || this.paramUserName.isEmpty()) {
             this.paramFilterForUser = CSMQBean.FALSE;
-         }
-        else if (userBean.isRequestor()) {
+        } else if (userBean.isRequestor()) {
             this.paramFilterForUser = CSMQBean.TRUE;
             this.paramActivityStatus = CSMQBean.ACTIVE_ACTIVITY_STATUS;
-            }
+        }
         // IT'S A BROWSE USER - SHOW ONLY CURRENT & ACTIVE NMQs
         else {
             this.paramReleaseStatus = CSMQBean.CURRENT_RELEASE_STATUS;
             this.paramActivityStatus = CSMQBean.ACTIVE_ACTIVITY_STATUS;
             this.paramFilterForUser = CSMQBean.TRUE;
-            }
-       
+        }
+
         // OVERWRITE IF IT'S AN IA SEARCH
         if (IASearch) {
             this.paramReleaseStatus = CSMQBean.BOTH_RELEASE_STATUSES;
             this.paramActivityStatus = CSMQBean.ACTIVE_ACTIVITY_STATUS;
-            }
-       
-       
-        //set defaults     
+        }
+
+
+        //set defaults
         if (nMQWizardBean.getMode() == CSMQBean.MODE_UPDATE_EXISTING) {
             this.searchIterator = "WHODSimpleSearch1Iterator";
             //this.searchLabelPrefix = NMQ_LABEL;
             this.detailsLabelPrefix = NMQ_LABEL;
             getLevelsForQueryType = cSMQBean.getLevelsForQueryType("QUERY_TYPE");
-             if (ctrlLevelList != null)
+            if (ctrlLevelList != null)
                 ctrlLevelList.setRendered(false);
             this.paramQueryType = CSMQBean.NMQ_SEARCH;
-            }
-        else if (nMQWizardBean.getMode() == CSMQBean.MODE_UPDATE_SMQ) {
+        } else if (nMQWizardBean.getMode() == CSMQBean.MODE_UPDATE_SMQ) {
             this.searchIterator = "WHODSimpleSearch1Iterator";
             //this.searchLabelPrefix = SMQ_LABEL;
             this.detailsLabelPrefix = SMQ_LABEL;
@@ -257,24 +265,21 @@ public class WhodWizardSearchBean {
                 ctrlLevelList.setRendered(false);
             this.paramQueryType = CSMQBean.SMQ_SEARCH;
             this.paramExtension = SMQ_LABEL;
-            }
-        else if (nMQWizardBean.getMode() == CSMQBean.MODE_COPY_EXISTING) {
+        } else if (nMQWizardBean.getMode() == CSMQBean.MODE_COPY_EXISTING) {
             this.searchIterator = "WHODSimpleSearch1Iterator";
             //this.searchLabelPrefix = NMQ_SMQ_LABEL;
             this.detailsLabelPrefix = NMQ_LABEL;
             getLevelsForQueryType = cSMQBean.getLevelsForQueryType("QUERY_TYPE");
             if (ctrlLevelList != null) {
                 ctrlLevelList.setValue(CSMQBean.SMQ_SEARCH);
-                }
-            this.paramQueryType = CSMQBean.NMQ_SMQ_SEARCH;
             }
-        else if (nMQWizardBean.getMode() == CSMQBean.MODE_INSERT_NEW) {
+            this.paramQueryType = CSMQBean.NMQ_SMQ_SEARCH;
+        } else if (nMQWizardBean.getMode() == CSMQBean.MODE_INSERT_NEW) {
             this.searchIterator = "WHODSimpleSearch1Iterator";
             //this.searchLabelPrefix = NMQ_LABEL;
             this.detailsLabelPrefix = NMQ_LABEL;
             getLevelsForQueryType = cSMQBean.getLevelsForQueryType("NMQ_SQM_SELECT_ITEMS");
-            }
-        else if (nMQWizardBean.getMode() == CSMQBean.MODE_HISTORIC) { 
+        } else if (nMQWizardBean.getMode() == CSMQBean.MODE_HISTORIC) {
             this.searchIterator = "HistoricSearch1Iterator";
             //this.searchLabelPrefix = NMQ_SMQ_LABEL;
             this.detailsLabelPrefix = "";
@@ -282,22 +287,20 @@ public class WhodWizardSearchBean {
             this.paramQueryType = CSMQBean.NMQ_SMQ_SEARCH;
             if (ctrlLevelList != null) {
                 ctrlLevelList.setValue(CSMQBean.NMQ_SMQ_SEARCH);
-                }
             }
-        else if (nMQWizardBean.getMode() == CSMQBean.MODE_BROWSE_SEARCH) { 
+        } else if (nMQWizardBean.getMode() == CSMQBean.MODE_BROWSE_SEARCH) {
             this.searchIterator = "WHODSimpleSearch1Iterator";
             //this.searchLabelPrefix = NMQ_SMQ_LABEL;
             this.detailsLabelPrefix = "";
             getLevelsForQueryType = cSMQBean.getLevelsForQueryType("NMQ_SQM_SELECT_ITEMS");
             this.paramQueryType = CSMQBean.NMQ_SMQ_SEARCH;
-            
+
             if (ctrlNMQStatus != null)
                 ctrlNMQStatus.setValue(CSMQBean.BOTH_RELEASE_STATUSES);
             if (ctrlLevelList != null) {
                 ctrlLevelList.setValue(CSMQBean.NMQ_SMQ_SEARCH);
-                }
             }
-        else if (nMQWizardBean.getMode() == CSMQBean.MODE_IMPACT_ASSESSMENT) { 
+        } else if (nMQWizardBean.getMode() == CSMQBean.MODE_IMPACT_ASSESSMENT) {
             this.searchIterator = "WHODSimpleSearch1Iterator";
             //this.searchLabelPrefix = NMQ_SMQ_LABEL;
             this.detailsLabelPrefix = "";
@@ -305,15 +308,15 @@ public class WhodWizardSearchBean {
             this.paramQueryType = CSMQBean.NMQ_SMQ_SEARCH;
             if (ctrlLevelList != null) {
                 ctrlLevelList.setValue(CSMQBean.NMQ_SMQ_SEARCH);
-                }
             }
-              
-        clearSearch (this.searchIterator);
-        releaseGroupSelectItems = cSMQBean.getAGsForDictionary(nMQWizardBean.getCurrentDictionary());
         }
-    
 
-    private void clearSearch (String iterator) {
+        clearSearch(this.searchIterator);
+        releaseGroupSelectItems = cSMQBean.getAGsForDictionary(nMQWizardBean.getCurrentDictionary());
+    }
+
+
+    private void clearSearch(String iterator) {
         try {
             BindingContext bc = BindingContext.getCurrent();
             DCBindingContainer binding = (DCBindingContainer)bc.getCurrentBindingsEntry();
@@ -325,13 +328,12 @@ public class WhodWizardSearchBean {
             ctrlSearchResults.setEmptyText("Selected Term: " + this.currentTermName);
             AdfFacesContext.getCurrentInstance().addPartialTarget(ctrlSearchResults);
             AdfFacesContext.getCurrentInstance().partialUpdateNotify(ctrlSearchResults);
-            
-            
-           
+
+
             //nMQWizardUIBean.getProductListControl().resetValue();
-            }
-        catch (Exception e) {}
+        } catch (Exception e) {
         }
+    }
 
 
     public BindingContainer getBindings() {
@@ -407,21 +409,22 @@ public class WhodWizardSearchBean {
     public RichSelectOneChoice getCtrlReleaseGroupSearch() {
         return ctrlReleaseGroupSearch;
     }
-    
-    
-    public void doSearch(ActionEvent actionEvent) {    
-            // 05-NOV-2013
-            // Fix for dupes 
+
+
+    public void doSearch(ActionEvent actionEvent) {
+        // 05-NOV-2013
+        // Fix for dupes
         nMQWizardBean.clearDetails();
-        
+
         // FIX FOR WHEN A USER CANCELS AND COMES BACK IN
-        if (searchIterator.length() == 0) setUIDefaults ();
-        
-        
+        if (searchIterator.length() == 0)
+            setUIDefaults();
+
+
         nMQWizardBean.getProductList().clear();
         nMQWizardBean.getMQGroupList().clear();
         if (termHierarchyBean != null)
-        termHierarchyBean.showStatus(CSMQBean.MQ_INIT);
+            termHierarchyBean.showStatus(CSMQBean.MQ_INIT);
         nMQWizardBean.setTreeAccessed(false); //reset the tree
         //nMQWizardBean.clearDetails();  UI MOVE?
         CSMQBean.logger.info(userBean.getCaller() + " ** PERFORMING SEARCH **");
@@ -438,7 +441,7 @@ public class WhodWizardSearchBean {
         CSMQBean.logger.info(userBean.getCaller() + " MQCode: " + getParamMQCode());
         CSMQBean.logger.info(userBean.getCaller() + " MQCriticalEvent: " + getParamMQCriticalEvent());
         CSMQBean.logger.info(userBean.getCaller() + " uniqueIDsOnly: " + getParamUniqueIDsOnly());
-        CSMQBean.logger.info(userBean.getCaller() + " filterForUser: " +  getParamFilterForUser());
+        CSMQBean.logger.info(userBean.getCaller() + " filterForUser: " + getParamFilterForUser());
         CSMQBean.logger.info(userBean.getCaller() + " currentUser: " + getParamUserName().toUpperCase());
         CSMQBean.logger.info(userBean.getCaller() + " mqType: " + getParamQueryType());
         CSMQBean.logger.info(userBean.getCaller() + " showNarrowScpOnly: " + getParamNarrowScopeOnly());
@@ -451,7 +454,7 @@ public class WhodWizardSearchBean {
         CSMQBean.logger.info(userBean.getCaller() + " queryLevel: " + getParamLevel());
         CSMQBean.logger.info(userBean.getCaller() + " extension: " + getParamExtension());
         CSMQBean.logger.info(userBean.getCaller() + " killSwitch: " + CSMQBean.KILL_SWITCH_OFF);
-        
+
         CSMQBean.logger.info(userBean.getCaller() + " ** DATABASE DEBUGGING INFO **");
         CSMQBean.logger.info(userBean.getCaller() + " pStartDate: " + getParamStartDate());
         CSMQBean.logger.info(userBean.getCaller() + " pEndDate: " + getParamEndDate());
@@ -465,7 +468,7 @@ public class WhodWizardSearchBean {
         CSMQBean.logger.info(userBean.getCaller() + " pMQCode: " + getParamMQCode());
         CSMQBean.logger.info(userBean.getCaller() + " pMQCrtlEvt: " + getParamMQCriticalEvent());
         CSMQBean.logger.info(userBean.getCaller() + " pUniqueIdOnly: " + getParamUniqueIDsOnly());
-        CSMQBean.logger.info(userBean.getCaller() + " pFilterForUser: " +  getParamFilterForUser());
+        CSMQBean.logger.info(userBean.getCaller() + " pFilterForUser: " + getParamFilterForUser());
         CSMQBean.logger.info(userBean.getCaller() + " pCurrentUser: " + getParamUserName().toUpperCase());
         CSMQBean.logger.info(userBean.getCaller() + " pLevel: " + getParamQueryType());
         CSMQBean.logger.info(userBean.getCaller() + " pNarrowScpOnlyMq: " + getParamNarrowScopeOnly());
@@ -476,64 +479,59 @@ public class WhodWizardSearchBean {
         CSMQBean.logger.info(userBean.getCaller() + " pApprove: " + getParamApproved());
         CSMQBean.logger.info(userBean.getCaller() + " psVirtualDictionaryName: " + getDictionaryVersion());
         CSMQBean.logger.info(userBean.getCaller() + " ***********************");
-        if(this.searchIterator.equalsIgnoreCase(""))
+        if (this.searchIterator.equalsIgnoreCase(""))
             this.searchIterator = "WHODSimpleSearch1Iterator";
         BindingContext bc = BindingContext.getCurrent();
         DCBindingContainer binding = (DCBindingContainer)bc.getCurrentBindingsEntry();
         DCIteratorBinding dciterb = (DCIteratorBinding)binding.get(searchIterator);
         ViewObject vo = dciterb.getViewObject();
-        
-        vo.setNamedWhereClauseParam("startDate", getParamStartDate());
-        vo.setNamedWhereClauseParam("endDate", getParamEndDate());
+        //TODO need to remove startDate, endDate
+        //        vo.setNamedWhereClauseParam("startDate", getParamStartDate());
+        //        vo.setNamedWhereClauseParam("endDate", getParamEndDate());
         String paramTermVal = getParamTerm();
-        if (null != paramTermVal && !paramTermVal.isEmpty()){
-           paramTermVal = paramTermVal.replace("'","\''");
+        if (null != paramTermVal && !paramTermVal.isEmpty()) {
+            paramTermVal = paramTermVal.replace("'", "\''");
         }
-        vo.setNamedWhereClauseParam("term", paramTermVal);
-        vo.setNamedWhereClauseParam("activityStatus", getParamActivityStatus());
-        vo.setNamedWhereClauseParam("dictShortName", getParamDictName());
-        vo.setNamedWhereClauseParam("releaseStatus", getParamReleaseStatus());
-        vo.setNamedWhereClauseParam("activationGroup", getParamReleaseGroup());
-        vo.setNamedWhereClauseParam("MQGroup", getParamMQGroupList());  // search needs ^ as the delimiter
-        vo.setNamedWhereClauseParam("product", getParamProductList());  // search needs ^ as the delimiter
-        vo.setNamedWhereClauseParam("MQCode", getParamMQCode());
-        vo.setNamedWhereClauseParam("MQCriticalEvent", getParamMQCriticalEvent());
-        vo.setNamedWhereClauseParam("uniqueIDsOnly", getParamUniqueIDsOnly());
-        vo.setNamedWhereClauseParam("filterForUser",  getParamFilterForUser());
-        vo.setNamedWhereClauseParam("currentUser", getParamUserName().toString());
-        vo.setNamedWhereClauseParam("mqType", getParamQueryType());
-        vo.setNamedWhereClauseParam("showNarrowScpOnly", getParamNarrowScopeOnly());
-        vo.setNamedWhereClauseParam("pState", getParamState());
-        vo.setNamedWhereClauseParam("MQScope", getParamMQScope());
-        vo.setNamedWhereClauseParam("pUserRole", getParamUserRole());      
-        vo.setNamedWhereClauseParam("pMode", getParamMode());
-        vo.setNamedWhereClauseParam("pApprove", getParamApproved());
-        vo.setNamedWhereClauseParam("psVirtualDictionaryName", getDictionaryVersion());
-        vo.setNamedWhereClauseParam("killSwitch", CSMQBean.KILL_SWITCH_OFF);
-        
-        vo.setNamedWhereClauseParam("queryLevel", getParamLevel());
-        vo.setNamedWhereClauseParam("extension", getParamExtension());
-        
+        //TODO NO need to set as we are setting as default value
+        //vo.setNamedWhereClauseParam("levelName", getParamLevel());
+        vo.setNamedWhereClauseParam("levelName", "SDG%");
+        vo.setNamedWhereClauseParam("termUpper", paramTermVal);
+        //TODO NO need to set as we are setting as default value
+        //vo.setNamedWhereClauseParam("termUpper", "%");
+        vo.setNamedWhereClauseParam("approvedFlag", getParamApproved());
+        //TODO NO need to set as we are setting as default value
+        //vo.setNamedWhereClauseParam("createdBy", "%");
+        //vo.setNamedWhereClauseParam("dictContentID", "%");
+        //vo.setNamedWhereClauseParam("dictContentCode", "%");
+        //vo.setNamedWhereClauseParam("dGDMLVersion", "%");
+        //vo.setNamedWhereClauseParam("dGScopeFlag", "%");
+        //vo.setNamedWhereClauseParam("dGTransID", "%");
+        //vo.setNamedWhereClauseParam("dGTransID", "%");
+        //vo.setNamedWhereClauseParam("dGActiveStatus", getParamActivityStatus());
+        vo.setNamedWhereClauseParam("dGActiveStatus", "%");
+        vo.setNamedWhereClauseParam("dGGroupLIST", getParamMQGroupList()); // search needs ^ as the delimiter
+        vo.setNamedWhereClauseParam("dGProductLIST", getParamProductList()); // search needs ^ as the delimiter
         vo.executeQuery();
-        
-        if (ctrlSearchResults != null) {  // if we are calling this from IA, we won't need this
-            
+
+        if (ctrlSearchResults != null) { // if we are calling this from IA, we won't need this
+
             ctrlSearchResults.setEmptyText("No data to display.");
             AdfFacesContext.getCurrentInstance().addPartialTarget(ctrlSearchResults);
             AdfFacesContext.getCurrentInstance().partialUpdateNotify(ctrlSearchResults);
             //clear the selected row
-            RowKeySet rks= ctrlSearchResults.getSelectedRowKeys();
+            RowKeySet rks = ctrlSearchResults.getSelectedRowKeys();
             rks.clear();
-        
+
             //CLEAR OLD TRESS
-            WhodSourceTermSearchBean nMQSourceTermSearchBean = (WhodSourceTermSearchBean)AdfFacesContext.getCurrentInstance().getPageFlowScope().get("WhodSourceTermSearchBean");
+            WhodSourceTermSearchBean nMQSourceTermSearchBean =
+                (WhodSourceTermSearchBean)AdfFacesContext.getCurrentInstance().getPageFlowScope().get("WhodSourceTermSearchBean");
             nMQSourceTermSearchBean.clearTree();
             nMQWizardBean.clearRelations();
-            }
-
         }
-    
-    public void doHistoricSearch(ActionEvent actionEvent) {        
+
+    }
+
+    public void doHistoricSearch(ActionEvent actionEvent) {
         //nMQWizardBean.clearDetails();  UI MOVE?
         CSMQBean.logger.info(userBean.getCaller() + " ** PERFORMING HISTORIC SEARCH **");
         CSMQBean.logger.info(userBean.getCaller() + " startDate: " + getParamStartDate());
@@ -547,9 +545,9 @@ public class WhodWizardSearchBean {
         CSMQBean.logger.info(userBean.getCaller() + " MQCode: " + getParamMQCode());
         CSMQBean.logger.info(userBean.getCaller() + " MQCriticalEvent: " + getParamMQCriticalEvent());
         CSMQBean.logger.info(userBean.getCaller() + " uniqueIDsOnly: " + getParamUniqueIDsOnly());
-        CSMQBean.logger.info(userBean.getCaller() + " filterForUser: " +  getParamFilterForUser());
+        CSMQBean.logger.info(userBean.getCaller() + " filterForUser: " + getParamFilterForUser());
         CSMQBean.logger.info(userBean.getCaller() + " currentUser: " + getParamUserName());
-        CSMQBean.logger.info(userBean.getCaller() + " mqType: " + getParamQueryType() );
+        CSMQBean.logger.info(userBean.getCaller() + " mqType: " + getParamQueryType());
         CSMQBean.logger.info(userBean.getCaller() + " showNarrowScpOnly: " + getParamNarrowScopeOnly());
         CSMQBean.logger.info(userBean.getCaller() + " MQScope: " + getParamMQScope());
         CSMQBean.logger.info(userBean.getCaller() + " pState: " + getParamState());
@@ -558,56 +556,56 @@ public class WhodWizardSearchBean {
         CSMQBean.logger.info(userBean.getCaller() + " pApprove: " + getParamApproved());
         CSMQBean.logger.info(userBean.getCaller() + " killSwitch: " + CSMQBean.KILL_SWITCH_OFF);
         CSMQBean.logger.info(userBean.getCaller() + " ***********************");
-        
+
         // set the query type
-        
-        /* 
+
+        /*
          * TES CHANGED 06-AUG-2014
          */
         //nMQWizardBean.setIsNMQ(paramQueryType.indexOf("N") > -1);
         nMQWizardBean.setIsNMQ(this.currentExtension.equalsIgnoreCase("NMQ"));
         nMQWizardBean.setIsSMQ(this.currentExtension.equalsIgnoreCase("SMQ"));
-        
+
         BindingContext bc = BindingContext.getCurrent();
         DCBindingContainer binding = (DCBindingContainer)bc.getCurrentBindingsEntry();
         DCIteratorBinding dciterb = (DCIteratorBinding)binding.get(this.searchIterator);
         ViewObject vo = dciterb.getViewObject();
-        
+
         vo.setNamedWhereClauseParam("startDate", getParamStartDate());
         vo.setNamedWhereClauseParam("endDate", getParamEndDate());
         String paramTermVal = getParamTerm();
-        if (null != paramTermVal && !paramTermVal.isEmpty()){
-           paramTermVal = paramTermVal.replace("'","\''");
+        if (null != paramTermVal && !paramTermVal.isEmpty()) {
+            paramTermVal = paramTermVal.replace("'", "\''");
         }
         vo.setNamedWhereClauseParam("term", paramTermVal);
         vo.setNamedWhereClauseParam("activityStatus", getParamActivityStatus());
         vo.setNamedWhereClauseParam("dictShortName", getParamDictName());
         vo.setNamedWhereClauseParam("releaseStatus", getParamReleaseStatus());
         vo.setNamedWhereClauseParam("activationGroup", getParamReleaseGroup());
-        vo.setNamedWhereClauseParam("MQGroup", getParamMQGroupList());  // search needs ^ as the delimiter
-        vo.setNamedWhereClauseParam("product", getParamProductList());  // search needs ^ as the delimiter
+        vo.setNamedWhereClauseParam("MQGroup", getParamMQGroupList()); // search needs ^ as the delimiter
+        vo.setNamedWhereClauseParam("product", getParamProductList()); // search needs ^ as the delimiter
         vo.setNamedWhereClauseParam("MQCode", getParamMQCode());
         vo.setNamedWhereClauseParam("MQCriticalEvent", getParamMQCriticalEvent());
         vo.setNamedWhereClauseParam("uniqueIDsOnly", getParamUniqueIDsOnly());
-        vo.setNamedWhereClauseParam("filterForUser",  getParamFilterForUser());
+        vo.setNamedWhereClauseParam("filterForUser", getParamFilterForUser());
         vo.setNamedWhereClauseParam("currentUser", getParamUserName());
         vo.setNamedWhereClauseParam("mqType", getParamQueryType());
         vo.setNamedWhereClauseParam("showNarrowScpOnly", getParamNarrowScopeOnly());
         vo.setNamedWhereClauseParam("pState", getParamState());
         vo.setNamedWhereClauseParam("MQScope", getParamMQScope());
-        vo.setNamedWhereClauseParam("pUserRole", getParamUserRole());      
+        vo.setNamedWhereClauseParam("pUserRole", getParamUserRole());
         vo.setNamedWhereClauseParam("pMode", getParamMode());
         vo.setNamedWhereClauseParam("pApprove", getParamApproved());
         vo.setNamedWhereClauseParam("killSwitch", CSMQBean.KILL_SWITCH_OFF);
-       
+
         vo.executeQuery();
-        
-        if (ctrlHistoricalResults != null) {  // FOR HISTORIC
+
+        if (ctrlHistoricalResults != null) { // FOR HISTORIC
             ctrlHistoricalDateListResults.setRendered(false);
-            ctrlHistoricalResults.setRendered(true);   
+            ctrlHistoricalResults.setRendered(true);
             AdfFacesContext.getCurrentInstance().addPartialTarget(cntrlResultsPanel);
             AdfFacesContext.getCurrentInstance().partialUpdateNotify(cntrlResultsPanel);
-            
+
             ctrlHistoricalResults.setEmptyText("No data to display.");
 
             //clear the selected row
@@ -615,18 +613,19 @@ public class WhodWizardSearchBean {
             rks.clear();
             rks = ctrlHistoricalResults.getSelectedRowKeys();
             rks.clear();
-        
+
             //CLEAR OLD TRESS
-            WhodSourceTermSearchBean nMQSourceTermSearchBean = (WhodSourceTermSearchBean)AdfFacesContext.getCurrentInstance().getPageFlowScope().get("WhodSourceTermSearchBean");
+            WhodSourceTermSearchBean nMQSourceTermSearchBean =
+                (WhodSourceTermSearchBean)AdfFacesContext.getCurrentInstance().getPageFlowScope().get("WhodSourceTermSearchBean");
             nMQSourceTermSearchBean.clearTree();
             nMQWizardBean.clearRelations();
-            }
-        
         }
 
+    }
 
-    public void initForImpactAnalysis (String mqCode, String dictContentID, String releaseGroups) {
-        // used for impact analysis 
+
+    public void initForImpactAnalysis(String mqCode, String dictContentID, String releaseGroups) {
+        // used for impact analysis
         this.IASearch = true;
         this.currentMqcode = mqCode;
         this.paramMQCode = mqCode;
@@ -636,29 +635,30 @@ public class WhodWizardSearchBean {
         this.currentDictionary = CSMQBean.defaultFilterDictionaryShortName;
         this.paramDictName = CSMQBean.defaultFilterDictionaryShortName;
         this.paramReleaseGroup = releaseGroups;
-        setUIDefaults(); 
-        
-        doSearch(null);  // run the search with the params above - these come from the IA search
-        this.getInfNotes();  
+        setUIDefaults();
+
+        doSearch(null); // run the search with the params above - these come from the IA search
+        this.getInfNotes();
         // get the results - there should just be one row
         BindingContext bc = BindingContext.getCurrent();
         DCBindingContainer binding = (DCBindingContainer)bc.getCurrentBindingsEntry();
         DCIteratorBinding dciterb = (DCIteratorBinding)binding.get(searchIterator);
 
         Enumeration rows = dciterb.getRowSetIterator().enumerateRowsInRange();
-        if (rows == null || !rows.hasMoreElements()) return;
-        
+        if (rows == null || !rows.hasMoreElements())
+            return;
+
         Row row = (Row)rows.nextElement();
-        
-        
-        processSearchResults(row);  
+
+
+        processSearchResults(row);
         //nMQWizardBean.setMode(mode);
         nMQWizardBean.setCurrentTermName(currentTermName);
         nMQWizardBean.setCurrentFilterDictionaryShortName(this.currentDictionary);
         nMQWizardBean.getDictionaryInfo(); // GET BASE DICT INFO FROM FILTER
-        }
-    
-    
+    }
+
+
     public void getInfNotes() {
 
         try {
@@ -666,39 +666,46 @@ public class WhodWizardSearchBean {
             DCBindingContainer binding = (DCBindingContainer)bc.getCurrentBindingsEntry();
             DCIteratorBinding dciterb = (DCIteratorBinding)binding.get("InfNotesVO1Iterator");
             ViewObject vo = dciterb.getViewObject();
-            
-            
+
+
             /*
-             *  
-             
+             *
+
                 // CHANGED 14-MAR-2012 for the follwing rules:
-                if the current state is not published and not published IA then the release group = draft.  
-                if the current state is published then the release group = RELEASE AG 
+                if the current state is not published and not published IA then the release group = draft.
+                if the current state is published then the release group = RELEASE AG
                 ELSE (if the current state is published IA) then the release group = MEDDRA AG.
 
                 String relGroup = cSMQBean.getDefaultPublishReleaseGroup();
                 if (this.currentState != null && !(this.currentState.equals(CSMQBean.STATE_PUBLISHED)))
                 relGroup = cSMQBean.getDefaultDraftReleaseGroup();
-             
-             * 
+
+             *
              */
-            
+
             String relGroup = cSMQBean.getDefaultDraftReleaseGroup();
-            if (this.currentState != null && this.currentState.equals(CSMQBean.STATE_PUBLISHED)) relGroup = cSMQBean.defaultPublishReleaseGroup;
-            if (this.currentState != null && this.currentState.equals(CSMQBean.IA_STATE_PUBLISHED)) relGroup = cSMQBean.defaultMedDRAReleaseGroup;
-            
+            if (this.currentState != null && this.currentState.equals(CSMQBean.STATE_PUBLISHED))
+                relGroup = cSMQBean.defaultPublishReleaseGroup;
+            if (this.currentState != null && this.currentState.equals(CSMQBean.IA_STATE_PUBLISHED))
+                relGroup = cSMQBean.defaultMedDRAReleaseGroup;
+
             String tStatus = CSMQBean.CURRENT_IF_PENDING_NULL;
-            if (this.currentStatus != null && this.currentStatus.equals(CSMQBean.CURRENT_RELEASE_STATUS)) tStatus = CSMQBean.CURRENT_RELEASE_STATUS;
-            
+            if (this.currentStatus != null && this.currentStatus.equals(CSMQBean.CURRENT_RELEASE_STATUS))
+                tStatus = CSMQBean.CURRENT_RELEASE_STATUS;
+
             //override for IA
-            if (nMQWizardBean.getMode() == CSMQBean.MODE_IMPACT_ASSESSMENT) tStatus = CSMQBean.CURRENT_IF_PENDING_NULL_IA;
-            
+            if (nMQWizardBean.getMode() == CSMQBean.MODE_IMPACT_ASSESSMENT)
+                tStatus = CSMQBean.CURRENT_IF_PENDING_NULL_IA;
+
             CSMQBean.logger.info(userBean.getCaller() + " ** GETTING INF NOTES **");
             CSMQBean.logger.info(userBean.getCaller() + " dictContentCode: " + this.currentMqcode);
             CSMQBean.logger.info(userBean.getCaller() + " dictShortName: " + this.currentDictionary);
-            CSMQBean.logger.info(userBean.getCaller() + " SMQNOTE: " + cSMQBean.getProperty("SMQ_NOTE_INFORMATIVE_NOTE"));
-            CSMQBean.logger.info(userBean.getCaller() + " SMQDESC: " + cSMQBean.getProperty("SMQ_DESCRIPTION_INFORMATIVE_NOTE"));
-            CSMQBean.logger.info(userBean.getCaller() + " SMQSRC: " + cSMQBean.getProperty("SMQ_SOURCE_INFORMATIVE_NOTE"));
+            CSMQBean.logger.info(userBean.getCaller() + " SMQNOTE: " +
+                                 cSMQBean.getProperty("SMQ_NOTE_INFORMATIVE_NOTE"));
+            CSMQBean.logger.info(userBean.getCaller() + " SMQDESC: " +
+                                 cSMQBean.getProperty("SMQ_DESCRIPTION_INFORMATIVE_NOTE"));
+            CSMQBean.logger.info(userBean.getCaller() + " SMQSRC: " +
+                                 cSMQBean.getProperty("SMQ_SOURCE_INFORMATIVE_NOTE"));
             CSMQBean.logger.info(userBean.getCaller() + " groupname: " + relGroup);
             CSMQBean.logger.info(userBean.getCaller() + " dictContentID: " + this.currentDictContentID);
             CSMQBean.logger.info(userBean.getCaller() + " currentPendingStatus: " + tStatus);
@@ -711,15 +718,15 @@ public class WhodWizardSearchBean {
             vo.setNamedWhereClauseParam("groupname", relGroup);
             vo.setNamedWhereClauseParam("dictContentID", this.currentDictContentID);
             vo.setNamedWhereClauseParam("currentPendingStatus", tStatus);
-            
+
             vo.executeQuery();
             Enumeration rows = dciterb.getRowSetIterator().enumerateRowsInRange();
 
             if (!rows.hasMoreElements()) {
                 CSMQBean.logger.info(userBean.getCaller() + " ! THERE ARE NO INF NOTES !");
                 return;
-                }
-            
+            }
+
             Row row = (Row)rows.nextElement();
 
             this.currentInfNoteDescription = Utils.getAsString(row, "Mqdesc");
@@ -729,49 +736,48 @@ public class WhodWizardSearchBean {
             nMQWizardBean.setCurrentInfNoteDescription(this.currentInfNoteDescription);
             nMQWizardBean.setCurrentInfNoteNotes(this.currentInfNoteNotes);
             nMQWizardBean.setCurrentInfNoteSource(this.currentInfNoteSource);
-            } 
-        catch (java.util.NoSuchElementException e) {
+        } catch (java.util.NoSuchElementException e) {
             CSMQBean.logger.error(e.getMessage(), e);
-            }
         }
+    }
 
 
+    public List<String> getDesignees(String dictContentID) {
 
-    public List <String> getDesignees (String dictContentID) {    
-           
         CSMQBean.logger.info(userBean.getCaller() + " ** GETTING DESIGNEES **");
         CSMQBean.logger.info(userBean.getCaller() + " dictContentID: " + dictContentID);
         CSMQBean.logger.info(userBean.getCaller() + " ***********************");
-        
+
         BindingContext bc = BindingContext.getCurrent();
         DCBindingContainer binding = (DCBindingContainer)bc.getCurrentBindingsEntry();
         DCIteratorBinding dciterb = (DCIteratorBinding)binding.get("designeeListByMQVO1Iterator");
-        
-        if (dciterb == null) return null;
+
+        if (dciterb == null)
+            return null;
         ViewObject vo = dciterb.getViewObject();
-        
+
         vo.setNamedWhereClauseParam("dictContentID", dictContentID);
         vo.executeQuery();
-        
-        List <String> retVal = new ArrayList <String> ();
-         
+
+        List<String> retVal = new ArrayList<String>();
+
         RowSetIterator rs = vo.createRowSetIterator(null);
         rs.reset();
         String designee = "";
-        
+
         if (rs.hasNext()) {
             Row row = rs.next();
             if (row.getAttribute("Designee") != null)
-            designee = (String)row.getAttribute("Designee");
+                designee = (String)row.getAttribute("Designee");
             System.out.println("Attribute - " + designee);
-            
-            designee = designee.replaceAll("\\[", "").replaceAll("\\]","");
-            retVal = Arrays.asList(designee.split("\\s*,\\s*"));           
-            }
-              
+
+            designee = designee.replaceAll("\\[", "").replaceAll("\\]", "");
+            retVal = Arrays.asList(designee.split("\\s*,\\s*"));
+        }
+
         rs.closeRowSetIterator();
         return retVal;
-        }
+    }
 
 
     public void setParamDictName(String paramDictName) {
@@ -779,8 +785,9 @@ public class WhodWizardSearchBean {
     }
 
     public String getParamDictName() {
-        if (IASearch) return currentDictionary;
-        
+        if (IASearch)
+            return currentDictionary;
+
         try {
             String temp = String.valueOf(ctrlDictionaryListSearch.getValue());
             if (temp != null)
@@ -821,15 +828,18 @@ public class WhodWizardSearchBean {
 
     public String getParamTerm() {
         paramTerm = cSMQBean.WILDCARD;
-        if (ctrlMQName != null && ctrlMQName.getValue() != null && !ctrlMQName.getValue().toString().equalsIgnoreCase("null") && ctrlMQName.getValue().toString().length() > 0)
-            paramTerm = ctrlMQName.getValue().toString();
+        if (ctrlMQName != null && ctrlMQName.getValue() != null &&
+            !ctrlMQName.getValue().toString().equalsIgnoreCase("null") &&
+            ctrlMQName.getValue().toString().length() > 0)
+            paramTerm = ctrlMQName.getValue().toString().toUpperCase();
         return paramTerm;
-        
+
     }
 
     public String getParamReleaseStatus() {
-        if (IASearch) return paramReleaseStatus;
-        
+        if (IASearch)
+            return paramReleaseStatus;
+
         try {
             String temp = String.valueOf(ctrlReleaseStatus.getValue());
             if (temp != null)
@@ -842,7 +852,8 @@ public class WhodWizardSearchBean {
     }
 
     public String getParamActivityStatus() {
-        if (IASearch || MEDDraSearch) return CSMQBean.BOTH_ACTIVITY_STATUSES;
+        if (IASearch || MEDDraSearch)
+            return CSMQBean.BOTH_ACTIVITY_STATUSES;
 
         try {
             String temp = String.valueOf(ctrlNMQStatus.getValue());
@@ -866,8 +877,9 @@ public class WhodWizardSearchBean {
                 csvValue = csvValue + s + CSMQBean.DEFAULT_SEARCH_DELIMETER_CHAR;
 
             paramState = csvValue.substring(0, csvValue.length() - 1);
-            if (paramState.length() == 0) paramState = "%";
-            
+            if (paramState.length() == 0)
+                paramState = "%";
+
             return paramState;
         } catch (java.lang.NullPointerException e) {
             // Bury this, fix for 11.1.1.4
@@ -876,9 +888,10 @@ public class WhodWizardSearchBean {
     }
 
     public String getParamReleaseGroup() {
-        
-        if (IASearch) return paramReleaseGroup;
-        
+
+        if (IASearch)
+            return paramReleaseGroup;
+
         try {
             String temp = String.valueOf(ctrlReleaseGroupSearch.getValue());
             if (temp != null)
@@ -950,71 +963,75 @@ public class WhodWizardSearchBean {
     }
 
     public String getParamMQGroupList() {
-        if (IASearch) return CSMQBean.WILDCARD;
-        
-        if (ctrlMQGroups == null) return null;
+        if (IASearch)
+            return CSMQBean.WILDCARD;
+
+        if (ctrlMQGroups == null)
+            return null;
         Object selProd = ctrlMQGroups.getValue();
-        if (selProd == null) return CSMQBean.WILDCARD;
-        
+        if (selProd == null)
+            return CSMQBean.WILDCARD;
+
         if (selProd instanceof java.lang.String) {
             String temp = selProd.toString();
             temp.replace("[", "");
             temp.replace("]", "");
-            this.paramMQGroupList = temp; 
-            }
-        else {       
+            this.paramMQGroupList = temp;
+        } else {
             List selected = (List)ctrlMQGroups.getValue();
             if (selected != null) {
-                if (selected.size() == 0) return CSMQBean.WILDCARD;
+                if (selected.size() == 0)
+                    return CSMQBean.WILDCARD;
                 String temp = "";
                 for (Object s : selected)
-                        temp = temp + s + CSMQBean.DEFAULT_DELIMETER_CHAR;
-                
+                    temp = temp + s + CSMQBean.DEFAULT_DELIMETER_CHAR;
+
                 temp.replace("[", "");
                 temp.replace("]", "");
-                
-                if (temp != null & temp.length() > 0)            
+
+                if (temp != null & temp.length() > 0)
                     this.paramMQGroupList = temp.substring(0, temp.length() - 1);
-                }
-        
+            }
+
         }
         return paramMQGroupList.replace(CSMQBean.DEFAULT_DELIMETER_CHAR, CSMQBean.DEFAULT_SEARCH_DELIMETER_CHAR);
     }
-            
-            
+
+
     public String getParamProductList() {
-        if (IASearch) return CSMQBean.WILDCARD;
-        
-        if (ctrlProducts == null) return null;
+        if (IASearch)
+            return CSMQBean.WILDCARD;
+
+        if (ctrlProducts == null)
+            return null;
         Object selProd = ctrlProducts.getValue();
-        if (selProd == null) return CSMQBean.WILDCARD;
-        
+        if (selProd == null)
+            return CSMQBean.WILDCARD;
+
         if (selProd instanceof java.lang.String) {
             String temp = selProd.toString();
             temp.replace("[", "");
             temp.replace("]", "");
-            this.paramProductList = temp; 
-            }
-        else {       
+            this.paramProductList = temp;
+        } else {
             List selected = (List)ctrlProducts.getValue();
             if (selected != null) {
-                if (selected.size() == 0) return CSMQBean.WILDCARD;
+                if (selected.size() == 0)
+                    return CSMQBean.WILDCARD;
                 String temp = "";
                 for (Object s : selected)
-                        temp = temp + s + CSMQBean.DEFAULT_DELIMETER_CHAR;
-                
+                    temp = temp + s + CSMQBean.DEFAULT_DELIMETER_CHAR;
+
                 temp.replace("[", "");
                 temp.replace("]", "");
-                
-                if (temp != null & temp.length() > 0)            
+
+                if (temp != null & temp.length() > 0)
                     this.paramProductList = temp.substring(0, temp.length() - 1);
-                }
-        
+            }
+
         }
         return paramProductList.replace(CSMQBean.DEFAULT_DELIMETER_CHAR, CSMQBean.DEFAULT_SEARCH_DELIMETER_CHAR);
     }
-            
-
 
 
     public void setCurrentDictContentID(String currentDictContentID) {
@@ -1135,46 +1152,50 @@ public class WhodWizardSearchBean {
         Application app = facesContext.getApplication();
         ExpressionFactory elFactory = app.getExpressionFactory();
         ELContext elContext = facesContext.getELContext();
-        MethodExpression methodExpression = elFactory.createMethodExpression(elContext, expression, returnType, argTypes);
+        MethodExpression methodExpression =
+            elFactory.createMethodExpression(elContext, expression, returnType, argTypes);
         return methodExpression.invoke(elContext, argValues);
     }
 
     public void onTableNodeSelection(SelectionEvent selectionEvent) {
         CSMQBean.logger.info(userBean.getCaller() + " ***** ROW CHANGE START ****");
-        nMQWizardBean.setTreeAccessed(false);  //reset this to recreate the tree when the page loads
+        nMQWizardBean.setTreeAccessed(false); //reset this to recreate the tree when the page loads
         nMQWizardBean.clearDetails(); // hopefully this works
-        resolveMethodExpression("#{bindings.WHODSimpleSearch1.collectionModel.makeCurrent}", null, new Class[] { SelectionEvent.class }, new Object[] { selectionEvent });
+        resolveMethodExpression("#{bindings.WHODSimpleSearch1.collectionModel.makeCurrent}", null,
+                                new Class[] { SelectionEvent.class }, new Object[] { selectionEvent });
         RichTable object = (RichTable)selectionEvent.getSource();
         Row row = null;
         for (Object facesRowKey : object.getSelectedRowKeys()) {
             object.setRowKey(facesRowKey);
             Object o = object.getRowData();
             JUCtrlHierNodeBinding rowData = (JUCtrlHierNodeBinding)o;
-            if (rowData == null) return;
+            if (rowData == null)
+                return;
             row = rowData.getRow();
-            }
+        }
 
-        if (row == null) return;
+        if (row == null)
+            return;
 
         processSearchResults(row);
         //Copy mode - reset the level to NMQ levels
-        if (nMQWizardBean.getMode() == cSMQBean.MODE_COPY_EXISTING){
+        if (nMQWizardBean.getMode() == cSMQBean.MODE_COPY_EXISTING) {
             nMQWizardBean.setIsNMQ(Boolean.TRUE);
-            if (null!= currentMqlevel && currentMqlevel.equalsIgnoreCase(cSMQBean.SMQ_LEVEL_1)){
+            if (null != currentMqlevel && currentMqlevel.equalsIgnoreCase(cSMQBean.SMQ_LEVEL_1)) {
                 nMQWizardBean.setCurrentTermLevel(cSMQBean.NMQ_LEVEL_1);
-            } else if (null!= currentMqlevel && currentMqlevel.equalsIgnoreCase(cSMQBean.SMQ_LEVEL_2)){
+            } else if (null != currentMqlevel && currentMqlevel.equalsIgnoreCase(cSMQBean.SMQ_LEVEL_2)) {
                 nMQWizardBean.setCurrentTermLevel(cSMQBean.NMQ_LEVEL_2);
-            } else if (null!= currentMqlevel && currentMqlevel.equalsIgnoreCase(cSMQBean.SMQ_LEVEL_3)){
+            } else if (null != currentMqlevel && currentMqlevel.equalsIgnoreCase(cSMQBean.SMQ_LEVEL_3)) {
                 nMQWizardBean.setCurrentTermLevel(cSMQBean.NMQ_LEVEL_3);
-            } else if (null!= currentMqlevel && currentMqlevel.equalsIgnoreCase(cSMQBean.SMQ_LEVEL_4)){
+            } else if (null != currentMqlevel && currentMqlevel.equalsIgnoreCase(cSMQBean.SMQ_LEVEL_4)) {
                 nMQWizardBean.setCurrentTermLevel(cSMQBean.NMQ_LEVEL_4);
-            } else if (null!= currentMqlevel && currentMqlevel.equalsIgnoreCase(cSMQBean.SMQ_LEVEL_5)){
+            } else if (null != currentMqlevel && currentMqlevel.equalsIgnoreCase(cSMQBean.SMQ_LEVEL_5)) {
                 nMQWizardBean.setCurrentTermLevel(cSMQBean.NMQ_LEVEL_5);
             }
         }
         AdfFacesContext.getCurrentInstance().addPartialTarget(cntrlTrain);
         AdfFacesContext.getCurrentInstance().partialUpdateNotify(cntrlTrain);
-        
+
         // get the notes.
         getInfNotes();
 
@@ -1182,28 +1203,31 @@ public class WhodWizardSearchBean {
         //nMQWizardBean.updateRelations();  //??  NOT NEEDED ??
         // ??? AdfFacesContext.getCurrentInstance().addPartialTarget(termHierarchyBean.getTargetTree());
         // ???? AdfFacesContext.getCurrentInstance().partialUpdateNotify(termHierarchyBean.getTargetTree());
-        
+
         //clearSearch("SimpleSearch1Iterator");
         CSMQBean.logger.info(userBean.getCaller() + " ***** ROW CHANGE COMPLETE ****");
     }
 
     public void onHistoricSearchTableNodeSelection(SelectionEvent selectionEvent) {
         CSMQBean.logger.info(userBean.getCaller() + " ***** HISTORIC ROW CHANGE START ****");
-        
-        resolveMethodExpression("#{bindings.HistoricSearch1.collectionModel.makeCurrent}", null, new Class[] { SelectionEvent.class }, new Object[] { selectionEvent });
+
+        resolveMethodExpression("#{bindings.HistoricSearch1.collectionModel.makeCurrent}", null,
+                                new Class[] { SelectionEvent.class }, new Object[] { selectionEvent });
         RichTable object = (RichTable)selectionEvent.getSource();
         Row row = null;
         for (Object facesRowKey : object.getSelectedRowKeys()) {
             object.setRowKey(facesRowKey);
             Object o = object.getRowData();
             JUCtrlHierNodeBinding rowData = (JUCtrlHierNodeBinding)o;
-            if (rowData == null) return;
+            if (rowData == null)
+                return;
             row = rowData.getRow();
-            }
+        }
 
-        if (row == null) return;
+        if (row == null)
+            return;
 
-        processSearchResults(row);    
+        processSearchResults(row);
 
         BindingContext bc = BindingContext.getCurrent();
         DCBindingContainer binding = (DCBindingContainer)bc.getCurrentBindingsEntry();
@@ -1211,88 +1235,92 @@ public class WhodWizardSearchBean {
         ViewObject vo = dciterb.getViewObject();
         vo.setNamedWhereClauseParam("dictContentID", this.currentDictContentID);
         vo.executeQuery();
-        
+
         ctrlHistoricalDateListResults.setRendered(true);
-        ctrlHistoricalResults.setRendered(false);   
+        ctrlHistoricalResults.setRendered(false);
         AdfFacesContext.getCurrentInstance().addPartialTarget(cntrlResultsPanel);
         AdfFacesContext.getCurrentInstance().partialUpdateNotify(cntrlResultsPanel);
         CSMQBean.logger.info(userBean.getCaller() + " ***** HISTORIC ROW CHANGE COMPLETE ****");
     }
-    
+
     public void onHistoricDateListTableNodeSelection(SelectionEvent selectionEvent) {
         CSMQBean.logger.info(userBean.getCaller() + " ***** HISTORIC ROW DATE LIST CHANGE START ****");
 
-        resolveMethodExpression("#{bindings.HistoricalListViewObj1.collectionModel.makeCurrent}", null, new Class[] { SelectionEvent.class }, new Object[] { selectionEvent });
+        resolveMethodExpression("#{bindings.HistoricalListViewObj1.collectionModel.makeCurrent}", null,
+                                new Class[] { SelectionEvent.class }, new Object[] { selectionEvent });
         RichTable object = (RichTable)selectionEvent.getSource();
         Row row = null;
         for (Object facesRowKey : object.getSelectedRowKeys()) {
             object.setRowKey(facesRowKey);
             Object o = object.getRowData();
             JUCtrlHierNodeBinding rowData = (JUCtrlHierNodeBinding)o;
-            if (rowData == null) return;
+            if (rowData == null)
+                return;
             row = rowData.getRow();
-            }
+        }
 
-        if (row == null) return;
+        if (row == null)
+            return;
 
-        processSearchResults(row);        
+        processSearchResults(row);
 
         AdfFacesContext.getCurrentInstance().addPartialTarget(cntrlTrain);
         AdfFacesContext.getCurrentInstance().partialUpdateNotify(cntrlTrain);
-        
+
         // get the notes.
         getInfNotes();
 
         //CLEAR OLD TRESS
-        WhodSourceTermSearchBean nMQSourceTermSearchBean = (WhodSourceTermSearchBean)AdfFacesContext.getCurrentInstance().getPageFlowScope().get("WhodSourceTermSearchBean");
+        WhodSourceTermSearchBean nMQSourceTermSearchBean =
+            (WhodSourceTermSearchBean)AdfFacesContext.getCurrentInstance().getPageFlowScope().get("WhodSourceTermSearchBean");
         nMQSourceTermSearchBean.clearTree();
         nMQWizardBean.clearRelations();
-        
+
         // update the hierarchy
-        
+
         //nMQWizardBean.updateRelations(); ???
         clearSearch("HistoricalListViewObj1Iterator");
         CSMQBean.logger.info(userBean.getCaller() + " ***** HISTORIC ROW DATE LIST CHANGE COMPLETE ****");
     }
-    
-    private void processSearchResults (Row row) {
+
+    private void processSearchResults(Row row) {
         currentTermName = Utils.getAsString(row, "Term");
         CSMQBean.logger.info(userBean.getCaller() + " currentTermName:" + currentTermName);
-        
-//        currentMqlevel = Utils.getAsString(row, "Mqlevel");
-//        CSMQBean.logger.info(userBean.getCaller() + " currentMqlevel:" + currentMqlevel);
-        
+
+        //        currentMqlevel = Utils.getAsString(row, "Mqlevel");
+        //        CSMQBean.logger.info(userBean.getCaller() + " currentMqlevel:" + currentMqlevel);
+
         currentMqcode = Utils.getAsString(row, "DictContentCode");
         CSMQBean.logger.info(userBean.getCaller() + " currentMqcode:" + currentMqcode);
-        
-//        currentMqalgo = Utils.getAsString(row, "Mqalgo");
-            
-//        if (currentMqalgo == null || currentMqalgo.length() < 1)
-//            currentMqalgo = CSMQBean.DEFAULT_ALGORITHM;
-//            
-//        CSMQBean.logger.info(userBean.getCaller() + " currentMqalgo:" + currentMqalgo);
 
-//        Utils.getAsString(row, "Mqaltcode");
-//        CSMQBean.logger.info(userBean.getCaller() + " currentMqaltcode:" + currentMqaltcode);
+        //        currentMqalgo = Utils.getAsString(row, "Mqalgo");
 
-        
+        //        if (currentMqalgo == null || currentMqalgo.length() < 1)
+        //            currentMqalgo = CSMQBean.DEFAULT_ALGORITHM;
+        //
+        //        CSMQBean.logger.info(userBean.getCaller() + " currentMqalgo:" + currentMqalgo);
+
+        //        Utils.getAsString(row, "Mqaltcode");
+        //        CSMQBean.logger.info(userBean.getCaller() + " currentMqaltcode:" + currentMqaltcode);
+
+
         //currentDictionary = getParamDictName();
         currentDictionary = Utils.getAsString(row, "DictionaryName");
         CSMQBean.logger.info(userBean.getCaller() + " currentDictionary:" + currentDictionary);
-        
+
         // TEST 9-MAY
         //currentReleaseGroup = getParamReleaseGroup();
         currentReleaseGroup = Utils.getAsString(row, "RelaeaseGroup");
         CSMQBean.logger.info(userBean.getCaller() + " currentReleaseGroup:" + currentReleaseGroup);
 
-//        currentMqstatus = Utils.getAsString(row, "Mqstatus");
-//        CSMQBean.logger.info(userBean.getCaller() + " currentMqstatus:" + currentMqstatus);
+        //        currentMqstatus = Utils.getAsString(row, "Mqstatus");
+        //        CSMQBean.logger.info(userBean.getCaller() + " currentMqstatus:" + currentMqstatus);
 
         currentDictContentID = Utils.getAsString(row, "DictContentId");
         CSMQBean.logger.info(userBean.getCaller() + " currentDictContentID:" + currentDictContentID);
-        
-//        currentApprovalFlag = Utils.getAsString(row, "ApprFlag");
-//        CSMQBean.logger.info(userBean.getCaller() + " currentApprovalFlag:" + currentApprovalFlag);
+
+        //        currentApprovalFlag = Utils.getAsString(row, "ApprFlag");
+        //        CSMQBean.logger.info(userBean.getCaller() + " currentApprovalFlag:" + currentApprovalFlag);
 
         currentVersion = Utils.getAsString(row, "DictionaryVersion");
         CSMQBean.logger.info(userBean.getCaller() + " currentVersion:" + currentVersion);
@@ -1300,81 +1328,81 @@ public class WhodWizardSearchBean {
         currentSubType = Utils.getAsString(row, "TermSubtype");
         CSMQBean.logger.info(userBean.getCaller() + " currentSubType:" + currentSubType);
 
-//        currentMqscp = Utils.getAsString(row, "Mqscp");
-//        CSMQBean.logger.info(userBean.getCaller() + " currentMqscp:" + currentMqscp);
+        //        currentMqscp = Utils.getAsString(row, "Mqscp");
+        //        CSMQBean.logger.info(userBean.getCaller() + " currentMqscp:" + currentMqscp);
 
-//        currentMqgroups = Utils.getAsString(row, "Mqgroup");
-//        CSMQBean.logger.info(userBean.getCaller() + " currentMqgroups:" + currentMqgroups);
+        //        currentMqgroups = Utils.getAsString(row, "Mqgroup");
+        //        CSMQBean.logger.info(userBean.getCaller() + " currentMqgroups:" + currentMqgroups);
 
-//        currentMqproduct = Utils.getAsString(row, "Mqprodct");
-//        CSMQBean.logger.info(userBean.getCaller() + " currentMqproduct:" + currentMqproduct);
+        //        currentMqproduct = Utils.getAsString(row, "Mqprodct");
+        //        CSMQBean.logger.info(userBean.getCaller() + " currentMqproduct:" + currentMqproduct);
 
-//        currentCriticalEvent = Utils.getAsString(row, "Mqcrtev");
-//        CSMQBean.logger.info(userBean.getCaller() + " currentCriticalEvent:" + currentCriticalEvent);
-        
-//        currentStatus = Utils.getAsString(row, "CurPendStatus");
-//        CSMQBean.logger.info(userBean.getCaller() + " currentStatus:" + currentStatus);
-        
-//        currentState = Utils.getAsString(row, "State");
-//        CSMQBean.logger.info(userBean.getCaller() + " currentState:" + currentState);
-        
-//        requestedByDate = Utils.getAsDate(row, "DueDate");
-//        CSMQBean.logger.info(userBean.getCaller() + " requestedByDate:" + requestedByDate);
-        
-//        currentDateRequested = Utils.getAsDate(row, "Dates");
-//        CSMQBean.logger.info(userBean.getCaller() + " currentDateRequested:" + currentDateRequested);
-//        
-//        currentReasonForRequest = Utils.getAsString(row, "ReasonForRequest");
-//        CSMQBean.logger.info(userBean.getCaller() + " currentReasonForRequest:" + currentReasonForRequest);
-//        
-//        currentReasonForApproval = Utils.getAsString(row, "ReasonForApproval");
-//        CSMQBean.logger.info(userBean.getCaller() + " currentReasonForApproval:" + currentReasonForApproval);
-//        
+        //        currentCriticalEvent = Utils.getAsString(row, "Mqcrtev");
+        //        CSMQBean.logger.info(userBean.getCaller() + " currentCriticalEvent:" + currentCriticalEvent);
+
+        //        currentStatus = Utils.getAsString(row, "CurPendStatus");
+        //        CSMQBean.logger.info(userBean.getCaller() + " currentStatus:" + currentStatus);
+
+        //        currentState = Utils.getAsString(row, "State");
+        //        CSMQBean.logger.info(userBean.getCaller() + " currentState:" + currentState);
+
+        //        requestedByDate = Utils.getAsDate(row, "DueDate");
+        //        CSMQBean.logger.info(userBean.getCaller() + " requestedByDate:" + requestedByDate);
+
+        //        currentDateRequested = Utils.getAsDate(row, "Dates");
+        //        CSMQBean.logger.info(userBean.getCaller() + " currentDateRequested:" + currentDateRequested);
+        //
+        //        currentReasonForRequest = Utils.getAsString(row, "ReasonForRequest");
+        //        CSMQBean.logger.info(userBean.getCaller() + " currentReasonForRequest:" + currentReasonForRequest);
+        //
+        //        currentReasonForApproval = Utils.getAsString(row, "ReasonForApproval");
+        //        CSMQBean.logger.info(userBean.getCaller() + " currentReasonForApproval:" + currentReasonForApproval);
+        //
         //isApproved = Utils.getAsBoolean(row, "ApprFlag");
         //CSMQBean.logger.info(userBean.getCaller() + " isApproved:" + isApproved);
-        
-//        currentCutOffDate = Utils.getAsString(row, "CutOffDate");
-//        CSMQBean.logger.info(userBean.getCaller() + " currentCutOffDate:" + currentCutOffDate);
-//        
-//        currentUntilDate = Utils.getAsString(row, "NmatUntildt");
-//        CSMQBean.logger.info(userBean.getCaller() + " currentUntilDate:" + currentUntilDate);
-//
-//        currentCreateDate = Utils.getAsString(row, "NmatCreatedt");
-//        CSMQBean.logger.info(userBean.getCaller() + " currentCreateDate:" + currentCreateDate);
-        
+
+        //        currentCutOffDate = Utils.getAsString(row, "CutOffDate");
+        //        CSMQBean.logger.info(userBean.getCaller() + " currentCutOffDate:" + currentCutOffDate);
+        //
+        //        currentUntilDate = Utils.getAsString(row, "NmatUntildt");
+        //        CSMQBean.logger.info(userBean.getCaller() + " currentUntilDate:" + currentUntilDate);
+        //
+        //        currentCreateDate = Utils.getAsString(row, "NmatCreatedt");
+        //        CSMQBean.logger.info(userBean.getCaller() + " currentCreateDate:" + currentCreateDate);
+
         currentCreatedBy = Utils.getAsString(row, "CreatedBy");
         CSMQBean.logger.info(userBean.getCaller() + " Createdby:" + currentCreatedBy);
-        
-       // currentExtension = Utils.getAsString(row, "Extension");
+
+        // currentExtension = Utils.getAsString(row, "Extension");
         currentExtension = "SDG";
         CSMQBean.logger.info(userBean.getCaller() + " Extension:" + currentExtension);
-        
+
         nMQWizardBean.setCurrentExtension(currentExtension);
         nMQWizardBean.setCurrentTermName(currentTermName);
-        nMQWizardBean.setCurrentFilterDictionaryShortName(this.currentDictionary); 
-        nMQWizardBean.setCurrentPredictGroups(currentReleaseGroup);  //<--test
+        nMQWizardBean.setCurrentFilterDictionaryShortName(this.currentDictionary);
+        nMQWizardBean.setCurrentPredictGroups(currentReleaseGroup); //<--test
         nMQWizardBean.setIsApproved(isApproved);
         nMQWizardBean.setCurrentMQALGO(currentMqalgo);
         nMQWizardBean.setCurrentState(currentState);
-        nMQWizardBean.setCurrentMQCRTEV(currentCriticalEvent); 
+        nMQWizardBean.setCurrentMQCRTEV(currentCriticalEvent);
         nMQWizardBean.setCurrentTermLevel("1");
         nMQWizardBean.setCurrentScope(currentMqscp);
         nMQWizardBean.setCurrentContentCode(currentMqcode);
-        
+
         nMQWizardBean.getDictionaryInfo(); // GET BASE DICT INFO FROM FILTER
-        
+
         //UPDATE THE WIZARD WITH THE RESULTS
-        
+
         nMQWizardBean.setCurrentDictContentID(currentDictContentID);
         nMQWizardBean.setActiveDictionary(currentDictionary);
         nMQWizardBean.setCurrentMQALGO(currentMqalgo);
         nMQWizardBean.setCurrentMQGROUP(currentMqgroups);
-        
+
         nMQWizardBean.setCurrentProduct(currentMqproduct);
-       
+
         nMQWizardBean.setCurrentMQStatus(currentMqstatus);
         nMQWizardBean.setCurrentStatus(currentStatus);
-       
+
         nMQWizardBean.setCurrentDateRequested(currentDateRequested);
         nMQWizardBean.setCurrentRequestedByDate(requestedByDate);
         nMQWizardBean.setCurrentReasonForRequest(currentReasonForRequest);
@@ -1386,66 +1414,72 @@ public class WhodWizardSearchBean {
         nMQWizardBean.setCurrentVersion(currentVersion);
         nMQWizardBean.setCurrentCreatedBy(currentCreatedBy);
         nMQWizardBean.setCurrentExtension(currentExtension);
-        
-        /* 
+
+        /*
          * TES 31-JUL-2014
            Added to get activation info
         */
-        Hashtable <String, String> activationInfo = WhodUtils.getActivationInfo(currentDictContentID, currentDictionary);
+        Hashtable<String, String> activationInfo =
+            WhodUtils.getActivationInfo(currentDictContentID, currentDictionary);
         if (activationInfo != null) {
             nMQWizardBean.setCurrentInitialCreationDate(activationInfo.get("initialCreationDate"));
             nMQWizardBean.setCurrentInitialCreationBy(activationInfo.get("initialCreationBy"));
             nMQWizardBean.setCurrentLastActivationDate(activationInfo.get("lastActivationDate"));
             nMQWizardBean.setCurrentActivationBy(activationInfo.get("activationBy"));
-        
-            CSMQBean.logger.info(userBean.getCaller() + " initialCreationDate:" + activationInfo.get("initialCreationDate"));
-            CSMQBean.logger.info(userBean.getCaller() + " initialCreationBy:" + activationInfo.get("initialCreationBy"));
-            CSMQBean.logger.info(userBean.getCaller() + " lastActivationDate:" + activationInfo.get("lastActivationDate"));
+
+            CSMQBean.logger.info(userBean.getCaller() + " initialCreationDate:" +
+                                 activationInfo.get("initialCreationDate"));
+            CSMQBean.logger.info(userBean.getCaller() + " initialCreationBy:" +
+                                 activationInfo.get("initialCreationBy"));
+            CSMQBean.logger.info(userBean.getCaller() + " lastActivationDate:" +
+                                 activationInfo.get("lastActivationDate"));
             CSMQBean.logger.info(userBean.getCaller() + " activationBy:" + activationInfo.get("activationBy"));
-        }
-        else {
+        } else {
             CSMQBean.logger.info(userBean.getCaller() + " *** UNABLE TO GET ACTIVATION INFO *** ");
             nMQWizardBean.setCurrentInitialCreationDate("N/A");
             nMQWizardBean.setCurrentInitialCreationBy("N/A");
             nMQWizardBean.setCurrentLastActivationDate("N/A");
             nMQWizardBean.setCurrentActivationBy("N/A");
-            }
-            
-            
-            
-        
+        }
+
+
         /*
          * TES 1-AUG-2014
          */
         // No need to load the designee list in case of copy existing.Default set as logged in user name already.
-        if (nMQWizardBean.getMode() != cSMQBean.MODE_COPY_EXISTING){
+        if (nMQWizardBean.getMode() != cSMQBean.MODE_COPY_EXISTING) {
             nMQWizardBean.setDesigneeList(getDesignees(currentDictContentID));
         }
-              
+
         // FIX FOR REGEX CRAZINESS
         if (currentMqproduct != null) {
             currentMqproduct = currentMqproduct.replace(CSMQBean.DEFAULT_DELIMETER_CHAR, '%');
             Collections.addAll(nMQWizardBean.getProductList(), currentMqproduct.split("%"));
-            }
+        }
 
         if (currentMqgroups != null) {
             currentMqgroups = currentMqgroups.replace(CSMQBean.DEFAULT_DELIMETER_CHAR, '%');
             Collections.addAll(nMQWizardBean.getMQGroupList(), currentMqgroups.split("%"));
-            }
+        }
         
-        // set the query type 
+        Collections.addAll(nMQWizardBean.getProductList(), new String[]{"AIN457", "ABILIFY"});
+        Collections.addAll(nMQWizardBean.getMQGroupList(), new String[]{"APO", "AAA"});
+        nMQWizardBean.setDesigneeList(new ArrayList<String>());
+        Collections.addAll(nMQWizardBean.getDesigneeList(), new String[]{"CQT_ML", "OPS$TEST91"});
+
+        // set the query type
         /*
          * TES CHANGED 06-AUG-2014
          */
-        
+
         //nMQWizardBean.setIsNMQ(currentMqlevel.indexOf("N") > -1);
         nMQWizardBean.setIsNMQ(this.currentExtension.equalsIgnoreCase("NMQ"));
         nMQWizardBean.setIsSMQ(this.currentExtension.equalsIgnoreCase("SMQ"));
-        
+
         //update the history
         // todo: add later
         //userBean.addHistory(currentTermName, currentMqcode);
-        
+
     }
 
 
@@ -1527,81 +1561,80 @@ public class WhodWizardSearchBean {
 
     public void dictionaryChange(ValueChangeEvent valueChangeEvent) {
         try {
-            this.currentDictionary = valueChangeEvent.getNewValue().toString(); 
-            
+            this.currentDictionary = valueChangeEvent.getNewValue().toString();
+
             if (this.currentDictionary.equals(cSMQBean.getProperty("DEFAULT_BASE_DICTIONARY_SHORT_NAME"))) { // process for MedDRA query
-                
-                nMQWizardBean.setIsMedDRA(true);  // used for rendering the correct controls
+
+                nMQWizardBean.setIsMedDRA(true); // used for rendering the correct controls
                 this.paramQueryType = CSMQBean.WILDCARD;
-                
+
                 paramLevel = CSMQBean.BASE_LEVEL_ONE;
                 this.MEDDraSearch = true;
-                
+
                 ctrlNMQStatus.setRendered(false);
                 ctrlState.setRendered(false);
                 ctrlMQScope.setRendered(false);
                 ctrlCriticalEvent.setRendered(false);
                 ctrlMQGroups.setRendered(false);
-                
+
                 if (ctrlStartDate != null)
                     ctrlStartDate.setRendered(false);
-                
+
                 if (ctrlEndDate != null)
                     ctrlEndDate.setRendered(false);
-                
+
                 if (cntrlDictionaryVersion != null)
                     cntrlDictionaryVersion.setRendered(true);
-                
+
                 if (ctrlLevelList != null)
                     ctrlLevelList.setRendered(false);
-                    
+
                 if (this.ctrlProducts != null)
                     this.ctrlProducts.setRendered(false);
-                
+
                 controlMQLevel.setDisabled(false);
 
-                }
-            else {
-                nMQWizardBean.setIsMedDRA(false);  // used for rendering the correct controls
+            } else {
+                nMQWizardBean.setIsMedDRA(false); // used for rendering the correct controls
                 this.paramQueryType = CSMQBean.NMQ_SMQ_SEARCH;
                 paramLevel = CSMQBean.FILTER_LEVEL_ONE;
                 this.MEDDraSearch = false;
-                
-                renderingRulesBean = (RenderingRulesBean)ADFContext.getCurrent().getRequestScope().get("RenderingRulesBean");
+
+                renderingRulesBean =
+                        (RenderingRulesBean)ADFContext.getCurrent().getRequestScope().get("RenderingRulesBean");
                 ctrlNMQStatus.setRendered(true && renderingRulesBean.isWizardSearchRenderSMQStatus());
                 ctrlState.setRendered(true);
                 ctrlMQScope.setRendered(true && renderingRulesBean.isWizardSearchRenderScope());
                 ctrlCriticalEvent.setRendered(true && renderingRulesBean.isWizardSearchRenderCriticalEvent());
                 ctrlMQGroups.setRendered(true && renderingRulesBean.isWizardSearchRenderGroup());
-     
+
                 if (cntrlDictionaryVersion != null)
                     cntrlDictionaryVersion.setRendered(false);
-                
+
                 if (ctrlLevelList != null)
                     ctrlLevelList.setRendered(true);
-                
+
                 if (this.ctrlProducts != null)
                     this.ctrlProducts.setRendered(true);
-                
-                if (nMQWizardBean.isIsNMQ() || nMQWizardBean.isIsSMQ() )
+
+                if (nMQWizardBean.isIsNMQ() || nMQWizardBean.isIsSMQ())
                     controlMQLevel.setDisabled(false);
                 else
                     controlMQLevel.setDisabled(true);
-                
-                }
-            
+
+            }
+
             AdfFacesContext.getCurrentInstance().addPartialTarget(cntrlSearchPanel);
             AdfFacesContext.getCurrentInstance().partialUpdateNotify(cntrlSearchPanel);
-            
+
             //AdfFacesContext.getCurrentInstance().addPartialTarget(controlMQLevel);
             //AdfFacesContext.getCurrentInstance().partialUpdateNotify(controlMQLevel);
-                
-            
-            } 
-        catch (Exception e) {
+
+
+        } catch (Exception e) {
             e.printStackTrace();
-            }
         }
+    }
 
     public void releaseGroupChange(ValueChangeEvent valueChangeEvent) {
         //this.currentReleaseGroup = ctrlReleaseGroupSearch.getValue().toString();
@@ -1616,7 +1649,7 @@ public class WhodWizardSearchBean {
         return ctrlDictionary;
     }
 
-    
+
     public void setCurrentDictionaryType(String currentDictionaryType) {
         this.currentDictionaryType = currentDictionaryType;
     }
@@ -1639,12 +1672,15 @@ public class WhodWizardSearchBean {
     }
 
     public String getParamMQCode() {
-        if (IASearch) return paramMQCode; // the MQCode is passed in as a param when called from IA
-        
+        if (IASearch)
+            return paramMQCode; // the MQCode is passed in as a param when called from IA
+
         paramMQCode = cSMQBean.WILDCARD;
-        if (ctrlMQCode != null && ctrlMQCode.getValue() != null && !ctrlMQCode.getValue().toString().equalsIgnoreCase("null") && ctrlMQCode.getValue().toString().length() > 0)
+        if (ctrlMQCode != null && ctrlMQCode.getValue() != null &&
+            !ctrlMQCode.getValue().toString().equalsIgnoreCase("null") &&
+            ctrlMQCode.getValue().toString().length() > 0)
             paramMQCode = ctrlMQCode.getValue().toString();
-        
+
         return paramMQCode;
     }
 
@@ -1653,9 +1689,11 @@ public class WhodWizardSearchBean {
     }
 
     public String getParamMQCriticalEvent() {
-        if (IASearch) return CSMQBean.WILDCARD;
-        
-        if (ctrlCriticalEvent == null) return null;
+        if (IASearch)
+            return CSMQBean.WILDCARD;
+
+        if (ctrlCriticalEvent == null)
+            return null;
         String temp = String.valueOf(ctrlCriticalEvent.getValue());
         if (temp != null)
             paramMQCriticalEvent = temp.trim();
@@ -1665,15 +1703,16 @@ public class WhodWizardSearchBean {
 
     public void setParamQueryType(String paramQueryType) {
         this.paramQueryType = paramQueryType;
-    }   
+    }
 
     //AMC 7/30/14 using levels instead of paramquertype for SQL query
+
     public String getParamQueryType() {
         return paramQueryType;
         //nMQWizardBean.getCurrentTermLevel()
-       }
+    }
 
-    public String getExtensionType(){
+    public String getExtensionType() {
         return paramQueryType;
     }
 
@@ -1760,24 +1799,22 @@ public class WhodWizardSearchBean {
     public void releaseStatusChanged(ValueChangeEvent valueChangeEvent) {
         if (ctrlReleaseStatus != null)
             currentMqstatus = ctrlReleaseStatus.getValue().toString();
-        
+
         if (currentMqstatus.equals(CSMQBean.CURRENT_RELEASE_STATUS)) {
             ctrlReleaseGroupSearch.setRendered(false);
             cntrlApprovedColumn.setRendered(true);
             cntrlApproved.setDisabled(false);
-            }
-        else if (currentMqstatus.equals(CSMQBean.PENDING_RELEASE_STATUS)) {
+        } else if (currentMqstatus.equals(CSMQBean.PENDING_RELEASE_STATUS)) {
             ctrlReleaseGroupSearch.setRendered(false);
             cntrlApprovedColumn.setRendered(true);
             ctrlNMQStatus.setValue(CSMQBean.BOTH_RELEASE_STATUSES);
             cntrlApproved.setDisabled(true);
-            }
-        else {
+        } else {
             ctrlReleaseGroupSearch.setRendered(true);
             cntrlApprovedColumn.setRendered(false);
             ctrlNMQStatus.setValue(CSMQBean.BOTH_RELEASE_STATUSES);
             cntrlApproved.setDisabled(true);
-            }
+        }
         AdfFacesContext.getCurrentInstance().addPartialTarget(cntrlParamPanel);
         AdfFacesContext.getCurrentInstance().partialUpdateNotify(cntrlParamPanel);
         AdfFacesContext.getCurrentInstance().addPartialTarget(ctrlSearchResults);
@@ -1793,23 +1830,22 @@ public class WhodWizardSearchBean {
     public String getSearchLabelPrefix() {
         if (this.MEDDraSearch) {
             searchLabelPrefix = "";
-            }
-        else {
-             if (nMQWizardBean.getMode() == CSMQBean.MODE_UPDATE_EXISTING) 
-                 this.searchLabelPrefix = NMQ_LABEL;
-            else if (nMQWizardBean.getMode() == CSMQBean.MODE_UPDATE_SMQ) 
-                this.searchLabelPrefix = SMQ_LABEL;
-            else if (nMQWizardBean.getMode() == CSMQBean.MODE_COPY_EXISTING) 
-                this.searchLabelPrefix = NMQ_SMQ_LABEL;
-            else if (nMQWizardBean.getMode() == CSMQBean.MODE_INSERT_NEW) 
+        } else {
+            if (nMQWizardBean.getMode() == CSMQBean.MODE_UPDATE_EXISTING)
                 this.searchLabelPrefix = NMQ_LABEL;
-            else if (nMQWizardBean.getMode() == CSMQBean.MODE_HISTORIC) 
+            else if (nMQWizardBean.getMode() == CSMQBean.MODE_UPDATE_SMQ)
+                this.searchLabelPrefix = SMQ_LABEL;
+            else if (nMQWizardBean.getMode() == CSMQBean.MODE_COPY_EXISTING)
                 this.searchLabelPrefix = NMQ_SMQ_LABEL;
-            else if (nMQWizardBean.getMode() == CSMQBean.MODE_BROWSE_SEARCH) 
-                this.searchLabelPrefix = NMQ_SMQ_LABEL;                
-            else if (nMQWizardBean.getMode() == CSMQBean.MODE_IMPACT_ASSESSMENT) 
+            else if (nMQWizardBean.getMode() == CSMQBean.MODE_INSERT_NEW)
+                this.searchLabelPrefix = NMQ_LABEL;
+            else if (nMQWizardBean.getMode() == CSMQBean.MODE_HISTORIC)
                 this.searchLabelPrefix = NMQ_SMQ_LABEL;
-            }
+            else if (nMQWizardBean.getMode() == CSMQBean.MODE_BROWSE_SEARCH)
+                this.searchLabelPrefix = NMQ_SMQ_LABEL;
+            else if (nMQWizardBean.getMode() == CSMQBean.MODE_IMPACT_ASSESSMENT)
+                this.searchLabelPrefix = NMQ_SMQ_LABEL;
+        }
         return searchLabelPrefix;
     }
 
@@ -1892,8 +1928,10 @@ public class WhodWizardSearchBean {
     }
 
     public String getParamUserRole() {
-        if (userBean.isUserInRole(CSMQBean.ROLE_REQUESTOR)) paramUserRole = CSMQBean.ROLE_REQUESTOR;
-        if (userBean.isUserInRole(CSMQBean.ROLE_MQM)) paramUserRole = CSMQBean.ROLE_MQM;
+        if (userBean.isUserInRole(CSMQBean.ROLE_REQUESTOR))
+            paramUserRole = CSMQBean.ROLE_REQUESTOR;
+        if (userBean.isUserInRole(CSMQBean.ROLE_MQM))
+            paramUserRole = CSMQBean.ROLE_MQM;
         return paramUserRole;
     }
 
@@ -2071,7 +2109,7 @@ public class WhodWizardSearchBean {
 
     public void extensionChanged(ValueChangeEvent valueChangeEvent) {
         controlMQLevel.setDisabled(true);
-        
+
         String newExt = valueChangeEvent.getNewValue().toString();
         boolean ALL = newExt.equals("%");
         nMQWizardBean.setIsNMQ(newExt.equals("NMQ"));
@@ -2080,11 +2118,10 @@ public class WhodWizardSearchBean {
         if (MEDDraSearch) {
             paramLevel = CSMQBean.BASE_LEVEL_ONE;
             controlMQLevel.setDisabled(false);
-            }
-        else if (ALL || nMQWizardBean.isIsNMQ() || nMQWizardBean.isIsSMQ()) {
+        } else if (ALL || nMQWizardBean.isIsNMQ() || nMQWizardBean.isIsSMQ()) {
             paramLevel = CSMQBean.FILTER_LEVEL_ONE;
             controlMQLevel.setDisabled(false);
-            }
+        }
 
         AdfFacesContext.getCurrentInstance().addPartialTarget(controlMQLevel);
         AdfFacesContext.getCurrentInstance().partialUpdateNotify(controlMQLevel);
@@ -2120,5 +2157,49 @@ public class WhodWizardSearchBean {
 
     public List<String> getProductList() {
         return productList;
+    }
+
+    public void setWhodExtensionSI(List<SelectItem> whodExtensionSI) {
+        this.whodExtensionSI = whodExtensionSI;
+    }
+
+    public List<SelectItem> getWhodExtensionSI() {
+        if (whodExtensionSI == null) {
+            whodExtensionSI = ADFUtils.selectItemsForIterator("WHODExtentionListVO1Iterator", "RefCodelistValueShortVal", "LongValue");
+        }
+        return whodExtensionSI;
+    }
+
+    public void setWhodReleaseGroupSI(List<SelectItem> whodReleaseGroupSI) {
+        this.whodReleaseGroupSI = whodReleaseGroupSI;
+    }
+
+    public List<SelectItem> getWhodReleaseGroupSI() {
+        if (whodReleaseGroupSI == null) {
+            whodReleaseGroupSI = ADFUtils.selectItemsForIterator("WHODGroupList1Iterator", "ShortVal", "LongValue");
+        }
+        return whodReleaseGroupSI;
+    }
+
+    public void setWhodProductSI(List<SelectItem> whodProductSI) {
+        this.whodProductSI = whodProductSI;
+    }
+
+    public List<SelectItem> getWhodProductSI() {
+        if (whodProductSI == null) {
+            whodProductSI = ADFUtils.selectItemsForIterator("WHODProductList1Iterator", "ShortVal", "LongValue");
+        }
+        return whodProductSI;
+    }
+
+    public void setWhodGroupSI(List<SelectItem> whodGroupSI) {
+        this.whodGroupSI = whodGroupSI;
+    }
+
+    public List<SelectItem> getWhodGroupSI() {
+        if (whodGroupSI == null) {
+            whodGroupSI = ADFUtils.selectItemsForIterator("WHODGroupList1Iterator", "ShortVal", "LongValue");
+        }
+        return whodGroupSI;
     }
 }

@@ -171,4 +171,23 @@
       <property
          name="sdm:polyPoints">R50,-295.5,294.74707,-169.97754,311.18945,L50</property>
    </ControlFlowCase>
+   <WildcardControlFlowRule
+      id="WildcardControlFlowRule15">
+      <property
+         name="activityId">*</property>
+      <property
+         name="y">236.44824</property>
+      <property
+         name="x">413.0</property>
+   </WildcardControlFlowRule>
+   <ControlFlowCase
+      islink="true"
+      id="ControlFlowCase16"
+      from="WildcardControlFlowRule15"
+      to="TaskFlowReturn40">
+      <property
+         name="fromOutcome">CANCEL</property>
+      <property
+         name="sdm:polyPoints">T50,413.0,194.09766,412.5,129.0459,B50</property>
+   </ControlFlowCase>
 </SDM>

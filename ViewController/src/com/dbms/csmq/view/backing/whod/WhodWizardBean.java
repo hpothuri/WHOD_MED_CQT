@@ -6,6 +6,7 @@ import com.dbms.csmq.view.backing.NMQ.NMQUtils;
 import com.dbms.csmq.view.hierarchy.TermHierarchyBean;
 
 import com.dbms.csmq.view.hierarchy.WhodTermHierarchyBean;
+import com.dbms.csmq.view.util.ADFUtils;
 import com.dbms.util.dml.DMLUtils;
 
 import java.sql.CallableStatement;
@@ -184,6 +185,12 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
     private String currentTermLevelNumber;
     private String designeeListAsString;
     private boolean actionDelete = false;
+    
+    private List<SelectItem> whodExtensionSI;
+    private List<SelectItem> whodReleaseGroupSI;
+    private List<SelectItem> whodProductSI;
+    private List<SelectItem> whodGroupSI;
+    private List<SelectItem> whodDesigneeSI;
 
     public WhodWizardBean() {
 
@@ -381,6 +388,8 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
         if (this.mode == CSMQBean.MODE_UPDATE_EXISTING || this.mode == CSMQBean.MODE_COPY_EXISTING ||
             this.mode == CSMQBean.MODE_UPDATE_SMQ || this.mode == CSMQBean.MODE_BROWSE_SEARCH)
             currentDictionary = cSMQBean.getDefaultFilterDictionaryShortName();
+        //TODO Need to remove hardcoding 
+        currentDictionary = "CQTSDG";
     }
 
 
@@ -615,6 +624,7 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
          * add currentDesignee
          */
         else {
+            /*
             CSMQBean.logger.info(userBean.getCaller() + " CALLING: saveDetails");
             String designeeListString = "";
             if (designeeList != null)
@@ -625,6 +635,7 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
                                          currentContentCode, this.getUpdateParam(), currentRequestor,
                                          currentDictContentID, userBean.getUserRole(), action, currentStatus,
                                          designeeListString);
+            */
         }
 
         if (results == null)
@@ -1689,5 +1700,60 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
 
     public boolean resetState() {
         return false;
+    }
+    
+    public void setWhodExtensionSI(List<SelectItem> whodExtensionSI) {
+        this.whodExtensionSI = whodExtensionSI;
+    }
+
+    public List<SelectItem> getWhodExtensionSI() {
+        if (whodExtensionSI == null) {
+            whodExtensionSI = ADFUtils.selectItemsForIterator("WHODExtentionListVO1Iterator", "RefCodelistValueShortVal", "LongValue");
+        }
+        return whodExtensionSI;
+    }
+
+    public void setWhodReleaseGroupSI(List<SelectItem> whodReleaseGroupSI) {
+        this.whodReleaseGroupSI = whodReleaseGroupSI;
+    }
+
+    public List<SelectItem> getWhodReleaseGroupSI() {
+        if (whodReleaseGroupSI == null) {
+            whodReleaseGroupSI = ADFUtils.selectItemsForIterator("releaseGroupsSearch1Iterator", "PredictGroupId", "Description");
+        }
+        return whodReleaseGroupSI;
+    }
+
+    public void setWhodProductSI(List<SelectItem> whodProductSI) {
+        this.whodProductSI = whodProductSI;
+    }
+
+    public List<SelectItem> getWhodProductSI() {
+        if (whodProductSI == null) {
+            whodProductSI = ADFUtils.selectItemsForIterator("WHODProductList1Iterator", "ShortVal", "LongValue");
+        }
+        return whodProductSI;
+    }
+
+    public void setWhodGroupSI(List<SelectItem> whodGroupSI) {
+        this.whodGroupSI = whodGroupSI;
+    }
+
+    public List<SelectItem> getWhodGroupSI() {
+        if (whodGroupSI == null) {
+            whodGroupSI = ADFUtils.selectItemsForIterator("WHODGroupList1Iterator", "ShortVal", "LongValue");
+        }
+        return whodGroupSI;
+    }
+
+    public void setWhodDesigneeSI(List<SelectItem> whodDesigneeSI) {
+        this.whodDesigneeSI = whodDesigneeSI;
+    }
+
+    public List<SelectItem> getWhodDesigneeSI() {
+        if (whodDesigneeSI == null) {
+            whodDesigneeSI = ADFUtils.selectItemsForIterator("designeeListVO1Iterator", "OaAccountName", "PersonName");
+        }
+        return whodDesigneeSI;
     }
 }
