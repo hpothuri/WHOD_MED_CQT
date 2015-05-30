@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE AppModule SYSTEM "jbo_03_01.dtd">
+<!---->
+<AppModule
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="WHODProductModule"
+  Version="11.1.2.64.36"
+  ClearCacheOnRollback="true">
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="com.dbms.csmq.model.product.WHODProductModule_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <ViewUsage
+    Name="WHODProductList1"
+    ViewObjectName="com.dbms.csmq.model.product.WHODProductListVO"/>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="com.dbms.csmq.model.ModelBundle"/>
+  </ResourceBundle>
+</AppModule>

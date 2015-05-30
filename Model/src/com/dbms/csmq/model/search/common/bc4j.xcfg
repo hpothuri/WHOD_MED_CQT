@@ -13,4 +13,15 @@
          <Custom JDBCDataSource="jdbc/TMSDS"/>
       </AppModuleConfig>
    </AppModuleConfigBag>
+   <AppModuleConfigBag ApplicationName="com.dbms.csmq.model.search.WHODSearchModule">
+      <AppModuleConfig name="WHODSearchModuleLocal" ApplicationName="com.dbms.csmq.model.search.WHODSearchModule" DeployPlatform="LOCAL" jbo.project="com.dbms.csmq.model.Model">
+         <Security AppModuleJndiName="com.dbms.csmq.model.search.WHODSearchModule"/>
+         <Custom JDBCDataSource="java:comp/env/jdbc/TMSDS"/>
+      </AppModuleConfig>
+      <AppModuleConfig name="WHODSearchModuleShared" ApplicationName="com.dbms.csmq.model.search.WHODSearchModule" DeployPlatform="LOCAL" jbo.project="com.dbms.csmq.model.Model">
+         <AM-Pooling jbo.ampool.maxpoolsize="1" jbo.ampool.isuseexclusive="false"/>
+         <Security AppModuleJndiName="com.dbms.csmq.model.search.WHODSearchModule"/>
+         <Custom JDBCDataSource="java:comp/env/jdbc/TMSDS"/>
+      </AppModuleConfig>
+   </AppModuleConfigBag>
 </BC4JConfig>

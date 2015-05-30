@@ -241,7 +241,7 @@ public class WhodWizardSearchBean {
        
         //set defaults     
         if (nMQWizardBean.getMode() == CSMQBean.MODE_UPDATE_EXISTING) {
-            this.searchIterator = "SimpleSearch1Iterator";
+            this.searchIterator = "WHODSimpleSearch1Iterator";
             //this.searchLabelPrefix = NMQ_LABEL;
             this.detailsLabelPrefix = NMQ_LABEL;
             getLevelsForQueryType = cSMQBean.getLevelsForQueryType("QUERY_TYPE");
@@ -250,7 +250,7 @@ public class WhodWizardSearchBean {
             this.paramQueryType = CSMQBean.NMQ_SEARCH;
             }
         else if (nMQWizardBean.getMode() == CSMQBean.MODE_UPDATE_SMQ) {
-            this.searchIterator = "SimpleSearch1Iterator";
+            this.searchIterator = "WHODSimpleSearch1Iterator";
             //this.searchLabelPrefix = SMQ_LABEL;
             this.detailsLabelPrefix = SMQ_LABEL;
             if (ctrlLevelList != null)
@@ -259,7 +259,7 @@ public class WhodWizardSearchBean {
             this.paramExtension = SMQ_LABEL;
             }
         else if (nMQWizardBean.getMode() == CSMQBean.MODE_COPY_EXISTING) {
-            this.searchIterator = "SimpleSearch1Iterator";
+            this.searchIterator = "WHODSimpleSearch1Iterator";
             //this.searchLabelPrefix = NMQ_SMQ_LABEL;
             this.detailsLabelPrefix = NMQ_LABEL;
             getLevelsForQueryType = cSMQBean.getLevelsForQueryType("QUERY_TYPE");
@@ -269,7 +269,7 @@ public class WhodWizardSearchBean {
             this.paramQueryType = CSMQBean.NMQ_SMQ_SEARCH;
             }
         else if (nMQWizardBean.getMode() == CSMQBean.MODE_INSERT_NEW) {
-            this.searchIterator = "SimpleSearch1Iterator";
+            this.searchIterator = "WHODSimpleSearch1Iterator";
             //this.searchLabelPrefix = NMQ_LABEL;
             this.detailsLabelPrefix = NMQ_LABEL;
             getLevelsForQueryType = cSMQBean.getLevelsForQueryType("NMQ_SQM_SELECT_ITEMS");
@@ -285,7 +285,7 @@ public class WhodWizardSearchBean {
                 }
             }
         else if (nMQWizardBean.getMode() == CSMQBean.MODE_BROWSE_SEARCH) { 
-            this.searchIterator = "SimpleSearch1Iterator";
+            this.searchIterator = "WHODSimpleSearch1Iterator";
             //this.searchLabelPrefix = NMQ_SMQ_LABEL;
             this.detailsLabelPrefix = "";
             getLevelsForQueryType = cSMQBean.getLevelsForQueryType("NMQ_SQM_SELECT_ITEMS");
@@ -298,7 +298,7 @@ public class WhodWizardSearchBean {
                 }
             }
         else if (nMQWizardBean.getMode() == CSMQBean.MODE_IMPACT_ASSESSMENT) { 
-            this.searchIterator = "SimpleSearch1Iterator";
+            this.searchIterator = "WHODSimpleSearch1Iterator";
             //this.searchLabelPrefix = NMQ_SMQ_LABEL;
             this.detailsLabelPrefix = "";
             getLevelsForQueryType = cSMQBean.getLevelsForQueryType("NMQ_SQM_SELECT_ITEMS");
@@ -476,7 +476,8 @@ public class WhodWizardSearchBean {
         CSMQBean.logger.info(userBean.getCaller() + " pApprove: " + getParamApproved());
         CSMQBean.logger.info(userBean.getCaller() + " psVirtualDictionaryName: " + getDictionaryVersion());
         CSMQBean.logger.info(userBean.getCaller() + " ***********************");
-        
+        if(this.searchIterator.equalsIgnoreCase(""))
+            this.searchIterator = "WHODSimpleSearch1Iterator";
         BindingContext bc = BindingContext.getCurrent();
         DCBindingContainer binding = (DCBindingContainer)bc.getCurrentBindingsEntry();
         DCIteratorBinding dciterb = (DCIteratorBinding)binding.get(searchIterator);
@@ -1142,7 +1143,7 @@ public class WhodWizardSearchBean {
         CSMQBean.logger.info(userBean.getCaller() + " ***** ROW CHANGE START ****");
         nMQWizardBean.setTreeAccessed(false);  //reset this to recreate the tree when the page loads
         nMQWizardBean.clearDetails(); // hopefully this works
-        resolveMethodExpression("#{bindings.SimpleSearch1.collectionModel.makeCurrent}", null, new Class[] { SelectionEvent.class }, new Object[] { selectionEvent });
+        resolveMethodExpression("#{bindings.WHODSimpleSearch1.collectionModel.makeCurrent}", null, new Class[] { SelectionEvent.class }, new Object[] { selectionEvent });
         RichTable object = (RichTable)selectionEvent.getSource();
         Row row = null;
         for (Object facesRowKey : object.getSelectedRowKeys()) {

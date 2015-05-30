@@ -40,6 +40,13 @@
     <iterator Binds="NMQExtentionListVO1" RangeSize="10" DataControl="NMQModuleDataControl" id="NMQExtentionListVO1Iterator"/>
     <iterator Binds="designeeListByMQVO1" RangeSize="-1" DataControl="DesigneeModuleDataControl" id="designeeListByMQVO1Iterator"
               Refresh="renderModel"/>
+    <iterator Binds="WHODExtentionListVO1" RangeSize="25" DataControl="WHODModuleDataControl"
+              id="WHODExtentionListVO1Iterator"/>
+    <iterator Binds="WHODProductList1" RangeSize="25" DataControl="WHODProductModuleDataControl"
+              id="WHODProductList1Iterator"/>
+    <iterator Binds="WHODGroupList1" RangeSize="25" DataControl="WHODMQGroupsDataControl" id="WHODGroupList1Iterator"/>
+    <iterator Binds="WHODSimpleSearch1" RangeSize="10" DataControl="WHODSearchModuleDataControl"
+              id="WHODSimpleSearch1Iterator"/>
   </executables>
   <bindings>
     <action IterBinding="releaseGroupsSearch1Iterator"
@@ -167,5 +174,52 @@
         <Item Value="Designee"/>
       </AttrNames>
     </attributeValues>
+    <list IterBinding="WHODExtentionListVO1Iterator" ListOperMode="navigation" ListIter="WHODExtentionListVO1Iterator"
+          id="WHODExtentionListVO1" DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="LongValue"/>
+      </AttrNames>
+    </list>
+    <list IterBinding="WHODProductList1Iterator" ListOperMode="multiSelect" ListIter="WHODProductList1Iterator"
+          id="WHODProductList1" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="ShortVal"/>
+      </AttrNames>
+      <ListDisplayAttrNames>
+        <Item Value="LongValue"/>
+      </ListDisplayAttrNames>
+    </list>
+    <list IterBinding="WHODGroupList1Iterator" ListOperMode="multiSelect" ListIter="WHODGroupList1Iterator"
+          id="WHODGroupList1" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="ShortVal"/>
+      </AttrNames>
+      <ListDisplayAttrNames>
+        <Item Value="LongValue"/>
+      </ListDisplayAttrNames>
+    </list>
+    <tree IterBinding="WHODSimpleSearch1Iterator" id="WHODSimpleSearch1">
+      <nodeDefinition DefName="com.dbms.csmq.model.search.WHODSimpleSearch" Name="WHODSimpleSearch10">
+        <AttrNames>
+          <Item Value="DictionaryName"/>
+          <Item Value="DomainName"/>
+          <Item Value="ApprovedFlag"/>
+          <Item Value="LevelName"/>
+          <Item Value="TermSubtype"/>
+          <Item Value="TransactionId"/>
+          <Item Value="Term"/>
+          <Item Value="Status"/>
+          <Item Value="DictContentId"/>
+          <Item Value="DictionaryVersion"/>
+          <Item Value="DefLevelId"/>
+          <Item Value="SubLevelName"/>
+          <Item Value="DictContentCode"/>
+          <Item Value="ReleaseStatus"/>
+          <Item Value="RelaeaseGroup"/>
+          <Item Value="CreatedBy"/>
+          <Item Value="RealeaseStatusCode"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
   </bindings>
 </pageDefinition>

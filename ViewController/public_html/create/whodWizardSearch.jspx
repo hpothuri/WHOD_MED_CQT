@@ -30,24 +30,13 @@
                                             readOnly="#{WhodRenderingRulesBean.wizardSearchDisableDictionary}"
                                             value="#{pageFlowScope.WhodWizardBean.currentDictionary}"
                                             labelStyle="white-space:nowrap" valuePassThru="true">
-                          <af:forEach items="#{bindings.DictionaryVO1.iteratorBinding.allRowsInRange}" var="row">
-                            <f:selectItem id="dicts" itemLabel="#{row.name}" itemValue="#{row.shortName}"/>
-                          </af:forEach>
+                          <af:selectItem id="si30" label="CQTSDG Dictionary" value="%"/>
                         </af:selectOneChoice>
                         
                         
-                        <af:selectOneChoice id="soc5" autoSubmit="false"
-                                            binding="#{pageFlowScope.WhodWizardSearchBean.cntrlDictionaryVersion}"
-                                            label="Dictionary Version"
-                                            
-                                            labelStyle="white-space:nowrap" valuePassThru="true" immediate="false"
-                                            value="CURRENT" rendered="false">
-                          <f:selectItem id="si24" itemLabel="Current" itemValue="CURRENT"/>
-                          <af:forEach items="#{bindings.MedDRAVirtualDictionariesViewObj1Iterator.allRowsInRange}" var="row">
-                            <f:selectItem id="si25" itemLabel="#{row.name}" itemValue="#{row.shortName}"/>
-                          </af:forEach>
-                        </af:selectOneChoice>
-                        <af:selectOneChoice label="Extension" id="soc15" labelStyle="white-space:nowrap" valuePassThru="true"
+                        
+                        <af:outputText value="" id="ot4" rendered="false"/>
+                        <!-- <af:selectOneChoice label="Extension" id="soc15" labelStyle="white-space:nowrap" valuePassThru="true"
                                             autoSubmit="true" helpTopicId="NMAT_HELP_QUERY_TYPE"
                                             rendered="#{WhodRenderingRulesBean.wizardSearchRenderQueryType}"
                                             binding="#{pageFlowScope.WhodWizardSearchBean.ctrlLevelList}"
@@ -60,12 +49,25 @@
                             <af:selectItem id="si8" label="#{row.longValue}" value="#{row.refCodelistValueShortVal}"/>
                           </af:forEach>
                           <af:selectItem id="si30" label="ALL" value="%"/>
+                        </af:selectOneChoice>-->
+                        <af:selectOneChoice value="#{bindings.WHODExtentionListVO1.inputValue}"
+                                            label="Extension"
+                                            required="#{bindings.WHODExtentionListVO1.hints.mandatory}"
+                                            shortDesc="#{bindings.WHODExtentionListVO1.hints.tooltip}" id="soc6"
+                                            labelStyle="white-space:nowrap" valuePassThru="true" autoSubmit="true"
+                                            helpTopicId="NMAT_HELP_QUERY_TYPE"
+                                            rendered="#{WhodRenderingRulesBean.wizardSearchRenderQueryType}"
+                                            valueChangeListener="#{pageFlowScope.WhodWizardSearchBean.extensionChanged}"
+                                            disabled="#{WhodRenderingRulesBean.wizardSearchDisableExtension}">
+                          <f:selectItems value="#{bindings.WHODExtentionListVO1.items}" id="si31"/>
+                          <af:selectItem id="si301" label="ALL" value="%"/>
                         </af:selectOneChoice>
                         <af:selectOneChoice label="Release Group" id="smc4"
                                             binding="#{pageFlowScope.WhodWizardSearchBean.ctrlReleaseGroupSearch}"
                                             helpTopicId="NMAT_HELP_MQ_GROUP" labelStyle="white-space:nowrap" value="%" autoSubmit="true"
-                                            rendered="false">
-                          <f:selectItems value="#{pageFlowScope.WhodWizardSearchBean.releaseGroupSelectItems}" id="si2a"/>
+                                            rendered="true">
+                         <!-- <f:selectItems value="#{pageFlowScope.WhodWizardSearchBean.releaseGroupSelectItems}" id="si2a"/>-->
+                          <af:selectItem id="si2a" label="ALL" value="%"/>
                         </af:selectOneChoice>
                       </af:panelFormLayout>
                       <af:panelFormLayout id="pgl5" inlineStyle="height:25px;">
@@ -124,13 +126,13 @@
                                             id="soc4" value="%" labelStyle="white-space:nowrap"
                                             helpTopicId="NMAT_HELP_CRITICAL_EVENT"
                                             binding="#{pageFlowScope.WhodWizardSearchBean.ctrlCriticalEvent}"
-                                            autoSubmit="true" >
+                                            autoSubmit="true" rendered="false">
                           <af:selectItem label="All" id="si15" value="%"/>
                           <af:selectItem label="No" value="N" id="si1"/>
                           <af:selectItem label="Yes - Narrow" value="Y_NARROW" id="si13"/>
                           <af:selectItem label="Yes - Broad" value="Y_BROAD" id="si14"/>
                         </af:selectOneChoice>
-                        <af:selectManyChoice label="Product" id="smc3" autoSubmit="true" valuePassThru="true"
+                        <!--<af:selectManyChoice label="Product" id="smc3" autoSubmit="true" valuePassThru="true"
                                              
                                              binding="#{pageFlowScope.WhodWizardSearchBean.ctrlProducts}"
                                        
@@ -141,6 +143,13 @@
                           <af:forEach items="#{bindings.ViewObj_ProductList1.iteratorBinding.allRowsInRange}" var="row">
                             <f:selectItem id="groups" itemLabel="#{row.longValue}" itemValue="#{row.shortVal}"/>
                           </af:forEach>
+                        </af:selectManyChoice>-->
+                        <af:selectManyChoice value="#{pageFlowScope.WhodWizardSearchBean.productList}"
+                                             label="Product" id="smc7" autoSubmit="true" valuePassThru="true"
+                                             binding="#{pageFlowScope.WhodWizardSearchBean.ctrlProducts}"
+                                             labelStyle="white-space:nowrap" selectAllVisible="false"
+                                             contentStyle="color:#000000;">
+                          <f:selectItems value="#{bindings.WHODProductList1.items}" id="si32"/>
                         </af:selectManyChoice>
                         <af:selectOneChoice label="Status" id="smc6" helpTopicId="NMAT_HELP_ACTIVITY_STATUS" labelStyle="white-space:nowrap"
                                             value="A" binding="#{pageFlowScope.WhodWizardSearchBean.ctrlNMQStatus}" autoSubmit="true"
@@ -161,15 +170,22 @@
                             <af:selectItem label="Approved" value="Approved" id="si6"/>
                             <af:selectItem label="Published" value="Published" id="si5"/>                      
                         </af:selectManyChoice>
-                        <af:selectManyChoice value="#{pageFlowScope.WhodWizardSearchBean.MQGroupList}"
+                       <!-- <af:selectManyChoice value="#{pageFlowScope.WhodWizardSearchBean.MQGroupList}"
                                              label="Group" id="smc5"
                                              binding="#{pageFlowScope.WhodWizardSearchBean.ctrlMQGroups}" helpTopicId="NMAT_HELP_MQ_GROUP" labelStyle="white-space:nowrap"
                                              valuePassThru="true"
                                              rendered="#{WhodRenderingRulesBean.wizardSearchRenderGroup}">
-                          <!--<f:selectItems value="#{bindings.MQGroupsVO1.items}" id="si12"/>-->
+                          <f:selectItems value="#{bindings.MQGroupsVO1.items}" id="si12"/>
                           <af:forEach items="#{bindings.MQGroupsVO1.iteratorBinding.allRowsInRange}" var="row">
                             <f:selectItem id="si12" itemLabel="#{row.longValue}" itemValue="#{row.shortVal}"/>
                           </af:forEach>
+                        </af:selectManyChoice>-->
+                        <af:selectManyChoice value="#{pageFlowScope.WhodWizardSearchBean.MQGroupList}"
+                                             label="Group" id="smc8"
+                                             binding="#{pageFlowScope.WhodWizardSearchBean.ctrlMQGroups}"
+                                             helpTopicId="NMAT_HELP_MQ_GROUP" labelStyle="white-space:nowrap"
+                                             rendered="#{WhodRenderingRulesBean.wizardSearchRenderGroup}">
+                          <f:selectItems value="#{bindings.WHODGroupList1.items}" id="si33"/>
                         </af:selectManyChoice>
                         <af:selectOneChoice label="Scope" id="soc3"
                                             helpTopicId="NMAT_HELP_ACTIVITY_STATUS"
@@ -209,72 +225,66 @@
                 </af:panelGroupLayout>
                 <af:panelGroupLayout id="pgl1" layout="horizontal" inlineStyle="width:1144px; height:250px;">
                   <af:spacer width="10" height="10" id="s4"/>
-                  <af:table value="#{bindings.SimpleSearch1.collectionModel}" var="row" rows="#{bindings.SimpleSearch1.rangeSize}"
-                            emptyText="#{bindings.SimpleSearch1.viewable ? 'No data to display.' : 'Access Denied.'}" fetchSize="#{bindings.SimpleSearch1.rangeSize}"
-                            rowBandingInterval="0" id="searchResultsTable" columnStretching="column:c20" width="1134" rowSelection="single"
+                  <af:table value="#{bindings.WHODSimpleSearch1.collectionModel}" var="row" rows="#{bindings.WHODSimpleSearch1.rangeSize}"
+                            emptyText="#{bindings.WHODSimpleSearch1.viewable ? 'No data to display.' : 'Access Denied.'}" fetchSize="#{bindings.SimpleSearch1.rangeSize}"
+                            rowBandingInterval="0" id="it1" columnStretching="column:c20" width="1134" rowSelection="single"
                             columnSelection="single"
                             selectionListener="#{pageFlowScope.WhodWizardSearchBean.onTableNodeSelection}" binding="#{pageFlowScope.WhodWizardSearchBean.ctrlSearchResults}" contentDelivery="immediate" filterVisible="true" autoHeightRows="-1" inlineStyle="height:230px;"
-                            persist="ALL">
-                    <af:column sortProperty="Mqterm" sortable="true" headerText="Term" id="c20" width="165" filterable="true">
-                      <af:outputText value="#{row.Mqterm}" id="ot16"/>
+                            persist="ALL" summary="This table gives search result">
+                    <af:column sortProperty="Mqterm" sortable="true" headerText="Term" id="c20" width="165" filterable="true"
+                               rowHeader="true">
+                      <af:outputText value="#{row.Term}" id="ot16"/>
                     </af:column>
                     <af:column sortProperty="ApprFlag" sortable="false"
                                headerText="Approved" id="c6" width="45"
                                minimumWidth="-1" rendered="true"
                                binding="#{pageFlowScope.WhodWizardSearchBean.cntrlApprovedColumn}">
-                      <af:outputText value="#{row.ApprFlag}" id="ot21"/>
+                      <af:outputText value="#{row.ApprovedFlag}" id="ot21"/>
                     </af:column>
                     <af:column sortProperty="Mqstatus" sortable="true"
                                headerText="Status" id="c4" width="30"
                                filterable="true">
-                      <af:outputText value="#{row.Mqstatus}" id="ot7"/>
+                      <af:outputText value="#{row.ReleaseStatus}" id="ot7"/>
                     </af:column>
                     <af:column sortProperty="CurPendStatus" sortable="true" headerText="Release Status" id="c8" width="60" filterable="true">
-                      <af:outputText value="#{row.CurPendStatus}" id="ot6"/>
+                      <af:outputText value="#{row.ReleaseStatus}" id="ot6"/>
                     </af:column>
                     <af:column sortProperty="Groupname" sortable="true" headerText="Release Group" id="c10" width="80" displayIndex="-1" filterable="true">
-                      <af:outputText value="#{row.Groupname}" id="ot3"/>
+                      <af:outputText value="#{row.RelaeaseGroup}" id="ot3"/>
                     </af:column>
                     <af:column sortProperty="Mqgroup" sortable="true"
                                headerText="Group" id="c15" width="60"
                                filterable="true">
-                      <af:outputText value="#{row.MqgroupF}" id="ot20"/>
+                      <af:outputText value="#{row.RelaeaseGroup}" id="ot20"/>
                     </af:column>
                    <!-- <af:column sortProperty="Mqlevel" sortable="true" headerText="Level" id="c18" width="40" filterable="true">
                       <af:outputText value="#{row.Mqlevel}" id="ot15"/>
                     </af:column> -->
                     <!--AMC 7/3/14 -->
                     <af:column sortProperty="#{pageFlowScope.WhodWizardSearchBean.MEDDraSearch ? 'Mqlevel':'Querylevel'}" sortable="true" headerText="Level" id="c18" width="40" filterable="true">
-                      <af:outputText value="#{row.Querylevel}" id="ot15" rendered="#{!pageFlowScope.WhodWizardSearchBean.MEDDraSearch}" />
-                      <af:outputText value="#{row.Mqlevel}" rendered="#{pageFlowScope.WhodWizardSearchBean.MEDDraSearch}" id="ot25"/>
-                    </af:column>
-                    <af:column sortProperty="Mqcrtev" sortable="true"
-                               headerText="Critical Event" id="c11" width="60" minimumWidth="-1" rendered="true" filterable="true">
-                      <af:outputText value="#{row.Mqcrtev}" id="ot19"/>
+                      <af:outputText value="1" id="ot15" rendered="#{!pageFlowScope.WhodWizardSearchBean.MEDDraSearch}" />
+                      <af:outputText value="1" rendered="#{pageFlowScope.WhodWizardSearchBean.MEDDraSearch}" id="ot25"/>
                     </af:column>
                     <af:column sortProperty="Mqcode" sortable="true"
                                headerText="Code" id="c21" width="50"
                                minimumWidth="-1" rendered="true" filterable="true">
-                      <af:outputText value="#{row.Mqcode}" id="ot11"/>
-                    </af:column>
-                    <af:column sortProperty="#{bindings.SimpleSearch1.hints.Mqscp.name}" sortable="false" headerText="Scope" id="c3" width="30" minimumWidth="-1" rendered="true">
-                      <af:outputText value="#{row.Mqscp}" id="ot4"/>
+                      <af:outputText value="#{row.DictContentCode}" id="ot11"/>
                     </af:column>
                     <af:column sortProperty="DictNm" sortable="false" headerText="#{bindings.SimpleSearch1.hints.DictNm.label}" id="c7" width="60" minimumWidth="-1"
                                rendered="false">
-                      <af:outputText value="#{row.DictNm}" id="ot9"/>
+                      <af:outputText value="#{row.DictionaryName}" id="ot9"/>
                     </af:column>
                     <af:column sortProperty="LevelNm" sortable="false" headerText="#{bindings.SimpleSearch1.hints.LevelNm.label}" id="c12" width="125" minimumWidth="-1"
                                rendered="false">
-                      <af:outputText value="#{row.LevelNm}" id="ot18"/>
+                      <af:outputText value="#{row.LevelName}" id="ot18"/>
                     </af:column>
                     <af:column sortProperty="DomainNm" sortable="false" headerText="#{bindings.SimpleSearch1.hints.DomainNm.label}" id="c19" width="198" minimumWidth="-1"
                                rendered="false">
-                      <af:outputText value="#{row.DomainNm}" id="ot22"/>
+                      <af:outputText value="#{row.DomainName}" id="ot22"/>
                     </af:column>
                     <af:column sortProperty="#{bindings.SimpleSearch1.hints.State.name}" sortable="false"
                                headerText="State" id="c22" width="60">
-                      <af:outputText value="#{row.State}" id="ot1"/>
+                      <af:outputText value="#{row.RelaeaseGroup}" id="ot1"/>
                     </af:column>
                     <af:column sortProperty="TermSubtype" sortable="false" headerText="#{bindings.SimpleSearch1.hints.TermSubtype.label}" id="c13" width="352" minimumWidth="-1"
                                rendered="false">
@@ -282,44 +292,36 @@
                     </af:column>
                     <af:column sortProperty="ContentId" sortable="false" headerText="#{bindings.SimpleSearch1.hints.ContentId.label}" id="c2" width="420" minimumWidth="-1"
                                rendered="false">
-                      <af:outputText value="#{row.ContentId}" id="ot10">
+                      <af:outputText value="#{row.DictContentId}" id="ot10">
                         <af:convertNumber groupingUsed="false" pattern="#{bindings.SimpleSearch1.hints.ContentId.format}"/>
                       </af:outputText>
                     </af:column>
                     <af:column sortProperty="Version" sortable="false" headerText="#{bindings.SimpleSearch1.hints.Version.label}" id="c14" width="481" minimumWidth="-1"
                                rendered="false">
-                      <af:outputText value="#{row.Version}" id="ot5"/>
+                      <af:outputText value="#{row.DictionaryVersion}" id="ot5"/>
                     </af:column>
                     <af:column sortProperty="Mqtransid" sortable="false" headerText="#{bindings.SimpleSearch1.hints.Mqtransid.label}" id="c17" width="478" minimumWidth="-1"
                                rendered="false">
-                      <af:outputText value="#{row.Mqtransid}" id="ot8">
+                      <af:outputText value="#{row.TransactionId}" id="ot8">
                         <af:convertNumber groupingUsed="false" pattern="#{bindings.SimpleSearch1.hints.Mqtransid.format}"/>
                       </af:outputText>
                     </af:column>
-                    <af:column sortProperty="Mqalgo" sortable="false" headerText="#{bindings.SimpleSearch1.hints.Mqalgo.label}" id="c1" width="5" minimumWidth="-1"
-                               rendered="false">
-                      <af:outputText value="#{row.Mqalgo}" id="ot12"/>
-                    </af:column>
                     <af:column sortProperty="Mqprodct" sortable="false" headerText="Product" id="c9" width="80" minimumWidth="25"
                                rendered="true">
-                      <af:outputText value="#{row.Mqprodct}" id="ot17"/>
+                      <af:outputText value="#{row.Term}" id="ot17"/>
                     </af:column>
                     <af:column sortProperty="Mqaltcode" sortable="false" headerText="#{bindings.SimpleSearch1.hints.Mqaltcode.label}" id="c5" width="5" minimumWidth="-1"
                                rendered="false">
-                      <af:outputText value="#{row.Mqaltcode}" id="ot14"/>
-                    </af:column>
-                    <af:column sortProperty="#{bindings.SimpleSearch1.hints.Prikey.name}" sortable="false" id="c16" width="0" minimumWidth="0"
-                               rendered="false" inlineStyle="font-size:1px;">
-                      <af:outputText value="#{row.Prikey}" id="ot13"/>
+                      <af:outputText value="#{row.DictContentCode}" id="ot14"/>
                     </af:column>
                     <af:column sortProperty="#{bindings.SimpleSearch1.hints.Createdby.name}" sortable="false"
                                headerText="Created By" id="c23" width="80">
-                      <af:outputText value="#{row.Createdby}" id="ot23"/>
+                      <af:outputText value="#{row.CreatedBy}" id="ot23"/>
                     </af:column>
         <!--AMC 6/23/14 -->
                     <af:column id="c25" sortProperty="#{bindings.SimpleSearch1.hints.Extension}" headerText="Extension" sortable="false"
                                width="45" rendered="#{!pageFlowScope.WhodWizardSearchBean.MEDDraSearch}">
-                    <af:outputText value="#{row.Extension}" id="ot24"/>
+                    <af:outputText value="#{row.DictionaryName}" id="ot24"/>
                     </af:column>
                   </af:table>
                 </af:panelGroupLayout>
@@ -337,12 +339,12 @@
               <af:inputText label="Dictionary Version:" id="it1aw"
                               value="#{pageFlowScope.WhodWizardBean.activeDictionary} v#{pageFlowScope.WhodWizardBean.activeDictionaryVersion}" readOnly="false"
                               disabled="true"
-                               columns="200" partialTriggers="searchResultsTable"/>
+                               columns="200" partialTriggers="it1"/>
               <af:spacer width="10" height="10" id="s7"/>
               <af:inputText label="Name:" id="it3"
                             value="#{pageFlowScope.WhodWizardBean.currentTermName}" readOnly="true" 
                             disabled="true" binding="#{WhodWizardUIBean.controlCurrentTermName}"
-                            columns="75" partialTriggers="searchResultsTable"/>
+                            columns="75" partialTriggers="it1"/>
             </af:panelGroupLayout>
           </f:facet>
           <f:attribute name="currentPage" value="Update #{applicationScope.CSMQBean.customMQName} Wizard"/>

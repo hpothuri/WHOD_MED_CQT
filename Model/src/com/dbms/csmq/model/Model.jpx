@@ -28,6 +28,9 @@
       <Attr Name="_appModuleNames13" Value="com.dbms.csmq.model.userAccountsList.UserAccountsListModule"/>
       <Attr Name="_appModuleNames14" Value="com.dbms.csmq.model.designee.DesigneeModule"/>
       <Attr Name="_appModuleNames15" Value="com.dbms.csmq.model.WHOD.WHODModule"/>
+      <Attr Name="_appModuleNames16" Value="com.dbms.csmq.model.product.WHODProductModule"/>
+      <Attr Name="_appModuleNames17" Value="com.dbms.csmq.model.MQGroups.WHODMQGroups"/>
+      <Attr Name="_appModuleNames18" Value="com.dbms.csmq.model.search.WHODSearchModule"/>
    </DesignTime>
    <Containee
       Name="config"

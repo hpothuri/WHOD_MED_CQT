@@ -165,5 +165,20 @@
                          SupportsFindMode="true" SupportsRangesize="true" SupportsResetState="true"
                          SupportsSortCollection="true" Configuration="WHODModuleLocal" syncMode="Immediate"
                          xmlns="http://xmlns.oracle.com/adfm/datacontrol"/>
+        <BC4JDataControl id="WHODProductModuleDataControl" Package="com.dbms.csmq.model.product"
+                         FactoryClass="oracle.adf.model.bc4j.DataControlFactoryImpl" SupportsTransactions="true"
+                         SupportsFindMode="true" SupportsRangesize="true" SupportsResetState="true"
+                         SupportsSortCollection="true" Configuration="WHODProductModuleLocal" syncMode="Immediate"
+                         xmlns="http://xmlns.oracle.com/adfm/datacontrol"/>
+        <BC4JDataControl id="WHODMQGroupsDataControl" Package="com.dbms.csmq.model.MQGroups"
+                         FactoryClass="oracle.adf.model.bc4j.DataControlFactoryImpl" SupportsTransactions="true"
+                         SupportsFindMode="true" SupportsRangesize="true" SupportsResetState="true"
+                         SupportsSortCollection="true" Configuration="WHODMQGroupsLocal" syncMode="Immediate"
+                         xmlns="http://xmlns.oracle.com/adfm/datacontrol"/>
+        <BC4JDataControl id="WHODSearchModuleDataControl" Package="com.dbms.csmq.model.search"
+                         FactoryClass="oracle.adf.model.bc4j.DataControlFactoryImpl" SupportsTransactions="true"
+                         SupportsFindMode="true" SupportsRangesize="true" SupportsResetState="true"
+                         SupportsSortCollection="true" Configuration="WHODSearchModuleLocal" syncMode="Immediate"
+                         xmlns="http://xmlns.oracle.com/adfm/datacontrol"/>
     </dataControlUsages>
 </Application>
