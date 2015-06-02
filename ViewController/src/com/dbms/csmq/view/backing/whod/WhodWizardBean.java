@@ -185,7 +185,7 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
     private String currentTermLevelNumber;
     private String designeeListAsString;
     private boolean actionDelete = false;
-    
+
     private List<SelectItem> whodExtensionSI;
     private List<SelectItem> whodReleaseGroupSI;
     private List<SelectItem> whodProductSI;
@@ -388,7 +388,7 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
         if (this.mode == CSMQBean.MODE_UPDATE_EXISTING || this.mode == CSMQBean.MODE_COPY_EXISTING ||
             this.mode == CSMQBean.MODE_UPDATE_SMQ || this.mode == CSMQBean.MODE_BROWSE_SEARCH)
             currentDictionary = cSMQBean.getDefaultFilterDictionaryShortName();
-        //TODO Need to remove hardcoding 
+        //TODO:WHOD Need to remove hardcoding
         currentDictionary = "CQTSDG";
     }
 
@@ -1600,44 +1600,44 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
         * @fsds NMAT-UC01.01 & NMAT-UC11.01
         * added !isNMQ || and isNMQ &&
         */
-        
+
         /*
-         * 20141117-2   Details Page for Create, Update, or Create by Copy      
-         * For a CMQ created by a requestor OR MQM, the first state must be DRAFT, not proposed.  
+         * 20141117-2   Details Page for Create, Update, or Create by Copy
+         * For a CMQ created by a requestor OR MQM, the first state must be DRAFT, not proposed.
          * Only for NMQs created by Requestors should the state be Proposed.
-         * 
+         *
          */
-        //  CHANGED 24-MAR-2105 for all CMQs:  if (!isNMQ && (userBean.isMQM() || userBean.isRequestor())) this.currentState = CSMQBean.STATE_DRAFT;   
+        //  CHANGED 24-MAR-2105 for all CMQs:  if (!isNMQ && (userBean.isMQM() || userBean.isRequestor())) this.currentState = CSMQBean.STATE_DRAFT;
         // if (!isNMQ) this.currentState = CSMQBean.STATE_DRAFT;
         // if (isNMQ && userBean.isRequestor()) this.currentState = CSMQBean.STATE_PROPOSED;
-        if (isNMQ && userBean.isRequestor() && !userBean.isMQM()){
+        if (isNMQ && userBean.isRequestor() && !userBean.isMQM()) {
             this.setCurrentState(CSMQBean.STATE_PROPOSED);
         } else {
             this.setCurrentState(CSMQBean.STATE_DRAFT);
         }
 
-        
-        
+
         //if (userBean.isMQM()) this.currentState = CSMQBean.STATE_DRAFT;
         /* @author MTW
         * 06/18/2014
         * @fsds NMAT-UC01.01 & NMAT-UC11.01
         * Added if (isNMQ)
         */
-        if (isNMQ) productList.add(CSMQBean.DEFAULT_PRODUCT);  // add the default product only if it is new or copy NMQ
-        
+        if (isNMQ)
+            productList.add(CSMQBean.DEFAULT_PRODUCT); // add the default product only if it is new or copy NMQ
+
         userBean.setCurrentMenuPath("Create");
         userBean.setCurrentMenu("CREATE_NEW_NMQ");
         this.mode = CSMQBean.MODE_INSERT_NEW;
         this.updateParam = CSMQBean.DML_INSERT;
         productList.add(CSMQBean.DEFAULT_PRODUCT);
         CSMQBean.logger.info(userBean.getCaller() + userBean.getCaller() + " SETTING MODE: " + this.mode);
-        setDefaultDictionary ();
+        setDefaultDictionary();
         setCurrentExtension(CSMQBean.customMQName);
         String designee = userBean.getCurrentUser().toUpperCase();
         CSMQBean.logger.info("ADDING DESIGNEE: " + designee);
         designeeList.add(designee);
-        
+
         AdfFacesContext adfctx = null;
         adfctx = AdfFacesContext.getCurrentInstance();
 
@@ -1701,14 +1701,16 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
     public boolean resetState() {
         return false;
     }
-    
+
     public void setWhodExtensionSI(List<SelectItem> whodExtensionSI) {
         this.whodExtensionSI = whodExtensionSI;
     }
 
     public List<SelectItem> getWhodExtensionSI() {
         if (whodExtensionSI == null) {
-            whodExtensionSI = ADFUtils.selectItemsForIterator("WHODExtentionListVO1Iterator", "RefCodelistValueShortVal", "LongValue");
+            whodExtensionSI =
+                    ADFUtils.selectItemsForIterator("WHODExtentionListVO1Iterator", "RefCodelistValueShortVal",
+                                                    "LongValue");
         }
         return whodExtensionSI;
     }
@@ -1719,7 +1721,8 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
 
     public List<SelectItem> getWhodReleaseGroupSI() {
         if (whodReleaseGroupSI == null) {
-            whodReleaseGroupSI = ADFUtils.selectItemsForIterator("releaseGroupsSearch1Iterator", "PredictGroupId", "Description");
+            whodReleaseGroupSI =
+                    ADFUtils.selectItemsForIterator("releaseGroupsSearch1Iterator", "PredictGroupId", "Description");
         }
         return whodReleaseGroupSI;
     }

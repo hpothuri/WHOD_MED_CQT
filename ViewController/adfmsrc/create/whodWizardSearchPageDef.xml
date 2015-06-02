@@ -39,6 +39,21 @@
                     <Item Value="RelaeaseGroup"/>
                     <Item Value="CreatedBy"/>
                     <Item Value="RealeaseStatusCode"/>
+                    <Item Value="Category"/>
+                    <Item Value="CommentText"/>
+                    <Item Value="DefDictionaryId"/>
+                    <Item Value="DefDomainId"/>
+                    <Item Value="DictContentEntryTs"/>
+                    <Item Value="DictionaryType"/>
+                    <Item Value="EndTs"/>
+                    <Item Value="InfoNoteDesc"/>
+                    <Item Value="InfoNoteNote"/>
+                    <Item Value="TermType"/>
+                    <Item Value="TermUpper"/>
+                    <Item Value="Value1"/>
+                    <Item Value="Value2"/>
+                    <Item Value="Value3"/>
+                    <Item Value="Value4"/>
                 </AttrNames>
             </nodeDefinition>
         </tree>

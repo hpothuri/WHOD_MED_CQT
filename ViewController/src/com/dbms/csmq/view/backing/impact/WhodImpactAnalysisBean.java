@@ -52,7 +52,7 @@ public class WhodImpactAnalysisBean extends HierarchyAccessor{
     CSMQBean cSMQBean = (CSMQBean)ADFContext.getCurrent().getApplicationScope().get("CSMQBean");
     UserBean userBean = (UserBean)ADFContext.getCurrent().getSessionScope().get("UserBean");
     WhodWizardSearchBean nMQWizardSearchBean = (WhodWizardSearchBean) AdfFacesContext.getCurrentInstance().getPageFlowScope().get("WhodWizardSearchBean");
-    WhodWizardBean nMQWizardBean = nMQWizardSearchBean.getNMQWizardBean();
+    WhodWizardBean nMQWizardBean = WhodUtils.getWhodWizardBean();
     ImpactAnalysisUIBean impactAnalysisUIBean = null;
     
     private RichTreeTable preferedTermSourceTree;

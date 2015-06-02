@@ -9,31 +9,25 @@
                 <af:pageTemplate viewId="/CSMQ.jspx" value="#{bindings.pageTemplateBinding}" id="pt1">
                     <f:facet name="header">
                         <af:group id="g2">
-                            <af:train value="#{controllerContext.currentViewPort.taskFlowContext.trainModel}" id="t1"
-                                      binding="#{pageFlowScope.WhodWizardSearchBean.cntrlTrain}"/>
+                            <af:train value="#{controllerContext.currentViewPort.taskFlowContext.trainModel}" id="t1"/>
                             <af:spacer width="10" height="10" id="s1"/>
                         </af:group>
                     </f:facet>
                     <f:facet name="main">
                         <af:group id="g1">
                             <af:panelBox id="pgl6" inlineStyle="width:1195px; padding:5px;" text="Search"
-                                         showDisclosure="false"
-                                         binding="#{pageFlowScope.WhodWizardSearchBean.cntrlSearchPanel}">
+                                         showDisclosure="false">
                                 <af:panelGroupLayout id="pgl9" layout="vertical"
                                                      inlineStyle="width:1163px; height:110px;">
                                     <af:panelGroupLayout id="pgl2a" layout="vertical"
                                                          inlineStyle="width:1143px; height:80px;">
                                         <af:panelGroupLayout id="pgl10" layout="horizontal"
-                                                             inlineStyle="height:41px; width:1128px;" valign="top"
-                                                             binding="#{pageFlowScope.WhodWizardSearchBean.cntrlParamPanel}">
+                                                             inlineStyle="height:41px; width:1128px;" valign="top">
                                             <af:panelFormLayout id="pgl4" inlineStyle="width:311px;" maxColumns="1"
                                                                 rows="2" labelWidth="120">
-                                                <af:selectOneChoice id="soc2" autoSubmit="true"
-                                                                    binding="#{pageFlowScope.WhodWizardSearchBean.ctrlDictionaryListSearch}"
-                                                                    label="Dictionary"
+                                                <af:selectOneChoice id="soc2" autoSubmit="true" label="Dictionary"
                                                                     helpTopicId="NMAT_HELP_TERMINOLOGY"
                                                                     valueChangeListener="#{pageFlowScope.WhodWizardSearchBean.dictionaryChange}"
-                                                                    readOnly="#{WhodRenderingRulesBean.wizardSearchDisableDictionary}"
                                                                     value="#{pageFlowScope.WhodWizardBean.currentDictionary}"
                                                                     labelStyle="white-space:nowrap"
                                                                     valuePassThru="true">
@@ -43,7 +37,6 @@
                                                 <af:selectOneChoice label="Extension" id="soc6"
                                                                     labelStyle="white-space:nowrap" valuePassThru="true"
                                                                     autoSubmit="true" helpTopicId="NMAT_HELP_QUERY_TYPE"
-                                                                    rendered="#{WhodRenderingRulesBean.wizardSearchRenderQueryType}"
                                                                     value="#{pageFlowScope.WhodWizardSearchBean.paramExtension}"
                                                                     valueChangeListener="#{pageFlowScope.WhodWizardSearchBean.extensionChanged}"
                                                                     disabled="#{WhodRenderingRulesBean.wizardSearchDisableExtension}">
@@ -52,10 +45,9 @@
                                                                    id="si31"/>
                                                 </af:selectOneChoice>
                                                 <af:selectOneChoice label="Release Group" id="smc4"
-                                                                    binding="#{pageFlowScope.WhodWizardSearchBean.ctrlReleaseGroupSearch}"
+                                                                    value="#{pageFlowScope.WhodWizardSearchBean.paramReleaseGroup}"
                                                                     helpTopicId="NMAT_HELP_MQ_GROUP"
-                                                                    labelStyle="white-space:nowrap" value="%"
-                                                                    autoSubmit="true" rendered="true">
+                                                                    labelStyle="white-space:nowrap" autoSubmit="true">
                                                     <!-- <f:selectItems value="#{pageFlowScope.WhodWizardSearchBean.releaseGroupSelectItems}" id="si2a"/>-->
                                                     <af:selectItem id="si2a" label="ALL" value="%"/>
                                                 </af:selectOneChoice>
@@ -63,25 +55,21 @@
                                             <af:panelFormLayout id="pgl5" inlineStyle="height:25px;">
                                                 <af:selectOneChoice label="Release Status" id="smc1"
                                                                     showRequired="false"
-                                                                    binding="#{pageFlowScope.WhodWizardSearchBean.ctrlReleaseStatus}"
                                                                     helpTopicId="NMAT_HELP_RELEASE_STATUS"
                                                                     labelStyle="white-space:nowrap" value="CURRENT"
                                                                     autoSubmit="true"
-                                                                    valueChangeListener="#{pageFlowScope.WhodWizardSearchBean.releaseStatusChanged}"
-                                                                    disabled="#{WhodRenderingRulesBean.wizardSearchDisableReleaseStatus}">
+                                                                    valueChangeListener="#{pageFlowScope.WhodWizardSearchBean.releaseStatusChanged}">
                                                     <af:selectItem label="All" value="ALL" id="si3"/>
                                                     <af:selectItem label="Current" value="CURRENT" id="si3a"/>
                                                     <af:selectItem label="Pending" value="PENDING" id="si2"/>
                                                 </af:selectOneChoice>
                                                 <af:selectOneChoice label="Approved" id="soc10"
-                                                                    binding="#{pageFlowScope.WhodWizardSearchBean.cntrlApproved}"
                                                                     value="#{pageFlowScope.WhodWizardSearchBean.paramApproved}">
                                                     <af:selectItem label="All" value="%" id="si21"/>
                                                     <af:selectItem label="Yes" value="Y" id="si22"/>
                                                     <af:selectItem label="No" value="N" id="si23a"/>
                                                 </af:selectOneChoice>
-                                                <af:selectOneChoice label="Level" id="soc1"
-                                                                    binding="#{pageFlowScope.WhodWizardSearchBean.controlMQLevel}"
+                                                <af:selectOneChoice label="Level" id="soc1" autoSubmit="true"
                                                                     value="#{pageFlowScope.WhodWizardSearchBean.paramLevel}"
                                                                     labelStyle="white-space:nowrap"
                                                                     valuePassThru="true">
@@ -91,20 +79,9 @@
                                                 </af:selectOneChoice>
                                             </af:panelFormLayout>
                                             <af:panelFormLayout id="pgl7" maxColumns="1" rows="2">
-                                                <af:selectOneChoice label="Critical event" id="soc4" value="%"
-                                                                    labelStyle="white-space:nowrap"
-                                                                    helpTopicId="NMAT_HELP_CRITICAL_EVENT"
-                                                                    binding="#{pageFlowScope.WhodWizardSearchBean.ctrlCriticalEvent}"
-                                                                    autoSubmit="true" rendered="false">
-                                                    <af:selectItem label="All" id="si15" value="%"/>
-                                                    <af:selectItem label="No" value="N" id="si1"/>
-                                                    <af:selectItem label="Yes - Narrow" value="Y_NARROW" id="si13"/>
-                                                    <af:selectItem label="Yes - Broad" value="Y_BROAD" id="si14"/>
-                                                </af:selectOneChoice>
                                                 <af:selectManyChoice value="#{pageFlowScope.WhodWizardSearchBean.productList}"
                                                                      label="Product" id="smc7" autoSubmit="true"
                                                                      valuePassThru="true"
-                                                                     binding="#{pageFlowScope.WhodWizardSearchBean.ctrlProducts}"
                                                                      labelStyle="white-space:nowrap"
                                                                      selectAllVisible="false"
                                                                      contentStyle="color:#000000;">
@@ -113,10 +90,9 @@
                                                 </af:selectManyChoice>
                                                 <af:selectOneChoice label="Status" id="smc6"
                                                                     helpTopicId="NMAT_HELP_ACTIVITY_STATUS"
-                                                                    labelStyle="white-space:nowrap" value="A"
-                                                                    binding="#{pageFlowScope.WhodWizardSearchBean.ctrlNMQStatus}"
-                                                                    autoSubmit="true"
-                                                                    rendered="#{WhodRenderingRulesBean.wizardSearchRenderSMQStatus}">
+                                                                    labelStyle="white-space:nowrap"
+                                                                    value="#{pageFlowScope.WhodWizardSearchBean.paramStatus}"
+                                                                    autoSubmit="true">
                                                     <af:selectItem label="All" value="ALL" id="si19"/>
                                                     <af:selectItem label="Active" value="A" id="si19a"/>
                                                     <af:selectItem label="Inactive" value="I" id="si16"/>
@@ -124,9 +100,8 @@
                                                 </af:selectOneChoice>
                                             </af:panelFormLayout>
                                             <af:panelFormLayout id="pgl8" maxColumns="1" rows="2">
-                                                <af:selectManyChoice label="State" id="smc2" required="false"
-                                                                     showRequired="false"
-                                                                     binding="#{pageFlowScope.WhodWizardSearchBean.ctrlState}"
+                                                <af:selectManyChoice label="State" id="smc2"
+                                                                     value="#{pageFlowScope.WhodWizardSearchBean.stateList}"
                                                                      helpTopicId="NMAT_HELP_STATE"
                                                                      labelStyle="white-space:nowrap"
                                                                      valuePassThru="true">
@@ -137,21 +112,17 @@
                                                     <af:selectItem label="Approved" value="Approved" id="si6"/>
                                                     <af:selectItem label="Published" value="Published" id="si5"/>
                                                 </af:selectManyChoice>
-                                                <af:selectManyChoice value="#{pageFlowScope.WhodWizardSearchBean.MQGroupList}"
+                                                <af:selectManyChoice value="#{pageFlowScope.WhodWizardSearchBean.groupList}"
                                                                      label="Group" id="smc8"
-                                                                     binding="#{pageFlowScope.WhodWizardSearchBean.ctrlMQGroups}"
                                                                      helpTopicId="NMAT_HELP_MQ_GROUP"
-                                                                     labelStyle="white-space:nowrap"
-                                                                     rendered="#{WhodRenderingRulesBean.wizardSearchRenderGroup}">
+                                                                     labelStyle="white-space:nowrap">
                                                     <f:selectItems value="#{pageFlowScope.WhodWizardSearchBean.whodGroupSI}"
                                                                    id="si12"/>
                                                 </af:selectManyChoice>
                                                 <af:selectOneChoice label="Scope" id="soc3"
                                                                     helpTopicId="NMAT_HELP_ACTIVITY_STATUS"
-                                                                    binding="#{pageFlowScope.WhodWizardSearchBean.ctrlMQScope}"
-                                                                    labelStyle="white-space:nowrap" value="%"
-                                                                    autoSubmit="false"
-                                                                    rendered="#{WhodRenderingRulesBean.wizardDetailsRenderNMQScope}">
+                                                                    labelStyle="white-space:nowrap" autoSubmit="true"
+                                                                    value="#{pageFlowScope.WhodWizardSearchBean.paramScope}">
                                                     <af:selectItem label="All" value="%" id="si13x"/>
                                                     <af:selectItem label="Y" value="Y" id="si10"/>
                                                     <af:selectItem label="N" value="N" id="si17"/>
@@ -163,14 +134,12 @@
                                     <af:panelGroupLayout id="pgl3" layout="horizontal">
                                         <af:spacer width="10" height="10" id="s2"/>
                                         <af:inputText label="Term " id="it5" helpTopicId="NMAT_HELP_TERM" wrap="off"
-                                                      labelStyle="white-space:nowrap"
-                                                      binding="#{pageFlowScope.WhodWizardSearchBean.ctrlMQName}"
-                                                      columns="40"/>
+                                                      labelStyle="white-space:nowrap" columns="40" autoSubmit="true"
+                                                      value="#{pageFlowScope.WhodWizardSearchBean.paramTerm}"/>
                                         <af:spacer width="10" height="10" id="s9"/>
-                                        <af:inputText label="Code" id="it4"
-                                                      binding="#{pageFlowScope.WhodWizardSearchBean.ctrlMQCode}"
-                                                      helpTopicId="NMAT_HELP_MQCODE" wrap="off"
-                                                      labelStyle="white-space:nowrap" disabled="false" columns="8"/>
+                                        <af:inputText label="Code" id="it4" helpTopicId="NMAT_HELP_MQCODE" wrap="off"
+                                                      labelStyle="white-space:nowrap" columns="8" autoSubmit="true"
+                                                      value="#{pageFlowScope.WhodWizardSearchBean.paramCode}"/>
                                         <af:spacer width="10" height="10" id="s8"/>
                                         <af:commandButton text="Search" id="cb2"
                                                           actionListener="#{pageFlowScope.WhodWizardSearchBean.doSearch}"
@@ -182,11 +151,10 @@
                                     <af:table value="#{bindings.WHODSimpleSearch1.collectionModel}" var="row"
                                               rows="#{bindings.WHODSimpleSearch1.rangeSize}"
                                               emptyText="#{bindings.WHODSimpleSearch1.viewable ? 'No data to display.' : 'Access Denied.'}"
-                                              fetchSize="#{bindings.SimpleSearch1.rangeSize}" rowBandingInterval="0"
+                                              fetchSize="#{bindings.WHODSimpleSearch1.rangeSize}" rowBandingInterval="0"
                                               id="it1" columnStretching="column:c20" width="1134" rowSelection="single"
-                                              columnSelection="single"
-                                              selectionListener="#{pageFlowScope.WhodWizardSearchBean.onTableNodeSelection}"
-                                              binding="#{pageFlowScope.WhodWizardSearchBean.ctrlSearchResults}"
+                                              columnSelection="single" partialTriggers="::cb2"    
+                                              selectionListener="#{pageFlowScope.WhodWizardSearchBean.onTableNodeSelection}"  
                                               contentDelivery="immediate" filterVisible="true" autoHeightRows="-1"
                                               inlineStyle="height:230px;" persist="ALL"
                                               summary="This table gives search result">

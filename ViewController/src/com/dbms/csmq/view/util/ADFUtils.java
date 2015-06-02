@@ -556,10 +556,20 @@ public class ADFUtils {
     //     * This method is responsible to get the Globl Page Flow Scope.
     //     * @return
     //     */
-    //    public static PageFlowScope getGlobalPageFlowScope() {
-    //        ControllerContext conn = ControllerContext.getInstance();
-    //        RootViewPortContextImpl rootViewPort = (RootViewPortContextImpl)conn.getCurrentRootViewPort();
-    //        PageFlowScope pfs = rootViewPort.getPageFlowScopeMap();
-    //        return pfs;
-    //    }
+    //        public static PageFlowScope getGlobalPageFlowScope() {
+    //            ControllerContext conn = ControllerContext.getInstance();
+    //            RootViewPortContextImpl rootViewPort = (RootViewPortContextImpl)conn.getCurrentRootViewPort();
+    //            PageFlowScope pfs = rootViewPort.getPageFlowScopeMap(AdfFacesContext.getCurrentInstance());
+    //            return pfs;
+    //        }
+
+    public static Object resolveMethodExpression(String expression, Class returnType, Class[] argTypes, Object[] argValues) {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        Application app = facesContext.getApplication();
+        ExpressionFactory elFactory = app.getExpressionFactory();
+        ELContext elContext = facesContext.getELContext();
+        MethodExpression methodExpression =
+            elFactory.createMethodExpression(elContext, expression, returnType, argTypes);
+        return methodExpression.invoke(elContext, argValues);
+    }
 }
