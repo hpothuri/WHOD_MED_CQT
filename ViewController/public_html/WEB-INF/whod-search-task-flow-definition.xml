@@ -78,30 +78,35 @@
       <page>/create/whodWizardSearch.jspx</page>
       <train-stop>
       <display-name>Search</display-name>
+        <sequential>true</sequential>
       </train-stop>
     </view>
     <view id="whodAddDetails">
       <page>/create/whodAddDetails.jspx</page>
       <train-stop>
        <display-name>Details</display-name>
+        <sequential>false</sequential>
       </train-stop>
     </view>
     <view id="whodAddInformativeNotes">
       <page>/create/whodAddInformativeNotes.jspx</page>
       <train-stop>
       <display-name>Informative Notes</display-name>
+        <sequential>false</sequential>
       </train-stop>
     </view>
     <view id="whodAddRelations">
       <page>/create/whodAddRelations.jspx</page>
       <train-stop>
       <display-name>Relations</display-name>
+        <sequential>false</sequential>
       </train-stop>
     </view>
     <view id="whodConfirm">
       <page>/create/whodConfirm.jspx</page>
       <train-stop>
        <display-name>Confirm</display-name>
+        <sequential>false</sequential>
       </train-stop>
     </view>
     <method-call id="setMode">
@@ -137,5 +142,9 @@
         <to-activity-id>cancelFlow</to-activity-id>
       </control-flow-case>
     </control-flow-rule>
+    <critical/>
+    <visibility>
+      <url-invoke-allowed/>
+    </visibility>
   </task-flow-definition>
 </adfc-config>

@@ -32,7 +32,7 @@ public class WhodWizardSearchBean {
     private List<SelectItem> whodProductSI;
     private List<SelectItem> whodGroupSI;
 
-    private String paramExtension = CSMQBean.WILDCARD;
+    private String paramExtension = "SDG";
     private String paramLevel = CSMQBean.FILTER_LEVEL_ONE;
     private String paramReleaseGroup = CSMQBean.WILDCARD;
     private String paramApproved = CSMQBean.WILDCARD;
@@ -248,8 +248,9 @@ public class WhodWizardSearchBean {
          */
         whodWizardBean.getDictionaryInfo(); // GET BASE DICT INFO FROM FILTER
 
-        Hashtable<String, String> activationInfo =
-            WhodUtils.getActivationInfo(currentDictContentID, currentDictionary);
+//        Hashtable<String, String> activationInfo =
+//            WhodUtils.getActivationInfo(currentDictContentID, currentDictionary);
+        Hashtable<String, String> activationInfo = null;
 
         if (activationInfo != null) {
             whodWizardBean.setCurrentInitialCreationDate(activationInfo.get("initialCreationDate"));
@@ -292,6 +293,9 @@ public class WhodWizardSearchBean {
             Collections.addAll(whodWizardBean.getMQGroupList(), currentMqgroups.split("%"));
         }
         */
+        whodWizardBean.getProductList().clear();
+        whodWizardBean.getMQGroupList().clear();
+        whodWizardBean.getDesigneeList().clear();
         Collections.addAll(whodWizardBean.getProductList(), new String[] { "AIN457", "ABILIFY" });
         Collections.addAll(whodWizardBean.getMQGroupList(), new String[] { "APO", "AAA" });
         whodWizardBean.setDesigneeList(new ArrayList<String>());
