@@ -6,8 +6,8 @@
         <variableIterator id="variables"/>
         <iterator Binds="releaseGroups1" RangeSize="25" DataControl="ReleaseGroupModuleDataControl"
                   id="releaseGroupsSearch1Iterator"/>
-        <iterator Binds="SmallTreeVO1" RangeSize="-1" DataControl="HierarchyModuleDataControl" id="SmallTreeVO1Iterator"
-                  Refresh="renderModel" RefreshCondition="#{!adfFacesContext.initialRender}"/>
+        <!--iterator Binds="SmallTreeVO1" RangeSize="-1" DataControl="HierarchyModuleDataControl" id="SmallTreeVO1Iterator"
+                  Refresh="renderModel" RefreshCondition="#{!adfFacesContext.initialRender}"/-->
         <iterator Binds="designeeListVO1" RangeSize="-1" DataControl="DesigneeModuleDataControl"
                   id="designeeListVO1Iterator"/>
         <iterator Binds="WHODExtentionListVO1" RangeSize="25" DataControl="WHODModuleDataControl"
@@ -16,9 +16,11 @@
                   id="WHODProductList1Iterator"/>
         <iterator Binds="WHODGroupList1" RangeSize="25" DataControl="WHODMQGroupsDataControl"
                   id="WHODGroupList1Iterator"/>
+        <iterator id="WHODSmallTreeVO1Iterator" Binds="WHODSmallTreeVO1" DataControl="WHODModuleDataControl"
+                  RangeSize="-1" Refresh="renderModel" RefreshCondition="#{!adfFacesContext.initialRender}"/>
     </executables>
     <bindings>
-        <tree IterBinding="SmallTreeVO1Iterator" id="SmallTreeVO1">
+        <!--tree IterBinding="SmallTreeVO1Iterator" id="SmallTreeVO1">
             <nodeDefinition DefName="com.dbms.csmq.model.hierarchy.SmallTreeVO" Name="SmallTreeVO10">
                 <AttrNames>
                     <Item Value="Level"/>
@@ -37,7 +39,7 @@
                     <Item Value="Termweig"/>
                 </AttrNames>
             </nodeDefinition>
-        </tree>
+        </tree-->
         <action IterBinding="releaseGroupsSearch1Iterator" id="EWP_releaseGroupsSearch1Iterator"
                 InstanceName="ReleaseGroupModuleDataControl.releaseGroups1" DataControl="ReleaseGroupModuleDataControl"
                 RequiresUpdateModel="true" Action="executeWithParams">

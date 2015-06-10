@@ -12,11 +12,13 @@
                   id="WHODGroupList1Iterator"/>
         <iterator Binds="WHODSimpleSearch1" RangeSize="10" DataControl="WHODSearchModuleDataControl"
                   id="WHODSimpleSearch1Iterator"/>
-        <iterator Binds="SmallTreeVO1" RangeSize="-1"
+        <!--iterator Binds="SmallTreeVO1" RangeSize="-1"
               DataControl="HierarchyModuleDataControl" id="SmallTreeVO1Iterator"
-              Refresh="renderModel"/>
+              Refresh="renderModel"/-->
         <iterator Binds="InfNotesVO1" RangeSize="10"
               DataControl="InfNotesModuleDataControl" id="InfNotesVO1Iterator"/>
+        <iterator id="WHODSmallTreeVO1Iterator" Binds="WHODSmallTreeVO1" DataControl="WHODModuleDataControl"
+                  RangeSize="25"/>
     </executables>
     <bindings>
         <tree IterBinding="WHODSimpleSearch1Iterator" id="WHODSimpleSearch1">

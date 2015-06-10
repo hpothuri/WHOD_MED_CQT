@@ -15,6 +15,9 @@
   <ViewUsage
     Name="WHODExtentionListVO1"
     ViewObjectName="com.dbms.csmq.model.WHOD.WHODExtentionListVO"/>
+  <ViewUsage
+    Name="WHODSmallTreeVO1"
+    ViewObjectName="com.dbms.csmq.model.WHOD.WHODSmallTreeVO"/>
   <ResourceBundle>
     <PropertiesBundle
       PropertiesFile="com.dbms.csmq.model.ModelBundle"/>

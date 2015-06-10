@@ -1,10 +1,9 @@
 package com.dbms.csmq.view.backing.whod;
 
+
 import com.dbms.csmq.CSMQBean;
 import com.dbms.csmq.UserBean;
 import com.dbms.csmq.view.backing.NMQ.NMQUtils;
-import com.dbms.csmq.view.hierarchy.TermHierarchyBean;
-
 import com.dbms.csmq.view.hierarchy.WhodTermHierarchyBean;
 import com.dbms.csmq.view.util.ADFUtils;
 import com.dbms.util.dml.DMLUtils;
@@ -20,54 +19,36 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
-
 import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.faces.application.FacesMessage;
-import javax.faces.component.UISelectItems;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.ValueChangeEvent;
-
 import javax.faces.model.SelectItem;
 
 import oracle.adf.model.BindingContext;
 import oracle.adf.model.binding.DCBindingContainer;
 import oracle.adf.model.binding.DCIteratorBinding;
 import oracle.adf.share.ADFContext;
-import oracle.adf.view.rich.component.rich.input.RichInputDate;
-import oracle.adf.view.rich.component.rich.input.RichInputText;
-import oracle.adf.view.rich.component.rich.input.RichSelectBooleanCheckbox;
 import oracle.adf.view.rich.component.rich.input.RichSelectManyChoice;
 import oracle.adf.view.rich.component.rich.input.RichSelectOneChoice;
-import oracle.adf.view.rich.component.rich.layout.RichPanelGroupLayout;
-import oracle.adf.view.rich.component.rich.layout.RichToolbar;
-import oracle.adf.view.rich.component.rich.nav.RichCommandButton;
-import oracle.adf.view.rich.component.rich.nav.RichTrain;
-import oracle.adf.view.rich.component.rich.nav.RichTrainButtonBar;
-import oracle.adf.view.rich.component.rich.output.RichOutputFormatted;
 import oracle.adf.view.rich.context.AdfFacesContext;
-import oracle.adf.view.rich.event.DialogEvent;
 
 import oracle.binding.AttributeContext;
-import oracle.binding.DataControl;
-
 import oracle.binding.ManagedDataControl;
 import oracle.binding.OperationBinding;
-
 import oracle.binding.RowContext;
 import oracle.binding.TransactionalDataControl;
-
 import oracle.binding.UpdateableDataControl;
 
 import oracle.jbo.Row;
 import oracle.jbo.RowSetIterator;
 import oracle.jbo.ViewObject;
-import oracle.jbo.domain.Date;
 import oracle.jbo.server.DBTransaction;
+
 
 public class WhodWizardBean implements TransactionalDataControl, UpdateableDataControl, ManagedDataControl {
     public static final int MAX_PRODUCT_COUNT = 3;
@@ -732,7 +713,7 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
     public void clearRelations() {
         BindingContext bc = BindingContext.getCurrent();
         DCBindingContainer binding = (DCBindingContainer)bc.getCurrentBindingsEntry();
-        DCIteratorBinding dciterb = (DCIteratorBinding)binding.get("SmallTreeVO1Iterator");
+        DCIteratorBinding dciterb = (DCIteratorBinding)binding.get("WHODSmallTreeVO1Iterator");
         ViewObject vo = dciterb.getViewObject();
         vo.setNamedWhereClauseParam("dictContentID", CSMQBean.HIERARCHY_KILL_SWITCH);
         vo.executeQuery();
@@ -744,63 +725,16 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
 
 
     public String updateRelations() {
-
-        System.out.println("***updateRelations***");
-
+        CSMQBean.logger.info(userBean.getCaller() + " starts exec updateRelations()");
         BindingContext bc = BindingContext.getCurrent();
         DCBindingContainer binding = (DCBindingContainer)bc.getCurrentBindingsEntry();
-        DCIteratorBinding dciterb = (DCIteratorBinding)binding.get("SmallTreeVO1Iterator");
+        DCIteratorBinding dciterb = (DCIteratorBinding)binding.get("WHODSmallTreeVO1Iterator");
         ViewObject vo = dciterb.getViewObject();
-
-        String tGroup = null;
-
-        ignorePredict = currentStatus.equals("CURRENT") ? CSMQBean.TRUE : CSMQBean.FALSE;
-
-        // CHANGED 20-JUL-2012 to limit to current only in the following modes:
-        if (this.mode == CSMQBean.MODE_COPY_EXISTING)
-            ignorePredict = CSMQBean.TRUE;
-
-        if (this.saved == true)
-            ignorePredict = CSMQBean.FALSE; // if it has been saved we need predict records.
-
-        if (this.currentStatus.equals(CSMQBean.PENDING_RELEASE_STATUS))
-            tGroup = this.currentPredictGroups;
-
-        CSMQBean.logger.info(userBean.getCaller() + " ** UPDATING RELATIONS **");
-        CSMQBean.logger.info(userBean.getCaller() + " Iterator: " + "SmallTreeVO1Iterator");
-        CSMQBean.logger.info(userBean.getCaller() + " dictContentID: " + this.currentDictContentID);
-        CSMQBean.logger.info(userBean.getCaller() + " maxLevels: " + maxLevels);
-        CSMQBean.logger.info(userBean.getCaller() + " scopeFilter: " + this.getHierarchyParamScope());
-        CSMQBean.logger.info(userBean.getCaller() + " sortKey: " + this.getHierarchyParamSort());
-        CSMQBean.logger.info(userBean.getCaller() + " asOfDate: " + this.getCurrentUntilDate());
-        CSMQBean.logger.info(userBean.getCaller() + " returnPrimLinkPath:" + getParamPrimLinkFlag());
-        CSMQBean.logger.info(userBean.getCaller() + " ignorePredict:" + ignorePredict);
-
-
         vo.setNamedWhereClauseParam("dictContentID", this.currentDictContentID);
-        vo.setNamedWhereClauseParam("maxLevels", maxLevels);
-        vo.setNamedWhereClauseParam("scopeFilter", this.getHierarchyParamScope());
-        vo.setNamedWhereClauseParam("returnPrimLinkPath", getParamPrimLinkFlag());
-        vo.setNamedWhereClauseParam("ignorePredict", ignorePredict);
-        vo.setNamedWhereClauseParam("sortKey", this.getHierarchyParamSort());
-
-        // CHANGED 26-SEP-2012
-        // CHANGED 23-APR-2014 to add UPDATE and COPY MODES
-        CSMQBean.logger.info(userBean.getCaller() + " dictVersion:" + this.currentVersion);
-        if (this.mode == CSMQBean.MODE_HISTORIC || this.mode == CSMQBean.MODE_UPDATE_EXISTING ||
-            this.mode == CSMQBean.MODE_COPY_EXISTING || this.mode == CSMQBean.MODE_INSERT_NEW)
-            vo.setNamedWhereClauseParam("dictVersion", this.currentVersion);
-        //~
-
-        if (this.getCurrentUntilDate() != null)
-            vo.setNamedWhereClauseParam("asOfDate", this.getCurrentUntilDate());
-
+        CSMQBean.logger.info(userBean.getCaller() + " dictContentID:" + this.currentDictContentID);
         vo.executeQuery();
-
-
         return null;
     }
-
 
     public void setCurrentContentCode(String currentContentCode) {
         this.currentContentCode = currentContentCode;

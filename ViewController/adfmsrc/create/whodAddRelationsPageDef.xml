@@ -8,9 +8,11 @@
     <iterator Binds="DictionaryVO1" RangeSize="25"
               DataControl="DictionaryModuleDataControl"
               id="DictionaryVO1Iterator" RefreshCondition=" #{!adfFacesContext.initialRender}"/>
-    <iterator Binds="SmallTreeVO1" RangeSize="-1"
+    <!--iterator Binds="SmallTreeVO1" RangeSize="-1"
               DataControl="HierarchyModuleDataControl" id="SmallTreeVO1Iterator"
-              RefreshCondition=" #{!adfFacesContext.initialRender}"/>
+              RefreshCondition=" #{!adfFacesContext.initialRender}"/-->
+    <iterator id="WHODSmallTreeVO1Iterator" Binds="WHODSmallTreeVO1" DataControl="WHODModuleDataControl"
+                  RangeSize="-1" RefreshCondition=" #{!adfFacesContext.initialRender}"/>
     <iterator Binds="SourceTreeVO1" RangeSize="-1"
               DataControl="HierarchyModuleDataControl"
               id="SourceTreeVO1Iterator" RefreshCondition=" #{!adfFacesContext.initialRender}"/>
@@ -33,7 +35,7 @@
     
   </executables>
   <bindings>
-    <tree IterBinding="SmallTreeVO1Iterator" id="SmallTreeVO1">
+    <!--tree IterBinding="SmallTreeVO1Iterator" id="SmallTreeVO1">
       <nodeDefinition DefName="com.dbms.csmq.model.hierarchy.SmallTreeVO"
                       Name="SmallTreeVO10">
         <AttrNames>
@@ -53,7 +55,7 @@
           <Item Value="Termweig"/>
         </AttrNames>
       </nodeDefinition>
-    </tree>
+    </tree-->
     <tree IterBinding="SourceTreeVO1Iterator" id="SourceTreeVO1">
       <nodeDefinition DefName="com.dbms.csmq.model.hierarchy.SourceTreeVO" Name="SourceTreeVO10">
         <AttrNames>
@@ -145,6 +147,33 @@
           <Item Value="DefLevelId"/>
           <Item Value="Querytypelevel"/>
           <Item Value="ShortName"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="WHODSmallTreeVO1Iterator" id="WHODSmallTreeVO1">
+      <nodeDefinition DefName="com.dbms.csmq.model.WHOD.WHODSmallTreeVO" Name="WHODSmallTreeVO10">
+        <AttrNames>
+          <Item Value="Parent"/>
+          <Item Value="ApprovedFlag"/>
+          <Item Value="ChildExists"/>
+          <Item Value="LevelName"/>
+          <Item Value="DictContentAltCode"/>
+          <Item Value="DictContentCode"/>
+          <Item Value="DictContentId"/>
+          <Item Value="DictShortName"/>
+          <Item Value="FormattedScope"/>
+          <Item Value="Level"/>
+          <Item Value="PredictGroupId"/>
+          <Item Value="PrimLinkFlag"/>
+          <Item Value="SortOrder"/>
+          <Item Value="Status"/>
+          <Item Value="Term"/>
+          <Item Value="Termcat"/>
+          <Item Value="Termlvl"/>
+          <Item Value="TermPath"/>
+          <Item Value="Termscp"/>
+          <Item Value="Termweig"/>
+          <Item Value="Prikey"/>
         </AttrNames>
       </nodeDefinition>
     </tree>
