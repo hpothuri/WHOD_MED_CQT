@@ -1,5 +1,6 @@
 package com.dbms.csmq.view.backing.whod;
 
+
 import com.dbms.csmq.CSMQBean;
 import com.dbms.csmq.UserBean;
 import com.dbms.csmq.view.hierarchy.WhodTermHierarchyBean;
@@ -7,7 +8,6 @@ import com.dbms.csmq.view.hierarchy.WhodTermHierarchyBean;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
-
 import java.util.Map;
 
 import javax.faces.application.FacesMessage;
@@ -15,6 +15,7 @@ import javax.faces.component.UISelectItems;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.PhaseEvent;
+import javax.faces.event.PhaseId;
 import javax.faces.event.ValueChangeEvent;
 
 import oracle.adf.view.rich.component.rich.input.RichInputDate;
@@ -31,17 +32,14 @@ import oracle.adf.view.rich.context.AdfFacesContext;
 import oracle.adf.view.rich.event.DialogEvent;
 
 import oracle.binding.AttributeContext;
-import oracle.binding.DataControl;
-
 import oracle.binding.ManagedDataControl;
 import oracle.binding.OperationBinding;
-
 import oracle.binding.RowContext;
 import oracle.binding.TransactionalDataControl;
-
 import oracle.binding.UpdateableDataControl;
 
 import oracle.jbo.domain.Date;
+
 
 public class WhodWizardUIBean implements TransactionalDataControl, UpdateableDataControl, ManagedDataControl {
 
@@ -341,12 +339,9 @@ public class WhodWizardUIBean implements TransactionalDataControl, UpdateableDat
 
 
     public String updateRelations() {
-
         System.out.println("************* REFRESHING RELATIONS ****************");
 
         nMQWizardBean.updateRelations();
-
-
         boolean scope = false;
         if (nMQWizardBean.getCurrentScope() != null)
             scope = nMQWizardBean.getCurrentScope().equals(CSMQBean.HAS_SCOPE);
@@ -462,7 +457,7 @@ public class WhodWizardUIBean implements TransactionalDataControl, UpdateableDat
 
     public void reactivate(DialogEvent dialogEvent) {
         if (WhodUtils.activate(nMQWizardBean.getCurrentDictContentID(), nMQWizardBean.getCurrentContentCode(),
-                              userBean.getUserRole(), userBean.getCurrentUser())) {
+                               userBean.getUserRole(), userBean.getCurrentUser())) {
             nMQWizardBean.setCurrentMQStatus(CSMQBean.ACTIVE_ACTIVITY_STATUS);
             nMQWizardBean.setCurrentStatus(CSMQBean.PENDING_RELEASE_STATUS);
             nMQWizardBean.setCurrentState(CSMQBean.STATE_DRAFT);
@@ -475,7 +470,7 @@ public class WhodWizardUIBean implements TransactionalDataControl, UpdateableDat
 
     public void retire(DialogEvent dialogEvent) {
         if (WhodUtils.retire(nMQWizardBean.getCurrentDictContentID(), nMQWizardBean.getCurrentContentCode(),
-                            userBean.getUserRole(), userBean.getCurrentUser())) {
+                             userBean.getUserRole(), userBean.getCurrentUser())) {
             nMQWizardBean.setCurrentMQStatus(CSMQBean.INACTIVE_ACTIVITY_STATUS);
             nMQWizardBean.setCurrentStatus(CSMQBean.PENDING_RELEASE_STATUS);
             nMQWizardBean.setCurrentState(CSMQBean.STATE_DRAFT);
@@ -499,8 +494,8 @@ public class WhodWizardUIBean implements TransactionalDataControl, UpdateableDat
     public void demoteToDraft(DialogEvent dialogEvent) {
         Hashtable result =
             WhodUtils.changeState(nMQWizardBean.getCurrentDictContentID(), CSMQBean.STATE_DRAFT, userBean.getCurrentUser(),
-                                 userBean.getUserRole(), nMQWizardBean.getCurrentRequestedByDate(), null,
-                                 cSMQBean.getDefaultDraftReleaseGroup());
+                                  userBean.getUserRole(), nMQWizardBean.getCurrentRequestedByDate(), null,
+                                  cSMQBean.getDefaultDraftReleaseGroup());
         if (result != null) {
             nMQWizardBean.setCurrentPredictGroups(cSMQBean.getDefaultDraftReleaseGroup());
             nMQWizardBean.setCurrentState((String)result.get("STATE"));
@@ -515,8 +510,8 @@ public class WhodWizardUIBean implements TransactionalDataControl, UpdateableDat
     public void confirmReviewed(DialogEvent dialogEvent) {
         Hashtable result =
             WhodUtils.changeState(nMQWizardBean.getCurrentDictContentID(), CSMQBean.STATE_REVIEWED, userBean.getCurrentUser(),
-                                 userBean.getUserRole(), nMQWizardBean.getCurrentRequestedByDate(), null,
-                                 cSMQBean.getDefaultDraftReleaseGroup());
+                                  userBean.getUserRole(), nMQWizardBean.getCurrentRequestedByDate(), null,
+                                  cSMQBean.getDefaultDraftReleaseGroup());
         if (result != null) {
             nMQWizardBean.setCurrentPredictGroups(cSMQBean.getDefaultDraftReleaseGroup());
             nMQWizardBean.setCurrentState((String)result.get("STATE"));
@@ -531,8 +526,8 @@ public class WhodWizardUIBean implements TransactionalDataControl, UpdateableDat
     public void approve(DialogEvent dialogEvent) {
         Hashtable result =
             WhodUtils.changeState(nMQWizardBean.getCurrentDictContentID(), CSMQBean.STATE_APPROVED, userBean.getCurrentUser(),
-                                 userBean.getUserRole(), nMQWizardBean.getCurrentRequestedByDate(), null,
-                                 cSMQBean.getDefaultDraftReleaseGroup());
+                                  userBean.getUserRole(), nMQWizardBean.getCurrentRequestedByDate(), null,
+                                  cSMQBean.getDefaultDraftReleaseGroup());
         if (result != null) {
             nMQWizardBean.setCurrentPredictGroups(cSMQBean.getDefaultDraftReleaseGroup());
             nMQWizardBean.setCurrentState((String)result.get("STATE"));
@@ -554,8 +549,8 @@ public class WhodWizardUIBean implements TransactionalDataControl, UpdateableDat
         }
         Hashtable result =
             WhodUtils.changeState(nMQWizardBean.getCurrentDictContentID(), CSMQBean.STATE_REQUESTED, userBean.getCurrentUser(),
-                                 userBean.getUserRole(), nMQWizardBean.getCurrentRequestedByDate(),
-                                 nMQWizardBean.getCurrentReasonForRequest(), cSMQBean.getDefaultDraftReleaseGroup());
+                                  userBean.getUserRole(), nMQWizardBean.getCurrentRequestedByDate(),
+                                  nMQWizardBean.getCurrentReasonForRequest(), cSMQBean.getDefaultDraftReleaseGroup());
         if (result != null) {
             nMQWizardBean.setCurrentPredictGroups(cSMQBean.getDefaultDraftReleaseGroup());
             nMQWizardBean.setCurrentState((String)result.get("STATE"));
@@ -686,17 +681,21 @@ public class WhodWizardUIBean implements TransactionalDataControl, UpdateableDat
     }
 
     public void addRelationsPageLoad(PhaseEvent phaseEvent) {
-        if (!nMQWizardBean.isTreeAccessed()) {
-            updateRelations();
-            nMQWizardBean.setTreeAccessed(true);
+        System.out.println("Starts exec WhodWizardUIBean.addRelationsPageLoad() PhaseId = " + phaseEvent.getPhaseId());
+        if (phaseEvent.getPhaseId().equals(PhaseId.RENDER_RESPONSE)) {
+            try {
+                if (!nMQWizardBean.isTreeAccessed()) {
+                    updateRelations();
+                    nMQWizardBean.setTreeAccessed(true);
+                }
+                //if (getCntrlIncludeLLTsInExport() != null)
+                //     this.getCntrlIncludeLLTsInExport().setValue(false);
+                nMQWizardBean.setIncludeLLTsInExport(false);
+            } catch (Exception e) {
+                e.printStackTrace();
+                System.out.println("Exception in WhodWizardUIBean.addRelationsPageLoad() is " + e);
+            }
         }
-        //if (getCntrlIncludeLLTsInExport() != null)
-        //     this.getCntrlIncludeLLTsInExport().setValue(false);
-        nMQWizardBean.setIncludeLLTsInExport(false);
-
-
-        //if(phaseEvent.getPhaseId().toString().equalsIgnoreCase("RENDER_RESPONSE 6"))
-
     }
 
 

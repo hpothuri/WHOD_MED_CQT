@@ -237,16 +237,19 @@ public class WhodTermHierarchyBean extends Hierarchy {
             termNode.setHasScope(this.hasScope);
             termNode.setEditable(this.editable);
             termNode.setFormattedScope(Utils.getAsString(row, "FormattedScope"));
+            CSMQBean.logger.info(userBean.getCaller() + " parentNodesByLevel: " + parentNodesByLevel +":; termNode.getParent()=" + termNode.getParent());
             GenericTreeNode parentNode = (GenericTreeNode)parentNodesByLevel.get(termNode.getParent());
-            parentNode.getChildren().add(termNode); // add to the parent
-            termNode.setParentNode(parentNode); // set the parent for the child
-            if (root.equals(parentNode))
-                termNode.setIsDirectRelation(true); // it's a direct relation
-            if (parentNode.isIsRoot())
-                termNode.setDeletable(true); //it's a child of the root - it can be deleted
-            CSMQBean.logger.info(userBean.getCaller() + " ADDING NODE: " + termNode);
-            setDerivedRelations(termNode);
-            populateTreeNodes(termNode);
+            if(parentNode != null){
+                parentNode.getChildren().add(termNode); // add to the parent
+                termNode.setParentNode(parentNode); // set the parent for the child
+                if (root.equals(parentNode))
+                    termNode.setIsDirectRelation(true); // it's a direct relation
+                if (parentNode.isIsRoot())
+                    termNode.setDeletable(true); //it's a child of the root - it can be deleted
+                CSMQBean.logger.info(userBean.getCaller() + " ADDING NODE: " + termNode);
+                setDerivedRelations(termNode);
+                populateTreeNodes(termNode);
+            }           
         }
         return node;
     }
