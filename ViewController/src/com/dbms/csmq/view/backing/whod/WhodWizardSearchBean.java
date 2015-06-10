@@ -190,7 +190,7 @@ public class WhodWizardSearchBean {
         //CSMQBean.logger.info(userBean.getCaller() + " currentDictionary:" + currentDictionary);
         String currentReleaseGroup = Utils.getAsString(row, "RelaeaseGroup");
         CSMQBean.logger.info(userBean.getCaller() + " currentReleaseGroup:" + currentReleaseGroup);
-        String currentMqstatus = Utils.getAsString(row, "Status");
+        String currentMqstatus = Utils.getAsString(row, "Value1");
         CSMQBean.logger.info(userBean.getCaller() + " currentMqstatus:" + currentMqstatus);
         String currentDictContentID = Utils.getAsString(row, "DictContentId");
         CSMQBean.logger.info(userBean.getCaller() + " currentDictContentID:" + currentDictContentID);
@@ -280,19 +280,19 @@ public class WhodWizardSearchBean {
         //            whodWizardBean.setDesigneeList(getDesignees(currentDictContentID));
         //        }
         
-        /*
-        String currentMqproduct = Utils.getAsString(row, "Mqprodct");
+        
+        String currentMqproduct = Utils.getAsString(row, "Value3");
         if (currentMqproduct != null) {
             currentMqproduct = currentMqproduct.replace(CSMQBean.DEFAULT_DELIMETER_CHAR, '%');
             Collections.addAll(whodWizardBean.getProductList(), currentMqproduct.split("%"));
         }
 
-        String currentMqgroups = Utils.getAsString(row, "Mqgroup");
+        String currentMqgroups = Utils.getAsString(row, "Value4");
         if (currentMqgroups != null) {
             currentMqgroups = currentMqgroups.replace(CSMQBean.DEFAULT_DELIMETER_CHAR, '%');
             Collections.addAll(whodWizardBean.getMQGroupList(), currentMqgroups.split("%"));
         }
-        */
+        
         whodWizardBean.getProductList().clear();
         whodWizardBean.getMQGroupList().clear();
         whodWizardBean.getDesigneeList().clear();
