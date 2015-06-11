@@ -18,7 +18,7 @@
                         <af:group id="g1">
                             <af:panelBox id="pgl1" text="Details" showDisclosure="false"
                                          inlineStyle="height:158px; width:1195px; padding:5px;">
-                                <af:panelGroupLayout id="pgl3" layout="horizontal" valign="top">
+                                <af:panelGroupLayout id="pgl3" layout="horizontal" valign="top" styleClass="AFStretchWidth">
                                     <af:panelGroupLayout id="pgl4" valign="top">
                                         <af:panelFormLayout id="pfl1">
                                             <af:selectOneChoice value="#{pageFlowScope.WhodWizardBean.currentExtension}"
@@ -154,7 +154,7 @@
                                                           value="#{(WhodRenderingRulesBean.wizardDetailsDisplayContentCode || pageFlowScope.WhodWizardBean.saved) ? pageFlowScope.WhodWizardBean.currentContentCode : null}"/>
                                         </af:panelFormLayout>
                                     </af:panelGroupLayout>
-                                    <af:panelGroupLayout id="pgl6">
+                                    <!--<af:panelGroupLayout id="pgl6">
                                         <af:panelFormLayout id="pfl4"
                                                             rendered="#{WhodRenderingRulesBean.wizardDetailsRenderInitalCreateInfo}">
                                             <af:inputText value="#{pageFlowScope.WhodWizardBean.currentInitialCreationBy}"
@@ -178,7 +178,7 @@
                                                           contentStyle="color:#000000;" readOnly="true"
                                                           labelStyle="white-space:nowrap" columns="20"/>
                                         </af:panelFormLayout>
-                                    </af:panelGroupLayout>
+                                    </af:panelGroupLayout>-->
                                 </af:panelGroupLayout>
                                 <f:facet name="toolbar">
                                     <af:commandButton text="Save" id="cb1" partialSubmit="true"

@@ -36,7 +36,7 @@ public class WhodWizardSearchBean {
     private String paramLevel = CSMQBean.FILTER_LEVEL_ONE;
     private String paramReleaseGroup = CSMQBean.WILDCARD;
     private String paramApproved = CSMQBean.WILDCARD;
-    private String paramStatus = CSMQBean.ACTIVE_ACTIVITY_STATUS;
+    private String paramStatus = CSMQBean.WILDCARD;
     private String paramScope = CSMQBean.WILDCARD;
     private String paramTerm = null;
     private String paramCode = null;
@@ -121,33 +121,31 @@ public class WhodWizardSearchBean {
         UserBean userBean = WhodUtils.getUserBean();
         DCIteratorBinding dciterb = ADFUtils.findIterator("WHODSimpleSearch1Iterator");
         ViewObject vo = dciterb.getViewObject();
+
+        vo.setNamedWhereClauseParam("approvedFlag", getParamApproved());
+        vo.setNamedWhereClauseParam("levelName", getSearchLevelParam());
+        vo.setNamedWhereClauseParam("dGActiveStatus", getParamStatus());
+        vo.setNamedWhereClauseParam("dGGroupLIST", getParamGroupList()); // search needs ^ as the delimiter
+        vo.setNamedWhereClauseParam("dGProductLIST", getParamProductList()); // search needs ^ as the delimiter
+        vo.setNamedWhereClauseParam("dGScopeFlag", getParamScope());
+
         String paramTermVal = getParamTerm();
         if (null != paramTermVal && !paramTermVal.isEmpty()) {
             paramTermVal = paramTermVal.replace("'", "\''");
+            vo.setNamedWhereClauseParam("termUpper", paramTermVal + "%");
+        } else {
+            vo.setNamedWhereClauseParam("termUpper", "%");
         }
-        //TODO:WHOD NO need to set as we are setting as default value
-        //vo.setNamedWhereClauseParam("levelName", getParamLevel());
-        vo.setNamedWhereClauseParam("levelName", "SDG%");
-        paramTermVal = "%";
-        vo.setNamedWhereClauseParam("termUpper", paramTermVal);
-        //TODO:WHOD NO need to set as we are setting as default value
-        //vo.setNamedWhereClauseParam("termUpper", "%");
-        vo.setNamedWhereClauseParam("approvedFlag", getParamApproved());
-        //TODO NO need to set as we are setting as default value
-        //vo.setNamedWhereClauseParam("createdBy", "%");
-        //vo.setNamedWhereClauseParam("dictContentID", "%");
-        //vo.setNamedWhereClauseParam("dictContentCode", "%");
-        //vo.setNamedWhereClauseParam("dGDMLVersion", "%");
-        //vo.setNamedWhereClauseParam("dGScopeFlag", "%");
-        //vo.setNamedWhereClauseParam("dGTransID", "%");
-        //vo.setNamedWhereClauseParam("dGTransID", "%");
-        //vo.setNamedWhereClauseParam("dGActiveStatus", getParamActivityStatus());
-        vo.setNamedWhereClauseParam("dGActiveStatus", "%");
-        vo.setNamedWhereClauseParam("dGGroupLIST", getParamGroupList()); // search needs ^ as the delimiter
-        vo.setNamedWhereClauseParam("dGProductLIST", getParamProductList()); // search needs ^ as the delimiter
+
+        vo.setNamedWhereClauseParam("dictContentCode", (getParamCode() != null ? getParamCode() : "") + "%");
         vo.executeQuery();
         //CLEAR OLD TRESS
-        WhodUtils.clearRelations();
+        //TODO need to check why we need this
+        //WhodUtils.clearRelations();
+    }
+
+    private String getSearchLevelParam() {
+        return getParamExtension() + getParamLevel() + "%";
     }
 
     public void onTableNodeSelection(SelectionEvent selectionEvent) {
@@ -248,8 +246,8 @@ public class WhodWizardSearchBean {
          */
         whodWizardBean.getDictionaryInfo(); // GET BASE DICT INFO FROM FILTER
 
-//        Hashtable<String, String> activationInfo =
-//            WhodUtils.getActivationInfo(currentDictContentID, currentDictionary);
+        //        Hashtable<String, String> activationInfo =
+        //            WhodUtils.getActivationInfo(currentDictContentID, currentDictionary);
         Hashtable<String, String> activationInfo = null;
 
         if (activationInfo != null) {
@@ -279,8 +277,8 @@ public class WhodWizardSearchBean {
         //        if (whodWizardBean.getMode() != CSMQBean.MODE_COPY_EXISTING) {
         //            whodWizardBean.setDesigneeList(getDesignees(currentDictContentID));
         //        }
-        
-        
+
+
         String currentMqproduct = Utils.getAsString(row, "Value3");
         if (currentMqproduct != null) {
             currentMqproduct = currentMqproduct.replace(CSMQBean.DEFAULT_DELIMETER_CHAR, '%');
@@ -292,7 +290,7 @@ public class WhodWizardSearchBean {
             currentMqgroups = currentMqgroups.replace(CSMQBean.DEFAULT_DELIMETER_CHAR, '%');
             Collections.addAll(whodWizardBean.getMQGroupList(), currentMqgroups.split("%"));
         }
-        
+
         whodWizardBean.getProductList().clear();
         whodWizardBean.getMQGroupList().clear();
         whodWizardBean.getDesigneeList().clear();
@@ -439,7 +437,7 @@ public class WhodWizardSearchBean {
         this.paramTerm = paramTerm;
     }
 
-    public String getParamTerm() {
+    public String  getParamTerm() {
         return paramTerm;
     }
 

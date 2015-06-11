@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1" xmlns:f="http://java.sun.com/jsf/core"
-          xmlns:af="http://xmlns.oracle.com/adf/faces/rich">
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich" xmlns:fn="http://java.sun.com/jsp/jstl/functions">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <f:view>
         <af:document id="d1" title="Search Page">
@@ -93,7 +93,7 @@
                                                                     labelStyle="white-space:nowrap"
                                                                     value="#{pageFlowScope.WhodWizardSearchBean.paramStatus}"
                                                                     autoSubmit="true">
-                                                    <af:selectItem label="All" value="ALL" id="si19"/>
+                                                    <af:selectItem label="All" value="%" id="si19"/>
                                                     <af:selectItem label="Active" value="A" id="si19a"/>
                                                     <af:selectItem label="Inactive" value="I" id="si16"/>
                                                     <af:selectItem label="Pending" value="P" id="si18"/>
@@ -159,7 +159,7 @@
                                               inlineStyle="height:230px;" persist="ALL"
                                               summary="This table gives search result">
                                         <af:column sortProperty="Term" sortable="true" headerText="Term" id="c20"
-                                                   filterable="true" rowHeader="true" width="300">
+                                                   filterable="true" rowHeader="true" width="300" align="left"> 
                                             <af:outputText value="#{row.Term}" id="ot16"/>
                                         </af:column>
                                         <af:column sortProperty="Status" sortable="true" headerText="Status" id="c4"
@@ -177,11 +177,11 @@
                                         </af:column>
                                         <af:column sortProperty="RelaeaseGroup" sortable="true" headerText="Group"
                                                    id="c15" width="60" filterable="true">
-                                            <af:outputText value="#{row.RelaeaseGroup}" id="ot20"/>
+                                            <af:outputText value="#{row.Value4}" id="ot20"/>
                                         </af:column>
                                         <af:column sortable="true" headerText="Level" id="c18" width="40"
                                                    filterable="true">
-                                            <af:outputText value="1" id="ot15"/>
+                                            <af:outputText value="#{fn:substring(row.LevelName,3,4)}" id="ot15"/>
                                         </af:column>
                                         <af:column sortProperty="DictContentCode" sortable="true" headerText="Code"
                                                    id="c21" width="50" minimumWidth="-1" rendered="true"
@@ -194,11 +194,11 @@
                                         </af:column>
                                         <af:column sortable="true" headerText="State" id="c3" width="40"
                                                    filterable="true">
-                                            <af:outputText value="" id="ot13"/>
+                                            <af:outputText value="#{row.Value1 eq 'I' ? 'I' : 'A'}" id="ot13"/>
                                         </af:column>
-                                        <af:column sortProperty="Term" sortable="false" headerText="Product" id="c9"
+                                        <af:column sortProperty="Value4" sortable="false" headerText="Product" id="c9"
                                                    width="150" minimumWidth="25" rendered="true">
-                                            <af:outputText value="#{row.Term}" id="ot17"/>
+                                            <af:outputText value="#{row.Value4}" id="ot17"/>
                                         </af:column>
                                         <af:column sortProperty="CreatedBy" sortable="false" headerText="Created By"
                                                    id="c23" width="80">
