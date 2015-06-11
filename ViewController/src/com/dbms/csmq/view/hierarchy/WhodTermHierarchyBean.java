@@ -160,7 +160,8 @@ public class WhodTermHierarchyBean extends Hierarchy {
         GenericTreeNode termNode = new GenericTreeNode();
         termNode.setTerm(Utils.getAsString(row, "ChildTerm"));
         termNode.setParent(Utils.getAsString(row, "ParentDictContentId"));
-        termNode.setLevelName(resolveTermLevel(Utils.getAsString(row, "ChildLevel")));
+        //termNode.setLevelName(resolveTermLevel(Utils.getAsString(row, "ChildLevel")));
+        termNode.setLevelName(Utils.getAsString(row, "ChildLevel"));
         termNode.setQueryLevel(Utils.getAsString(row, "ChildLevel"));
         termNode.setLevel(Utils.getAsNumber(row, "ChildLevel"));
         termNode.setDictShortName(Utils.getAsString(row, "DictShortName"));
@@ -534,7 +535,14 @@ public class WhodTermHierarchyBean extends Hierarchy {
     }
 
     public void expandChildren(ActionEvent actionEvent) {
-        showChildren();
+        try {
+            showChildren();
+        } catch (Exception e) {
+            // TODO: Add catch code
+            e.printStackTrace();
+            System.out.println("Exception in expandChildren() is "+ e);
+        }
+        
     }
 
 
