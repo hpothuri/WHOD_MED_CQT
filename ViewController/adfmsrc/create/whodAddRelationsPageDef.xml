@@ -153,27 +153,27 @@
     <tree IterBinding="WHODSmallTreeVO1Iterator" id="WHODSmallTreeVO1">
       <nodeDefinition DefName="com.dbms.csmq.model.WHOD.WHODSmallTreeVO" Name="WHODSmallTreeVO10">
         <AttrNames>
-          <Item Value="Parent"/>
           <Item Value="ApprovedFlag"/>
           <Item Value="ChildExists"/>
-          <Item Value="LevelName"/>
-          <Item Value="DictContentAltCode"/>
-          <Item Value="DictContentCode"/>
-          <Item Value="DictContentId"/>
           <Item Value="DictShortName"/>
           <Item Value="FormattedScope"/>
-          <Item Value="Level"/>
           <Item Value="PredictGroupId"/>
           <Item Value="PrimLinkFlag"/>
           <Item Value="SortOrder"/>
           <Item Value="Status"/>
-          <Item Value="Term"/>
           <Item Value="Termcat"/>
           <Item Value="Termlvl"/>
           <Item Value="TermPath"/>
           <Item Value="Termscp"/>
           <Item Value="Termweig"/>
-          <Item Value="Prikey"/>
+          <Item Value="ChildDictContentCode"/>
+          <Item Value="ChildDictContentId"/>
+          <Item Value="ChildLevel"/>
+          <Item Value="ChildTerm"/>
+          <Item Value="ParentDictContentCode"/>
+          <Item Value="ParentDictContentId"/>
+          <Item Value="ParentLevel"/>
+          <Item Value="ParentTerm"/>
         </AttrNames>
       </nodeDefinition>
     </tree>

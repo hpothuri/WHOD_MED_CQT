@@ -7,7 +7,6 @@
   Version="11.1.2.64.36"
   BindingStyle="OracleName"
   CustomQuery="true"
-  FetchMode="FETCH_AS_NEEDED"
   PageIterMode="Full"
   UseGlueCode="false">
   <DesignTime>
@@ -23,15 +22,15 @@
     Name="dictContentID"
     Kind="where"
     Type="java.lang.String"/>
-  <SQLQuery><![CDATA[SELECT DISTINCT DECODE(dict_content_id,0,NULL,dict_content_id) parent,
-        '' prikey,
-	dict_content_ref_id dict_content_id,
-        dict_content_code,
-	term,
-	LEVEL_name "LEVEL", -- connect_level
-	level_ref_name level_name, --def_level_ref_short_name
+  <SQLQuery><![CDATA[SELECT DISTINCT dict_content_id parent_dict_content_id,
+        term parent_term,
+        dict_content_code parent_dict_content_code,
+        SUBSTR(level_name,4,1) parent_level,        
+	dict_content_ref_id child_dict_content_id,
+        ref_term child_term,
+        dict_content_ref_code child_dict_content_code,
+        SUBSTR(level_ref_name,4,1) child_level,     
 	dictionary_name dict_short_name, --def_dictionary_short_name
-	dict_content_ref_code dict_content_alt_code,
 	REALEASE_STATUS_CODE approved_flag,
 	status,
 	DEF_LEVEL_REF_ID TERMLVL,
@@ -46,99 +45,113 @@
         'Y' CHILD_EXISTS     
 FROM TABLE (cqt_whod_ui_tms_utils.pipe_relations_curr_below(:dictContentID))]]></SQLQuery>
   <ViewAttribute
-    Name="Parent"
-    IsUpdateable="false"
-    IsPersistent="false"
-    PrecisionRule="true"
-    Precision="255"
-    Type="java.lang.String"
-    ColumnType="VARCHAR2"
-    AliasName="PARENT"
-    Expression="PARENT"
-    SQLType="VARCHAR">
-    <DesignTime>
-      <Attr Name="_DisplaySize" Value="40"/>
-    </DesignTime>
-  </ViewAttribute>
-  <ViewAttribute
-    Name="Prikey"
-    IsUpdateable="false"
-    IsPersistent="false"
-    PrecisionRule="true"
-    Precision="32"
-    Type="java.lang.String"
-    ColumnType="CHAR"
-    AliasName="PRIKEY"
-    Expression="PRIKEY"
-    SQLType="CHAR"/>
-  <ViewAttribute
-    Name="DictContentId"
+    Name="ParentDictContentId"
     IsUpdateable="false"
     IsPersistent="false"
     PrecisionRule="true"
     Type="oracle.jbo.domain.Number"
     ColumnType="NUMBER"
-    AliasName="DICT_CONTENT_ID"
-    Expression="DICT_CONTENT_ID"
+    AliasName="PARENT_DICT_CONTENT_ID"
+    Expression="PARENT_DICT_CONTENT_ID"
     SQLType="NUMERIC"/>
   <ViewAttribute
-    Name="DictContentCode"
-    IsUpdateable="false"
-    IsPersistent="false"
-    PrecisionRule="true"
-    Precision="120"
-    Type="java.lang.String"
-    ColumnType="VARCHAR2"
-    AliasName="DICT_CONTENT_CODE"
-    Expression="DICT_CONTENT_CODE"
-    SQLType="VARCHAR">
-    <DesignTime>
-      <Attr Name="_DisplaySize" Value="120"/>
-    </DesignTime>
-  </ViewAttribute>
-  <ViewAttribute
-    Name="Term"
+    Name="ParentTerm"
     IsUpdateable="false"
     IsPersistent="false"
     PrecisionRule="true"
     Precision="1200"
     Type="java.lang.String"
     ColumnType="VARCHAR2"
-    AliasName="TERM"
-    Expression="TERM"
+    AliasName="PARENT_TERM"
+    Expression="PARENT_TERM"
     SQLType="VARCHAR">
     <DesignTime>
       <Attr Name="_DisplaySize" Value="1200"/>
     </DesignTime>
   </ViewAttribute>
   <ViewAttribute
-    Name="Level"
+    Name="ParentDictContentCode"
     IsUpdateable="false"
     IsPersistent="false"
     PrecisionRule="true"
-    Precision="40"
+    Precision="120"
     Type="java.lang.String"
     ColumnType="VARCHAR2"
-    AliasName='"LEVEL"'
-    Expression='"LEVEL"'
+    AliasName="PARENT_DICT_CONTENT_CODE"
+    Expression="PARENT_DICT_CONTENT_CODE"
     SQLType="VARCHAR">
     <DesignTime>
-      <Attr Name="_DisplaySize" Value="40"/>
+      <Attr Name="_DisplaySize" Value="120"/>
     </DesignTime>
   </ViewAttribute>
   <ViewAttribute
-    Name="LevelName"
+    Name="ParentLevel"
     IsUpdateable="false"
     IsPersistent="false"
     PrecisionRule="true"
-    Precision="40"
+    Precision="4"
     Type="java.lang.String"
     ColumnType="VARCHAR2"
-    AliasName="LEVEL_NAME"
-    Expression="LEVEL_NAME"
+    AliasName="PARENT_LEVEL"
+    Expression="PARENT_LEVEL"
     SQLType="VARCHAR">
     <DesignTime>
-      <Attr Name="_DisplaySize" Value="40"/>
+      <Attr Name="_DisplaySize" Value="4"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="ChildDictContentId"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="oracle.jbo.domain.Number"
+    ColumnType="NUMBER"
+    AliasName="CHILD_DICT_CONTENT_ID"
+    Expression="CHILD_DICT_CONTENT_ID"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="ChildTerm"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="1200"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="CHILD_TERM"
+    Expression="CHILD_TERM"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="1200"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="ChildDictContentCode"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="120"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="CHILD_DICT_CONTENT_CODE"
+    Expression="CHILD_DICT_CONTENT_CODE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="120"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="ChildLevel"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="4"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="CHILD_LEVEL"
+    Expression="CHILD_LEVEL"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="4"/>
     </DesignTime>
   </ViewAttribute>
   <ViewAttribute
@@ -154,21 +167,6 @@ FROM TABLE (cqt_whod_ui_tms_utils.pipe_relations_curr_below(:dictContentID))]]><
     SQLType="VARCHAR">
     <DesignTime>
       <Attr Name="_DisplaySize" Value="40"/>
-    </DesignTime>
-  </ViewAttribute>
-  <ViewAttribute
-    Name="DictContentAltCode"
-    IsUpdateable="false"
-    IsPersistent="false"
-    PrecisionRule="true"
-    Precision="120"
-    Type="java.lang.String"
-    ColumnType="VARCHAR2"
-    AliasName="DICT_CONTENT_ALT_CODE"
-    Expression="DICT_CONTENT_ALT_CODE"
-    SQLType="VARCHAR">
-    <DesignTime>
-      <Attr Name="_DisplaySize" Value="120"/>
     </DesignTime>
   </ViewAttribute>
   <ViewAttribute
@@ -325,7 +323,7 @@ FROM TABLE (cqt_whod_ui_tms_utils.pipe_relations_curr_below(:dictContentID))]]><
     </DesignTime>
   </ViewAttribute>
   <AttrArray Name="KeyAttributes">
-    <Item Value="DictContentId"/>
+    <Item Value="ChildDictContentId"/>
   </AttrArray>
   <ResourceBundle>
     <PropertiesBundle

@@ -89,9 +89,9 @@
                             <af:group id="pt_g1">
                                 <af:panelGroupLayout id="pt_pgl3" inlineStyle="height:45px;" layout="horizontal">
                                     <!--<af:image id="pt_i1" shortDesc="#{CSMQBean.version}" source="/image/app_logo.png">-->
-                                    <af:image id="pt_i1" shortDesc="#{CSMQBean.version}" source="/image/app_logo.png" visible="false">
+                                    <!--<af:image id="pt_i1" shortDesc="#{CSMQBean.version}" source="/image/app_logo.png" visible="false">
                                         <af:showPopupBehavior popupId="pt_p2" triggerType="click" align="overlap"/>
-                                    </af:image>
+                                    </af:image>-->
                                 </af:panelGroupLayout>
                             </af:group>
                         </f:facet>
