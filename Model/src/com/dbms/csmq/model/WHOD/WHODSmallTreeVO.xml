@@ -5,17 +5,13 @@
   xmlns="http://xmlns.oracle.com/bc4j"
   Name="WHODSmallTreeVO"
   Version="11.1.2.64.36"
-  OrderBy="SORT_ORDER"
   BindingStyle="OracleName"
   CustomQuery="true"
+  FetchMode="FETCH_AS_NEEDED"
   PageIterMode="Full"
-  UseGlueCode="false"
-  RowClass="com.dbms.csmq.model.WHOD.WHODSmallTreeVORowImpl"
-  ComponentClass="com.dbms.csmq.model.WHOD.WHODSmallTreeVOImpl">
+  UseGlueCode="false">
   <DesignTime>
     <Attr Name="_isExpertMode" Value="true"/>
-    <Attr Name="_codeGenFlag2" Value="Access|Coll|VarAccess"/>
-    <Attr Name="_isCodegen" Value="true"/>
   </DesignTime>
   <Properties>
     <SchemaBasedProperties>
@@ -49,20 +45,6 @@
         ''  SORT_ORDER,
         'Y' CHILD_EXISTS     
 FROM TABLE (cqt_whod_ui_tms_utils.pipe_relations_curr_below(:dictContentID))]]></SQLQuery>
-<ViewAttribute
-    Name="Prikey"
-    IsPersistent="false"
-    PrecisionRule="true"
-    Precision="81"
-    Type="java.lang.String"
-    ColumnType="VARCHAR2"
-    AliasName="PRIKEY"
-    Expression="PRIKEY"
-    SQLType="VARCHAR">
-    <DesignTime>
-      <Attr Name="_DisplaySize" Value="81"/>
-    </DesignTime>
-  </ViewAttribute>
   <ViewAttribute
     Name="Parent"
     IsUpdateable="false"
@@ -78,6 +60,17 @@ FROM TABLE (cqt_whod_ui_tms_utils.pipe_relations_curr_below(:dictContentID))]]><
       <Attr Name="_DisplaySize" Value="40"/>
     </DesignTime>
   </ViewAttribute>
+  <ViewAttribute
+    Name="Prikey"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="32"
+    Type="java.lang.String"
+    ColumnType="CHAR"
+    AliasName="PRIKEY"
+    Expression="PRIKEY"
+    SQLType="CHAR"/>
   <ViewAttribute
     Name="DictContentId"
     IsUpdateable="false"
@@ -141,10 +134,9 @@ FROM TABLE (cqt_whod_ui_tms_utils.pipe_relations_curr_below(:dictContentID))]]><
     Precision="40"
     Type="java.lang.String"
     ColumnType="VARCHAR2"
-    AliasName="DEF_LEVEL_REF_SHORT_NAME"
+    AliasName="LEVEL_NAME"
     Expression="LEVEL_NAME"
-    SQLType="VARCHAR"
-    IsQueriable="false">
+    SQLType="VARCHAR">
     <DesignTime>
       <Attr Name="_DisplaySize" Value="40"/>
     </DesignTime>
@@ -269,7 +261,7 @@ FROM TABLE (cqt_whod_ui_tms_utils.pipe_relations_curr_below(:dictContentID))]]><
     ColumnType="CHAR"
     AliasName="PREDICT_GROUP_ID"
     Expression="PREDICT_GROUP_ID"
-    SQLType="VARCHAR"/>
+    SQLType="CHAR"/>
   <ViewAttribute
     Name="FormattedScope"
     IsUpdateable="false"
@@ -290,7 +282,7 @@ FROM TABLE (cqt_whod_ui_tms_utils.pipe_relations_curr_below(:dictContentID))]]><
     ColumnType="CHAR"
     AliasName="TERM_PATH"
     Expression="TERM_PATH"
-    SQLType="VARCHAR"/>
+    SQLType="CHAR"/>
   <ViewAttribute
     Name="PrimLinkFlag"
     IsUpdateable="false"
@@ -316,7 +308,7 @@ FROM TABLE (cqt_whod_ui_tms_utils.pipe_relations_curr_below(:dictContentID))]]><
     ColumnType="CHAR"
     AliasName="SORT_ORDER"
     Expression="SORT_ORDER"
-    SQLType="VARCHAR"/>
+    SQLType="CHAR"/>
   <ViewAttribute
     Name="ChildExists"
     IsUpdateable="false"
@@ -327,7 +319,7 @@ FROM TABLE (cqt_whod_ui_tms_utils.pipe_relations_curr_below(:dictContentID))]]><
     ColumnType="CHAR"
     AliasName="CHILD_EXISTS"
     Expression="CHILD_EXISTS"
-    SQLType="VARCHAR">
+    SQLType="CHAR">
     <DesignTime>
       <Attr Name="_DisplaySize" Value="1"/>
     </DesignTime>

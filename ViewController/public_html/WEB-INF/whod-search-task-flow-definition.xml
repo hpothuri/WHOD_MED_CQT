@@ -102,15 +102,8 @@
         <sequential>false</sequential>
       </train-stop>
     </view>
-    <view id="whodConfirm">
-      <page>/create/whodConfirm.jspx</page>
-      <train-stop>
-       <display-name>Confirm</display-name>
-        <sequential>false</sequential>
-      </train-stop>
-    </view>
     <method-call id="setMode">
-      <method>#{pageFlowScope.WhodWizardBean.setMode}</method>
+      <method>#{pageFlowScope.WhodWizardBean.setModeBrowseSearch}</method>
       <outcome id="__39">
         <to-string/>
       </outcome>
@@ -128,17 +121,17 @@
         <to-activity-id>whodWizardSearch</to-activity-id>
       </control-flow-case>
     </control-flow-rule>
-    <control-flow-rule id="__3">
-      <from-activity-id>whodConfirm</from-activity-id>
-      <control-flow-case id="__4">
-        <from-outcome>CLEARED</from-outcome>
-        <to-activity-id>cancelFlow</to-activity-id>
-      </control-flow-case>
-    </control-flow-rule>
     <control-flow-rule id="__7">
       <from-activity-id>*</from-activity-id>
       <control-flow-case id="__17">
         <from-outcome>CANCEL</from-outcome>
+        <to-activity-id>cancelFlow</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__3">
+      <from-activity-id>whodAddRelations</from-activity-id>
+      <control-flow-case id="__4">
+        <from-outcome>CLEARED</from-outcome>
         <to-activity-id>cancelFlow</to-activity-id>
       </control-flow-case>
     </control-flow-rule>

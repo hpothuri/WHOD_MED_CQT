@@ -37,23 +37,6 @@
          name="x">-336.5</property>
    </MethodCall>
    <View
-      id="View38">
-      <property
-         name="activityId">whodConfirm</property>
-      <property
-         name="page">/create/whodConfirm.jspx</property>
-      <property
-         name="description">&lt;html>&lt;p>&lt;b>whodConfirm&lt;/b>&lt;/p>&lt;p>Activity Type:  View&lt;/p></property>
-      <property
-         name="trainStop">true</property>
-      <property
-         name="exceptionHandler">false</property>
-      <property
-         name="y">74.09766</property>
-      <property
-         name="x">111.34668</property>
-   </View>
-   <View
       id="View39">
       <property
          name="activityId">whodAddDetails</property>
@@ -143,24 +126,6 @@
       <property
          name="sdm:polyPoints">L46,307.3711,413.5459,107.0332,260.74707,B50</property>
    </TrainFlow>
-   <TrainFlow
-      islink="true"
-      id="TrainFlow46"
-      from="View42"
-      to="View38">
-      <property
-         name="sdm:polyPoints">T50,107.0332,152.0459,111.34668,128.44824,B50</property>
-   </TrainFlow>
-   <ControlFlowCase
-      islink="true"
-      id="ControlFlowCase47"
-      from="View38"
-      to="TaskFlowReturn40">
-      <property
-         name="fromOutcome">CLEARED</property>
-      <property
-         name="sdm:polyPoints">R50,152.34668,73.74707,371.5,75.0459,L50</property>
-   </ControlFlowCase>
    <ControlFlowCase
       islink="true"
       id="ControlFlowCase48"
@@ -189,5 +154,15 @@
          name="fromOutcome">CANCEL</property>
       <property
          name="sdm:polyPoints">T50,413.0,194.09766,412.5,129.0459,B50</property>
+   </ControlFlowCase>
+   <ControlFlowCase
+      islink="true"
+      id="ControlFlowCase17"
+      from="View42"
+      to="TaskFlowReturn40">
+      <property
+         name="fromOutcome">CLEARED</property>
+      <property
+         name="sdm:polyPoints">R50,148.0332,206.0459,371.5,75.0459,L50</property>
    </ControlFlowCase>
 </SDM>
