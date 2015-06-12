@@ -9,7 +9,9 @@
   CustomQuery="true"
   PageIterMode="Full"
   UseGlueCode="false"
-  FetchMode="FETCH_ALL">
+  FetchMode="FETCH_AS_NEEDED"
+  FetchSize="2000"
+  QueryHint="FIRST_ROWS_2000">
   <DesignTime>
     <Attr Name="_isExpertMode" Value="true"/>
   </DesignTime>
@@ -262,7 +264,7 @@ FROM TABLE (cqt_whod_ui_tms_utils.pipe_relations_curr_below(:dictContentID))]]><
     ColumnType="CHAR"
     AliasName="PREDICT_GROUP_ID"
     Expression="PREDICT_GROUP_ID"
-    SQLType="CHAR"/>
+    SQLType="VARCHAR"/>
   <ViewAttribute
     Name="FormattedScope"
     IsUpdateable="false"
@@ -283,7 +285,7 @@ FROM TABLE (cqt_whod_ui_tms_utils.pipe_relations_curr_below(:dictContentID))]]><
     ColumnType="CHAR"
     AliasName="TERM_PATH"
     Expression="TERM_PATH"
-    SQLType="CHAR"/>
+    SQLType="VARCHAR"/>
   <ViewAttribute
     Name="PrimLinkFlag"
     IsUpdateable="false"
@@ -309,7 +311,7 @@ FROM TABLE (cqt_whod_ui_tms_utils.pipe_relations_curr_below(:dictContentID))]]><
     ColumnType="CHAR"
     AliasName="SORT_ORDER"
     Expression="SORT_ORDER"
-    SQLType="CHAR"/>
+    SQLType="VARCHAR"/>
   <ViewAttribute
     Name="ChildExists"
     IsUpdateable="false"
@@ -320,7 +322,7 @@ FROM TABLE (cqt_whod_ui_tms_utils.pipe_relations_curr_below(:dictContentID))]]><
     ColumnType="CHAR"
     AliasName="CHILD_EXISTS"
     Expression="CHILD_EXISTS"
-    SQLType="CHAR">
+    SQLType="VARCHAR">
     <DesignTime>
       <Attr Name="_DisplaySize" Value="1"/>
     </DesignTime>

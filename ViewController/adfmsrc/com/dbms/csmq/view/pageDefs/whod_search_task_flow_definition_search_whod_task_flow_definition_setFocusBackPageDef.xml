@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="11.1.2.64.36"
+                id="whod_search_task_flow_definition_search_whod_task_flow_definition_setFocusBackPageDef"
+                Package="com.dbms.csmq.view.pageDefs" SkipValidation="true">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator id="WHODSimpleSearch1Iterator" Binds="WHODSimpleSearch1" DataControl="WHODSearchModuleDataControl"
+              RangeSize="25"/>
+  </executables>
+  <bindings/>
+</pageDefinition>

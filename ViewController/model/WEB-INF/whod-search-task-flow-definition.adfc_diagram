@@ -17,9 +17,9 @@
       <property
          name="exceptionHandler">false</property>
       <property
-         name="y">311.54004</property>
+         name="y">332.83887</property>
       <property
-         name="x">-128.97754</property>
+         name="x">-138.97754</property>
    </View>
    <MethodCall
       id="MethodCall37">
@@ -108,7 +108,7 @@
       from="View2"
       to="View39">
       <property
-         name="sdm:polyPoints">B50,-128.97754,365.89062,-53.640625,413.0459,L50</property>
+         name="sdm:polyPoints">R50,-97.97754,332.48828,-53.640625,413.0459,L50</property>
    </TrainFlow>
    <TrainFlow
       islink="true"
@@ -134,7 +134,7 @@
       <property
          name="fromOutcome">*</property>
       <property
-         name="sdm:polyPoints">R50,-295.5,294.74707,-169.97754,311.18945,L50</property>
+         name="sdm:polyPoints">R50,-295.5,294.74707,-179.97754,332.48828,L50</property>
    </ControlFlowCase>
    <WildcardControlFlowRule
       id="WildcardControlFlowRule15">
@@ -164,5 +164,47 @@
          name="fromOutcome">CLEARED</property>
       <property
          name="sdm:polyPoints">R50,148.0332,206.0459,371.5,75.0459,L50</property>
+   </ControlFlowCase>
+   <MethodCall
+      id="MethodCall15">
+      <property
+         name="activityId">setFocusBack</property>
+      <property
+         name="description">&lt;html>&lt;p>&lt;b>setFocusBack&lt;/b>&lt;/p>&lt;p>Activity Type:  Method Call&lt;/p></property>
+      <property
+         name="exceptionHandler">false</property>
+      <property
+         name="y">173.5459</property>
+      <property
+         name="x">-106.0</property>
+   </MethodCall>
+   <WildcardControlFlowRule
+      id="WildcardControlFlowRule16">
+      <property
+         name="activityId">*</property>
+      <property
+         name="y">107.29883</property>
+      <property
+         name="x">-343.0</property>
+   </WildcardControlFlowRule>
+   <ControlFlowCase
+      islink="true"
+      id="ControlFlowCase18"
+      from="WildcardControlFlowRule16"
+      to="MethodCall15">
+      <property
+         name="fromOutcome">goToSearchPage</property>
+      <property
+         name="sdm:polyPoints">R50,-307.0,107.44824,-147.0,173.19531,L50</property>
+   </ControlFlowCase>
+   <ControlFlowCase
+      islink="true"
+      id="ControlFlowCase19"
+      from="MethodCall15"
+      to="View2">
+      <property
+         name="fromOutcome">goToSearch</property>
+      <property
+         name="sdm:polyPoints">B50,-106.0,227.19531,-138.97754,278.48828,T50</property>
    </ControlFlowCase>
 </SDM>

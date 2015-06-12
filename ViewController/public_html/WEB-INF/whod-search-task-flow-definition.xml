@@ -78,6 +78,7 @@
       <page>/create/whodWizardSearch.jspx</page>
       <train-stop>
       <display-name>Search</display-name>
+        <outcome>goToSearchPage</outcome>
         <sequential>true</sequential>
       </train-stop>
     </view>
@@ -114,6 +115,12 @@
         <commit/>
       </outcome>
     </task-flow-return>
+    <method-call id="setFocusBack">
+      <method>#{pageFlowScope.WhodWizardSearchBean.setFocusToSelectedRowBack}</method>
+      <outcome>
+        <fixed-outcome>goToSearch</fixed-outcome>
+      </outcome>
+    </method-call>
     <train/>
     <control-flow-rule id="__101">
       <from-activity-id>setMode</from-activity-id>
@@ -133,6 +140,20 @@
       <control-flow-case id="__4">
         <from-outcome>CLEARED</from-outcome>
         <to-activity-id>cancelFlow</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__18">
+      <from-activity-id>*</from-activity-id>
+      <control-flow-case id="__19">
+        <from-outcome>goToSearchPage</from-outcome>
+        <to-activity-id>setFocusBack</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__21">
+      <from-activity-id>setFocusBack</from-activity-id>
+      <control-flow-case id="__22">
+        <from-outcome>goToSearch</from-outcome>
+        <to-activity-id>whodWizardSearch</to-activity-id>
       </control-flow-case>
     </control-flow-rule>
     <critical/>

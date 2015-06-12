@@ -10,7 +10,7 @@
               DataControl="HierarchyModuleDataControl" id="SmallTreeVO1Iterator"
               RefreshCondition=" #{!adfFacesContext.initialRender}"/-->
         <iterator id="WHODSmallTreeVO1Iterator" Binds="WHODSmallTreeVO1" DataControl="WHODModuleDataControl"
-                  RangeSize="-1" RefreshCondition=" #{!adfFacesContext.initialRender}"/>
+                  RangeSize="1999" RefreshCondition=" #{!adfFacesContext.initialRender}"/>
         <iterator Binds="SourceTreeVO1" RangeSize="-1" DataControl="HierarchyModuleDataControl"
                   id="SourceTreeVO1Iterator" RefreshCondition=" #{!adfFacesContext.initialRender}"/>
         <iterator Binds="LevelsByDictionaryVO1" RangeSize="25" DataControl="DictionaryModuleDataControl"

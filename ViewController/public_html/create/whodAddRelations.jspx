@@ -56,7 +56,7 @@
                                         <af:treeTable value="#{pageFlowScope.WhodTermHierarchyBean.treemodel}" var="node" rowSelection="single"
                                                       id="tableLeft" width="1185" binding="#{pageFlowScope.WhodTermHierarchyBean.targetTree}"
                                                       columnStretching="column:c1" inlineStyle=" margin:2px;" initiallyExpanded="false"
-                                                      fetchSize="20" autoHeightRows="-1" >
+                                                      fetchSize="1999" autoHeightRows="-1" >
                                             <f:facet name="nodeStamp">
                                                 <af:column id="c1"
                                                            headerText="#{bindings.Term.inputValue}#{pageFlowScope.WhodWizardBean.currentTermName}"

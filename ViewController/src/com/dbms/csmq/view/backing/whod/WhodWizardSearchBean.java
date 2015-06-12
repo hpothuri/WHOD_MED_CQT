@@ -16,9 +16,12 @@ import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 
+import oracle.adf.model.BindingContext;
+import oracle.adf.model.binding.DCBindingContainer;
 import oracle.adf.model.binding.DCIteratorBinding;
 import oracle.adf.view.rich.component.rich.data.RichTable;
 
+import oracle.jbo.Key;
 import oracle.jbo.Row;
 import oracle.jbo.ViewObject;
 import oracle.jbo.uicli.binding.JUCtrlHierNodeBinding;
@@ -115,6 +118,15 @@ public class WhodWizardSearchBean {
      * @param valueChangeEvent
      */
     public void releaseStatusChanged(ValueChangeEvent valueChangeEvent) {
+    }
+
+    public void setFocusToSelectedRowBack(){
+        DCBindingContainer bindings = (DCBindingContainer)BindingContext.getCurrent().getCurrentBindingsEntry();
+        DCIteratorBinding parentIter = (DCIteratorBinding)bindings.get("WHODSimpleSearch1Iterator");
+        if((parentIter != null) && (parentIter.getCurrentRow() != null)){
+        Key parentKey = parentIter.getCurrentRow().getKey();
+        parentIter.setCurrentRowWithKey(parentKey.toStringFormat(true));
+        }
     }
 
     public void doSearch(ActionEvent actionEvent) {
