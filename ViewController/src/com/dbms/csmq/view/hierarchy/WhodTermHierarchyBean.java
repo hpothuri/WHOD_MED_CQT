@@ -179,8 +179,8 @@ public class WhodTermHierarchyBean extends Hierarchy {
         String childLevel = Utils.getAsString(row, "ChildLevel"); 
         String subLevelRefName = Utils.getAsString(row, "SubLevelRefName");
         String namedRelation = Utils.getAsString(row, "NamedRelation");
-        CSMQBean.logger.info(userBean.getCaller() + " subLevelRefName: " + subLevelRefName + ";;; childLevel=" +
-                             childLevel + ";;; namedRelation: " + namedRelation);
+//        CSMQBean.logger.info(userBean.getCaller() + " subLevelRefName: " + subLevelRefName + ";;; childLevel=" +
+//                             childLevel + ";;; namedRelation: " + namedRelation);
         if (subLevelRefName != null && subLevelRefName.contains("ATC") || subLevelRefName.contains("PT")) {
             if (namedRelation != null) {
                 if (namedRelation.contains("BROAD")) {
@@ -197,8 +197,8 @@ public class WhodTermHierarchyBean extends Hierarchy {
             termNode.setLevelName(childLevel);
         }
 
-        CSMQBean.logger.info(userBean.getCaller() + " parentNodesByLevel: " + parentNodesByLevel +
-                             ":; termNode.getParent()=" + termNode.getParent());
+//        CSMQBean.logger.info(userBean.getCaller() + " parentNodesByLevel: " + parentNodesByLevel +
+//                             ":; termNode.getParent()=" + termNode.getParent());
         GenericTreeNode parentNode = (GenericTreeNode)parentNodesByLevel.get(termNode.getParent());
         if (parentNode != null) {
             parentNode.getChildren().add(termNode); // add to the parent
@@ -207,7 +207,7 @@ public class WhodTermHierarchyBean extends Hierarchy {
                 termNode.setIsDirectRelation(true); // it's a direct relation
             if (parentNode.isIsRoot())
                 termNode.setDeletable(true); //it's a child of the root - it can be deleted
-            CSMQBean.logger.info(userBean.getCaller() + " ADDING NODE: " + termNode);
+//            CSMQBean.logger.info(userBean.getCaller() + " ADDING NODE: " + termNode);
             setDerivedRelations(termNode);
             if (rows.hasMoreElements()) {
                 Row nextRow = (Row)rows.nextElement();

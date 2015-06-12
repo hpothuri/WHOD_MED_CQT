@@ -225,7 +225,7 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
             this.setCurrentState(CSMQBean.STATE_DRAFT);
         }
         userBean.setCurrentMenuPath("Update");
-        userBean.setCurrentMenu("UPDATE_NMQ");
+        userBean.setCurrentMenu("UPDATE_CDG");
         this.mode = CSMQBean.MODE_UPDATE_EXISTING;
         this.updateParam = CSMQBean.DML_UPDATE;
         CSMQBean.logger.info(userBean.getCaller() + " SETTING MODE: " + this.mode);
@@ -257,7 +257,7 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
         }
         productList.add(CSMQBean.DEFAULT_PRODUCT); // add the default product only if it is new or copy
         userBean.setCurrentMenuPath("Copy");
-        userBean.setCurrentMenu("COPY_NMQ");
+        userBean.setCurrentMenu("COPY_CDG");
         this.mode = CSMQBean.MODE_COPY_EXISTING;
         this.updateParam = CSMQBean.DML_INSERT;
         CSMQBean.logger.info(userBean.getCaller() + " SETTING MODE: " + this.mode);
@@ -331,7 +331,7 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
 
     public String setModeBrowseSearch() {
         userBean.setCurrentMenuPath("Browse & Search");
-        userBean.setCurrentMenu("BROWSE_SEARCH");
+        userBean.setCurrentMenu("BROWSE_SEARCH_CDG");
         this.mode = CSMQBean.MODE_BROWSE_SEARCH;
         this.updateParam = CSMQBean.DML_NONE;
         CSMQBean.logger.info(userBean.getCaller() + " SETTING MODE: " + this.mode);
@@ -354,7 +354,7 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
     public String setModeImpactAssessment() {
         this.currentPredictGroups = cSMQBean.getDefaultMedDRAReleaseGroup();
         userBean.setCurrentMenuPath("Impact Assessment");
-        userBean.setCurrentMenu("MEDDRA_IMPACT_ASSESSMENT");
+        userBean.setCurrentMenu("CDG_MEDDRA_IMPACT_ASSESSMENT");
         this.mode = CSMQBean.MODE_IMPACT_ASSESSMENT;
         this.updateParam = CSMQBean.DML_UPDATE;
         CSMQBean.logger.info(userBean.getCaller() + " SETTING MODE: " + this.mode);
@@ -1561,7 +1561,7 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
             productList.add(CSMQBean.DEFAULT_PRODUCT); // add the default product only if it is new or copy NMQ
 
         userBean.setCurrentMenuPath("Create");
-        userBean.setCurrentMenu("CREATE_NEW_NMQ");
+        userBean.setCurrentMenu("CREATE_NEW_CDG");
         this.mode = CSMQBean.MODE_INSERT_NEW;
         this.updateParam = CSMQBean.DML_INSERT;
         productList.add(CSMQBean.DEFAULT_PRODUCT);

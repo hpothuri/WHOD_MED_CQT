@@ -163,7 +163,7 @@
                                               summary="This table gives search result"
                                               selectedRowKeys="#{bindings.WHODSimpleSearch1.collectionModel.selectedRow}">
                                         <af:column sortProperty="Term" sortable="true" headerText="Term" id="c20"
-                                                   filterable="true" rowHeader="true" width="300" align="left"> 
+                                                   filterable="true" width="300" align="left"> 
                                             <af:outputText value="#{row.Term}" id="ot16"/>
                                         </af:column>
                                         <af:column sortProperty="Status" sortable="true" headerText="Status" id="c4"
@@ -179,12 +179,12 @@
                                                    filterable="true">
                                             <af:outputText value="#{row.RelaeaseGroup}" id="ot3"/>
                                         </af:column>
-                                        <af:column sortProperty="RelaeaseGroup" sortable="true" headerText="Group"
+                                        <af:column sortProperty="Value4" sortable="true" headerText="Group"
                                                    id="c15" width="60" filterable="true">
                                             <af:outputText value="#{row.Value4}" id="ot20"/>
                                         </af:column>
                                         <af:column sortable="true" headerText="Level" id="c18" width="40"
-                                                   filterable="true">
+                                                   filterable="true" sortProperty="LevelName">
                                             <af:outputText value="#{fn:substring(row.LevelName,3,4)}" id="ot15"/>
                                         </af:column>
                                         <af:column sortProperty="DictContentCode" sortable="true" headerText="Code"
@@ -193,11 +193,11 @@
                                             <af:outputText value="#{row.DictContentCode}" id="ot11"/>
                                         </af:column>
                                         <af:column sortable="true" headerText="Scope" id="c1" width="40"
-                                                   filterable="true">
+                                                   filterable="true" >
                                             <af:outputText value="Y" id="ot12"/>
                                         </af:column>
                                         <af:column sortable="true" headerText="State" id="c3" width="40"
-                                                   filterable="true">
+                                                   filterable="true" sortProperty="Value1">
                                             <af:outputText value="#{row.Value1 eq 'I' ? 'I' : 'A'}" id="ot13"/>
                                         </af:column>
                                         <af:column sortProperty="Value4" sortable="false" headerText="Product" id="c9"
@@ -211,7 +211,7 @@
                                         <af:column id="c25" sortProperty="DictionaryName" headerText="Extension"
                                                    sortable="false" width="90">
                                             <af:outputText value="#{row.DictionaryName}" id="ot24"/>
-                                        </af:column>
+                                        </af:column>  
                                     </af:table>
                                 </af:panelGroupLayout>
                                 <f:facet name="toolbar"/>
