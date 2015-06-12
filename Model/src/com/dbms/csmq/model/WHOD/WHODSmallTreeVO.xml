@@ -8,7 +8,8 @@
   BindingStyle="OracleName"
   CustomQuery="true"
   PageIterMode="Full"
-  UseGlueCode="false">
+  UseGlueCode="false"
+  FetchMode="FETCH_ALL">
   <DesignTime>
     <Attr Name="_isExpertMode" Value="true"/>
   </DesignTime>
@@ -42,7 +43,9 @@
 	'' TERM_PATH, 
 	PRIM_LINK_FLAG,
         ''  SORT_ORDER,
-        'Y' CHILD_EXISTS     
+        'Y' CHILD_EXISTS,
+        NAMED_RELATION,
+        SUB_LEVEL_REF_NAME
 FROM TABLE (cqt_whod_ui_tms_utils.pipe_relations_curr_below(:dictContentID))]]></SQLQuery>
   <ViewAttribute
     Name="ParentDictContentId"
@@ -322,9 +325,36 @@ FROM TABLE (cqt_whod_ui_tms_utils.pipe_relations_curr_below(:dictContentID))]]><
       <Attr Name="_DisplaySize" Value="1"/>
     </DesignTime>
   </ViewAttribute>
-  <AttrArray Name="KeyAttributes">
-    <Item Value="ChildDictContentId"/>
-  </AttrArray>
+  <ViewAttribute
+    Name="NamedRelation"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="40"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="NAMED_RELATION"
+    Expression="NAMED_RELATION"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="40"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="SubLevelRefName"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="40"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="SUB_LEVEL_REF_NAME"
+    Expression="SUB_LEVEL_REF_NAME"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="40"/>
+    </DesignTime>
+  </ViewAttribute>
   <ResourceBundle>
     <PropertiesBundle
       PropertiesFile="com.dbms.csmq.model.ModelBundle"/>

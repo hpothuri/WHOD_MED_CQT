@@ -9,7 +9,8 @@
   CustomQuery="true"
   FetchMode="FETCH_AS_NEEDED"
   PageIterMode="Full"
-  UseGlueCode="false">
+  UseGlueCode="false"
+  OrderBy="term">
   <DesignTime>
     <Attr Name="_isExpertMode" Value="true"/>
   </DesignTime>

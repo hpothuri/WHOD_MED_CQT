@@ -4,21 +4,20 @@
     <parameters/>
     <executables>
         <variableIterator id="variables"/>
-        <iterator Binds="WHODExtentionListVO1" RangeSize="25" DataControl="WHODModuleDataControl"
+        <iterator Binds="WHODExtentionListVO1" RangeSize="-1" DataControl="WHODModuleDataControl"
                   id="WHODExtentionListVO1Iterator"/>
-        <iterator Binds="WHODProductList1" RangeSize="25" DataControl="WHODProductModuleDataControl"
+        <iterator Binds="WHODProductList1" RangeSize="-1" DataControl="WHODProductModuleDataControl"
                   id="WHODProductList1Iterator"/>
-        <iterator Binds="WHODGroupList1" RangeSize="25" DataControl="WHODMQGroupsDataControl"
+        <iterator Binds="WHODGroupList1" RangeSize="-1" DataControl="WHODMQGroupsDataControl"
                   id="WHODGroupList1Iterator"/>
-        <iterator Binds="WHODSimpleSearch1" RangeSize="10" DataControl="WHODSearchModuleDataControl"
+        <iterator Binds="WHODSimpleSearch1" RangeSize="25" DataControl="WHODSearchModuleDataControl"
                   id="WHODSimpleSearch1Iterator"/>
         <!--iterator Binds="SmallTreeVO1" RangeSize="-1"
               DataControl="HierarchyModuleDataControl" id="SmallTreeVO1Iterator"
               Refresh="renderModel"/-->
-        <iterator Binds="InfNotesVO1" RangeSize="10"
-              DataControl="InfNotesModuleDataControl" id="InfNotesVO1Iterator"/>
+        <iterator Binds="InfNotesVO1" RangeSize="10" DataControl="InfNotesModuleDataControl" id="InfNotesVO1Iterator"/>
         <iterator id="WHODSmallTreeVO1Iterator" Binds="WHODSmallTreeVO1" DataControl="WHODModuleDataControl"
-                  RangeSize="25"/>
+                  RangeSize="-1" Refresh="renderModel" RefreshCondition="#{!adfFacesContext.initialRender}"/>
     </executables>
     <bindings>
         <tree IterBinding="WHODSimpleSearch1Iterator" id="WHODSimpleSearch1">

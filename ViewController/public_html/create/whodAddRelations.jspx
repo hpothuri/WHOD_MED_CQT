@@ -99,7 +99,7 @@
                                                         <af:selectItem label="Child Narrow" value="3" id="si4"/>
                                                     </af:selectOneChoice>
                                                 </af:column>
-                                                <af:column id="c4" headerText="Category" width="45" sortable="true" filterable="true"
+                                                <!--<af:column id="c4" headerText="Category" width="45" sortable="true" filterable="true"
                                                            rendered="#{!pageFlowScope.WhodWizardBean.isMedDRA}"
                                                            inlineStyle="#{WhodRenderingRulesBean.wizardRelationsBackgroundFieldColor}">
                                                     <af:selectOneChoice id="soc2" value="#{node.termCategory}" valuePassThru="true"
@@ -118,8 +118,8 @@
                                                         <af:selectItem label="H" value="H" id="si17"/>
                                                         <af:selectItem label="I" value="I" id="si18"/>
                                                     </af:selectOneChoice>
-                                                </af:column>
-                                                <af:column id="c5" headerText="Weight" width="45" sortable="true" filterable="true"
+                                                </af:column>-->
+                                                <!--<af:column id="c5" headerText="Weight" width="45" sortable="true" filterable="true"
                                                            rendered="#{!pageFlowScope.WhodWizardBean.isMedDRA}"
                                                            inlineStyle="#{WhodRenderingRulesBean.wizardRelationsBackgroundFieldColor}">
                                                     <af:inputNumberSpinbox value="#{node.termWeight}" id="ot6" columns="2"
@@ -127,7 +127,7 @@
                                                                            valueChangeListener="#{pageFlowScope.WhodSourceTermSearchBean.nodeChanged}"
                                                                            autoSubmit="true"
                                                                            readOnly="#{WhodAddRelationsRenderingRulesBean.wizardRelationsDisableDetails or !node.isDirectRelationOrRoot}"/>
-                                                </af:column>
+                                                </af:column>-->
                                                 <af:column id="c7" width="16" rowHeader="true" align="left"
                                                            rendered="#{!pageFlowScope.WhodWizardBean.isMedDRA}">
                                                     <af:selectBooleanCheckbox id="sbc2" rendered="#{node.deletable}"

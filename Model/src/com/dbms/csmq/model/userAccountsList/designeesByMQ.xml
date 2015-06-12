@@ -31,7 +31,7 @@
     Name="designeesByMQ1"
     ViewObjectName="com.dbms.csmq.model.userAccountsList.designeesByMQ"
     RowLevelBinds="true"/>
-  <SQLQuery><![CDATA[SELECT DESIGNEE FROM TRACK_DESIGNEE WHERE DICT_CONTENT_ID = :dictContentID]]></SQLQuery>
+  <SQLQuery><![CDATA[SELECT DESIGNEE FROM NMAT.TRACK_DESIGNEE WHERE DICT_CONTENT_ID = :dictContentID]]></SQLQuery>
   <ViewAttribute
     Name="Designee"
     IsUpdateable="false"
