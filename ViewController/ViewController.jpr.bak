@@ -205,8 +205,8 @@
       </list>
    </hash>
    <hash n="oracle.jdeveloper.model.J2eeSettings">
-      <value n="j2eeWebAppName" v="WHOD_CQT"/>
-      <value n="j2eeWebContextRoot" v="WHOD_CQT"/>
+      <value n="j2eeWebAppName" v="CQT"/>
+      <value n="j2eeWebContextRoot" v="CQT"/>
    </hash>
    <hash n="oracle.jdeveloper.runner.RunConfigurations">
       <hash n="runConfigurationDefinitions">
