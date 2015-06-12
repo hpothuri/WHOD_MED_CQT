@@ -20,6 +20,7 @@ import oracle.adf.model.BindingContext;
 import oracle.adf.model.binding.DCBindingContainer;
 import oracle.adf.model.binding.DCIteratorBinding;
 import oracle.adf.view.rich.component.rich.data.RichTable;
+import oracle.adf.view.rich.context.AdfFacesContext;
 
 import oracle.jbo.Key;
 import oracle.jbo.Row;
@@ -27,6 +28,7 @@ import oracle.jbo.ViewObject;
 import oracle.jbo.uicli.binding.JUCtrlHierNodeBinding;
 
 import org.apache.myfaces.trinidad.event.SelectionEvent;
+import org.apache.myfaces.trinidad.model.RowKeySet;
 
 
 public class WhodWizardSearchBean {
@@ -48,6 +50,8 @@ public class WhodWizardSearchBean {
     private List<String> productList = new ArrayList<String>();
     private List<String> stateList = new ArrayList<String>();
     private String currentStatus;
+    
+    private RichTable ctrlSearchResults;
 
     public WhodWizardSearchBean() {
         super();
@@ -154,6 +158,14 @@ public class WhodWizardSearchBean {
         //CLEAR OLD TRESS
         //TODO need to check why we need this
         //WhodUtils.clearRelations();
+        if (ctrlSearchResults != null) { // if we are calling this from IA, we won't need this
+            ctrlSearchResults.setEmptyText("No data to display.");
+            AdfFacesContext.getCurrentInstance().addPartialTarget(ctrlSearchResults);
+            AdfFacesContext.getCurrentInstance().partialUpdateNotify(ctrlSearchResults);
+            //clear the selected row
+            RowKeySet rks = ctrlSearchResults.getSelectedRowKeys();
+            rks.clear();
+        }
     }
 
     private String getSearchLevelParam() {
@@ -306,10 +318,10 @@ public class WhodWizardSearchBean {
         whodWizardBean.getProductList().clear();
         whodWizardBean.getMQGroupList().clear();
         whodWizardBean.getDesigneeList().clear();
-        Collections.addAll(whodWizardBean.getProductList(), new String[] { "AIN457", "ABILIFY" });
-        Collections.addAll(whodWizardBean.getMQGroupList(), new String[] { "APO", "AAA" });
+        //Collections.addAll(whodWizardBean.getProductList(), new String[] { "AIN457", "ABILIFY" });
+        //Collections.addAll(whodWizardBean.getMQGroupList(), new String[] { "APO", "AAA" });
         whodWizardBean.setDesigneeList(new ArrayList<String>());
-        Collections.addAll(whodWizardBean.getDesigneeList(), new String[] { "CQT_ML", "OPS$TEST91" });
+        //Collections.addAll(whodWizardBean.getDesigneeList(), new String[] { "CQT_ML", "OPS$TEST91" });
 
         // get the notes.
         getInfNotes(currentState, currentStatus, currentMqcode, currentDictionary, currentDictContentID);
@@ -534,5 +546,13 @@ public class WhodWizardSearchBean {
 
     public String getCurrentStatus() {
         return currentStatus;
+    }
+
+    public void setCtrlSearchResults(RichTable ctrlSearchResults) {
+        this.ctrlSearchResults = ctrlSearchResults;
+    }
+
+    public RichTable getCtrlSearchResults() {
+        return ctrlSearchResults;
     }
 }

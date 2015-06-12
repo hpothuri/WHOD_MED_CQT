@@ -161,6 +161,7 @@
                                               contentDelivery="immediate" filterVisible="true" autoHeightRows="-1"
                                               inlineStyle="height:230px;" persist="ALL"
                                               summary="This table gives search result"
+                                              binding="#{pageFlowScope.WhodWizardSearchBean.ctrlSearchResults}"
                                               selectedRowKeys="#{bindings.WHODSimpleSearch1.collectionModel.selectedRow}">
                                         <af:column sortProperty="Term" sortable="true" headerText="Term" id="c20"
                                                    filterable="true" width="300" align="left"> 

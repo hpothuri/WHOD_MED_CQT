@@ -4,13 +4,13 @@
       <AppModuleConfig DeployPlatform="LOCAL" jbo.project="com.dbms.csmq.model.Model" name="DiffModuleLocal" ApplicationName="com.dbms.csmq.model.diff.DiffModule">
          <Database jbo.locking.mode="optimistic"/>
          <Security AppModuleJndiName="com.dbms.csmq.model.diff.DiffModule"/>
-         <Custom JDBCDataSource="jdbc/TMSDS"/>
+         <Custom JDBCDataSource="jdbc/WHODDS"/>
       </AppModuleConfig>
       <AppModuleConfig DeployPlatform="LOCAL" jbo.project="com.dbms.csmq.model.Model" name="DiffModuleShared" ApplicationName="com.dbms.csmq.model.diff.DiffModule">
          <AM-Pooling jbo.ampool.dynamicjdbccredentials="false" jbo.ampool.isuseexclusive="false" jbo.ampool.maxpoolsize="1" jbo.ampool.resetnontransactionalstate="false"/>
          <Database jbo.locking.mode="optimistic"/>
          <Security AppModuleJndiName="com.dbms.csmq.model.diff.DiffModule"/>
-         <Custom JDBCDataSource="jdbc/TMSDS"/>
+         <Custom JDBCDataSource="jdbc/WHODDS"/>
       </AppModuleConfig>
    </AppModuleConfigBag>
 </BC4JConfig>
