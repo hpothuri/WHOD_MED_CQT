@@ -58,7 +58,7 @@
                                                                id="si4"/>
                                             </af:selectOneChoice>
                                             <af:inputText label="Release Status" id="it11"
-                                                          value="#{pageFlowScope.WhodWizardBean.currentStatus}"
+                                                          value="#{pageFlowScope.WhodWizardBean.currentStatus ne 'CURRENT' ? pageFlowScope.WhodWizardBean.currentStatus : ''}"
                                                           showRequired="true" readOnly="true" columns="20" rows="1"
                                                           wrap="off" binding="#{WhodWizardUIBean.controlMQStatus}"
                                                           rendered="#{WhodRenderingRulesBean.wizardDetailsRenderNMQStatus}"

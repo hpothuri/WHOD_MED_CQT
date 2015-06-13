@@ -48,7 +48,8 @@
         'Y' CHILD_EXISTS,
         NAMED_RELATION,
         SUB_LEVEL_REF_NAME
-FROM TABLE (cqt_whod_ui_tms_utils.pipe_relations_curr_below(:dictContentID))]]></SQLQuery>
+FROM TABLE (cqt_whod_ui_tms_utils.pipe_relations_curr_below(:dictContentID))
+ORDER BY SUB_LEVEL_REF_NAME desc, child_term asc]]></SQLQuery>
   <ViewAttribute
     Name="ParentDictContentId"
     IsUpdateable="false"

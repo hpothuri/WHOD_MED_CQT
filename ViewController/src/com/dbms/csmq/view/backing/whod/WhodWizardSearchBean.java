@@ -50,7 +50,7 @@ public class WhodWizardSearchBean {
     private List<String> productList = new ArrayList<String>();
     private List<String> stateList = new ArrayList<String>();
     private String currentStatus;
-    
+
     private RichTable ctrlSearchResults;
 
     public WhodWizardSearchBean() {
@@ -124,12 +124,12 @@ public class WhodWizardSearchBean {
     public void releaseStatusChanged(ValueChangeEvent valueChangeEvent) {
     }
 
-    public void setFocusToSelectedRowBack(){
+    public void setFocusToSelectedRowBack() {
         DCBindingContainer bindings = (DCBindingContainer)BindingContext.getCurrent().getCurrentBindingsEntry();
         DCIteratorBinding parentIter = (DCIteratorBinding)bindings.get("WHODSimpleSearch1Iterator");
-        if((parentIter != null) && (parentIter.getCurrentRow() != null)){
-        Key parentKey = parentIter.getCurrentRow().getKey();
-        parentIter.setCurrentRowWithKey(parentKey.toStringFormat(true));
+        if ((parentIter != null) && (parentIter.getCurrentRow() != null)) {
+            Key parentKey = parentIter.getCurrentRow().getKey();
+            parentIter.setCurrentRowWithKey(parentKey.toStringFormat(true));
         }
     }
 
@@ -231,13 +231,15 @@ public class WhodWizardSearchBean {
         CSMQBean.logger.info(userBean.getCaller() + " currentState:" + currentState);
         String currentStatus = Utils.getAsString(row, "ReleaseStatus");
         CSMQBean.logger.info(userBean.getCaller() + " currentStatus:" + currentStatus);
+        String levelName = Utils.getAsString(row, "LevelName");
+        CSMQBean.logger.info(userBean.getCaller() + " CurrentTermLevel:" + levelName);
 
         WhodWizardBean whodWizardBean = WhodUtils.getWhodWizardBean();
         whodWizardBean.setCurrentExtension(currentExtension);
         whodWizardBean.setCurrentTermName(currentTermName);
         whodWizardBean.setCurrentFilterDictionaryShortName(currentDictionary);
         whodWizardBean.setCurrentPredictGroups(currentReleaseGroup); //<--test
-        whodWizardBean.setCurrentTermLevel("1"); //
+        whodWizardBean.setCurrentTermLevel(levelName); //
         whodWizardBean.setCurrentContentCode(currentMqcode);
         whodWizardBean.setCurrentDictContentID(currentDictContentID);
         whodWizardBean.setActiveDictionary(currentDictionary);
@@ -245,6 +247,7 @@ public class WhodWizardSearchBean {
         whodWizardBean.setCurrentVersion(currentVersion);
         whodWizardBean.setCurrentCreatedBy(currentCreatedBy);
         whodWizardBean.setCurrentExtension(currentExtension);
+        whodWizardBean.setCurrentStatus(currentStatus);
         /*
          * //TODO:WHOD need to verify - What are all the correct values.
         whodWizardBean.setCurrentScope(currentMqscp);
@@ -253,8 +256,7 @@ public class WhodWizardSearchBean {
         whodWizardBean.setCurrentMQCRTEV(currentCriticalEvent);
         whodWizardBean.setCurrentMQALGO(currentMqalgo);
         whodWizardBean.setCurrentMQGROUP(currentMqgroups);
-        whodWizardBean.setCurrentProduct(currentMqproduct);
-        whodWizardBean.setCurrentStatus(currentStatus);
+        whodWizardBean.setCurrentProduct(currentMqproduct);        
         whodWizardBean.setCurrentDateRequested(currentDateRequested);
         whodWizardBean.setCurrentRequestedByDate(requestedByDate);
         whodWizardBean.setCurrentReasonForRequest(currentReasonForRequest);
@@ -461,7 +463,7 @@ public class WhodWizardSearchBean {
         this.paramTerm = paramTerm;
     }
 
-    public String  getParamTerm() {
+    public String getParamTerm() {
         return paramTerm;
     }
 
