@@ -211,7 +211,7 @@
                                         </af:column>
                                         <af:column id="c25" sortProperty="DictionaryName" headerText="Extension"
                                                    sortable="false" width="90">
-                                            <af:outputText value="#{row.DictionaryName}" id="ot24"/>
+                                            <af:outputText value="#{fn:substring(row.LevelName,0,3)}" id="ot24"/>
                                         </af:column>  
                                     </af:table>
                                 </af:panelGroupLayout>

@@ -225,15 +225,16 @@ public class WhodWizardSearchBean {
         String currentCreatedBy = Utils.getAsString(row, "CreatedBy");
         CSMQBean.logger.info(userBean.getCaller() + " Createdby:" + currentCreatedBy);
         // currentExtension = Utils.getAsString(row, "Extension");
-        String currentExtension = "SDG";
-        CSMQBean.logger.info(userBean.getCaller() + " Extension:" + currentExtension);
+       
         String currentState = Utils.getAsString(row, "RealeaseStatusCode");
         CSMQBean.logger.info(userBean.getCaller() + " currentState:" + currentState);
         String currentStatus = Utils.getAsString(row, "ReleaseStatus");
         CSMQBean.logger.info(userBean.getCaller() + " currentStatus:" + currentStatus);
         String levelName = Utils.getAsString(row, "LevelName");
         CSMQBean.logger.info(userBean.getCaller() + " CurrentTermLevel:" + levelName);
-
+       // System.out.println("--------"+levelName);
+        String currentExtension = levelName.substring(0, 3);    
+        CSMQBean.logger.info(userBean.getCaller() + " Extension:" + currentExtension);
         WhodWizardBean whodWizardBean = WhodUtils.getWhodWizardBean();
         whodWizardBean.setCurrentExtension(currentExtension);
         whodWizardBean.setCurrentTermName(currentTermName);
