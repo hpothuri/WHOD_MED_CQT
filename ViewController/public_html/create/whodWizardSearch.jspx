@@ -162,7 +162,8 @@
                                               inlineStyle="height:230px;" persist="ALL"
                                               summary="This table gives search result"
                                               binding="#{pageFlowScope.WhodWizardSearchBean.ctrlSearchResults}"
-                                              selectedRowKeys="#{bindings.WHODSimpleSearch1.collectionModel.selectedRow}">
+                                              selectedRowKeys="#{bindings.WHODSimpleSearch1.collectionModel.selectedRow}"
+                                              editingMode="clickToEdit">
                                         <af:column sortProperty="Term" sortable="true" headerText="Term" id="c20"
                                                    filterable="true" width="300" align="left"> 
                                             <af:outputText value="#{row.Term}" id="ot16"/>
@@ -203,7 +204,7 @@
                                         </af:column>
                                         <af:column sortProperty="Value4" sortable="false" headerText="Product" id="c9"
                                                    width="150" minimumWidth="25" rendered="true">
-                                            <af:outputText value="#{row.Value4}" id="ot17"/>
+                                            <af:outputText value="#{row.Value3}" id="ot17"/>
                                         </af:column>
                                         <af:column sortProperty="CreatedBy" sortable="false" headerText="Created By"
                                                    id="c23" width="80">

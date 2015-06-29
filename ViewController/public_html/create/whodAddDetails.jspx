@@ -64,12 +64,12 @@
                                                           rendered="#{WhodRenderingRulesBean.wizardDetailsRenderNMQStatus}"
                                                           labelStyle="white-space:nowrap"
                                                           contentStyle="color:#000000;"/>
-                                            <af:selectManyChoice value="#{pageFlowScope.WhodWizardBean.productList}"
+                                          <!--  <af:selectManyChoice value="#{pageFlowScope.WhodWizardBean.productList}"
                                                                  label="Product" id="smc2" autoSubmit="true"
                                                                  valuePassThru="true"
                                                                  binding="#{pageFlowScope.WhodWizardBean.productListControl}"
                                                                  requiredMessageDetail="An Product is required."
-                                                                 rendered="#{WhodRenderingRulesBean.wizardDetailsRenderNMQProduct}"
+                                                                 rendered="true"
                                                                  labelStyle='white-space:nowrap" selectAllVisible="false'
                                                                  readOnly="#{WhodRenderingRulesBean.wizardDetailsDisableNMQProduct}"
                                                                  showRequired="true"
@@ -77,7 +77,11 @@
                                                                  inlineStyle="width:130px;">
                                                 <f:selectItems value="#{pageFlowScope.WhodWizardBean.whodProductSI}"
                                                                id="si18"/>
-                                            </af:selectManyChoice>
+                                                   rendered="#{WhodRenderingRulesBean.wizardDetailsRenderNMQProduct}"            
+                                            </af:selectManyChoice>-->
+                                            <af:inputText label="Product" id="it1"
+                                                          value="#{pageFlowScope.WhodWizardBean.currentProduct}"
+                                                          readOnly="true"/>
                                             <af:selectManyChoice label="Designee" id="smc1" autoSubmit="true"
                                                                  valuePassThru="true"
                                                                  binding="#{pageFlowScope.WhodWizardBean.controlDesignee}"
@@ -133,7 +137,7 @@
                                                 <af:selectItem label="Yes" value="Y" id="si2"/>
                                                 <af:selectItem label="No" value="N" id="si3"/>
                                             </af:selectOneChoice>
-                                            <af:selectManyChoice value="#{pageFlowScope.WhodWizardBean.MQGroupList}"
+                                           <!-- <af:selectManyChoice value="#{pageFlowScope.WhodWizardBean.MQGroupList}"
                                                                  label="Group" id="smc3" valuePassThru="true"
                                                                  binding="#{pageFlowScope.WhodWizardBean.controlMQGroup}"
                                                                  requiredMessageDetail="An Group is required."
@@ -146,7 +150,16 @@
                                                                  contentStyle="color:#000000;">
                                                 <f:selectItems value="#{pageFlowScope.WhodWizardBean.whodGroupSI}"
                                                                id="si5"/>
-                                            </af:selectManyChoice>
+                                            </af:selectManyChoice>-->
+                                            <af:inputText label="Group" id="it102" columns="75" showRequired="true"
+                                                          requiredMessageDetail="An MQ Name is required."
+                                                          binding="#{WhodWizardUIBean.controlMQName}"
+                                                          required="#{WhodRenderingRulesBean.wizardDetailsRenderSave}"
+                                                          value="#{pageFlowScope.WhodWizardBean.currentMQGROUP}"
+                                                          immediate="false"
+                                                          readOnly="#{WhodRenderingRulesBean.wizardDetailsDisableNMQName}"
+                                                          labelStyle="white-space:nowrap"
+                                                          contentStyle="color:#000000;"/>
                                             <af:inputText label="Code" id="it7" readOnly="true"
                                                           binding="#{WhodWizardUIBean.controlNMQCode}" columns="8"
                                                           rows="1" labelStyle="white-space:nowrap"

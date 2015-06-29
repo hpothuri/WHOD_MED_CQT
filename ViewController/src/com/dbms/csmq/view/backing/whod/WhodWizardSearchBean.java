@@ -162,10 +162,10 @@ public class WhodWizardSearchBean {
             ctrlSearchResults.setEmptyText("No data to display.");
             AdfFacesContext.getCurrentInstance().addPartialTarget(ctrlSearchResults);
             AdfFacesContext.getCurrentInstance().partialUpdateNotify(ctrlSearchResults);
-            //clear the selected row
-            RowKeySet rks = ctrlSearchResults.getSelectedRowKeys();
-            rks.clear();
         }
+        //clear the selected row
+        ctrlSearchResults.getSelectedRowKeys().clear();
+        AdfFacesContext.getCurrentInstance().addPartialTarget(ctrlSearchResults);
     }
 
     private String getSearchLevelParam() {
@@ -235,6 +235,13 @@ public class WhodWizardSearchBean {
        // System.out.println("--------"+levelName);
         String currentExtension = levelName.substring(0, 3);    
         CSMQBean.logger.info(userBean.getCaller() + " Extension:" + currentExtension);
+        
+        String currentMqproduct = Utils.getAsString(row, "Value3");
+        CSMQBean.logger.info(userBean.getCaller() + " Product:" + currentMqproduct);
+        
+        String currentMqgroups = Utils.getAsString(row, "Value4");
+        CSMQBean.logger.info(userBean.getCaller() + " Group:" + currentMqgroups);
+        
         WhodWizardBean whodWizardBean = WhodUtils.getWhodWizardBean();
         whodWizardBean.setCurrentExtension(currentExtension);
         whodWizardBean.setCurrentTermName(currentTermName);
@@ -249,6 +256,9 @@ public class WhodWizardSearchBean {
         whodWizardBean.setCurrentCreatedBy(currentCreatedBy);
         whodWizardBean.setCurrentExtension(currentExtension);
         whodWizardBean.setCurrentStatus(currentStatus);
+        whodWizardBean.setCurrentProduct(currentMqproduct);
+        whodWizardBean.setCurrentMQGROUP(currentMqgroups);
+
         /*
          * //TODO:WHOD need to verify - What are all the correct values.
         whodWizardBean.setCurrentScope(currentMqscp);
@@ -306,13 +316,12 @@ public class WhodWizardSearchBean {
         //        }
 
 
-        String currentMqproduct = Utils.getAsString(row, "Value3");
+        
         if (currentMqproduct != null) {
             currentMqproduct = currentMqproduct.replace(CSMQBean.DEFAULT_DELIMETER_CHAR, '%');
             Collections.addAll(whodWizardBean.getProductList(), currentMqproduct.split("%"));
         }
 
-        String currentMqgroups = Utils.getAsString(row, "Value4");
         if (currentMqgroups != null) {
             currentMqgroups = currentMqgroups.replace(CSMQBean.DEFAULT_DELIMETER_CHAR, '%');
             Collections.addAll(whodWizardBean.getMQGroupList(), currentMqgroups.split("%"));
