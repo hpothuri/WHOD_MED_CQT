@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1" xmlns:f="http://java.sun.com/jsf/core"
-          xmlns:af="http://xmlns.oracle.com/adf/faces/rich">
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich" xmlns:fn="http://java.sun.com/jsp/jstl/functions">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <f:view>
         <af:document id="d1" uncommittedDataWarning="on" title="Add Details">
@@ -121,8 +121,10 @@
                                                                 value="#{pageFlowScope.WhodWizardBean.currentTermLevel}"
                                                                 labelStyle="white-space:nowrap"
                                                                 readOnly="#{WhodRenderingRulesBean.wizardDetailsDisableNMQLevel}">
-                                                <af:selectItem label="1" value="SDG1" id="si1"/>
-                                                <af:selectItem label="2" value="SDG2" id="si14"/>
+                                                <af:selectItem label="1" value="SDG1" rendered="#{pageFlowScope.WhodWizardBean.currentExtension eq 'SDG'}" id="si1"/>
+                                                <af:selectItem label="2" value="SDG2" rendered="#{pageFlowScope.WhodWizardBean.currentExtension eq 'SDG'}" id="si14"/>
+                                                <af:selectItem label="1" value="CDG1" rendered="#{pageFlowScope.WhodWizardBean.currentExtension eq 'CDG'}" id="si5"/>
+                                                <af:selectItem label="2" value="CDG2" rendered="#{pageFlowScope.WhodWizardBean.currentExtension eq 'CDG'}" id="si6"/>
                                             </af:selectOneChoice>
                                             <af:selectOneChoice label="Scope" id="soc2"
                                                                 binding="#{WhodWizardUIBean.controlMQScope}"
