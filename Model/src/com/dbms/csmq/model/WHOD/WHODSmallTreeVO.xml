@@ -25,16 +25,26 @@
     Name="dictContentID"
     Kind="where"
     Type="java.lang.String"/>
+  <Variable
+    Name="dReleaseStatus"
+    Kind="where"
+    Type="java.lang.String"
+    DefaultValue="%"/>
+  <Variable
+    Name="dReleaseTypeLIST"
+    Kind="where"
+    Type="java.lang.String"
+    DefaultValue="%"/>
   <SQLQuery><![CDATA[SELECT DISTINCT dict_content_id parent_dict_content_id,
         term parent_term,
         dict_content_code parent_dict_content_code,
         SUBSTR(level_name,4,1) parent_level,        
-	dict_content_ref_id child_dict_content_id,
+	      dict_content_ref_id child_dict_content_id,
         ref_term child_term,
         dict_content_ref_code child_dict_content_code,
         SUBSTR(level_ref_name,4,1) child_level,     
 	dictionary_name dict_short_name, --def_dictionary_short_name
-	REALEASE_STATUS_CODE approved_flag,
+	RELEASE_STATUS approved_flag,
 	status,
 	DEF_LEVEL_REF_ID TERMLVL,
 	DEF_NAMED_REL_ID TERMSCP,
@@ -48,7 +58,10 @@
         'Y' CHILD_EXISTS,
         NAMED_RELATION,
         SUB_LEVEL_REF_NAME
-FROM TABLE (cqt_whod_ui_tms_utils.pipe_relations_curr_below(:dictContentID))
+FROM TABLE (CQT_WHOD_UI_TMS_UTILS.QUERY_RELATION_DATA_BELOW(
+          pDictContentId     => :dictContentID,
+          pReleaseStatus     => :dReleaseStatus,
+          pReleaseTypeLIST   => :dReleaseTypeLIST))
 ORDER BY SUB_LEVEL_REF_NAME desc, child_term asc]]></SQLQuery>
   <ViewAttribute
     Name="ParentDictContentId"

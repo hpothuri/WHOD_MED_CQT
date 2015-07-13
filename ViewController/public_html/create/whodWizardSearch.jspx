@@ -40,9 +40,9 @@
                                                                     value="#{pageFlowScope.WhodWizardSearchBean.paramExtension}"
                                                                     valueChangeListener="#{pageFlowScope.WhodWizardSearchBean.extensionChanged}"
                                                                     disabled="#{WhodRenderingRulesBean.wizardSearchDisableExtension}">
-                                                    <af:selectItem id="si301" label="ALL" value="%"/>
                                                     <f:selectItems value="#{pageFlowScope.WhodWizardSearchBean.whodExtensionSI}"
                                                                    id="si31"/>
+                                                    <af:selectItem id="si301" label="ALL" value="%"/>
                                                 </af:selectOneChoice>
                                                 <af:selectOneChoice label="Release Group" id="smc4"
                                                                     value="#{pageFlowScope.WhodWizardSearchBean.paramReleaseGroup}"
@@ -176,10 +176,10 @@
                                                    headerText="Release Status" id="c8" width="80" filterable="true">
                                             <af:outputText value="#{row.ReleaseStatus}" id="ot6"/>
                                         </af:column>
-                                        <af:column sortProperty="RelaeaseGroup" sortable="true"
-                                                   headerText="Release Group" id="c10" width="80" displayIndex="-1"
+                                       <af:column sortProperty="ReleaseType" sortable="true"
+                                                   headerText="Release Type" id="c10" width="80" displayIndex="-1"
                                                    filterable="true">
-                                            <af:outputText value="#{row.RelaeaseGroup}" id="ot3"/>
+                                            <af:outputText value="#{row.ReleaseType}" id="ot3"/>
                                         </af:column>
                                         <af:column sortProperty="Value4" sortable="true" headerText="Group"
                                                    id="c15" width="60" filterable="true">

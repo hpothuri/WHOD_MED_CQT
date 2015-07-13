@@ -14,9 +14,9 @@
       <property
          name="page">/index.jspx</property>
       <property
-         name="thumbnailExpanded">false</property>
-      <property
          name="description">&lt;html>&lt;p>&lt;b>home&lt;/b>&lt;/p>&lt;p>Activity Type:  View&lt;/p></property>
+      <property
+         name="thumbnailExpanded">false</property>
       <property
          name="exceptionHandler">false</property>
       <property
@@ -101,9 +101,9 @@
       <property
          name="exceptionHandler">false</property>
       <property
-         name="y">251.20117</property>
+         name="y">197.5</property>
       <property
-         name="x">1762.7021</property>
+         name="x">1777.7021</property>
    </TaskFlowCall>
    <TaskFlowCall
       id="TaskFlowCall44">
@@ -251,7 +251,7 @@
       <property
          name="fromOutcome">COPY_NMQ</property>
       <property
-         name="sdm:polyPoints">R46,95.965355,-197.74568,1721.7021,250.85059,L50</property>
+         name="sdm:polyPoints">R46,95.90694,-197.74568,1736.7021,197.14941,L50</property>
    </ControlFlowCase>
    <ControlFlowCase
       islink="true"

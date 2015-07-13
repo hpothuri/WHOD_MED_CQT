@@ -13,4 +13,15 @@
          <Custom JDBCDataSource="jdbc/WHODDS"/>
       </AppModuleConfig>
    </AppModuleConfigBag>
+   <AppModuleConfigBag ApplicationName="com.dbms.csmq.model.infNotes.WHODInfoNotesModule">
+      <AppModuleConfig name="WHODInfoNotesModuleLocal" ApplicationName="com.dbms.csmq.model.infNotes.WHODInfoNotesModule" DeployPlatform="LOCAL" jbo.project="com.dbms.csmq.model.Model">
+         <Security AppModuleJndiName="com.dbms.csmq.model.infNotes.WHODInfoNotesModule"/>
+         <Custom JDBCDataSource="java:comp/env/jdbc/TMSDS"/>
+      </AppModuleConfig>
+      <AppModuleConfig name="WHODInfoNotesModuleShared" ApplicationName="com.dbms.csmq.model.infNotes.WHODInfoNotesModule" DeployPlatform="LOCAL" jbo.project="com.dbms.csmq.model.Model">
+         <AM-Pooling jbo.ampool.maxpoolsize="1" jbo.ampool.isuseexclusive="false"/>
+         <Security AppModuleJndiName="com.dbms.csmq.model.infNotes.WHODInfoNotesModule"/>
+         <Custom JDBCDataSource="java:comp/env/jdbc/TMSDS"/>
+      </AppModuleConfig>
+   </AppModuleConfigBag>
 </BC4JConfig>

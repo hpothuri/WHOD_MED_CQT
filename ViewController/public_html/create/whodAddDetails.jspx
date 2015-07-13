@@ -35,7 +35,6 @@
                                                           binding="#{WhodWizardUIBean.controlMQName}"
                                                           required="#{WhodRenderingRulesBean.wizardDetailsRenderSave}"
                                                           value="#{pageFlowScope.WhodWizardBean.currentTermName}"
-                                                          immediate="false"
                                                           readOnly="#{WhodRenderingRulesBean.wizardDetailsDisableNMQName}"
                                                           labelStyle="white-space:nowrap"
                                                           contentStyle="color:#000000;"/>

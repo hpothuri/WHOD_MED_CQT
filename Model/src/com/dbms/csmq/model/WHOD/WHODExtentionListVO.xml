@@ -19,10 +19,9 @@
         ResId="com.dbms.csmq.model.WHOD.WHODExtentionListVO_LABEL"/>
     </SchemaBasedProperties>
   </Properties>
-  <SQLQuery><![CDATA[SELECT long_value, ref_codelist_value_short_val
-FROM rxc.reference_codelist_values
-WHERE ref_codelist_name = 'CQT_WHOD_DG_SUB_LEVELS'
-AND active_flag = 'Y']]></SQLQuery>
+  <SQLQuery><![CDATA[SELECT long_value, SHORT_VALUE
+FROM cqt_whod_sub_levels_lov
+WHERE active_flag = 'Y']]></SQLQuery>
   <ViewAttribute
     Name="LongValue"
     IsUpdateable="false"
@@ -39,15 +38,15 @@ AND active_flag = 'Y']]></SQLQuery>
     </DesignTime>
   </ViewAttribute>
   <ViewAttribute
-    Name="RefCodelistValueShortVal"
+    Name="ShortValue"
     IsUpdateable="false"
     IsPersistent="false"
     PrecisionRule="true"
     Precision="15"
     Type="java.lang.String"
     ColumnType="VARCHAR2"
-    AliasName="REF_CODELIST_VALUE_SHORT_VAL"
-    Expression="REF_CODELIST_VALUE_SHORT_VAL"
+    AliasName="SHORT_VALUE"
+    Expression="SHORT_VALUE"
     SQLType="VARCHAR">
     <DesignTime>
       <Attr Name="_DisplaySize" Value="15"/>

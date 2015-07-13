@@ -79,21 +79,75 @@
     Name="dGGroupLIST"
     Kind="where"
     Type="java.lang.String"/>
-  <SQLQuery><![CDATA[SELECT *
-   FROM TABLE(cqt_whod_ui_tms_utils.pipe_contents_curr_custom
-      (pLevelName       => :levelName,
-       pSubLevelName    => :subLevelName,
-       pApprovedFlag    => :approvedFlag,
-       pCreatedBy       => :createdBy,
-       pDictContentID   => :dictContentID,
-       pDictContentCode => :dictContentCode,
-       pTermUpper       => :termUpper,
-       pDGDMLVersion    => :dGDMLVersion,
-       pDGScopeFlag     => :dGScopeFlag,
-       pDGTransID       => :dGTransID,
-       pDGActiveStatus  => :dGActiveStatus,
-       pDGProductLIST   => :dGProductLIST,
-       pDGGroupLIST     => :dGGroupLIST))]]></SQLQuery>
+  <Variable
+    Name="dReleaseStatus"
+    Kind="where"
+    Type="java.lang.String"
+    DefaultValue="%"/>
+  <Variable
+    Name="dTermSubType"
+    Kind="where"
+    Type="java.lang.String"
+    DefaultValue="%"/>
+  <Variable
+    Name="dStateLIST"
+    Kind="where"
+    Type="java.lang.String"
+    DefaultValue="%"/>
+  <Variable
+    Name="dReleaseTypeLIST"
+    Kind="where"
+    Type="java.lang.String"
+    DefaultValue="%"/>
+  <SQLQuery><![CDATA[SELECT * 
+FROM TABLE(CQT_WHOD_UI_TMS_UTILS.QUERY_CONTENT_DATA
+        (pReleaseStatus       => :dReleaseStatus,
+         pReleaseTypeLIST     => :dReleaseTypeLIST,
+         pLevelName           => :levelName,
+         pSubLevelName        => :subLevelName,
+         pTermSubtype         => :dTermSubType,
+         pApprovedFlag        => :approvedFlag,
+         pCreatedBy           => :createdBy,
+         pDictContentID       => :dictContentID,
+         pDictContentCode     => :dictContentCode,
+         pTermUpper           => :termUpper,
+         pDGDMLVersion        => :dGDMLVersion,
+         pDGScopeFlag         => :dGScopeFlag,
+         pDGTransID           => :dGTransID,
+         pDGActiveStatus      => :dGActiveStatus,
+         pStateLIST           => :dStateLIST,
+         pDGProductLIST       => :dGProductLIST,
+         pDGGroupLIST         => :dGGroupLIST))]]></SQLQuery>
+  <ViewAttribute
+    Name="ReleaseStatus"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="15"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="RELEASE_STATUS"
+    Expression="RELEASE_STATUS"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="15"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="ReleaseType"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="RELEASE_TYPE"
+    Expression="RELEASE_TYPE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="10"/>
+    </DesignTime>
+  </ViewAttribute>
   <ViewAttribute
     Name="DictionaryName"
     IsUpdateable="false"
@@ -451,33 +505,63 @@
     </DesignTime>
   </ViewAttribute>
   <ViewAttribute
-    Name="InfoNoteDesc"
+    Name="ActivationGroupName"
     IsUpdateable="false"
     IsPersistent="false"
     PrecisionRule="true"
-    Precision="4000"
+    Precision="65"
     Type="java.lang.String"
     ColumnType="VARCHAR2"
-    AliasName="INFO_NOTE_DESC"
-    Expression="INFO_NOTE_DESC"
+    AliasName="ACTIVATION_GROUP_NAME"
+    Expression="ACTIVATION_GROUP_NAME"
     SQLType="VARCHAR">
     <DesignTime>
-      <Attr Name="_DisplaySize" Value="4000"/>
+      <Attr Name="_DisplaySize" Value="65"/>
     </DesignTime>
   </ViewAttribute>
   <ViewAttribute
-    Name="InfoNoteNote"
+    Name="Dml"
     IsUpdateable="false"
     IsPersistent="false"
     PrecisionRule="true"
-    Precision="4000"
+    Precision="10"
     Type="java.lang.String"
     ColumnType="VARCHAR2"
-    AliasName="INFO_NOTE_NOTE"
-    Expression="INFO_NOTE_NOTE"
+    AliasName="DML"
+    Expression="DML"
     SQLType="VARCHAR">
     <DesignTime>
-      <Attr Name="_DisplaySize" Value="4000"/>
+      <Attr Name="_DisplaySize" Value="10"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="State"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="20"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="STATE"
+    Expression="STATE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="20"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Designee"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="200"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="DESIGNEE"
+    Expression="DESIGNEE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
     </DesignTime>
   </ViewAttribute>
   <ViewAttribute
@@ -489,6 +573,20 @@
     ColumnType="NUMBER"
     AliasName="DEF_DICTIONARY_ID"
     Expression="DEF_DICTIONARY_ID"
+    SQLType="NUMERIC">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="22"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="ActivationGroupId"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="oracle.jbo.domain.Number"
+    ColumnType="NUMBER"
+    AliasName="ACTIVATION_GROUP_ID"
+    Expression="ACTIVATION_GROUP_ID"
     SQLType="NUMERIC">
     <DesignTime>
       <Attr Name="_DisplaySize" Value="22"/>
@@ -520,51 +618,6 @@
     SQLType="NUMERIC">
     <DesignTime>
       <Attr Name="_DisplaySize" Value="22"/>
-    </DesignTime>
-  </ViewAttribute>
-  <ViewAttribute
-    Name="RelaeaseGroup"
-    IsUpdateable="false"
-    IsPersistent="false"
-    PrecisionRule="true"
-    Precision="65"
-    Type="java.lang.String"
-    ColumnType="VARCHAR2"
-    AliasName="RELAEASE_GROUP"
-    Expression="RELAEASE_GROUP"
-    SQLType="VARCHAR">
-    <DesignTime>
-      <Attr Name="_DisplaySize" Value="65"/>
-    </DesignTime>
-  </ViewAttribute>
-  <ViewAttribute
-    Name="RealeaseStatusCode"
-    IsUpdateable="false"
-    IsPersistent="false"
-    PrecisionRule="true"
-    Precision="1"
-    Type="java.lang.String"
-    ColumnType="VARCHAR2"
-    AliasName="REALEASE_STATUS_CODE"
-    Expression="REALEASE_STATUS_CODE"
-    SQLType="VARCHAR">
-    <DesignTime>
-      <Attr Name="_DisplaySize" Value="1"/>
-    </DesignTime>
-  </ViewAttribute>
-  <ViewAttribute
-    Name="ReleaseStatus"
-    IsUpdateable="false"
-    IsPersistent="false"
-    PrecisionRule="true"
-    Precision="15"
-    Type="java.lang.String"
-    ColumnType="VARCHAR2"
-    AliasName="RELEASE_STATUS"
-    Expression="RELEASE_STATUS"
-    SQLType="VARCHAR">
-    <DesignTime>
-      <Attr Name="_DisplaySize" Value="15"/>
     </DesignTime>
   </ViewAttribute>
   <ResourceBundle>

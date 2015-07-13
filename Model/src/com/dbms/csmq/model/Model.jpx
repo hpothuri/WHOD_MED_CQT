@@ -31,6 +31,7 @@
       <Attr Name="_appModuleNames16" Value="com.dbms.csmq.model.product.WHODProductModule"/>
       <Attr Name="_appModuleNames17" Value="com.dbms.csmq.model.MQGroups.WHODMQGroups"/>
       <Attr Name="_appModuleNames18" Value="com.dbms.csmq.model.search.WHODSearchModule"/>
+      <Attr Name="_appModuleNames19" Value="com.dbms.csmq.model.infNotes.WHODInfoNotesModule"/>
    </DesignTime>
    <Containee
       Name="config"

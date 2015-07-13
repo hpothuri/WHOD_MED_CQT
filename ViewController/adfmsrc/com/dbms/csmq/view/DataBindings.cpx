@@ -184,5 +184,10 @@
                          SupportsFindMode="true" SupportsRangesize="true" SupportsResetState="true"
                          SupportsSortCollection="true" Configuration="WHODSearchModuleLocal" syncMode="Immediate"
                          xmlns="http://xmlns.oracle.com/adfm/datacontrol"/>
+        <BC4JDataControl id="WHODInfoNotesModuleDataControl" Package="com.dbms.csmq.model.infNotes"
+                         FactoryClass="oracle.adf.model.bc4j.DataControlFactoryImpl" SupportsTransactions="true"
+                         SupportsFindMode="true" SupportsRangesize="true" SupportsResetState="true"
+                         SupportsSortCollection="true" Configuration="WHODInfoNotesModuleLocal" syncMode="Immediate"
+                         xmlns="http://xmlns.oracle.com/adfm/datacontrol"/>
     </dataControlUsages>
 </Application>

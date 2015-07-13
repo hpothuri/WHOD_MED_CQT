@@ -19,20 +19,20 @@
         ResId="com.dbms.csmq.model.product.WHODProductListVO_LABEL"/>
     </SchemaBasedProperties>
   </Properties>
-  <SQLQuery><![CDATA[Select ref_codelist_value_short_val short_val, long_value 
-from rxc.reference_codelist_values where ref_codelist_name = 'CQT_PRODUCTS'
-and active_flag ='Y' AND ref_codelist_value_short_val <> 'STANDARD'
-ORDER BY long_value]]></SQLQuery>
+  <SQLQuery><![CDATA[SELECT SHORT_VALUE, LONG_VALUE
+FROM CQT_WHOD_PRODUCTS_LOV
+WHERE ACTIVE_FLAG = 'Y' AND SHORT_VALUE <> 'STANDARD'
+ORDER BY LONG_VALUE]]></SQLQuery>
   <ViewAttribute
-    Name="ShortVal"
+    Name="ShortValue"
     IsUpdateable="false"
     IsPersistent="false"
     PrecisionRule="true"
-    Precision="255"
+    Precision="15"
     Type="java.lang.String"
     ColumnType="VARCHAR2"
-    AliasName="SHORT_VAL"
-    Expression="SHORT_VAL"
+    AliasName="SHORT_VALUE"
+    Expression="SHORT_VALUE"
     SQLType="VARCHAR">
     <DesignTime>
       <Attr Name="_DisplaySize" Value="15"/>

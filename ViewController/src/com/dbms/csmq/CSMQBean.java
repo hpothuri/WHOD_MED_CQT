@@ -497,7 +497,7 @@ public class CSMQBean {
         if (properties == null) properties = new Hashtable();
         properties.clear();
         
-        String sql = "SELECT * FROM NMAT_PROPERTIES";
+        String sql = "SELECT * FROM NMAT.NMAT_PROPERTIES";
         DBTransaction dBTransaction = DMLUtils.getDBTransaction();
         CallableStatement cstmt = dBTransaction.createCallableStatement(sql, DBTransaction.DEFAULT);
         ResultSet rs;

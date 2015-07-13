@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="WHODInfoNotesVO"
+  Version="11.1.2.64.36"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  PageIterMode="Full"
+  UseGlueCode="false">
+  <DesignTime>
+    <Attr Name="_isExpertMode" Value="true"/>
+  </DesignTime>
+  <Variable
+    Name="dReleaseStatus"
+    Kind="where"
+    Type="java.lang.String"
+    DefaultValue="%"/>
+  <Variable
+    Name="dReleaseTypeLIST"
+    Kind="where"
+    Type="java.lang.String"
+    DefaultValue="%"/>
+  <Variable
+    Name="dDictContentId"
+    Kind="where"
+    Type="java.lang.String"/>
+  <SQLQuery><![CDATA[SELECT *
+FROM TABLE (CQT_WHOD_UI_TMS_UTILS.QUERY_INFO_NOTE_DATA 
+         (pDictContentId     => :dDictContentId,
+          pReleaseStatus     => :dReleaseStatus,
+          pReleaseTypeLIST   => :dReleaseTypeLIST))]]></SQLQuery>
+  <ViewAttribute
+    Name="ReleaseStatus"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="255"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="RELEASE_STATUS"
+    Expression="RELEASE_STATUS"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="10"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="ReleaseType"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="RELEASE_TYPE"
+    Expression="RELEASE_TYPE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="10"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="DictContentId"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="oracle.jbo.domain.Number"
+    ColumnType="NUMBER"
+    AliasName="DICT_CONTENT_ID"
+    Expression="DICT_CONTENT_ID"
+    SQLType="NUMERIC">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="22"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="InfoNoteType"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="15"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="INFO_NOTE_TYPE"
+    Expression="INFO_NOTE_TYPE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="15"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="InfoNoteName"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="30"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="INFO_NOTE_NAME"
+    Expression="INFO_NOTE_NAME"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="30"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="InfoNoteValue"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="4000"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="INFO_NOTE_VALUE"
+    Expression="INFO_NOTE_VALUE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="4000"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="DictInfoClobEntryTs"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="oracle.jbo.domain.Date"
+    ColumnType="DATE"
+    AliasName="DICT_INFO_CLOB_ENTRY_TS"
+    Expression="DICT_INFO_CLOB_ENTRY_TS"
+    SQLType="TIMESTAMP">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="7"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="EndTs"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="oracle.jbo.domain.Date"
+    ColumnType="DATE"
+    AliasName="END_TS"
+    Expression="END_TS"
+    SQLType="TIMESTAMP">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="7"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="CreatedBy"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="30"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="CREATED_BY"
+    Expression="CREATED_BY"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="30"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="ActivationGroupName"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="65"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="ACTIVATION_GROUP_NAME"
+    Expression="ACTIVATION_GROUP_NAME"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="65"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Dml"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="DML"
+    Expression="DML"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="10"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="ActivationGroupId"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="oracle.jbo.domain.Number"
+    ColumnType="NUMBER"
+    AliasName="ACTIVATION_GROUP_ID"
+    Expression="ACTIVATION_GROUP_ID"
+    SQLType="NUMERIC">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="22"/>
+    </DesignTime>
+  </ViewAttribute>
+</ViewObject>

@@ -1643,7 +1643,7 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
     public List<SelectItem> getWhodExtensionSI() {
         if (whodExtensionSI == null) {
             whodExtensionSI =
-                    ADFUtils.selectItemsForIterator("WHODExtentionListVO1Iterator", "RefCodelistValueShortVal",
+                    ADFUtils.selectItemsForIterator("WHODExtentionListVO1Iterator", "ShortValue",
                                                     "LongValue");
         }
         return whodExtensionSI;
@@ -1667,7 +1667,7 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
 
     public List<SelectItem> getWhodProductSI() {
         if (whodProductSI == null) {
-            whodProductSI = ADFUtils.selectItemsForIterator("WHODProductList1Iterator", "ShortVal", "LongValue");
+            whodProductSI = ADFUtils.selectItemsForIterator("WHODProductList1Iterator", "ShortValue", "LongValue");
         }
         return whodProductSI;
     }
@@ -1678,7 +1678,7 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
 
     public List<SelectItem> getWhodGroupSI() {
         if (whodGroupSI == null) {
-            whodGroupSI = ADFUtils.selectItemsForIterator("WHODGroupList1Iterator", "ShortVal", "LongValue");
+            whodGroupSI = ADFUtils.selectItemsForIterator("WHODGroupList1Iterator", "ShortValue", "LongValue");
         }
         return whodGroupSI;
     }
