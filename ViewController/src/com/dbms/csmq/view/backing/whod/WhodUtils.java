@@ -1,8 +1,8 @@
 package com.dbms.csmq.view.backing.whod;
 
+
 import com.dbms.csmq.CSMQBean;
 import com.dbms.csmq.UserBean;
-import com.dbms.csmq.view.backing.NMQ.NMQUtils;
 import com.dbms.csmq.view.util.ADFUtils;
 import com.dbms.util.dml.DMLUtils;
 import com.dbms.util.logged.CallableStatement;
@@ -15,7 +15,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 import java.util.Hashtable;
-
+import java.util.List;
 import java.util.Map;
 
 import javax.faces.application.FacesMessage;
@@ -25,6 +25,7 @@ import oracle.adf.share.ADFContext;
 import oracle.adf.view.rich.context.AdfFacesContext;
 
 import oracle.jbo.server.DBTransaction;
+
 
 public class WhodUtils {
     public WhodUtils() {
@@ -1064,5 +1065,144 @@ new FacesMessage(FacesMessage.SEVERITY_INFO, "Impacted list refreshed for dictio
     public static CSMQBean getCSMQBean() {
         CSMQBean cSMQBean = (CSMQBean)ADFContext.getCurrent().getApplicationScope().get("CSMQBean");
         return cSMQBean;
+    }
+
+    public static Hashtable saveDetails(String levelName, String subLevelName, String approvedFlag,
+                                        String dictContentCode, String termName, String dGScopeFlag,
+                                        String dGActiveStatus, String dGProductLIST, String dGGroupLIST,
+                                        String commentText, String designee, String userRole, String action) {
+
+        // CALL PROC TO SAVE
+        /*
+         * cqt_whod_ui_tms_utils
+        FUNCTION insert_content_data
+               (pLevelName           IN VARCHAR2,
+                pSubLevelName        IN VARCHAR2,
+                pApprovedFlag        IN VARCHAR2,
+                pDictContentCode     IN VARCHAR2,
+                pTerm                IN VARCHAR2,
+                pDGScopeFlag         IN VARCHAR2,
+                pDGActiveStatus      IN VARCHAR2,
+                pDGProductLIST       IN VARCHAR2  DEFAULT NULL,
+                pDGGroupLIST         IN VARCHAR2  DEFAULT NULL,
+                pCommentText         IN VARCHAR2  DEFAULT NULL,
+                pDesignee            IN VARCHAR2  DEFAULT NULL,
+                pPredictContentID    OUT NUMBER)
+             RETURN VARCHAR2
+        */
+        dGScopeFlag = "N";
+        dGActiveStatus = "A";
+        String sql = "{ ? = call cqt_whod_ui_tms_utils.insert_content_data(?,?,?,?,?,  ?,?,?,?,?,  ?,?)}";
+        DBTransaction dBTransaction = DMLUtils.getDBTransaction();
+        Integer newDictContentID = null;
+        Hashtable retVal = new Hashtable(); // array to return the new state and message
+        try {
+            CallableStatement cstmt =
+                new CallableStatement(dBTransaction.createCallableStatement(sql, DBTransaction.DEFAULT),
+                                      "cqt_whod_ui_tms_utils.insert_content_data");
+            cstmt.registerOutParameter(1, Types.VARCHAR);
+            cstmt.setString(2, levelName);
+            cstmt.setString(3, subLevelName);
+            cstmt.setString(4, approvedFlag);
+            cstmt.setString(5, dictContentCode);
+            cstmt.setString(6, termName);
+
+            cstmt.setString(7, dGScopeFlag);
+            cstmt.setString(8, dGActiveStatus);
+            cstmt.setString(9, dGProductLIST);
+            cstmt.setString(10, dGGroupLIST);
+            cstmt.setString(11, commentText);
+
+            cstmt.setString(12, designee);
+            //cstmt.setString(13, "");
+            cstmt.registerOutParameter(13, Types.INTEGER);
+            cstmt.executeQuery();
+            newDictContentID = cstmt.getInt(13);
+            cstmt.close();
+            System.out.println("newDictContentID==" + newDictContentID);
+            if (newDictContentID != null)
+                retVal.put("NEW_DICT_CONTENT_ID", "" + newDictContentID);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            String messageText;
+
+            if (e.getMessage().indexOf(CSMQBean.NAME_IN_USE_ERROR) > -1) { // it's a name already in use error
+                messageText = "The name: " + termName + " is already in use.  Please use another name";
+            } else if (e.getMessage().indexOf(CSMQBean.INVALID_STATE_CHANGE_ERROR) >
+                       -1) { // it's a name already in use error
+                messageText =
+                        termName + " is Pending Impact Assessment and must be deleted in Impact Assessment to Update the Current NMQ.";
+            } else { // it's something else
+                messageText =
+                        "The following error occurred.  " + termName + " was not " + action + " successfully.\n" +
+                        e.getMessage();
+                e.printStackTrace();
+            }
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, messageText, "");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+        return retVal;
+    }
+
+    public static Hashtable saveNotesAndDescInfo(String dictContentId, String extension, String infoNotes,
+                                                 String infoDesc, String infoSource) {
+        CSMQBean.logger.info("saveNotesAndDescInfo(): dictContentId=" + dictContentId + ";; extension=" + extension +
+                             ":; infoNotes=" + infoNotes + ":; infoDesc=" + infoDesc + ";;");
+        Hashtable retVal = new Hashtable(); // array to return the new state and message
+        int notesPredictInfoHdrID = saveNoteInfo(dictContentId, extension + "NOTE", infoNotes);
+        int descPredictInfoHdrID = saveNoteInfo(dictContentId, extension + "DESC", infoDesc);
+        retVal.put("NOTES_PRED_ID", notesPredictInfoHdrID);
+        retVal.put("DESC_PRED_ID", descPredictInfoHdrID);
+        return retVal;
+    }
+
+
+    public static int saveNoteInfo(String dictContentId, String infoNoteName, String infoNoteValue) {
+        String sql = "{ ? = call cqt_whod_ui_tms_utils.insert_info_note_data(?,?,?,?)}";
+        DBTransaction dBTransaction = DMLUtils.getDBTransaction();
+        Integer predictInfoHdrID = null;
+
+        try {
+            CallableStatement cstmt =
+                new CallableStatement(dBTransaction.createCallableStatement(sql, DBTransaction.DEFAULT),
+                                      "cqt_whod_ui_tms_utils.insert_info_note_data");
+            cstmt.registerOutParameter(1, Types.VARCHAR);
+            cstmt.setInt(2, new Integer(dictContentId));
+            cstmt.setString(3, infoNoteName);
+            cstmt.setString(4, infoNoteValue);
+            cstmt.registerOutParameter(5, Types.INTEGER);
+            cstmt.executeQuery();
+            predictInfoHdrID = cstmt.getInt(5);
+            cstmt.close();
+            System.out.println("predictInfoHdrID==" + predictInfoHdrID);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            String messageText = "An error occurred.  " + infoNoteName + " was not inserted successfully.";
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, messageText, "");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            e.printStackTrace();
+            return -1;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -1;
+        }
+        return predictInfoHdrID;
+    }
+
+    public static String getDelimStr(List<String> items, char delim) {
+        String delimStr = null;
+        String temp = "";
+        if (items != null && items.size() > 0) {
+            for (String item : items) {
+                temp = temp + item + delim;
+            }
+        }
+        if (temp != null & temp.length() > 0)
+            delimStr = temp.substring(0, temp.length() - 1);
+        return delimStr;
     }
 }

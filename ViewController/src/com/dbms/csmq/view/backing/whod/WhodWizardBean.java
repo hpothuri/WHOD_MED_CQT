@@ -518,20 +518,16 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
     }
 
     public boolean saveDetails(boolean silent) {
-
         if (this.mode == CSMQBean.MODE_INSERT_NEW && saved)
             return true; //it's already been saved - do this to avoid the "name in use" error
 
-
         String tempName = currentTermName;
-
         if (mode != CSMQBean.MODE_UPDATE_SMQ) {
             // strip out the old product and NMQ label
             int firstBraket = currentTermName.indexOf("[");
             if (firstBraket > 0)
                 tempName = currentTermName.substring(0, firstBraket);
         }
-
 
         // If it's a copy, get rid of the old extension
         if (this.mode == CSMQBean.MODE_COPY_EXISTING) {
@@ -541,26 +537,12 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
         }
         tempName = tempName.trim(); // get rid of the spaces - these cause a problem
 
-
         // IF IT'S NEW or UPDATE APPEND THE PRODUCT AND NMQ TO THE NAME
-        if (this.mode == CSMQBean.MODE_INSERT_NEW || this.mode == CSMQBean.MODE_COPY_EXISTING ||
-            this.mode == CSMQBean.MODE_UPDATE_EXISTING)
-            tempName += " [" + currentProduct + "] (" + this.currentExtension + ")";
+        //        if (this.mode == CSMQBean.MODE_INSERT_NEW || this.mode == CSMQBean.MODE_COPY_EXISTING ||
+        //            this.mode == CSMQBean.MODE_UPDATE_EXISTING)
+        //            tempName += " [" + currentProduct + "] (" + this.currentExtension + ")";
 
-        //if (this.mode == CSMQBean.MODE_COPY_EXISTING)
-        //    tempName += "_COPY";
-
-        // For a CMQ created by a requestor OR MQM, the first state must be DRAFT, not proposed.
-        // Only for NMQs created by Requestors should the state be Proposed.
-        if (this.currentExtension.equals("CMQ")) {
-            currentState = CSMQBean.STATE_DRAFT;
-        } else if (this.currentExtension.equals("NMQ")) {
-            if (userBean.isRequestor() && !userBean.isMQM()) {
-                currentState = CSMQBean.STATE_PROPOSED;
-            } else {
-                currentState = CSMQBean.STATE_DRAFT;
-            }
-        }
+        currentState = CSMQBean.STATE_DRAFT;
         String action = (mode != CSMQBean.MODE_INSERT_NEW) ? "Updated" : "Inserted";
 
         Hashtable results = null;
@@ -583,11 +565,7 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
         CSMQBean.logger.info(userBean.getCaller() + " userRole: " + userBean.getUserRole());
         CSMQBean.logger.info(userBean.getCaller() + " action: " + action);
         CSMQBean.logger.info(userBean.getCaller() + " currentStatus: " + this.currentStatus);
-        /*
-         * @author MTW
-         * 06/30/2014
-         * @fsds NMAT-UC01.02 & NMAT-UC11.02
-         */
+
         if (designeeList != null)
             CSMQBean.logger.info(userBean.getCaller() + " currentDesignee: " + this.designeeList);
 
@@ -597,45 +575,38 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
                     NMQUtils.saveIADetails(tempName, currentProduct, currentTermLevel, currentScope, currentMQALGO, currentMQCRTEV,
                                            currentMQGROUP, currentContentCode, this.getUpdateParam(), currentRequestor,
                                            currentDictContentID, userBean.getUserRole(), action);
-        }
-        /*
-         * @author MTW
-         * 06/30/2014
-         * @fsds NMAT-UC01.02 & NMAT-UC11.02
-         * add currentDesignee
-         */
-        else {
-            /*
+        } else {
+
             CSMQBean.logger.info(userBean.getCaller() + " CALLING: saveDetails");
             String designeeListString = "";
             if (designeeList != null)
                 designeeListString = designeeList.toString();
+            String levelName = getCurrentTermLevel();
+            String subLevelName = getCurrentExtension();
+            String approvedFlag = "Y";
+            String dictContentCode = "1001";
+            String dGProductLIST = WhodUtils.getDelimStr(getProductList(), CSMQBean.DEFAULT_DELIMETER_CHAR);
+            String dGGroupLIST = WhodUtils.getDelimStr(getMQGroupList(), CSMQBean.DEFAULT_DELIMETER_CHAR);
+            String commentText = "";
+            String designee = WhodUtils.getDelimStr(getDesigneeList(), CSMQBean.DEFAULT_DELIMETER_CHAR);
+
             results =
-                    NMQUtils.saveDetails(currentFilterDictionaryShortName, currentPredictGroups, tempName, currentProduct,
-                                         currentTermLevel, currentScope, currentMQALGO, currentMQCRTEV, currentMQGROUP,
-                                         currentContentCode, this.getUpdateParam(), currentRequestor,
-                                         currentDictContentID, userBean.getUserRole(), action, currentStatus,
-                                         designeeListString);
-            */
+                    WhodUtils.saveDetails(levelName, subLevelName, approvedFlag, dictContentCode, getCurrentTermName(),
+                                          getCurrentScope(), getCurrentStatus(), dGProductLIST, dGGroupLIST,
+                                          commentText, designee, userBean.getUserRole(), action);
         }
 
         if (results == null)
             return false; // it failed
         this.saved = true;
-
-
         this.currentStatus = INITIAL_STATUS;
-
-        // set the state
-        // if (userBean.isRequestor()) this.currentState = CSMQBean.STATE_PROPOSED;
-        // if (userBean.isMQM()) this.currentState = CSMQBean.STATE_DRAFT;
 
         //if it's new or a copy, update the content code & ID with the new values & change the mode from insert to update & save the old code
         if (this.mode == CSMQBean.MODE_INSERT_NEW || this.mode == CSMQBean.MODE_COPY_EXISTING) {
             this.currentContentCode = (String)results.get("NEW_DICT_CONTENT_CODE"); //
             this.copiedDictContentID = this.getCurrentDictContentID();
             this.currentDictContentID = (String)results.get("NEW_DICT_CONTENT_ID"); //newDictContentID;
-            this.currentDateRequested = (oracle.jbo.domain.Date)results.get("CURRENT_DATE_REQUESTED");
+            //            this.currentDateRequested = (oracle.jbo.domain.Date)results.get("CURRENT_DATE_REQUESTED");
             // if it's new, copy all the relations, too
             if (this.mode == CSMQBean.MODE_COPY_EXISTING) {
                 CSMQBean.logger.info(userBean.getCaller() + " currentContentCode:" + currentContentCode);
@@ -646,9 +617,6 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
                 saveAllInfNotes();
             }
         }
-
-        // lock down the level
-        //this.controlMQLevel.setDisabled(true);  <-- moved to UIBean
 
         // alert the user that everything saved ok
         if (!silent) { //called from relations when we want to make sure the NMQ is saved before adding relations
@@ -663,11 +631,6 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
         if (mode !=
             CSMQBean.MODE_IMPACT_ASSESSMENT) // we don't need to refresh the tree when making impact changes since it's only for SMQs
             updateRelations();
-
-        // now make it editable
-        //commented below code to fix - 20141121-2 -Venkat
-        //if (this.mode == CSMQBean.MODE_COPY_EXISTING)
-        //  this.mode = CSMQBean.MODE_UPDATE_EXISTING;
 
         return true;
     }
@@ -793,54 +756,19 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
         int errorCount = 0;
 
         if (this.mode == CSMQBean.MODE_IMPACT_ASSESSMENT) {
-            errorCount +=
-                    NMQUtils.saveIAInfNotes(this.noteInformativeNoteShortName, this.currentInfNoteNotes, currentDictContentID,
-                                            currentTermLevel, userBean.getCurrentUser(), userBean.getCurrentUserRole(),
-                                            action, currentExtension);
-            try {
-                Thread.sleep(5000);
-            } catch (InterruptedException e) {
-            }
-            errorCount +=
-                    NMQUtils.saveIAInfNotes(this.descriptionInformativeNoteShortName, this.currentInfNoteDescription,
-                                            currentDictContentID, currentTermLevel, userBean.getCurrentUser(),
-                                            userBean.getCurrentUserRole(), action, currentExtension);
-            try {
-                Thread.sleep(5000);
-            } catch (InterruptedException e) {
-            }
-            errorCount +=
-                    NMQUtils.saveIAInfNotes(this.sourceInformativeNoteShortName, this.currentInfNoteSource, currentDictContentID,
-                                            currentTermLevel, userBean.getCurrentUser(), userBean.getCurrentUserRole(),
-                                            action, currentExtension);
+
         } else {
-            errorCount +=
-                    NMQUtils.saveInfNotes(this.noteInformativeNoteShortName, this.currentInfNoteNotes, currentFilterDictionaryShortName,
-                                          currentPredictGroups, currentDictContentID, currentTermLevel,
-                                          userBean.getCurrentUser(), userBean.getCurrentUserRole(), action,
-                                          currentExtension);
-            try {
-                Thread.sleep(5000);
-            } catch (InterruptedException e) {
+            Hashtable ht =
+                WhodUtils.saveNotesAndDescInfo(getCurrentDictContentID(), getCurrentExtension(), getCurrentInfNoteDescription(),
+                                               getCurrentInfNoteNotes(), getCurrentInfNoteSource());
+            int notesPredictInfoHdrID = (Integer)ht.get("NOTES_PRED_ID");
+            int descPredictInfoHdrID = (Integer)ht.get("DESC_PRED_ID");
+            if (notesPredictInfoHdrID < 0 && descPredictInfoHdrID < 0) {
+                errorCount = -1;
             }
-            errorCount +=
-                    NMQUtils.saveInfNotes(this.descriptionInformativeNoteShortName, this.currentInfNoteDescription,
-                                          currentFilterDictionaryShortName, currentPredictGroups, currentDictContentID,
-                                          currentTermLevel, userBean.getCurrentUser(), userBean.getCurrentUserRole(),
-                                          action, currentExtension);
-            try {
-                Thread.sleep(5000);
-            } catch (InterruptedException e) {
-            }
-            errorCount +=
-                    NMQUtils.saveInfNotes(this.sourceInformativeNoteShortName, this.currentInfNoteSource, currentFilterDictionaryShortName,
-                                          currentPredictGroups, currentDictContentID, currentTermLevel,
-                                          userBean.getCurrentUser(), userBean.getCurrentUserRole(), action,
-                                          currentExtension);
         }
 
         if (errorCount == 0) { // IF IT'S >0 THEN ONE FAILED
-
             String messageText = "All Informative Notes were " + action + " successfully.";
             FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, messageText, null);
             FacesContext.getCurrentInstance().addMessage(null, msg);
@@ -1643,8 +1571,7 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
     public List<SelectItem> getWhodExtensionSI() {
         if (whodExtensionSI == null) {
             whodExtensionSI =
-                    ADFUtils.selectItemsForIterator("WHODExtentionListVO1Iterator", "ShortValue",
-                                                    "LongValue");
+                    ADFUtils.selectItemsForIterator("WHODExtentionListVO1Iterator", "ShortValue", "LongValue");
         }
         return whodExtensionSI;
     }
