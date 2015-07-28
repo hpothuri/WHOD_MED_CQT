@@ -26,7 +26,8 @@
                                                                 label="Extension" id="soc5"  autoSubmit="true"
                                                                 rendered="#{WhodRenderingRulesBean.wizardDetailsRenderExtension}"
                                                                 contentStyle="color:#000000;"
-                                                                disabled="#{WhodRenderingRulesBean.wizardDetailsDisableExtention}">
+                                                                disabled="true">
+                                                    <!--disabled="#{WhodRenderingRulesBean.wizardDetailsDisableExtention}-->
                                                 <f:selectItems value="#{pageFlowScope.WhodWizardBean.whodExtensionSI}"
                                                                id="si31"/>
                                             </af:selectOneChoice>

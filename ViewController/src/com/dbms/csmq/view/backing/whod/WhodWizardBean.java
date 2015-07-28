@@ -61,7 +61,7 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
     private String currentPredictGroups;
     private String currentTermName;
     private String currentProduct; //value 3
-    private String currentTermLevel = CSMQBean.NMQ_LEVEL_1;
+    private String currentTermLevel = "CDG1";
     private String currentMQALGO = CSMQBean.FALSE;
     private String currentMQCRTEV = CSMQBean.CRITICAL_EVENT_NO; //value 4
     private String currentMQGROUP; //value 2
@@ -309,7 +309,7 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
         productList.add(CSMQBean.DEFAULT_PRODUCT);
         CSMQBean.logger.info(userBean.getCaller() + userBean.getCaller() + " SETTING MODE: " + this.mode);
         setDefaultDictionary();
-        setCurrentExtension(CSMQBean.customMQName);
+        setCurrentExtension("CDG");
         String designee = userBean.getCurrentUser().toUpperCase();
         CSMQBean.logger.info("ADDING DESIGNEE: " + designee);
         designeeList.add(designee);
