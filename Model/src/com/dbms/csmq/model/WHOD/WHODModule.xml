@@ -18,6 +18,12 @@
   <ViewUsage
     Name="WHODSmallTreeVO1"
     ViewObjectName="com.dbms.csmq.model.WHOD.WHODSmallTreeVO"/>
+  <ViewUsage
+    Name="WhodHierarchySourceTermSearchVO1"
+    ViewObjectName="com.dbms.csmq.model.WHOD.WhodHierarchySourceTermSearchVO"/>
+  <ViewUsage
+    Name="WHODSourceTreeVO1"
+    ViewObjectName="com.dbms.csmq.model.WHOD.WHODSmallTreeVO"/>
   <ResourceBundle>
     <PropertiesBundle
       PropertiesFile="com.dbms.csmq.model.ModelBundle"/>

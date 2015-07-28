@@ -1,5 +1,6 @@
 package com.dbms.csmq.view.hierarchy;
 
+
 import com.dbms.csmq.CSMQBean;
 import com.dbms.csmq.UserBean;
 import com.dbms.util.Utils;
@@ -19,6 +20,7 @@ import oracle.jbo.Row;
 
 import org.apache.myfaces.trinidad.model.ChildPropertyTreeModel;
 import org.apache.myfaces.trinidad.model.TreeModel;
+
 
 public class WhodHierarchySearchResultsBean {
     private TreeModel treemodel;
@@ -60,7 +62,7 @@ public class WhodHierarchySearchResultsBean {
         
         BindingContext bc = BindingContext.getCurrent();
         DCBindingContainer binding = (DCBindingContainer)bc.getCurrentBindingsEntry();
-        DCIteratorBinding dciterb = (DCIteratorBinding)binding.get("HierarchySourceTermSearchVO1Iterator");
+        DCIteratorBinding dciterb = (DCIteratorBinding)binding.get("WhodHierarchySourceTermSearchVO1Iterator");
 
         rows = dciterb.getRowSetIterator().enumerateRowsInRange();
 

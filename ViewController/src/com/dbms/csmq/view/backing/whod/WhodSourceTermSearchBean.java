@@ -1,5 +1,6 @@
 package com.dbms.csmq.view.backing.whod;
 
+
 import com.dbms.csmq.CSMQBean;
 import com.dbms.csmq.view.backing.impact.ImpactAnalysisBean;
 import com.dbms.csmq.view.backing.impact.ImpactSearchBean;
@@ -9,10 +10,18 @@ import com.dbms.csmq.view.hierarchy.WhodHierarchySearchResultsBean;
 import com.dbms.csmq.view.hierarchy.WhodTermHierarchyBean;
 import com.dbms.csmq.view.hierarchy.WhodTermHierarchySourceBean;
 import com.dbms.util.Utils;
+import com.dbms.util.dml.DMLUtils;
+
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Types;
 
 import java.util.Iterator;
 import java.util.List;
 
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 
@@ -34,11 +43,13 @@ import oracle.jbo.Key;
 import oracle.jbo.Row;
 import oracle.jbo.RowSetIterator;
 import oracle.jbo.ViewObject;
+import oracle.jbo.server.DBTransaction;
 
 import org.apache.myfaces.trinidad.event.SelectionEvent;
 import org.apache.myfaces.trinidad.model.RowKeySet;
 
-public class WhodSourceTermSearchBean extends HierarchyAccessor{
+
+public class WhodSourceTermSearchBean extends HierarchyAccessor {
 
     private String paramDictionaryType = "NULL";
     private String paramDictionary = "NULL";
@@ -49,22 +60,24 @@ public class WhodSourceTermSearchBean extends HierarchyAccessor{
     private String paramSort = "TERM";
     private String paramPrimLinkFlag = CSMQBean.TRUE;
     private String paramNarrowScopeOnly = CSMQBean.FALSE;
-    
+
     private boolean historicSearch = false;
     private boolean addRelationsSearch = false;
     private boolean impactSearch = false;
     private boolean multiSearch = false;
-    
+
     boolean showMedDRASelItems = true; // this is the default
     boolean showNMQSelItems = false;
     boolean showSMQSelItems = false;
-    
+
     private String currentDictId;
-    
+
 
     private WhodWizardBean nMQWizardBean;
-    WhodTermHierarchySourceBean termHierarchySourceBean = (WhodTermHierarchySourceBean) AdfFacesContext.getCurrentInstance().getPageFlowScope().get("WhodTermHierarchySourceBean");
-    WhodTermHierarchyBean termHierarchyBean = (WhodTermHierarchyBean) AdfFacesContext.getCurrentInstance().getPageFlowScope().get("WhodTermHierarchyBean");
+    WhodTermHierarchySourceBean termHierarchySourceBean =
+        (WhodTermHierarchySourceBean)AdfFacesContext.getCurrentInstance().getPageFlowScope().get("WhodTermHierarchySourceBean");
+    WhodTermHierarchyBean termHierarchyBean =
+        (WhodTermHierarchyBean)AdfFacesContext.getCurrentInstance().getPageFlowScope().get("WhodTermHierarchyBean");
     WhodSourceTermSearchUIBean nMQSourceTermSearchUIBean = null;
     private boolean hasScope = false;
     private String paramExtension;
@@ -75,21 +88,16 @@ public class WhodSourceTermSearchBean extends HierarchyAccessor{
     private RichTreeTable controlMultiResultsTable;
 
     public void doSearch(ActionEvent actionEvent) {
-
-        
-        
-        
         paramScope = "-1";
-         
         CSMQBean.logger.info(userBean.getCaller() + " *** PRFORMING SEARCH ***");
-        CSMQBean.logger.info(userBean.getCaller() + " Iterator: HierarchySourceTermSearchVO1Iterator");
+        CSMQBean.logger.info(userBean.getCaller() + " Iterator: WhodHierarchySourceTermSearchVO1Iterator");
         BindingContext bc = BindingContext.getCurrent();
         DCBindingContainer binding = (DCBindingContainer)bc.getCurrentBindingsEntry();
-        DCIteratorBinding dciterb = (DCIteratorBinding)binding.get("HierarchySourceTermSearchVO1Iterator");
+        DCIteratorBinding dciterb = (DCIteratorBinding)binding.get("WhodHierarchySourceTermSearchVO1Iterator");
         ViewObject vo = dciterb.getViewObject();
         String paramTermVal = getParamTerm();
-        if (null != paramTermVal && !paramTermVal.isEmpty()){
-           paramTermVal = paramTermVal.replace("'","\''");
+        if (null != paramTermVal && !paramTermVal.isEmpty()) {
+            paramTermVal = paramTermVal.replace("'", "\''");
         }
         vo.setNamedWhereClauseParam("startDate", "");
         vo.setNamedWhereClauseParam("endDate", "");
@@ -103,7 +111,7 @@ public class WhodSourceTermSearchBean extends HierarchyAccessor{
         vo.setNamedWhereClauseParam("MQCode", CSMQBean.WILDCARD);
         vo.setNamedWhereClauseParam("MQCriticalEvent", CSMQBean.WILDCARD);
         vo.setNamedWhereClauseParam("uniqueIDsOnly", CSMQBean.TRUE);
-        vo.setNamedWhereClauseParam("filterForUser",  CSMQBean.FALSE);
+        vo.setNamedWhereClauseParam("filterForUser", CSMQBean.FALSE);
         vo.setNamedWhereClauseParam("currentUser", nMQWizardBean.getCurrentUser());
         vo.setNamedWhereClauseParam("killSwitch", CSMQBean.KILL_SWITCH_OFF);
         vo.setNamedWhereClauseParam("showNarrowScpOnly", getParamNarrowScopeOnly());
@@ -111,10 +119,6 @@ public class WhodSourceTermSearchBean extends HierarchyAccessor{
         vo.setNamedWhereClauseParam("pState", CSMQBean.WILDCARD);
         vo.setNamedWhereClauseParam("pUserRole", "MQM");
         vo.setNamedWhereClauseParam("levelName", getParamLevel());
-        
-       
-        
-        
         CSMQBean.logger.info(userBean.getCaller() + " startDate: " + "");
         CSMQBean.logger.info(userBean.getCaller() + " endDate: " + "");
         CSMQBean.logger.info(userBean.getCaller() + " term: " + paramTermVal);
@@ -127,7 +131,7 @@ public class WhodSourceTermSearchBean extends HierarchyAccessor{
         CSMQBean.logger.info(userBean.getCaller() + " MQCode: " + CSMQBean.WILDCARD);
         CSMQBean.logger.info(userBean.getCaller() + " MQCriticalEvent: " + "%");
         CSMQBean.logger.info(userBean.getCaller() + " uniqueIDsOnly: " + CSMQBean.TRUE);
-        CSMQBean.logger.info(userBean.getCaller() + " filterForUser: " +  CSMQBean.FALSE);
+        CSMQBean.logger.info(userBean.getCaller() + " filterForUser: " + CSMQBean.FALSE);
         CSMQBean.logger.info(userBean.getCaller() + " currentUser: " + nMQWizardBean.getCurrentUser());
         CSMQBean.logger.info(userBean.getCaller() + " killSwitch: " + CSMQBean.KILL_SWITCH_OFF);
         CSMQBean.logger.info(userBean.getCaller() + " showNarrowScpOnly: " + getParamNarrowScopeOnly());
@@ -135,38 +139,28 @@ public class WhodSourceTermSearchBean extends HierarchyAccessor{
         CSMQBean.logger.info(userBean.getCaller() + " pState: " + CSMQBean.WILDCARD);
         CSMQBean.logger.info(userBean.getCaller() + " pUserRole: " + "MQM");
         CSMQBean.logger.info(userBean.getCaller() + " levelName: " + getParamLevel());
-        
         vo.executeQuery();
-        
-        
-        
-        
-        nMQSourceTermSearchUIBean = (WhodSourceTermSearchUIBean)ADFContext.getCurrent().getRequestScope().get("WhodSourceTermSearchUIBean");
-        
+        nMQSourceTermSearchUIBean =
+                (WhodSourceTermSearchUIBean)ADFContext.getCurrent().getRequestScope().get("WhodSourceTermSearchUIBean");
         AdfFacesContext.getCurrentInstance().addPartialTarget(nMQSourceTermSearchUIBean.getControlResultsTable());
         AdfFacesContext.getCurrentInstance().partialUpdateNotify(nMQSourceTermSearchUIBean.getControlResultsTable());
-
-        
     }
-    
-    
-    
+
+
     public void doMultiSearch(ActionEvent actionEvent) {
-        
         paramScope = "-1";
-         
         CSMQBean.logger.info(userBean.getCaller() + " *** PRFORMING SEARCH ***");
-        CSMQBean.logger.info(userBean.getCaller() + " Iterator: HierarchySourceTermSearchVO1Iterator");
+        CSMQBean.logger.info(userBean.getCaller() + " Iterator: WhodHierarchySourceTermSearchVO1Iterator");
         BindingContext bc = BindingContext.getCurrent();
         DCBindingContainer binding = (DCBindingContainer)bc.getCurrentBindingsEntry();
-        DCIteratorBinding dciterb = (DCIteratorBinding)binding.get("HierarchySourceTermSearchVO1Iterator");
+        DCIteratorBinding dciterb = (DCIteratorBinding)binding.get("WhodHierarchySourceTermSearchVO1Iterator");
         ViewObject vo = dciterb.getViewObject();
-        
+
         vo.setNamedWhereClauseParam("startDate", "");
         vo.setNamedWhereClauseParam("endDate", "");
         String paramTermVal = getParamTerm();
-        if (null != paramTermVal && !paramTermVal.isEmpty()){
-           paramTermVal = paramTermVal.replace("'","\''");
+        if (null != paramTermVal && !paramTermVal.isEmpty()) {
+            paramTermVal = paramTermVal.replace("'", "\''");
         }
         vo.setNamedWhereClauseParam("term", paramTermVal);
         vo.setNamedWhereClauseParam("activityStatus", "ALL");
@@ -178,7 +172,7 @@ public class WhodSourceTermSearchBean extends HierarchyAccessor{
         vo.setNamedWhereClauseParam("MQCode", CSMQBean.WILDCARD);
         vo.setNamedWhereClauseParam("MQCriticalEvent", CSMQBean.WILDCARD);
         vo.setNamedWhereClauseParam("uniqueIDsOnly", CSMQBean.TRUE);
-        vo.setNamedWhereClauseParam("filterForUser",  CSMQBean.FALSE);
+        vo.setNamedWhereClauseParam("filterForUser", CSMQBean.FALSE);
         vo.setNamedWhereClauseParam("currentUser", nMQWizardBean.getCurrentUser());
         vo.setNamedWhereClauseParam("killSwitch", CSMQBean.KILL_SWITCH_OFF);
         vo.setNamedWhereClauseParam("showNarrowScpOnly", getParamNarrowScopeOnly());
@@ -186,8 +180,6 @@ public class WhodSourceTermSearchBean extends HierarchyAccessor{
         vo.setNamedWhereClauseParam("pState", CSMQBean.WILDCARD);
         vo.setNamedWhereClauseParam("pUserRole", userBean.getUserRole());
         vo.setNamedWhereClauseParam("levelName", getParamLevel());
-        
-        
         CSMQBean.logger.info(userBean.getCaller() + " startDate: " + "");
         CSMQBean.logger.info(userBean.getCaller() + " endDate: " + "");
         CSMQBean.logger.info(userBean.getCaller() + " term: " + paramTermVal);
@@ -200,7 +192,7 @@ public class WhodSourceTermSearchBean extends HierarchyAccessor{
         CSMQBean.logger.info(userBean.getCaller() + " MQCode: " + CSMQBean.WILDCARD);
         CSMQBean.logger.info(userBean.getCaller() + " MQCriticalEvent: " + "%");
         CSMQBean.logger.info(userBean.getCaller() + " uniqueIDsOnly: " + CSMQBean.TRUE);
-        CSMQBean.logger.info(userBean.getCaller() + " filterForUser: " +  CSMQBean.FALSE);
+        CSMQBean.logger.info(userBean.getCaller() + " filterForUser: " + CSMQBean.FALSE);
         CSMQBean.logger.info(userBean.getCaller() + " currentUser: " + nMQWizardBean.getCurrentUser());
         CSMQBean.logger.info(userBean.getCaller() + " killSwitch: " + CSMQBean.KILL_SWITCH_OFF);
         CSMQBean.logger.info(userBean.getCaller() + " showNarrowScpOnly: " + getParamNarrowScopeOnly());
@@ -208,329 +200,323 @@ public class WhodSourceTermSearchBean extends HierarchyAccessor{
         CSMQBean.logger.info(userBean.getCaller() + " pState: " + CSMQBean.WILDCARD);
         CSMQBean.logger.info(userBean.getCaller() + " pUserRole: " + userBean.getUserRole());
         CSMQBean.logger.info(userBean.getCaller() + " levelName: " + getParamLevel());
-        
         vo.executeQuery();
-        
-        
-        WhodHierarchySearchResultsBean hierarchySearchResultsBean = (WhodHierarchySearchResultsBean)ADFContext.getCurrent().getPageFlowScope().get("WhodHierarchySearchResultsBean");
+        WhodHierarchySearchResultsBean hierarchySearchResultsBean =
+            (WhodHierarchySearchResultsBean)ADFContext.getCurrent().getPageFlowScope().get("WhodHierarchySearchResultsBean");
         hierarchySearchResultsBean.init();
-        
-        
         AdfFacesContext.getCurrentInstance().addPartialTarget(controlMultiResultsTable);
         AdfFacesContext.getCurrentInstance().partialUpdateNotify(controlMultiResultsTable);
-
-        
     }
-    
-    
-    
-    
-    public WhodSourceTermSearchBean () {
-        nMQWizardBean = (WhodWizardBean) AdfFacesContext.getCurrentInstance().getPageFlowScope().get("WhodWizardBean");
-        }
+
+
+    public WhodSourceTermSearchBean() {
+        nMQWizardBean = (WhodWizardBean)AdfFacesContext.getCurrentInstance().getPageFlowScope().get("WhodWizardBean");
+    }
 
 
     // PARAMS
 
     public String getParamDictionaryType() {
-       /*  try {
+        /*  try {
             nMQSourceTermSearchUIBean = (NMQSourceTermSearchUIBean)ADFContext.getCurrent().getRequestScope().get("NMQSourceTermSearchUIBean");
             this.paramDictionaryType = nMQSourceTermSearchUIBean.getControlDictionaryType().getValue().toString();
-            } 
+            }
         catch (Exception e) {} */
-       this.paramDictionaryType = getControlDictionaryType().getValue().toString();
+        this.paramDictionaryType = getControlDictionaryType().getValue().toString();
         return paramDictionaryType;
     }
 
     public String getParamDictionary() {
-       
-       try {
-            
-            if (getParamDictionaryType().equals("BASE")) this.paramDictionary = nMQWizardBean.getCurrentBaseDictionaryShortName();
-            else this.paramDictionary = nMQWizardBean.getCurrentFilterDictionaryShortName();
-    
-            //this.paramDictionary = this.controlDictionary.getValue().toString();
-        } catch (Exception e) {}
+        try {
+            if (getParamDictionaryType().equals("BASE"))
+                this.paramDictionary = nMQWizardBean.getCurrentBaseDictionaryShortName();
+            else
+                this.paramDictionary = nMQWizardBean.getCurrentFilterDictionaryShortName();
+            //TODO - Remove hardcode and validate above logic
+            this.paramDictionary = "UMCWHO2"; //"UMCSDG2";
+        } catch (Exception e) {
+        }
         return paramDictionary;
     }
 
     public String getParamLevel() {
         try {
-            nMQSourceTermSearchUIBean = (WhodSourceTermSearchUIBean)ADFContext.getCurrent().getRequestScope().get("WhodSourceTermSearchUIBean");
+            nMQSourceTermSearchUIBean =
+                    (WhodSourceTermSearchUIBean)ADFContext.getCurrent().getRequestScope().get("WhodSourceTermSearchUIBean");
             this.paramLevel = getControlLevel().getValue().toString();
-        } catch (Exception e) {}
+        } catch (Exception e) {
+        }
         return paramLevel;
     }
 
     public String getParamReleaseGroup() {
         try {
-            nMQSourceTermSearchUIBean = (WhodSourceTermSearchUIBean)ADFContext.getCurrent().getRequestScope().get("WhodSourceTermSearchUIBean");
+            nMQSourceTermSearchUIBean =
+                    (WhodSourceTermSearchUIBean)ADFContext.getCurrent().getRequestScope().get("WhodSourceTermSearchUIBean");
             if (nMQSourceTermSearchUIBean.getControlReleaseGroup() != null) {
                 this.paramReleaseGroup = nMQSourceTermSearchUIBean.getControlReleaseGroup().getValue().toString();
-                }
-            else {  // this is an overload to use the bean from the impact screen
+            } else { // this is an overload to use the bean from the impact screen
                 CSMQBean applicationBean = (CSMQBean)ADFContext.getCurrent().getApplicationScope().get("CSMQBean");
                 this.paramReleaseGroup = applicationBean.getDefaultDraftReleaseGroup();
             }
-            
-        } catch (Exception e) {}
+
+        } catch (Exception e) {
+        }
         return paramReleaseGroup;
     }
 
     public String getParamTerm() {
         paramTerm = CSMQBean.WILDCARD;
-        nMQSourceTermSearchUIBean = (WhodSourceTermSearchUIBean)ADFContext.getCurrent().getRequestScope().get("WhodSourceTermSearchUIBean");
-        if (nMQSourceTermSearchUIBean != null && nMQSourceTermSearchUIBean.getControlTerm() != null && nMQSourceTermSearchUIBean.getControlTerm().getValue() != null && !nMQSourceTermSearchUIBean.getControlTerm().getValue().toString().equalsIgnoreCase("null") && nMQSourceTermSearchUIBean.getControlTerm().getValue().toString().length() > 0)
+        nMQSourceTermSearchUIBean =
+                (WhodSourceTermSearchUIBean)ADFContext.getCurrent().getRequestScope().get("WhodSourceTermSearchUIBean");
+        if (nMQSourceTermSearchUIBean != null && nMQSourceTermSearchUIBean.getControlTerm() != null &&
+            nMQSourceTermSearchUIBean.getControlTerm().getValue() != null &&
+            !nMQSourceTermSearchUIBean.getControlTerm().getValue().toString().equalsIgnoreCase("null") &&
+            nMQSourceTermSearchUIBean.getControlTerm().getValue().toString().length() > 0)
             paramTerm = nMQSourceTermSearchUIBean.getControlTerm().getValue().toString();
         return paramTerm;
     }
 
 
     public void rowChanged(SelectionEvent selectionEvent) {
-        
+
         // SEE WHICH OF THE 3 SOURCES IT IS
-        if (selectionEvent.getSource().toString().indexOf("hResults") > 0) this.historicSearch = true;
-        else if (selectionEvent.getSource().toString().indexOf("rResults") > 0) this.addRelationsSearch = true;
-        else if (selectionEvent.getSource().toString().indexOf("t5") > 0) this.multiSearch = true;
-        else this.impactSearch = true;
+        if (selectionEvent.getSource().toString().indexOf("hResults") > 0)
+            this.historicSearch = true;
+        else if (selectionEvent.getSource().toString().indexOf("rResults") > 0)
+            this.addRelationsSearch = true;
+        else if (selectionEvent.getSource().toString().indexOf("t5") > 0)
+            this.multiSearch = true;
+        else
+            this.impactSearch = true;
 
         CSMQBean.logger.info(userBean.getCaller() + " ***** ROW CHANGE ****");
-        
+
         RichTable sourceTable = (RichTable)selectionEvent.getSource();
         RowKeySet selectedEmps = sourceTable.getSelectedRowKeys();
         Iterator selectedEmpIter = selectedEmps.iterator();
         DCBindingContainer bindings = (DCBindingContainer)BindingContext.getCurrent().getCurrentBindingsEntry();
         DCIteratorBinding empIter = bindings.findIteratorBinding("HierarchySourceTermSearchVO1Iterator");
         RowSetIterator empRSIter = empIter.getRowSetIterator();
-        
+
         while (selectedEmpIter.hasNext()) {
             Key key = (Key)((List)selectedEmpIter.next()).get(0);
             Row currentRow = empRSIter.getRow(key); // current row
             System.out.println(currentRow.getAttribute("ContentId"));
-            
+
             this.currentDictId = Utils.getAsString(currentRow, "ContentId");
             this.hasScope = Utils.getAsBoolean(currentRow, "Mqscp");
 
             CSMQBean.logger.info(userBean.getCaller() + " paramReleaseGroup: " + paramReleaseGroup);
             CSMQBean.logger.info(userBean.getCaller() + " currentDictId: " + currentDictId);
-            }
-        
-            sourceTable.getSelectedRowKeys().clear();  // clear the selection - if there is only one, then the user can't select it & fire the event
+        }
+
+        sourceTable.getSelectedRowKeys().clear(); // clear the selection - if there is only one, then the user can't select it & fire the event
         //if (!impactSearch) { //close it if its not an impact search - this MAY need to be changed for the other 2 types
-            //sourceTable.getSelectedRowKeys().clear();  // clear the selection - if there is only one, then the user can't select it & fire the event
-       //     if (nMQSourceTermSearchUIBean != null && nMQSourceTermSearchUIBean.getSearchPopUp() != null)
+        //sourceTable.getSelectedRowKeys().clear();  // clear the selection - if there is only one, then the user can't select it & fire the event
+        //     if (nMQSourceTermSearchUIBean != null && nMQSourceTermSearchUIBean.getSearchPopUp() != null)
         //        nMQSourceTermSearchUIBean.getSearchPopUp().cancel();
-      //      }
+        //      }
 
         refreshTree();
-        
-        }
-    
+
+    }
+
     public void multiSelectRowChanged(SelectionEvent selectionEvent) {
-        
-            //RichTreeTable sourceTable = (RichTreeTable)selectionEvent.getSource();
-            RichTreeTable sourceTable = controlMultiResultsTable;
-            //clearKeys (targetTree);
-            
-            GenericTreeNode newRootNode = null;
 
-            //RichTreeTable tree = targetTree;
-            RowKeySet droppedValue = sourceTable.getSelectedRowKeys();
+        //RichTreeTable sourceTable = (RichTreeTable)selectionEvent.getSource();
+        RichTreeTable sourceTable = controlMultiResultsTable;
+        //clearKeys (targetTree);
 
-            Object[] keys = droppedValue.toArray();
-            
-            RowKeySet selectedRowKeys = sourceTable.getSelectedRowKeys();
-              
-              //Store original rowKey
-              Object oldRowKey = sourceTable.getRowKey();
-              try{ 
+        GenericTreeNode newRootNode = null;
 
-                if (selectedRowKeys != null) {
-                  Iterator iter = selectedRowKeys.iterator();
-                  if (iter != null && iter.hasNext()) {
-                  Object rowKey = iter.next();
-                  sourceTable.setRowKey(rowKey); //stamp row
-                  GenericTreeNode rowData =
-                    (GenericTreeNode)sourceTable.getRowData();
-                  
-                      this.currentDictId = rowData.getDictContentId();
-                      this.hasScope = rowData.isHasScope();
-                  
-                  
-                  System.out.println(rowData);
-                  }
+        //RichTreeTable tree = targetTree;
+        RowKeySet droppedValue = sourceTable.getSelectedRowKeys();
+
+        Object[] keys = droppedValue.toArray();
+
+        RowKeySet selectedRowKeys = sourceTable.getSelectedRowKeys();
+
+        //Store original rowKey
+        Object oldRowKey = sourceTable.getRowKey();
+        try {
+
+            if (selectedRowKeys != null) {
+                Iterator iter = selectedRowKeys.iterator();
+                if (iter != null && iter.hasNext()) {
+                    Object rowKey = iter.next();
+                    sourceTable.setRowKey(rowKey); //stamp row
+                    GenericTreeNode rowData = (GenericTreeNode)sourceTable.getRowData();
+
+                    this.currentDictId = rowData.getDictContentId();
+                    this.hasScope = rowData.isHasScope();
+
+
+                    System.out.println(rowData);
                 }
+            }
 
-              }finally{
+        } finally {
 
-                //Restore the original rowKey
-                sourceTable.setRowKey(oldRowKey);
+            //Restore the original rowKey
+            sourceTable.setRowKey(oldRowKey);
 
-              }
-            
-          
-        
-        
-        
-        
-        
-        
-        
-        
+        }
+
+
         this.multiSearch = true;
-       
+
 
         CSMQBean.logger.info(userBean.getCaller() + " ***** ROW CHANGE ****");
-        
+
         //RichTreeTable sourceTable = (RichTreeTable)selectionEvent.getSource();
         //RowKeySet selectedEmps = sourceTable.getSelectedRowKeys();
         //Iterator selectedEmpIter = selectedEmps.iterator();
         //DCBindingContainer bindings = (DCBindingContainer)BindingContext.getCurrent().getCurrentBindingsEntry();
         //DCIteratorBinding empIter = bindings.findIteratorBinding("HierarchySourceTermSearchVO1Iterator");
         //RowSetIterator empRSIter = empIter.getRowSetIterator();
-        
+
         //while (selectedEmpIter.hasNext()) {
-            //Key key = (Key)((List)selectedEmpIter.next()).get(0);
-            //Row currentRow = empRSIter.getRow(key); // current row
-           // System.out.println(currentRow.getAttribute("ContentId"));
-            
-           //GenericTreeNode newRootNode = null;
+        //Key key = (Key)((List)selectedEmpIter.next()).get(0);
+        //Row currentRow = empRSIter.getRow(key); // current row
+        // System.out.println(currentRow.getAttribute("ContentId"));
+
+        //GenericTreeNode newRootNode = null;
 
 
+        //RowKeySet rks = sourceTable.getSelectedRowKeys();
+        //Iterator rksIterator = rks.iterator();
+        //List firstSet = (List)rks.iterator().next();
 
-            //RowKeySet rks = sourceTable.getSelectedRowKeys();
-            //Iterator rksIterator = rks.iterator();
-            //List firstSet = (List)rks.iterator().next();
 
-             
-                 
         //}
-    
-            CSMQBean.logger.info(userBean.getCaller() + " paramReleaseGroup: " + paramReleaseGroup);
-            CSMQBean.logger.info(userBean.getCaller() + " currentDictId: " + currentDictId);
-            
-        
-            //sourceTable.getSelectedRowKeys().clear();  // clear the selection - if there is only one, then the user can't select it & fire the event
+
+        CSMQBean.logger.info(userBean.getCaller() + " paramReleaseGroup: " + paramReleaseGroup);
+        CSMQBean.logger.info(userBean.getCaller() + " currentDictId: " + currentDictId);
+
+
+        //sourceTable.getSelectedRowKeys().clear();  // clear the selection - if there is only one, then the user can't select it & fire the event
         //if (!impactSearch) { //close it if its not an impact search - this MAY need to be changed for the other 2 types
-            //sourceTable.getSelectedRowKeys().clear();  // clear the selection - if there is only one, then the user can't select it & fire the event
-       //     if (nMQSourceTermSearchUIBean != null && nMQSourceTermSearchUIBean.getSearchPopUp() != null)
+        //sourceTable.getSelectedRowKeys().clear();  // clear the selection - if there is only one, then the user can't select it & fire the event
+        //     if (nMQSourceTermSearchUIBean != null && nMQSourceTermSearchUIBean.getSearchPopUp() != null)
         //        nMQSourceTermSearchUIBean.getSearchPopUp().cancel();
-      //      }
+        //      }
 
         refreshTree();
-        
-        }
-    
-    
-    
 
-    public void refreshTree () {
+    }
+
+
+    public void refreshTree() {
         CSMQBean.logger.info(userBean.getCaller() + " *** CREATING SOURCE TREE ***");
         CSMQBean.logger.info(userBean.getCaller() + " Iterator: SourceTreeVO1Iterator");
         BindingContext bc = BindingContext.getCurrent();
         DCBindingContainer binding = (DCBindingContainer)bc.getCurrentBindingsEntry();
         DCIteratorBinding dciterb = (DCIteratorBinding)binding.get("SourceTreeVO1Iterator");
         ViewObject sourceTreeVO = dciterb.getViewObject();
-        
+
         sourceTreeVO.setNamedWhereClauseParam("dictShortName", this.paramDictionary);
         sourceTreeVO.setNamedWhereClauseParam("dictContentID", this.currentDictId);
         sourceTreeVO.setNamedWhereClauseParam("scopeFilter", this.getParamScope());
-        sourceTreeVO.setNamedWhereClauseParam("sortKey", this.getParamSort());          
+        sourceTreeVO.setNamedWhereClauseParam("sortKey", this.getParamSort());
         sourceTreeVO.setNamedWhereClauseParam("returnPrimLinkPath", getParamPrimLinkFlag());
         sourceTreeVO.setNamedWhereClauseParam("maxLevels", CSMQBean.getProperty("HIERARCHY_INITIAL_FETCH"));
         sourceTreeVO.setNamedWhereClauseParam("narrowScopeOnly", getParamNarrowScopeOnly());
-        
-        String ignorePredict = getParamDictionaryType().equals("BASE") ? CSMQBean.TRUE : CSMQBean.FALSE; 
+
+        String ignorePredict = getParamDictionaryType().equals("BASE") ? CSMQBean.TRUE : CSMQBean.FALSE;
         sourceTreeVO.setNamedWhereClauseParam("ignorePredict", ignorePredict);
-                
-        
+
+
         CSMQBean.logger.info(userBean.getCaller() + " dictShortName:" + this.paramDictionary);
         CSMQBean.logger.info(userBean.getCaller() + " dictContentID:" + this.currentDictId);
         CSMQBean.logger.info(userBean.getCaller() + " scopeFilter:" + this.getParamScope());
-        CSMQBean.logger.info(userBean.getCaller() + " sortKey:" + this.getParamSort());          
+        CSMQBean.logger.info(userBean.getCaller() + " sortKey:" + this.getParamSort());
         CSMQBean.logger.info(userBean.getCaller() + " returnPrimLinkPath:" + getParamPrimLinkFlag());
         CSMQBean.logger.info(userBean.getCaller() + " maxLevels:" + CSMQBean.getProperty("HIERARCHY_INITIAL_FETCH"));
         CSMQBean.logger.info(userBean.getCaller() + " narrowScopeOnly:" + getParamNarrowScopeOnly());
         CSMQBean.logger.info(userBean.getCaller() + " ignorePredict:" + ignorePredict);
-        
-        
+
+
         sourceTreeVO.executeQuery();
-        
+
         termHierarchySourceBean.init(hasScope);
-        
+
         if (impactSearch) {
-            ImpactAnalysisBean impactAnalysisBean = (ImpactAnalysisBean)ADFContext.getCurrent().getPageFlowScope().get("ImpactAnalysisBean");
+            ImpactAnalysisBean impactAnalysisBean =
+                (ImpactAnalysisBean)ADFContext.getCurrent().getPageFlowScope().get("ImpactAnalysisBean");
             AdfFacesContext.getCurrentInstance().addPartialTarget(impactAnalysisBean.getHierarchySourceTree());
             AdfFacesContext.getCurrentInstance().partialUpdateNotify(impactAnalysisBean.getHierarchySourceTree());
-            }
-         else if (historicSearch) {
-            ImpactSearchBean impactSearchBean = (ImpactSearchBean) AdfFacesContext.getCurrentInstance().getPageFlowScope().get("ImpactSearchBean");
+        } else if (historicSearch) {
+            ImpactSearchBean impactSearchBean =
+                (ImpactSearchBean)AdfFacesContext.getCurrentInstance().getPageFlowScope().get("ImpactSearchBean");
             AdfFacesContext.getCurrentInstance().addPartialTarget(impactSearchBean.getHierarchySourceTree());
-            AdfFacesContext.getCurrentInstance().partialUpdateNotify(impactSearchBean.getHierarchySourceTree()); 
-            }
-        else if (multiSearch) {
+            AdfFacesContext.getCurrentInstance().partialUpdateNotify(impactSearchBean.getHierarchySourceTree());
+        } else if (multiSearch) {
             AdfFacesContext.getCurrentInstance().addPartialTarget(multiHierarchySourceTree);
             AdfFacesContext.getCurrentInstance().partialUpdateNotify(multiHierarchySourceTree);
-            }
-        else {
-            WhodTermHierarchyBean termHierarchyBean = (WhodTermHierarchyBean)AdfFacesContext.getCurrentInstance().getPageFlowScope().get("WhodTermHierarchyBean");
+        } else {
+            WhodTermHierarchyBean termHierarchyBean =
+                (WhodTermHierarchyBean)AdfFacesContext.getCurrentInstance().getPageFlowScope().get("WhodTermHierarchyBean");
             AdfFacesContext.getCurrentInstance().addPartialTarget(termHierarchyBean.getSourceTree());
-            AdfFacesContext.getCurrentInstance().partialUpdateNotify(termHierarchyBean.getSourceTree()); 
-            }
-
+            AdfFacesContext.getCurrentInstance().partialUpdateNotify(termHierarchyBean.getSourceTree());
         }
-    
-    
-     public void clearTree () {
+
+    }
+
+
+    public void clearTree() {
         CSMQBean.logger.info(userBean.getCaller() + " CREATING SOURCE TREE");
         BindingContext bc = BindingContext.getCurrent();
         DCBindingContainer binding = (DCBindingContainer)bc.getCurrentBindingsEntry();
         DCIteratorBinding dciterb = (DCIteratorBinding)binding.get("SourceTreeVO1Iterator");
-        if (dciterb == null) return;  // theres no data here anyway
+        if (dciterb == null)
+            return; // theres no data here anyway
         ViewObject smallTreeVO = dciterb.getViewObject();
-        
-        smallTreeVO.setNamedWhereClauseParam("dictContentID", CSMQBean.HIERARCHY_KILL_SWITCH);       
+
+        smallTreeVO.setNamedWhereClauseParam("dictContentID", CSMQBean.HIERARCHY_KILL_SWITCH);
         smallTreeVO.executeQuery();
-        
+
         termHierarchySourceBean.init(false);
-        }
-    
-    
-    private void clearSearch (SelectionEvent selectionEvent) {
+    }
+
+
+    private void clearSearch(SelectionEvent selectionEvent) {
         try {
             BindingContext bc = BindingContext.getCurrent();
             DCBindingContainer binding = (DCBindingContainer)bc.getCurrentBindingsEntry();
             DCIteratorBinding dciterb = (DCIteratorBinding)binding.get("HierarchySourceTermSearchVO1Iterator");
             ViewObject vo = dciterb.getViewObject();
-    
+
             vo.executeEmptyRowSet();
-            nMQSourceTermSearchUIBean = (WhodSourceTermSearchUIBean)ADFContext.getCurrent().getRequestScope().get("WhodSourceTermSearchUIBean");
-            
-            
-            
-            resolveMethodExpression("bindings.HierarchySourceTermSearch.collectionModel.makeCurrent}",null, new Class[] { SelectionEvent.class },new Object[] { selectionEvent });
-            
-            
+            nMQSourceTermSearchUIBean =
+                    (WhodSourceTermSearchUIBean)ADFContext.getCurrent().getRequestScope().get("WhodSourceTermSearchUIBean");
+
+
+            resolveMethodExpression("bindings.HierarchySourceTermSearch.collectionModel.makeCurrent}", null,
+                                    new Class[] { SelectionEvent.class }, new Object[] { selectionEvent });
+
+
             AdfFacesContext.getCurrentInstance().addPartialTarget(nMQSourceTermSearchUIBean.getControlResultsTable());
             AdfFacesContext.getCurrentInstance().partialUpdateNotify(nMQSourceTermSearchUIBean.getControlResultsTable());
+        } catch (Exception e) {
         }
-        catch (Exception e) {
-            }
     }
 
-    
+
     public void updateRelations(ActionEvent actionEvent) {
-        if (nMQWizardBean.saveDetails(true)) { //save the NMQ first, so that the new relations show up
-            int result = super.processUpdateRelations(termHierarchyBean.getTargetTree(), nMQWizardBean.getCurrentDictContentID());
-            if (result == 0) termHierarchyBean.showStatus(CSMQBean.MQ_SAVED);
-            else termHierarchyBean.showStatus(CSMQBean.MQ_SAVE_ERROR);
-            termHierarchyBean.refresh();
-            }
-        }
+        int result =
+            processUpdateRelations(termHierarchyBean.getTargetTree(), nMQWizardBean.getCurrentDictContentID());
+        if (result == 0)
+            termHierarchyBean.showStatus(CSMQBean.MQ_SAVED);
+        else
+            termHierarchyBean.showStatus(CSMQBean.MQ_SAVE_ERROR);
+        termHierarchyBean.refresh();
+    }
 
     public DnDAction onTreeDrop(DropEvent dropEvent) {
         termHierarchyBean.showStatus(CSMQBean.MQ_MODIFIED);
-        return processDragAndDropEvent(dropEvent, termHierarchyBean.getSourceTree(), termHierarchyBean.getTargetTree(), termHierarchyBean.getTreemodel(), Integer.parseInt(getParamScope()));
+        return processDragAndDropEvent(dropEvent, termHierarchyBean.getSourceTree(), termHierarchyBean.getTargetTree(),
+                                       termHierarchyBean.getTreemodel(), Integer.parseInt(getParamScope()));
     }
 
     public void deleteSelected(DialogEvent dialogEvent) {
@@ -539,9 +525,10 @@ public class WhodSourceTermSearchBean extends HierarchyAccessor{
     }
 
     public void dictionaryTypeChanged(ValueChangeEvent valueChangeEvent) {
-        if (valueChangeEvent == null) return;
+        if (valueChangeEvent == null)
+            return;
         String newDictionary = valueChangeEvent.getNewValue().toString();
-        
+
         if (newDictionary.equals("BASE")) {
             this.paramDictionary = nMQWizardBean.getCurrentBaseDictionaryShortName();
             nMQWizardBean.setIsMedDRA(true);
@@ -549,32 +536,30 @@ public class WhodSourceTermSearchBean extends HierarchyAccessor{
             this.showMedDRASelItems = true;
             this.showNMQSelItems = false;
             this.showSMQSelItems = false;
-            }
-        else {
+        } else {
             this.paramDictionary = nMQWizardBean.getCurrentFilterDictionaryShortName();
             nMQWizardBean.setIsMedDRA(false);
-            
+
             if (nMQWizardBean.isIsNMQ()) {
                 this.showMedDRASelItems = false;
                 this.showNMQSelItems = true;
                 this.showSMQSelItems = true;
                 controlLevel.setValue("MQ1");
-                }
-            else {
+            } else {
                 this.showMedDRASelItems = false;
                 this.showNMQSelItems = false;
                 this.showSMQSelItems = true;
                 controlLevel.setValue("MQ1");
-                }
-    
             }
-        
+
+        }
+
         AdfFacesContext.getCurrentInstance().addPartialTarget(getControlLevel());
         AdfFacesContext.getCurrentInstance().partialUpdateNotify(getControlLevel());
-        
+
         //refreshLevelList(paramDictionary);
     }
-    
+
     //    public void refreshLevelList (String dictionary) {
     //        nMQSourceTermSearchUIBean = (NMQSourceTermSearchUIBean)ADFContext.getCurrent().getRequestScope().get("NMQSourceTermSearchUIBean");
     //        this.paramDictionaryType = getControlDictionaryType().getValue().toString();
@@ -590,41 +575,45 @@ public class WhodSourceTermSearchBean extends HierarchyAccessor{
     //        AdfFacesContext.getCurrentInstance().addPartialTarget(getControlLevel());
     //        AdfFacesContext.getCurrentInstance().partialUpdateNotify(getControlLevel());
     //    }
-    
+
 
     public void dialogClosed(PopupCanceledEvent popupCanceledEvent) {
         clearResults();
-        nMQSourceTermSearchUIBean = (WhodSourceTermSearchUIBean)ADFContext.getCurrent().getRequestScope().get("WhodSourceTermSearchUIBean");
-        if (nMQSourceTermSearchUIBean.getCntrlScope() == null || getControlDictionaryType().getValue() == null) return;
-        if (getControlDictionaryType().getValue().toString().equals("BASE")) 
+        nMQSourceTermSearchUIBean =
+                (WhodSourceTermSearchUIBean)ADFContext.getCurrent().getRequestScope().get("WhodSourceTermSearchUIBean");
+        if (nMQSourceTermSearchUIBean.getCntrlScope() == null || getControlDictionaryType().getValue() == null)
+            return;
+        if (getControlDictionaryType().getValue().toString().equals("BASE"))
             nMQSourceTermSearchUIBean.getCntrlScope().setDisabled(true);
         else
             nMQSourceTermSearchUIBean.getCntrlScope().setDisabled(false);
-        
+
         AdfFacesContext.getCurrentInstance().addPartialTarget(nMQSourceTermSearchUIBean.getCntrlScope());
         AdfFacesContext.getCurrentInstance().partialUpdateNotify(nMQSourceTermSearchUIBean.getCntrlScope());
-        }
+    }
 
 
-    private void clearResults () {
+    private void clearResults() {
         BindingContext bc = BindingContext.getCurrent();
         DCBindingContainer binding = (DCBindingContainer)bc.getCurrentBindingsEntry();
         DCIteratorBinding dciterb = (DCIteratorBinding)binding.get("HierarchySourceTermSearchVO1Iterator");
         ViewObject search = dciterb.getViewObject();
-    
+
         // CLEAR THE RESULTS
         search.setNamedWhereClauseParam("killSwitch", CSMQBean.KILL_SWITCH_ON);
         search.executeQuery();
-        
-        nMQSourceTermSearchUIBean = (WhodSourceTermSearchUIBean)ADFContext.getCurrent().getRequestScope().get("WhodSourceTermSearchUIBean");    
+
+        nMQSourceTermSearchUIBean =
+                (WhodSourceTermSearchUIBean)ADFContext.getCurrent().getRequestScope().get("WhodSourceTermSearchUIBean");
         nMQSourceTermSearchUIBean.getControlResultsTable().clearLocalCache();
-    
+
         AdfFacesContext.getCurrentInstance().addPartialTarget(nMQSourceTermSearchUIBean.getControlResultsTable());
         AdfFacesContext.getCurrentInstance().partialUpdateNotify(nMQSourceTermSearchUIBean.getControlResultsTable());
     }
 
     public void showSecondaryPathChanged(ValueChangeEvent valueChangeEvent) {
-        if (valueChangeEvent.getNewValue().toString().equals(valueChangeEvent.getOldValue())) return; // it didn't change
+        if (valueChangeEvent.getNewValue().toString().equals(valueChangeEvent.getOldValue()))
+            return; // it didn't change
         refreshTree();
     }
 
@@ -633,8 +622,9 @@ public class WhodSourceTermSearchBean extends HierarchyAccessor{
     }
 
     public String getParamScope() {
-        nMQSourceTermSearchUIBean = (WhodSourceTermSearchUIBean)ADFContext.getCurrent().getRequestScope().get("WhodSourceTermSearchUIBean");
-         if (nMQSourceTermSearchUIBean != null && nMQSourceTermSearchUIBean.getCntrlScope() != null)
+        nMQSourceTermSearchUIBean =
+                (WhodSourceTermSearchUIBean)ADFContext.getCurrent().getRequestScope().get("WhodSourceTermSearchUIBean");
+        if (nMQSourceTermSearchUIBean != null && nMQSourceTermSearchUIBean.getCntrlScope() != null)
             this.paramScope = nMQSourceTermSearchUIBean.getCntrlScope().getValue().toString();
         return paramScope;
     }
@@ -644,9 +634,10 @@ public class WhodSourceTermSearchBean extends HierarchyAccessor{
     }
 
     public String getParamSort() {
-        nMQSourceTermSearchUIBean = (WhodSourceTermSearchUIBean)ADFContext.getCurrent().getRequestScope().get("WhodSourceTermSearchUIBean");
+        nMQSourceTermSearchUIBean =
+                (WhodSourceTermSearchUIBean)ADFContext.getCurrent().getRequestScope().get("WhodSourceTermSearchUIBean");
         if (nMQSourceTermSearchUIBean != null && nMQSourceTermSearchUIBean.getCntrlSortList() != null)
-            this.paramSort =  nMQSourceTermSearchUIBean.getCntrlSortList().getValue().toString();
+            this.paramSort = nMQSourceTermSearchUIBean.getCntrlSortList().getValue().toString();
         return paramSort;
     }
 
@@ -667,8 +658,11 @@ public class WhodSourceTermSearchBean extends HierarchyAccessor{
     }
 
     public String getParamNarrowScopeOnly() {
-        if (nMQSourceTermSearchUIBean != null && nMQSourceTermSearchUIBean.getCntrlNarrowScope() != null && nMQSourceTermSearchUIBean.getCntrlNarrowScope().getValue() != null)
-            this.paramNarrowScopeOnly =  nMQSourceTermSearchUIBean.getCntrlNarrowScope().getValue().toString().equals("true") ? CSMQBean.TRUE : CSMQBean.FALSE;
+        if (nMQSourceTermSearchUIBean != null && nMQSourceTermSearchUIBean.getCntrlNarrowScope() != null &&
+            nMQSourceTermSearchUIBean.getCntrlNarrowScope().getValue() != null)
+            this.paramNarrowScopeOnly =
+                    nMQSourceTermSearchUIBean.getCntrlNarrowScope().getValue().toString().equals("true") ?
+                    CSMQBean.TRUE : CSMQBean.FALSE;
         return paramNarrowScopeOnly;
     }
 
@@ -678,57 +672,59 @@ public class WhodSourceTermSearchBean extends HierarchyAccessor{
 
     public String getParamPrimLinkFlag() {
         if (nMQSourceTermSearchUIBean != null && nMQSourceTermSearchUIBean.getCtrlReturnPrimLinkPath() != null)
-        this.paramPrimLinkFlag = nMQSourceTermSearchUIBean.getCtrlReturnPrimLinkPath().getValue().toString().equals("true") ? CSMQBean.TRUE : CSMQBean.FALSE;
+            this.paramPrimLinkFlag =
+                    nMQSourceTermSearchUIBean.getCtrlReturnPrimLinkPath().getValue().toString().equals("true") ?
+                    CSMQBean.TRUE : CSMQBean.FALSE;
         return paramPrimLinkFlag;
     }
 
 
-    
-    
     public void nodeChanged(ValueChangeEvent valueChangeEvent) {
-        
-        
+
+
         /* soc3 = scope
          * soc2 = category
          * ot6 = weight
          */
-        WhodTermHierarchyBean termHierarchyBean = (WhodTermHierarchyBean)AdfFacesContext.getCurrentInstance().getPageFlowScope().get("WhodTermHierarchyBean");
-        
+        WhodTermHierarchyBean termHierarchyBean =
+            (WhodTermHierarchyBean)AdfFacesContext.getCurrentInstance().getPageFlowScope().get("WhodTermHierarchyBean");
+
         Object o = valueChangeEvent;
         RowKeySet rks = termHierarchyBean.getTargetTree().getSelectedRowKeys();
         Iterator rksIterator = rks.iterator();
         List key = (List)rksIterator.next();
-        
+
         int rowKey = Integer.parseInt(key.get(1).toString());
         GenericTreeNode node = (GenericTreeNode)termHierarchyBean.getTargetTree().getRowData(rowKey);
-        
+
         // TEST TO SEE IF IT'S ALREADY BEEN EDITED
         GenericTreeNode oldNode = updates.get(node.getPrikey());
-        if (oldNode != null) node = oldNode;
-        
+        if (oldNode != null)
+            node = oldNode;
+
         // UPDATE THE NODE (EITHER THE OLD OR THE NEW) WITH THE CHANGED VALUES
         if (valueChangeEvent.getSource().toString().indexOf("soc3") > -1)
             node.setFormattedScope(valueChangeEvent.getNewValue().toString());
-        
+
         if (valueChangeEvent.getSource().toString().indexOf("soc2") > -1)
             node.setTermCategory(valueChangeEvent.getNewValue().toString());
-        
+
         if (valueChangeEvent.getSource().toString().indexOf("ot6") > -1)
             node.setTermWeight(valueChangeEvent.getNewValue().toString());
-        
-        if (oldNode == null)  // ADD IT SINCE IT'S NOT THERE ALREADY
+
+        if (oldNode == null) // ADD IT SINCE IT'S NOT THERE ALREADY
             updates.put(node.getPrikey(), node);
-        
+
         termHierarchyBean.showStatus(CSMQBean.MQ_MODIFIED);
     }
 
 
     public void searchPopupLoad(PopupFetchEvent popupFetchEvent) {
-        
-       // init level list
-        
+
+        // init level list
+
         //refreshLevelList(nMQWizardBean.getCurrentFilterDictionaryShortName());
-        
+
         //dictionaryTypeChanged(null);
     }
 
@@ -739,7 +735,7 @@ public class WhodSourceTermSearchBean extends HierarchyAccessor{
     public String getParamExtension() {
         return paramExtension;
     }
-    
+
     public void setControlDictionaryType(RichSelectOneChoice controlDictionaryType) {
         this.controlDictionaryType = controlDictionaryType;
     }
@@ -747,7 +743,7 @@ public class WhodSourceTermSearchBean extends HierarchyAccessor{
     public RichSelectOneChoice getControlDictionaryType() {
         return controlDictionaryType;
     }
-    
+
     public void setControlLevel(RichSelectOneChoice controlLevel) {
         this.controlLevel = controlLevel;
     }
@@ -780,19 +776,19 @@ public class WhodSourceTermSearchBean extends HierarchyAccessor{
     public boolean isShowSMQSelItems() {
         return showSMQSelItems;
     }
-    
-    
+
+
     public DnDAction onMultiTreeDrop(DropEvent dropEvent) {
         RichTreeTable source = multiHierarchySourceTree;
-        if (dropEvent.getDragClientId().equals("pt1:t5")) source = controlMultiResultsTable;
-    
+        if (dropEvent.getDragClientId().equals("pt1:t5"))
+            source = controlMultiResultsTable;
+
         termHierarchyBean.showStatus(CSMQBean.MQ_MODIFIED);
         ///  THIS WILL PROBABLY NEED TO BE FIXED TO USE THE OTHER TREES - TES 1/26/2012
-        return processDragAndDropEvent(dropEvent, source, termHierarchyBean.getTargetTree(), termHierarchyBean.getTreemodel(), Integer.parseInt(getParamScope()));
-        }
+        return processDragAndDropEvent(dropEvent, source, termHierarchyBean.getTargetTree(),
+                                       termHierarchyBean.getTreemodel(), Integer.parseInt(getParamScope()));
+    }
 
-
-    
 
     public void setMultiHierarchySourceTree(RichTreeTable multiHierarchySourceTree) {
         this.multiHierarchySourceTree = multiHierarchySourceTree;
@@ -812,5 +808,65 @@ public class WhodSourceTermSearchBean extends HierarchyAccessor{
 
     public void loadHierachy(ActionEvent actionEvent) {
         multiSelectRowChanged(null);
+    }
+
+    public int processUpdateRelations(RichTreeTable tree, String dictContentID) {
+        /*
+        FUNCTION insert_relation_data
+                (pDictContentID        IN NUMBER,
+                 pDictContentRefID     IN NUMBER,
+                 pNamedRelName         IN VARCHAR2  DEFAULT NULL,
+                 pCommentText          IN VARCHAR2  DEFAULT NULL,
+                 pStatus               IN VARCHAR2  DEFAULT NULL,
+                 pPredictRelationID   OUT NUMBER)
+              RETURN VARCHAR2;
+        */
+        String currentDictContentID = dictContentID;
+        String currentPredictGroups = this.defaultDraftGroupName;
+        String currentUser = userBean.getUsername();
+        Object[][] relations = getChildrenForUpdate();
+        String DML[] = { "I", "U", "D" };
+
+        String sql = "{? = call cqt_whod_ui_tms_utils.insert_relation_data(?,?,?,?,?  ,?)}";
+        DBTransaction dBTransaction = DMLUtils.getDBTransaction();
+        String newDictContentCode = "";
+        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "MQ updated successfully.", null);
+        try {
+            CallableStatement cstmt = dBTransaction.createCallableStatement(sql, DBTransaction.DEFAULT);
+            Connection con = cstmt.getConnection();
+            CSMQBean.logger.info(userBean.getCaller() + " ** SAVING RELATIONS");
+            CSMQBean.logger.info(userBean.getCaller() + " currentDictContentID: " + currentDictContentID);
+            CSMQBean.logger.info(userBean.getCaller() + " currentPredictGroups: " + currentPredictGroups);
+            CSMQBean.logger.info(userBean.getCaller() + " currentUser: " + currentUser);
+
+            for (Object[] relation : relations) {
+                if (DML[0].equals(relation[VAL_DML])) {
+                    cstmt.setString(1, currentDictContentID);
+                    cstmt.setString(2, (String)relation[VAL_DICT_CONTENT_ID]);
+                    cstmt.setString(3, currentUser);
+                    cstmt.setString(4, "");
+                    cstmt.setString(5, "");
+                    cstmt.registerOutParameter(5, Types.NVARCHAR);
+                    cstmt.executeUpdate();
+                    newDictContentCode = cstmt.getString(5);
+                }
+            }
+            con.commit();
+            cstmt.close();
+
+            // REMOVE ALL THE PENDING CHANGES - JUST TO BE SAFE
+            inserts.clear();
+            updates.clear();
+            deletes.clear();
+
+        } catch (SQLException e) {
+            String disMsg = "The following error occurred: " + e.getMessage();
+            msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, disMsg, null);
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            e.printStackTrace();
+            return -1;
+        }
+
+        return 0;
     }
 }

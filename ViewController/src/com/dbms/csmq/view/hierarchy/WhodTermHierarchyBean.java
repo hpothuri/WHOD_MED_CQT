@@ -2,6 +2,7 @@ package com.dbms.csmq.view.hierarchy;
 
 
 import com.dbms.csmq.CSMQBean;
+import com.dbms.csmq.view.backing.whod.WhodUtils;
 import com.dbms.csmq.view.backing.whod.WhodWizardBean;
 import com.dbms.util.Utils;
 
@@ -128,9 +129,10 @@ public class WhodTermHierarchyBean extends Hierarchy {
         DCBindingContainer binding = (DCBindingContainer)bc.getCurrentBindingsEntry();
         DCIteratorBinding dciterb = (DCIteratorBinding)binding.get("WHODSmallTreeVO1Iterator");
         rows = dciterb.getRowSetIterator().enumerateRowsInRange();
-        if (!rows.hasMoreElements())
-            return false; // there's no data - bail
-
+        if (!rows.hasMoreElements()) {
+            formRootNodeIfNoData();
+            return true; // there's no data - bail
+        }
         Row row = (Row)rows.nextElement();
         root = new GenericTreeNode();
         root.setIsRoot(true);
@@ -150,6 +152,26 @@ public class WhodTermHierarchyBean extends Hierarchy {
         //clean up the hashmap
         parentNodesByLevel = null;
         return true;
+    }
+
+    private void formRootNodeIfNoData() {
+        WhodWizardBean whodWizardBean = WhodUtils.getWhodWizardBean();
+        root = new GenericTreeNode();
+        root.setIsRoot(true);
+        root.setTerm(whodWizardBean.getCurrentTermName());
+        root.setParent("0");
+        root.setLevelName(whodWizardBean.getCurrentTermLevel());
+        root.setQueryLevel(whodWizardBean.getCurrentTermLevel());
+        //root.setLevel(Utils.getAsNumber(row, "ParentLevel"));
+        root.setDictShortName(whodWizardBean.getActiveDictionary());
+        root.setDictContentId(whodWizardBean.getCurrentDictContentID());
+        root.setDictContentCode(whodWizardBean.getCurrentContentCode());
+        root.setApprovedFlag(whodWizardBean.getCurrentActivationBy());
+        root.setStatus(whodWizardBean.getCurrentStatus());
+        // set it as expanded so that it won't get called again
+        root.setIsExpanded(true);
+        root.setEditable(true);
+        parentNodesByLevel = null;
     }
 
     private GenericTreeNode populateTreeNodes(GenericTreeNode node, Row row) {
@@ -176,11 +198,11 @@ public class WhodTermHierarchyBean extends Hierarchy {
         termNode.setHasScope(this.hasScope);
         termNode.setEditable(this.editable);
         //termNode.setFormattedScope(Utils.getAsString(row, "FormattedScope"));
-        String childLevel = Utils.getAsString(row, "ChildLevel"); 
+        String childLevel = Utils.getAsString(row, "ChildLevel");
         String subLevelRefName = Utils.getAsString(row, "SubLevelRefName");
         String namedRelation = Utils.getAsString(row, "NamedRelation");
-//        CSMQBean.logger.info(userBean.getCaller() + " subLevelRefName: " + subLevelRefName + ";;; childLevel=" +
-//                             childLevel + ";;; namedRelation: " + namedRelation);
+        //        CSMQBean.logger.info(userBean.getCaller() + " subLevelRefName: " + subLevelRefName + ";;; childLevel=" +
+        //                             childLevel + ";;; namedRelation: " + namedRelation);
         if (subLevelRefName != null && subLevelRefName.contains("ATC") || subLevelRefName.contains("PT")) {
             if (namedRelation != null) {
                 if (namedRelation.contains("BROAD")) {
@@ -189,7 +211,7 @@ public class WhodTermHierarchyBean extends Hierarchy {
                     termNode.setFormattedScope("2");
                 } else if (namedRelation.contains("CHILD")) {
                     termNode.setFormattedScope("3");
-                }                
+                }
             }
             termNode.setShowHasChildrenButton(false);
             termNode.setLevelName(subLevelRefName);
@@ -197,8 +219,8 @@ public class WhodTermHierarchyBean extends Hierarchy {
             termNode.setLevelName(childLevel);
         }
 
-//        CSMQBean.logger.info(userBean.getCaller() + " parentNodesByLevel: " + parentNodesByLevel +
-//                             ":; termNode.getParent()=" + termNode.getParent());
+        //        CSMQBean.logger.info(userBean.getCaller() + " parentNodesByLevel: " + parentNodesByLevel +
+        //                             ":; termNode.getParent()=" + termNode.getParent());
         GenericTreeNode parentNode = (GenericTreeNode)parentNodesByLevel.get(termNode.getParent());
         if (parentNode != null) {
             parentNode.getChildren().add(termNode); // add to the parent
@@ -207,7 +229,7 @@ public class WhodTermHierarchyBean extends Hierarchy {
                 termNode.setIsDirectRelation(true); // it's a direct relation
             if (parentNode.isIsRoot())
                 termNode.setDeletable(true); //it's a child of the root - it can be deleted
-//            CSMQBean.logger.info(userBean.getCaller() + " ADDING NODE: " + termNode);
+            //            CSMQBean.logger.info(userBean.getCaller() + " ADDING NODE: " + termNode);
             setDerivedRelations(termNode);
             if (rows.hasMoreElements()) {
                 Row nextRow = (Row)rows.nextElement();

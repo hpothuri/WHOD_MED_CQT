@@ -11,12 +11,12 @@
               RefreshCondition=" #{!adfFacesContext.initialRender}"/-->
         <iterator id="WHODSmallTreeVO1Iterator" Binds="WHODSmallTreeVO1" DataControl="WHODModuleDataControl"
                   RangeSize="1999" RefreshCondition=" #{!adfFacesContext.initialRender}"/>
-        <iterator Binds="SourceTreeVO1" RangeSize="-1" DataControl="HierarchyModuleDataControl"
-                  id="SourceTreeVO1Iterator" RefreshCondition=" #{!adfFacesContext.initialRender}"/>
+        <!--iterator Binds="SourceTreeVO1" RangeSize="-1" DataControl="HierarchyModuleDataControl"
+                  id="SourceTreeVO1Iterator" RefreshCondition=" #{!adfFacesContext.initialRender}"/-->
         <iterator Binds="LevelsByDictionaryVO1" RangeSize="25" DataControl="DictionaryModuleDataControl"
                   id="LevelsByDictionaryVO1Iterator"/>
-        <iterator Binds="HierarchySourceTermSearchVO1" RangeSize="-1" DataControl="SearchModuleDataControl"
-                  id="HierarchySourceTermSearchVO1Iterator"/>
+        <!--iterator Binds="HierarchySourceTermSearchVO1" RangeSize="-1" DataControl="SearchModuleDataControl"
+                  id="HierarchySourceTermSearchVO1Iterator"/-->
         <iterator Binds="LevelsByDictionaryVO1" RangeSize="-1" DataControl="DictionaryModuleDataControl"
                   id="LevelsByDictionaryVO1Iterator1" RefreshCondition=" #{!adfFacesContext.initialRender}"/>
         <iterator Binds="AllLevelsVO1" RangeSize="-1" DataControl="DictionaryModuleDataControl"
@@ -25,6 +25,10 @@
                   id="CurrentDictionaryVO1Iterator" RefreshCondition=" #{!adfFacesContext.initialRender}"/>
         <iterator Binds="LastMVUpdateViewObj1" RangeSize="25" DataControl="ImpactModuleDataControl"
                   id="LastMVUpdateViewObj1Iterator" RefreshCondition=" #{!adfFacesContext.initialRender}"/>
+        <iterator Binds="WhodHierarchySourceTermSearchVO1" RangeSize="10" DataControl="WHODModuleDataControl"
+                  id="WhodHierarchySourceTermSearchVO1Iterator"/>
+        <iterator Binds="WHODSourceTreeVO1" RangeSize="10" DataControl="WHODModuleDataControl"
+                  id="WHODSourceTreeVO1Iterator"/>
     </executables>
     <bindings>
         <!--tree IterBinding="SmallTreeVO1Iterator" id="SmallTreeVO1">
@@ -48,7 +52,7 @@
         </AttrNames>
       </nodeDefinition>
     </tree-->
-        <tree IterBinding="SourceTreeVO1Iterator" id="SourceTreeVO1">
+        <!--tree IterBinding="SourceTreeVO1Iterator" id="SourceTreeVO1">
             <nodeDefinition DefName="com.dbms.csmq.model.hierarchy.SourceTreeVO" Name="SourceTreeVO10">
                 <AttrNames>
                     <Item Value="Prikey"/>
@@ -68,6 +72,35 @@
                     <Item Value="PredictGroupId"/>
                 </AttrNames>
             </nodeDefinition>
+        </tree-->
+        <tree IterBinding="WHODSourceTreeVO1Iterator" id="WHODSourceTreeVO1">
+            <nodeDefinition DefName="com.dbms.csmq.model.WHOD.WHODSmallTreeVO" Name="WHODSourceTreeVO10">
+                <AttrNames>
+                    <Item Value="ParentDictContentId"/>
+                    <Item Value="ApprovedFlag"/>
+                    <Item Value="ChildDictContentCode"/>
+                    <Item Value="ChildDictContentId"/>
+                    <Item Value="ChildExists"/>
+                    <Item Value="ChildLevel"/>
+                    <Item Value="ChildTerm"/>
+                    <Item Value="DictShortName"/>
+                    <Item Value="FormattedScope"/>
+                    <Item Value="NamedRelation"/>
+                    <Item Value="ParentDictContentCode"/>
+                    <Item Value="ParentLevel"/>
+                    <Item Value="ParentTerm"/>
+                    <Item Value="PredictGroupId"/>
+                    <Item Value="PrimLinkFlag"/>
+                    <Item Value="SortOrder"/>
+                    <Item Value="Status"/>
+                    <Item Value="SubLevelRefName"/>
+                    <Item Value="Termcat"/>
+                    <Item Value="Termlvl"/>
+                    <Item Value="TermPath"/>
+                    <Item Value="Termscp"/>
+                    <Item Value="Termweig"/>
+                </AttrNames>
+            </nodeDefinition>
         </tree>
         <list IterBinding="LevelsByDictionaryVO1Iterator" ListOperMode="navigation"
               ListIter="LevelsByDictionaryVO1Iterator" id="LevelsByDictionaryVO1" DTSupportsMRU="true">
@@ -75,7 +108,7 @@
                 <Item Value="Querytypelevel"/>
             </AttrNames>
         </list>
-        <tree IterBinding="HierarchySourceTermSearchVO1Iterator" id="HierarchySourceTermSearchVO1">
+        <!--tree IterBinding="HierarchySourceTermSearchVO1Iterator" id="HierarchySourceTermSearchVO1">
             <nodeDefinition DefName="com.dbms.csmq.model.search.HierarchySourceTermSearchVO"
                             Name="HierarchySourceTermSearchVO10">
                 <AttrNames>
@@ -106,7 +139,7 @@
                     <Item Value="Querylevel"/>
                 </AttrNames>
             </nodeDefinition>
-        </tree>
+        </tree-->
         <attributeValues IterBinding="LastMVUpdateViewObj1Iterator" id="LastUpdate">
             <AttrNames>
                 <Item Value="LastUpdate"/>
@@ -168,5 +201,45 @@
                 </AttrNames>
             </nodeDefinition>
         </tree>
+        <tree IterBinding="WhodHierarchySourceTermSearchVO1Iterator" id="WhodHierarchySourceTermSearchVO1">
+            <nodeDefinition DefName="com.dbms.csmq.model.WHOD.WhodHierarchySourceTermSearchVO"
+                            Name="WhodHierarchySourceTermSearchVO10">
+                <AttrNames>
+                    <Item Value="Rnum"/>
+                    <Item Value="ApprFlag"/>
+                    <Item Value="ContentId"/>
+                    <Item Value="Createdby"/>
+                    <Item Value="CurPendStatus"/>
+                    <Item Value="CutOffDate"/>
+                    <Item Value="Dates"/>
+                    <Item Value="Designee"/>
+                    <Item Value="DictNm"/>
+                    <Item Value="DomainNm"/>
+                    <Item Value="DueDate"/>
+                    <Item Value="Groupname"/>
+                    <Item Value="LevelNm"/>
+                    <Item Value="Mqalgo"/>
+                    <Item Value="Mqaltcode"/>
+                    <Item Value="Mqcode"/>
+                    <Item Value="Mqcrtev"/>
+                    <Item Value="Mqgroup"/>
+                    <Item Value="MqgroupF"/>
+                    <Item Value="Mqlevel"/>
+                    <Item Value="Mqprodct"/>
+                    <Item Value="Mqscp"/>
+                    <Item Value="Mqstatus"/>
+                    <Item Value="Mqterm"/>
+                    <Item Value="Mqtransid"/>
+                    <Item Value="Prikey"/>
+                    <Item Value="Querylevel"/>
+                    <Item Value="ReasonForApproval"/>
+                    <Item Value="ReasonForRequest"/>
+                    <Item Value="State"/>
+                    <Item Value="TermSubtype"/>
+                    <Item Value="Version"/>
+                </AttrNames>
+            </nodeDefinition>
+        </tree>
+        
     </bindings>
 </pageDefinition>

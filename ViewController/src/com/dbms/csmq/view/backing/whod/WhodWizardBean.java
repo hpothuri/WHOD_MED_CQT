@@ -628,9 +628,9 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
         currentTermName = tempName;
 
         //UPDATE THE RELATIONS TREE WITH THE NEW DICT ID
-        if (mode !=
-            CSMQBean.MODE_IMPACT_ASSESSMENT) // we don't need to refresh the tree when making impact changes since it's only for SMQs
-            updateRelations();
+//        if (mode !=
+//            CSMQBean.MODE_IMPACT_ASSESSMENT) // we don't need to refresh the tree when making impact changes since it's only for SMQs
+//            updateRelations();
 
         return true;
     }

@@ -16,8 +16,6 @@
                   id="WHODProductList1Iterator"/>
         <iterator Binds="WHODGroupList1" RangeSize="25" DataControl="WHODMQGroupsDataControl"
                   id="WHODGroupList1Iterator"/>
-        <iterator id="WHODSmallTreeVO1Iterator" Binds="WHODSmallTreeVO1" DataControl="WHODModuleDataControl"
-                  RangeSize="-1" Refresh="renderModel" RefreshCondition="#{!adfFacesContext.initialRender}"/>
     </executables>
     <bindings>
         <!--tree IterBinding="SmallTreeVO1Iterator" id="SmallTreeVO1">

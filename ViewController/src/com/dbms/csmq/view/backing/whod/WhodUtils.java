@@ -1153,8 +1153,8 @@ new FacesMessage(FacesMessage.SEVERITY_INFO, "Impacted list refreshed for dictio
         CSMQBean.logger.info("saveNotesAndDescInfo(): dictContentId=" + dictContentId + ";; extension=" + extension +
                              ":; infoNotes=" + infoNotes + ":; infoDesc=" + infoDesc + ";;");
         Hashtable retVal = new Hashtable(); // array to return the new state and message
-        int notesPredictInfoHdrID = saveNoteInfo(dictContentId, extension + "NOTE", infoNotes);
-        int descPredictInfoHdrID = saveNoteInfo(dictContentId, extension + "DESC", infoDesc);
+        int notesPredictInfoHdrID = saveNoteInfo(dictContentId, "SDGNOTE", infoNotes);
+        int descPredictInfoHdrID = saveNoteInfo(dictContentId, "SDGDESC", infoDesc);
         retVal.put("NOTES_PRED_ID", notesPredictInfoHdrID);
         retVal.put("DESC_PRED_ID", descPredictInfoHdrID);
         return retVal;

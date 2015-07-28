@@ -133,9 +133,7 @@ public abstract class HierarchyAccessor extends Hierarchy {
         return retVal;
     }
 
-    public DnDAction processDragAndDropEvent (DropEvent dropEvent, RichTreeTable sourceTree, RichTreeTable targetTree, TreeModel targetTreeModel, int rootTermScope) {
-        
-        
+    public DnDAction processDragAndDropEvent (DropEvent dropEvent, RichTreeTable sourceTree, RichTreeTable targetTree, TreeModel targetTreeModel, int rootTermScope) {       
         CSMQBean.logger.info(userBean.getCaller() + " -- DRAG AND DROP INITIATED --");
         
         /*
@@ -155,9 +153,7 @@ public abstract class HierarchyAccessor extends Hierarchy {
         ArrayList targetRootKey = new ArrayList();
         targetRootKey.add(0);
         targetTree.setRowKey(targetRootKey);
-        int targetIndex = 0;
-        
-     
+        int targetIndex = 0;         
         
         GenericTreeNode targetNode = (GenericTreeNode)targetTree.getRowData(targetIndex);
         CSMQBean.logger.info(userBean.getCaller() + " TARGET:" + targetNode);
@@ -228,8 +224,7 @@ public abstract class HierarchyAccessor extends Hierarchy {
                     c4 = (GenericTreeNode)c3.getChildren().get(c4key);
                     sourceNode = c4;
                     break;
-                }
-           
+                }           
             // set the scope to 0
             sourceNode.setTermScope(new oracle.jbo.domain.Number(rootTermScope));
             
@@ -253,11 +248,8 @@ public abstract class HierarchyAccessor extends Hierarchy {
                 targetTree.setDisclosedRowKeys(rks);
                 AdfFacesContext.getCurrentInstance().addPartialTarget(targetTree); 
                 AdfFacesContext.getCurrentInstance().partialUpdateNotify(targetTree);
-                }
-        
-            inserts.put(sourceNode.getPrikey(), sourceNode);
-        
-        
+                }       
+            inserts.put(sourceNode.getPrikey(), sourceNode);          
         }
         clearKeys(sourceTree);
         clearKeys(targetTree);
@@ -366,7 +358,7 @@ public abstract class HierarchyAccessor extends Hierarchy {
         }
 
     
-        private Object [][] getChildrenForUpdate () {
+        public Object [][] getChildrenForUpdate () {
             
             Hashtable [] changes = {inserts, updates, deletes};
             String [] DML = {"I", "U", "D"};
