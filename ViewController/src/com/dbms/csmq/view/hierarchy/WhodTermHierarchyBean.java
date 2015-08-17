@@ -199,7 +199,7 @@ public class WhodTermHierarchyBean extends Hierarchy {
         termNode.setEditable(this.editable);
         //termNode.setFormattedScope(Utils.getAsString(row, "FormattedScope"));
         String childLevel = Utils.getAsString(row, "ChildLevel");
-        String subLevelRefName = Utils.getAsString(row, "SubLevelRefName");
+        String subLevelRefName = Utils.getAsString(row, "LevelRefName");
         String namedRelation = Utils.getAsString(row, "NamedRelation");
         //        CSMQBean.logger.info(userBean.getCaller() + " subLevelRefName: " + subLevelRefName + ";;; childLevel=" +
         //                             childLevel + ";;; namedRelation: " + namedRelation);

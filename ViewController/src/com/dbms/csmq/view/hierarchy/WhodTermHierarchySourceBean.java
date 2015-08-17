@@ -156,7 +156,7 @@ public class WhodTermHierarchySourceBean extends Hierarchy {
                     termNode.setFormattedScope(Utils.getAsString(row, "FormattedScope"));
             }
 
-            String subLevelRefName = Utils.getAsString(row, "SubLevelRefName");
+            String subLevelRefName = Utils.getAsString(row, "LevelRefName");
             String namedRelation = Utils.getAsString(row, "NamedRelation");
             String childLevel = Utils.getAsString(row, "ChildLevel");
             if (subLevelRefName != null && subLevelRefName.contains("ATC") || subLevelRefName.contains("PT")) {

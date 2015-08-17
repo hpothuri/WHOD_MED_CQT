@@ -57,12 +57,12 @@
         ''  SORT_ORDER,
         'Y' CHILD_EXISTS,
         NAMED_RELATION,
-        SUB_LEVEL_REF_NAME
+        LEVEL_REF_NAME
 FROM TABLE (CQT_WHOD_UI_TMS_UTILS.QUERY_RELATION_DATA_BELOW(
           pDictContentId     => :dictContentID,
           pReleaseStatus     => :dReleaseStatus,
           pReleaseTypeLIST   => :dReleaseTypeLIST))
-ORDER BY SUB_LEVEL_REF_NAME desc, child_term asc]]></SQLQuery>
+ORDER BY LEVEL_REF_NAME desc, child_term asc]]></SQLQuery>
   <ViewAttribute
     Name="ParentDictContentId"
     IsUpdateable="false"
@@ -357,15 +357,15 @@ ORDER BY SUB_LEVEL_REF_NAME desc, child_term asc]]></SQLQuery>
     </DesignTime>
   </ViewAttribute>
   <ViewAttribute
-    Name="SubLevelRefName"
+    Name="LevelRefName"
     IsUpdateable="false"
     IsPersistent="false"
     PrecisionRule="true"
     Precision="40"
     Type="java.lang.String"
     ColumnType="VARCHAR2"
-    AliasName="SUB_LEVEL_REF_NAME"
-    Expression="SUB_LEVEL_REF_NAME"
+    AliasName="LEVEL_REF_NAME"
+    Expression="LEVEL_REF_NAME"
     SQLType="VARCHAR">
     <DesignTime>
       <Attr Name="_DisplaySize" Value="40"/>

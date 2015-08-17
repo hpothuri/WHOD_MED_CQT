@@ -20,7 +20,7 @@
     </SchemaBasedProperties>
   </Properties>
   <SQLQuery><![CDATA[SELECT long_value, SHORT_VALUE
-FROM cqt_whod_sub_levels_lov
+FROM CQT_WHOD_EXTENSIONS_LOV
 WHERE active_flag = 'Y']]></SQLQuery>
   <ViewAttribute
     Name="LongValue"

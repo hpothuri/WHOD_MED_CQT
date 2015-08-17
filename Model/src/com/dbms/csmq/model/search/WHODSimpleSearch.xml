@@ -99,12 +99,17 @@
     Kind="where"
     Type="java.lang.String"
     DefaultValue="%"/>
+  <Variable
+    Name="dDesigneeLIST"
+    Kind="where"
+    Type="java.lang.String"
+    DefaultValue="%"/>
   <SQLQuery><![CDATA[SELECT * 
 FROM TABLE(CQT_WHOD_UI_TMS_UTILS.QUERY_CONTENT_DATA
         (pReleaseStatus       => :dReleaseStatus,
          pReleaseTypeLIST     => :dReleaseTypeLIST,
          pLevelName           => :levelName,
-         pSubLevelName        => :subLevelName,
+         pLevelExtension      => :subLevelName,
          pTermSubtype         => :dTermSubType,
          pApprovedFlag        => :approvedFlag,
          pCreatedBy           => :createdBy,
@@ -117,7 +122,8 @@ FROM TABLE(CQT_WHOD_UI_TMS_UTILS.QUERY_CONTENT_DATA
          pDGActiveStatus      => :dGActiveStatus,
          pStateLIST           => :dStateLIST,
          pDGProductLIST       => :dGProductLIST,
-         pDGGroupLIST         => :dGGroupLIST))]]></SQLQuery>
+         pDGGroupLIST         => :dGGroupLIST,
+         pDesigneeLIST        => :dDesigneeLIST))]]></SQLQuery>
   <ViewAttribute
     Name="ReleaseStatus"
     IsUpdateable="false"
@@ -209,6 +215,21 @@ FROM TABLE(CQT_WHOD_UI_TMS_UTILS.QUERY_CONTENT_DATA
     </DesignTime>
   </ViewAttribute>
   <ViewAttribute
+    Name="LevelGroupName"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LEVEL_GROUP_NAME"
+    Expression="LEVEL_GROUP_NAME"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="10"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
     Name="LevelName"
     IsUpdateable="false"
     IsPersistent="false"
@@ -224,15 +245,15 @@ FROM TABLE(CQT_WHOD_UI_TMS_UTILS.QUERY_CONTENT_DATA
     </DesignTime>
   </ViewAttribute>
   <ViewAttribute
-    Name="SubLevelName"
+    Name="LevelExtension"
     IsUpdateable="false"
     IsPersistent="false"
     PrecisionRule="true"
     Precision="10"
     Type="java.lang.String"
     ColumnType="VARCHAR2"
-    AliasName="SUB_LEVEL_NAME"
-    Expression="SUB_LEVEL_NAME"
+    AliasName="LEVEL_EXTENSION"
+    Expression="LEVEL_EXTENSION"
     SQLType="VARCHAR">
     <DesignTime>
       <Attr Name="_DisplaySize" Value="10"/>
@@ -618,6 +639,35 @@ FROM TABLE(CQT_WHOD_UI_TMS_UTILS.QUERY_CONTENT_DATA
     SQLType="NUMERIC">
     <DesignTime>
       <Attr Name="_DisplaySize" Value="22"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="TermScopeId"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="oracle.jbo.domain.Number"
+    ColumnType="NUMBER"
+    AliasName="TERM_SCOPE_ID"
+    Expression="TERM_SCOPE_ID"
+    SQLType="NUMERIC">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="22"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="TermLanguage"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="15"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="TERM_LANGUAGE"
+    Expression="TERM_LANGUAGE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="15"/>
     </DesignTime>
   </ViewAttribute>
   <ResourceBundle>

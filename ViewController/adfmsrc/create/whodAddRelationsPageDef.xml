@@ -93,7 +93,7 @@
                     <Item Value="PrimLinkFlag"/>
                     <Item Value="SortOrder"/>
                     <Item Value="Status"/>
-                    <Item Value="SubLevelRefName"/>
+                    <Item Value="LevelRefName"/>
                     <Item Value="Termcat"/>
                     <Item Value="Termlvl"/>
                     <Item Value="TermPath"/>
@@ -197,7 +197,7 @@
                     <Item Value="ParentLevel"/>
                     <Item Value="ParentTerm"/>
                     <Item Value="NamedRelation"/>
-                    <Item Value="SubLevelRefName"/>
+                    <Item Value="LevelRefName"/>
                 </AttrNames>
             </nodeDefinition>
         </tree>
