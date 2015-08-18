@@ -25,10 +25,12 @@
                   id="CurrentDictionaryVO1Iterator" RefreshCondition=" #{!adfFacesContext.initialRender}"/>
         <iterator Binds="LastMVUpdateViewObj1" RangeSize="25" DataControl="ImpactModuleDataControl"
                   id="LastMVUpdateViewObj1Iterator" RefreshCondition=" #{!adfFacesContext.initialRender}"/>
-        <iterator Binds="WhodHierarchySourceTermSearchVO1" RangeSize="10" DataControl="WHODModuleDataControl"
+        <iterator Binds="WhodHierarchySourceTermSearchVO1" RangeSize="-1" DataControl="WHODModuleDataControl"
                   id="WhodHierarchySourceTermSearchVO1Iterator"/>
-        <iterator Binds="WHODSourceTreeVO1" RangeSize="10" DataControl="WHODModuleDataControl"
+        <iterator Binds="WHODSourceTreeVO1" RangeSize="-1" DataControl="WHODModuleDataControl"
                   id="WHODSourceTreeVO1Iterator"/>
+        <iterator Binds="WhodHierarchySourceRelationSearchVO1" RangeSize="-1" DataControl="WHODModuleDataControl"
+                  id="WhodHierarchySourceRelationSearchVO1Iterator"/>
     </executables>
     <bindings>
         <!--tree IterBinding="SmallTreeVO1Iterator" id="SmallTreeVO1">
@@ -206,40 +208,34 @@
                             Name="WhodHierarchySourceTermSearchVO10">
                 <AttrNames>
                     <Item Value="Rnum"/>
-                    <Item Value="ApprFlag"/>
-                    <Item Value="ContentId"/>
-                    <Item Value="Createdby"/>
-                    <Item Value="CurPendStatus"/>
-                    <Item Value="CutOffDate"/>
-                    <Item Value="Dates"/>
-                    <Item Value="Designee"/>
-                    <Item Value="DictNm"/>
-                    <Item Value="DomainNm"/>
-                    <Item Value="DueDate"/>
-                    <Item Value="Groupname"/>
-                    <Item Value="LevelNm"/>
-                    <Item Value="Mqalgo"/>
-                    <Item Value="Mqaltcode"/>
-                    <Item Value="Mqcode"/>
-                    <Item Value="Mqcrtev"/>
-                    <Item Value="Mqgroup"/>
-                    <Item Value="MqgroupF"/>
-                    <Item Value="Mqlevel"/>
-                    <Item Value="Mqprodct"/>
-                    <Item Value="Mqscp"/>
-                    <Item Value="Mqstatus"/>
-                    <Item Value="Mqterm"/>
-                    <Item Value="Mqtransid"/>
                     <Item Value="Prikey"/>
                     <Item Value="Querylevel"/>
-                    <Item Value="ReasonForApproval"/>
-                    <Item Value="ReasonForRequest"/>
-                    <Item Value="State"/>
-                    <Item Value="TermSubtype"/>
-                    <Item Value="Version"/>
+                    <Item Value="DictContentCode"/>
+                    <Item Value="DictContentId"/>
+                    <Item Value="DictionaryName"/>
+                    <Item Value="HierPlacement"/>
+                    <Item Value="LevelName"/>
+                    <Item Value="NamedRelation"/>
+                    <Item Value="Term"/>
                 </AttrNames>
             </nodeDefinition>
         </tree>
-        
+        <tree IterBinding="WhodHierarchySourceRelationSearchVO1Iterator" id="WhodHierarchySourceRelationSearchVO1">
+            <nodeDefinition DefName="com.dbms.csmq.model.WHOD.WhodHierarchySourceRelationSearchVO"
+                            Name="WhodHierarchySourceRelationSearchVO10">
+                <AttrNames>
+                    <Item Value="Rnum"/>
+                    <Item Value="DictContentCode"/>
+                    <Item Value="DictContentId"/>
+                    <Item Value="DictionaryName"/>
+                    <Item Value="HierPlacement"/>
+                    <Item Value="LevelName"/>
+                    <Item Value="NamedRelation"/>
+                    <Item Value="Prikey"/>
+                    <Item Value="Querylevel"/>
+                    <Item Value="Term"/>
+                </AttrNames>
+            </nodeDefinition>
+        </tree>
     </bindings>
 </pageDefinition>

@@ -38,8 +38,7 @@
                                                                     labelStyle="white-space:nowrap" valuePassThru="true"
                                                                     autoSubmit="true" helpTopicId="NMAT_HELP_QUERY_TYPE"
                                                                     value="#{pageFlowScope.WhodWizardSearchBean.paramExtension}"
-                                                                    valueChangeListener="#{pageFlowScope.WhodWizardSearchBean.extensionChanged}"
-                                                                    disabled="#{WhodRenderingRulesBean.wizardSearchDisableExtension}">
+                                                                    valueChangeListener="#{pageFlowScope.WhodWizardSearchBean.extensionChanged}">
                                                     <f:selectItems value="#{pageFlowScope.WhodWizardSearchBean.whodExtensionSI}"
                                                                    id="si31"/>
                                                     <af:selectItem id="si301" label="ALL" value="%"/>

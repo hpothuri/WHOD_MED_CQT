@@ -24,6 +24,9 @@
   <ViewUsage
     Name="WHODSourceTreeVO1"
     ViewObjectName="com.dbms.csmq.model.WHOD.WHODSmallTreeVO"/>
+  <ViewUsage
+    Name="WhodHierarchySourceRelationSearchVO1"
+    ViewObjectName="com.dbms.csmq.model.WHOD.WhodHierarchySourceRelationSearchVO"/>
   <ResourceBundle>
     <PropertiesBundle
       PropertiesFile="com.dbms.csmq.model.ModelBundle"/>

@@ -71,6 +71,7 @@ public class WhodSourceTermSearchBean extends HierarchyAccessor {
     boolean showSMQSelItems = false;
 
     private String currentDictId;
+    private GenericTreeNode currentRowData;
 
 
     private WhodWizardBean nMQWizardBean;
@@ -155,50 +156,15 @@ public class WhodSourceTermSearchBean extends HierarchyAccessor {
         DCBindingContainer binding = (DCBindingContainer)bc.getCurrentBindingsEntry();
         DCIteratorBinding dciterb = (DCIteratorBinding)binding.get("WhodHierarchySourceTermSearchVO1Iterator");
         ViewObject vo = dciterb.getViewObject();
-
-        vo.setNamedWhereClauseParam("startDate", "");
-        vo.setNamedWhereClauseParam("endDate", "");
+        vo.setNamedWhereClauseParam("dictionaryName", getParamDictionary());
         String paramTermVal = getParamTerm();
         if (null != paramTermVal && !paramTermVal.isEmpty()) {
             paramTermVal = paramTermVal.replace("'", "\''");
         }
         vo.setNamedWhereClauseParam("term", paramTermVal);
-        vo.setNamedWhereClauseParam("activityStatus", "ALL");
-        vo.setNamedWhereClauseParam("dictShortName", getParamDictionary());
-        vo.setNamedWhereClauseParam("releaseStatus", CSMQBean.BOTH_ACTIVITY_STATUSES);
-        vo.setNamedWhereClauseParam("activationGroup", CSMQBean.WILDCARD);
-        vo.setNamedWhereClauseParam("MQGroup", CSMQBean.WILDCARD);
-        vo.setNamedWhereClauseParam("product", CSMQBean.WILDCARD);
-        vo.setNamedWhereClauseParam("MQCode", CSMQBean.WILDCARD);
-        vo.setNamedWhereClauseParam("MQCriticalEvent", CSMQBean.WILDCARD);
-        vo.setNamedWhereClauseParam("uniqueIDsOnly", CSMQBean.TRUE);
-        vo.setNamedWhereClauseParam("filterForUser", CSMQBean.FALSE);
-        vo.setNamedWhereClauseParam("currentUser", nMQWizardBean.getCurrentUser());
-        vo.setNamedWhereClauseParam("killSwitch", CSMQBean.KILL_SWITCH_OFF);
-        vo.setNamedWhereClauseParam("showNarrowScpOnly", getParamNarrowScopeOnly());
-        vo.setNamedWhereClauseParam("MQScope", CSMQBean.WILDCARD);
-        vo.setNamedWhereClauseParam("pState", CSMQBean.WILDCARD);
-        vo.setNamedWhereClauseParam("pUserRole", userBean.getUserRole());
         vo.setNamedWhereClauseParam("levelName", getParamLevel());
-        CSMQBean.logger.info(userBean.getCaller() + " startDate: " + "");
-        CSMQBean.logger.info(userBean.getCaller() + " endDate: " + "");
         CSMQBean.logger.info(userBean.getCaller() + " term: " + paramTermVal);
-        CSMQBean.logger.info(userBean.getCaller() + " activityStatus: " + "ALL");
         CSMQBean.logger.info(userBean.getCaller() + " dictShortName: " + getParamDictionary());
-        CSMQBean.logger.info(userBean.getCaller() + " releaseStatus: " + CSMQBean.BOTH_ACTIVITY_STATUSES);
-        CSMQBean.logger.info(userBean.getCaller() + " activationGroup: " + CSMQBean.WILDCARD);
-        CSMQBean.logger.info(userBean.getCaller() + " MQGroup: " + CSMQBean.WILDCARD);
-        CSMQBean.logger.info(userBean.getCaller() + " product: " + CSMQBean.WILDCARD);
-        CSMQBean.logger.info(userBean.getCaller() + " MQCode: " + CSMQBean.WILDCARD);
-        CSMQBean.logger.info(userBean.getCaller() + " MQCriticalEvent: " + "%");
-        CSMQBean.logger.info(userBean.getCaller() + " uniqueIDsOnly: " + CSMQBean.TRUE);
-        CSMQBean.logger.info(userBean.getCaller() + " filterForUser: " + CSMQBean.FALSE);
-        CSMQBean.logger.info(userBean.getCaller() + " currentUser: " + nMQWizardBean.getCurrentUser());
-        CSMQBean.logger.info(userBean.getCaller() + " killSwitch: " + CSMQBean.KILL_SWITCH_OFF);
-        CSMQBean.logger.info(userBean.getCaller() + " showNarrowScpOnly: " + getParamNarrowScopeOnly());
-        CSMQBean.logger.info(userBean.getCaller() + " MQScope: " + CSMQBean.WILDCARD);
-        CSMQBean.logger.info(userBean.getCaller() + " pState: " + CSMQBean.WILDCARD);
-        CSMQBean.logger.info(userBean.getCaller() + " pUserRole: " + userBean.getUserRole());
         CSMQBean.logger.info(userBean.getCaller() + " levelName: " + getParamLevel());
         vo.executeQuery();
         WhodHierarchySearchResultsBean hierarchySearchResultsBean =
@@ -350,7 +316,7 @@ public class WhodSourceTermSearchBean extends HierarchyAccessor {
 
                     this.currentDictId = rowData.getDictContentId();
                     this.hasScope = rowData.isHasScope();
-
+                    this.currentRowData = rowData;
 
                     System.out.println(rowData);
                 }
@@ -412,34 +378,12 @@ public class WhodSourceTermSearchBean extends HierarchyAccessor {
         CSMQBean.logger.info(userBean.getCaller() + " Iterator: SourceTreeVO1Iterator");
         BindingContext bc = BindingContext.getCurrent();
         DCBindingContainer binding = (DCBindingContainer)bc.getCurrentBindingsEntry();
-        DCIteratorBinding dciterb = (DCIteratorBinding)binding.get("SourceTreeVO1Iterator");
+        DCIteratorBinding dciterb = (DCIteratorBinding)binding.get("WhodHierarchySourceRelationSearchVO1Iterator");
         ViewObject sourceTreeVO = dciterb.getViewObject();
-
-        sourceTreeVO.setNamedWhereClauseParam("dictShortName", this.paramDictionary);
         sourceTreeVO.setNamedWhereClauseParam("dictContentID", this.currentDictId);
-        sourceTreeVO.setNamedWhereClauseParam("scopeFilter", this.getParamScope());
-        sourceTreeVO.setNamedWhereClauseParam("sortKey", this.getParamSort());
-        sourceTreeVO.setNamedWhereClauseParam("returnPrimLinkPath", getParamPrimLinkFlag());
-        sourceTreeVO.setNamedWhereClauseParam("maxLevels", CSMQBean.getProperty("HIERARCHY_INITIAL_FETCH"));
-        sourceTreeVO.setNamedWhereClauseParam("narrowScopeOnly", getParamNarrowScopeOnly());
-
-        String ignorePredict = getParamDictionaryType().equals("BASE") ? CSMQBean.TRUE : CSMQBean.FALSE;
-        sourceTreeVO.setNamedWhereClauseParam("ignorePredict", ignorePredict);
-
-
-        CSMQBean.logger.info(userBean.getCaller() + " dictShortName:" + this.paramDictionary);
         CSMQBean.logger.info(userBean.getCaller() + " dictContentID:" + this.currentDictId);
-        CSMQBean.logger.info(userBean.getCaller() + " scopeFilter:" + this.getParamScope());
-        CSMQBean.logger.info(userBean.getCaller() + " sortKey:" + this.getParamSort());
-        CSMQBean.logger.info(userBean.getCaller() + " returnPrimLinkPath:" + getParamPrimLinkFlag());
-        CSMQBean.logger.info(userBean.getCaller() + " maxLevels:" + CSMQBean.getProperty("HIERARCHY_INITIAL_FETCH"));
-        CSMQBean.logger.info(userBean.getCaller() + " narrowScopeOnly:" + getParamNarrowScopeOnly());
-        CSMQBean.logger.info(userBean.getCaller() + " ignorePredict:" + ignorePredict);
-
-
         sourceTreeVO.executeQuery();
-
-        termHierarchySourceBean.init(hasScope);
+        termHierarchySourceBean.init(currentRowData);
 
         if (impactSearch) {
             ImpactAnalysisBean impactAnalysisBean =
@@ -841,14 +785,15 @@ public class WhodSourceTermSearchBean extends HierarchyAccessor {
 
             for (Object[] relation : relations) {
                 if (DML[0].equals(relation[VAL_DML])) {
-                    cstmt.setString(1, currentDictContentID);
-                    cstmt.setString(2, (String)relation[VAL_DICT_CONTENT_ID]);
-                    cstmt.setString(3, currentUser);
-                    cstmt.setString(4, "");
-                    cstmt.setString(5, "");
-                    cstmt.registerOutParameter(5, Types.NVARCHAR);
+                    cstmt.registerOutParameter(1, Types.VARCHAR);
+                    cstmt.setLong(2, new Long(currentDictContentID));
+                    cstmt.setLong(3, new Long((String)relation[VAL_DICT_CONTENT_ID]));
+                    cstmt.setString(4, null);
+                    cstmt.setString(5, null);
+                    cstmt.setString(6, null);
+                    cstmt.registerOutParameter(7, Types.INTEGER);
                     cstmt.executeUpdate();
-                    newDictContentCode = cstmt.getString(5);
+                    newDictContentCode = "" + cstmt.getInt(7);
                 }
             }
             con.commit();

@@ -593,19 +593,18 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
             String designeeListString = "";
             if (designeeList != null)
                 designeeListString = designeeList.toString();
-            String levelName = getCurrentTermLevel();
-            String subLevelName = getCurrentExtension();
+            String levelName = getCurrentTermLevelNumber();
+            String levelExtension = getCurrentExtension();
             String approvedFlag = "Y";
-            String dictContentCode = "1001";
             String dGProductLIST = WhodUtils.getDelimStr(getProductList(), CSMQBean.DEFAULT_DELIMETER_CHAR);
             String dGGroupLIST = WhodUtils.getDelimStr(getMQGroupList(), CSMQBean.DEFAULT_DELIMETER_CHAR);
             String commentText = "";
             String designee = WhodUtils.getDelimStr(getDesigneeList(), CSMQBean.DEFAULT_DELIMETER_CHAR);
 
             results =
-                    WhodUtils.saveDetails(levelName, subLevelName, approvedFlag, dictContentCode, getCurrentTermName(),
-                                          getCurrentScope(), getCurrentStatus(), dGProductLIST, dGGroupLIST,
-                                          commentText, designee, userBean.getUserRole(), action);
+                    WhodUtils.saveDetails(levelName, levelExtension, approvedFlag, getCurrentTermName(), getCurrentScope(),
+                                          getCurrentStatus(), dGProductLIST, dGGroupLIST, commentText, designee,
+                                          userBean.getUserRole(), action);
         }
 
         if (results == null)
@@ -773,9 +772,9 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
             Hashtable ht =
                 WhodUtils.saveNotesAndDescInfo(getCurrentDictContentID(), getCurrentExtension(), getCurrentInfNoteDescription(),
                                                getCurrentInfNoteNotes(), getCurrentInfNoteSource());
-            int notesPredictInfoHdrID = (Integer)ht.get("NOTES_PRED_ID");
-            int descPredictInfoHdrID = (Integer)ht.get("DESC_PRED_ID");
-            if (notesPredictInfoHdrID < 0 && descPredictInfoHdrID < 0) {
+            String notesPredictInfoHdrID = (String)ht.get("NOTES_PRED_ID");
+            String descPredictInfoHdrID = (String)ht.get("DESC_PRED_ID");
+            if ("-1".equals(notesPredictInfoHdrID) || "-1".equals(descPredictInfoHdrID)) {
                 errorCount = -1;
             }
         }

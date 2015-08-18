@@ -66,10 +66,54 @@ public class WhodTermHierarchySourceBean extends Hierarchy {
             };
     }
 
+    public void init(GenericTreeNode parentRowData) {
+        this.hasScope = true;
+        parentNodesByLevel = new HashMap();
+        formParentNode(parentRowData);
+        List nodes = new ArrayList();
+        nodes.add(root);
+        treemodel = new ChildPropertyTreeModel(nodes, "children") {
+                public boolean isContainer() {
+                    if (getRowData() == null)
+                        return false;
+                    return ((GenericTreeNode)getRowData()).getChildCount() > 0;
+                }
+            };
+    }
+
+    private void formParentNode(GenericTreeNode parentRowData) {
+        root = new GenericTreeNode();
+        root.setIsRoot(true);
+        root.setTerm(parentRowData.getTerm());
+        root.setQueryLevel(parentRowData.getQueryLevel());
+        root.setLevelName(parentRowData.getLevelName());
+        root.setDictContentId(parentRowData.getDictContentId());
+        root.setDictContentCode(parentRowData.getDictContentCode());
+        formChildNodes();
+    }
+
+    private void formChildNodes() {
+        BindingContext bc = BindingContext.getCurrent();
+        DCBindingContainer binding = (DCBindingContainer)bc.getCurrentBindingsEntry();
+        DCIteratorBinding dciterb = (DCIteratorBinding)binding.get("WhodHierarchySourceRelationSearchVO1Iterator");
+        rows = dciterb.getRowSetIterator().enumerateRowsInRange();
+        while (rows.hasMoreElements()) {
+            Row row = (Row)rows.nextElement();
+            GenericTreeNode termNode = new GenericTreeNode();
+            termNode.setTerm(Utils.getAsString(row, "Term"));
+            CSMQBean.logger.debug(userBean.getCaller() + " ADDING CHILD: " + termNode.getTerm());
+            termNode.setQueryLevel(Utils.getAsString(row, "Querylevel"));
+            termNode.setLevelName(Utils.getAsString(row, "LevelName"));
+            termNode.setDictContentId(Utils.getAsString(row, "DictContentId"));
+            termNode.setDictContentCode(Utils.getAsString(row, "DictContentCode"));
+            root.getChildren().add(termNode);
+        }
+    }
+
     private void createTree() {
         BindingContext bc = BindingContext.getCurrent();
         DCBindingContainer binding = (DCBindingContainer)bc.getCurrentBindingsEntry();
-        DCIteratorBinding dciterb = (DCIteratorBinding)binding.get("WHODSourceTreeVO1Iterator");
+        DCIteratorBinding dciterb = (DCIteratorBinding)binding.get("WhodHierarchySourceRelationSearchVO1Iterator");
         rows = dciterb.getRowSetIterator().enumerateRowsInRange();
         if (rows == null || !rows.hasMoreElements())
             return;

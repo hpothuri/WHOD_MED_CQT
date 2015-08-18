@@ -14,9 +14,9 @@
       <property
          name="page">/index.jspx</property>
       <property
-         name="description">&lt;html>&lt;p>&lt;b>home&lt;/b>&lt;/p>&lt;p>Activity Type:  View&lt;/p></property>
-      <property
          name="thumbnailExpanded">false</property>
+      <property
+         name="description">&lt;html>&lt;p>&lt;b>home&lt;/b>&lt;/p>&lt;p>Activity Type:  View&lt;/p></property>
       <property
          name="exceptionHandler">false</property>
       <property
@@ -211,7 +211,7 @@
       <property
          name="fromOutcome">ADMIN</property>
       <property
-         name="sdm:polyPoints">R32,97.38051,-206.88853,2672.2568,196.85059,T50</property>
+         name="sdm:polyPoints">R32,97.26367,-206.88853,2672.2568,196.85059,T50</property>
    </ControlFlowCase>
    <ControlFlowCase
       islink="true"
@@ -231,7 +231,7 @@
       <property
          name="fromOutcome">UPDATE_SMQ</property>
       <property
-         name="sdm:polyPoints">R39,96.77278,-202.31711,2423.204,250.85059,L50</property>
+         name="sdm:polyPoints">R39,96.655945,-202.31711,2423.204,250.85059,L50</property>
    </ControlFlowCase>
    <ControlFlowCase
       islink="true"

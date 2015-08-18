@@ -3,7 +3,7 @@
 <!---->
 <ViewObject
   xmlns="http://xmlns.oracle.com/bc4j"
-  Name="WhodHierarchySourceTermSearchVO"
+  Name="WhodHierarchySourceRelationSearchVO"
   Version="11.1.2.64.36"
   BindingStyle="OracleName"
   CustomQuery="true"
@@ -15,34 +15,22 @@
   <Properties>
     <SchemaBasedProperties>
       <LABEL
-        ResId="com.dbms.csmq.model.WHOD.WhodHierarchySourceTermSearchVO_LABEL"/>
+        ResId="com.dbms.csmq.model.WHOD.WhodHierarchySourceRelationSearchVO_LABEL"/>
     </SchemaBasedProperties>
   </Properties>
   <Variable
-    Name="dictionaryName"
+    Name="dictContentID"
     Kind="where"
-    Type="java.lang.String"/>
-  <Variable
-    Name="term"
-    Kind="where"
-    Type="java.lang.String"
-    DefaultValue="%"/>
-  <Variable
-    Name="levelName"
-    Kind="where"
-    Type="java.lang.String"/>
+    Type="java.lang.Long"/>
   <SQLQuery><![CDATA[SELECT DISTINCT rownum  rnum, DICT_CONTENT_ID || '.' || DICT_CONTENT_CODE PRIKEY, REGEXP_SUBSTR(level_name,'\d{1}') querylevel, results.* 
-FROM table (cqt_whod_ui_tms_utils.ui_hier_search_terms
-                          (pDictionaryName => :dictionaryName, 
-                            pLevelName      => :levelName,  
-                            pTerm           => :term)) results
+FROM table (cqt_whod_ui_tms_utils.ui_hier_search_relations(pDictContentID => :dictContentID)) results
 order by TERM]]></SQLQuery>
   <ViewAttribute
     Name="Rnum"
     IsUpdateable="false"
     IsPersistent="false"
     PrecisionRule="true"
-    Type="oracle.jbo.domain.Number"
+    Type="java.lang.Long"
     ColumnType="NUMBER"
     AliasName="RNUM"
     Expression="RNUM"
@@ -56,14 +44,14 @@ order by TERM]]></SQLQuery>
     IsUpdateable="false"
     IsPersistent="false"
     PrecisionRule="true"
-    Precision="55"
+    Precision="161"
     Type="java.lang.String"
     ColumnType="VARCHAR2"
     AliasName="PRIKEY"
     Expression="PRIKEY"
     SQLType="VARCHAR">
     <DesignTime>
-      <Attr Name="_DisplaySize" Value="55"/>
+      <Attr Name="_DisplaySize" Value="161"/>
     </DesignTime>
   </ViewAttribute>
   <ViewAttribute
@@ -71,14 +59,14 @@ order by TERM]]></SQLQuery>
     IsUpdateable="false"
     IsPersistent="false"
     PrecisionRule="true"
-    Precision="40"
+    Precision="160"
     Type="java.lang.String"
     ColumnType="VARCHAR2"
     AliasName="QUERYLEVEL"
     Expression="QUERYLEVEL"
     SQLType="VARCHAR">
     <DesignTime>
-      <Attr Name="_DisplaySize" Value="40"/>
+      <Attr Name="_DisplaySize" Value="160"/>
     </DesignTime>
   </ViewAttribute>
   <ViewAttribute
@@ -146,7 +134,7 @@ order by TERM]]></SQLQuery>
     IsUpdateable="false"
     IsPersistent="false"
     PrecisionRule="true"
-    Type="oracle.jbo.domain.Number"
+    Type="java.lang.Long"
     ColumnType="NUMBER"
     AliasName="DICT_CONTENT_ID"
     Expression="DICT_CONTENT_ID"
@@ -186,7 +174,7 @@ order by TERM]]></SQLQuery>
     </DesignTime>
   </ViewAttribute>
   <AttrArray Name="KeyAttributes">
-    <Item Value="Rnum"/>
+    <Item Value="Prikey"/>
   </AttrArray>
   <ResourceBundle>
     <PropertiesBundle

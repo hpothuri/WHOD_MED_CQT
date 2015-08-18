@@ -43,8 +43,6 @@
                                                 <af:commandToolbarButton text="Save" id="cb3"
                                                                          actionListener="#{pageFlowScope.WhodSourceTermSearchBean.updateRelations}"
                                                                          partialSubmit="true"
-                                                                         disabled="#{!pageFlowScope.WhodTermHierarchyBean.editable or WhodRenderingRulesBean.wizardRelationsDisableSave}"
-                                                                         rendered="#{WhodRenderingRulesBean.wizardRelationsRenderSave}"
                                                                          icon="/image/database_save.png"/>
                                                 <af:commandToolbarButton text="Export" id="ctb11a" disabled="false"
                                                                          icon="/image/hierarchy/EXCEL.png">
@@ -53,8 +51,7 @@
                                                                                    filename="#{pageFlowScope.WhodHierarchyExportBean.excelFileName}"/>
                                                 </af:commandToolbarButton>
                                                 <af:commandToolbarButton text="Hierarchy Search" id="cb6"
-                                                                         icon="/image/tree.png"
-                                                                         rendered="#{WhodRenderingRulesBean.wizardRelationsRenderSave}">
+                                                                         icon="/image/tree.png">
                                                     <af:showPopupBehavior popupId="::p1"/>
                                                 </af:commandToolbarButton>
                                             </af:toolbar>
@@ -216,16 +213,11 @@
                                                                             binding="#{pageFlowScope.WhodSourceTermSearchBean.controlLevel}"
                                                                             value="%" valuePassThru="true">
                                                             <af:selectItem label="ALL" value="%" id="si42"/>
-                                                            <af:selectItem label="CDG 1" value="CDG1" id="si8"/>
-                                                            <af:selectItem label="CDG 2" value="CDG2" id="si48"/>
-                                                            <af:selectItem label="CDG 3" value="CDG3" id="si5"/>
-                                                            <af:selectItem label="CDG 4" value="CDG4" id="si6"/>
-                                                            <af:selectItem label="SDG 1" value="SDG1" id="si43"/>
-                                                            <af:selectItem label="SDG 2" value="SDG2" id="si1"/>
-                                                            <af:selectItem label="SDG 3" value="SDG3" id="si2"/>
-                                                            <af:selectItem label="SDG 4" value="SDG4" id="si3"/>
-                                                            <af:selectItem label="HLGT" value="HLGT" id="si53"/>
-                                                            <af:selectItem label="HLT" value="HLT" id="si54"/>
+                                                            <af:selectItem label="ATC 1" value="ATC1" id="si43"/>
+                                                            <af:selectItem label="ATC 2" value="ATC2" id="si1"/>
+                                                            <af:selectItem label="ATC 3" value="ATC3" id="si2"/>
+                                                            <af:selectItem label="ATC 4" value="ATC4" id="si3"/>
+                                                            <af:selectItem label="ATC 5" value="ATC5" id="si5"/>
                                                             <af:selectItem label="PT" value="PT" id="si55"/>
                                                         </af:selectOneChoice>
                                                     </af:panelFormLayout>
