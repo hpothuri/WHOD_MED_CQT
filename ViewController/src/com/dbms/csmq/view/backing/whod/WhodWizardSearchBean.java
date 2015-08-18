@@ -3,6 +3,7 @@ package com.dbms.csmq.view.backing.whod;
 
 import com.dbms.csmq.CSMQBean;
 import com.dbms.csmq.UserBean;
+import com.dbms.csmq.model.infNotes.WHODInfoNotesVORowImpl;
 import com.dbms.csmq.view.util.ADFUtils;
 import com.dbms.util.Utils;
 
@@ -28,7 +29,6 @@ import oracle.jbo.ViewObject;
 import oracle.jbo.uicli.binding.JUCtrlHierNodeBinding;
 
 import org.apache.myfaces.trinidad.event.SelectionEvent;
-import org.apache.myfaces.trinidad.model.RowKeySet;
 
 
 public class WhodWizardSearchBean {
@@ -327,9 +327,9 @@ public class WhodWizardSearchBean {
             Collections.addAll(whodWizardBean.getMQGroupList(), currentMqgroups.split("%"));
         }
 
-        whodWizardBean.getProductList().clear();
-        whodWizardBean.getMQGroupList().clear();
-        whodWizardBean.getDesigneeList().clear();
+        //whodWizardBean.getProductList().clear();
+        //whodWizardBean.getMQGroupList().clear();
+        //whodWizardBean.getDesigneeList().clear();
         //Collections.addAll(whodWizardBean.getProductList(), new String[] { "AIN457", "ABILIFY" });
         //Collections.addAll(whodWizardBean.getMQGroupList(), new String[] { "APO", "AAA" });
         whodWizardBean.setDesigneeList(new ArrayList<String>());
@@ -353,14 +353,11 @@ public class WhodWizardSearchBean {
             WhodWizardBean whodWizardBean = WhodUtils.getWhodWizardBean();
             if(vo.getRowCount() > 0){
                 while(vo.hasNext()){
-                Row row = vo.next();
-                
-                if(row.getAttribute("InfoNoteType") != null && row.getAttribute("InfoNoteType").equals("DESC"))
+                WHODInfoNotesVORowImpl row = (WHODInfoNotesVORowImpl)vo.next();
+                if(row.getInfoNoteType() != null && row.getInfoNoteType().equals("DESC"))
                 whodWizardBean.setCurrentInfNoteDescription(Utils.getAsString(row, "InfoNoteValue"));
-                if(row.getAttribute("InfoNoteType") != null && row.getAttribute("InfoNoteType").equals("NOTE"))
+                if(row.getInfoNoteType() != null && row.getInfoNoteType().equals("NOTE"))
                 whodWizardBean.setCurrentInfNoteNotes(Utils.getAsString(row, "InfoNoteValue"));
-                if(row.getAttribute("InfoNoteType") != null && row.getAttribute("InfoNoteType").equals("SRC"))
-                whodWizardBean.setCurrentInfNoteSource(Utils.getAsString(row, "InfoNoteValue"));
                 }
             }
             

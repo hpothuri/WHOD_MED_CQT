@@ -1142,6 +1142,66 @@ new FacesMessage(FacesMessage.SEVERITY_INFO, "Impacted list refreshed for dictio
         }
         return retVal;
     }
+    public static Hashtable saveUpdatedDetails(String currentDictContentID, String levelName, String levelExtension, String approvedFlag, String termName,
+                                        String dGScopeFlag, String dGActiveStatus, String dGProductLIST,
+                                        String dGGroupLIST, String commentText, String designee, String userRole,
+                                        String action, String state) {
+
+        dGActiveStatus = "A"; //TODO need to remove this hard coding
+        designee = "TEST_REQUESTOR|CQT|CQTOWNER"; //TODO need to remove this hard coding
+        String sql = "{ ? = call cqt_whod_ui_tms_utils.update_content_data(?,?,?,?,?,  ?,?,?,?,?,  ?)}";
+        DBTransaction dBTransaction = DMLUtils.getDBTransaction();
+        Integer newDictContentID = null;
+        Hashtable retVal = new Hashtable(); // array to return the new state and message
+        try {
+            CallableStatement cstmt =
+                new CallableStatement(dBTransaction.createCallableStatement(sql, DBTransaction.DEFAULT),
+                                      "cqt_whod_ui_tms_utils.update_content_data");
+            cstmt.registerOutParameter(1, Types.VARCHAR);
+            cstmt.setInt(2, new Integer(currentDictContentID));
+            cstmt.setString(3, levelExtension);
+            //cstmt.setString(3, levelExtension);
+            cstmt.setString(4, termName);
+            cstmt.setString(5, approvedFlag);
+            cstmt.setString(6, dGScopeFlag);
+            cstmt.setString(7, dGActiveStatus);
+            cstmt.setString(8, dGProductLIST);
+            cstmt.setString(9, dGGroupLIST);
+            cstmt.setString(10, commentText);
+            cstmt.setString(11, state);
+            cstmt.setString(12, designee);
+            //cstmt.registerOutParameter(13, Types.INTEGER);
+            cstmt.executeQuery();
+            //newDictContentID = cstmt.getInt(12);
+            cstmt.close();
+            System.out.println("newDictContentID==" + newDictContentID);
+            if (newDictContentID != null)
+                retVal.put("NEW_DICT_CONTENT_ID", "" + newDictContentID);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            String messageText;
+
+            if (e.getMessage().indexOf(CSMQBean.NAME_IN_USE_ERROR) > -1) { // it's a name already in use error
+                messageText = "The name: " + termName + " is already in use.  Please use another name";
+            } else if (e.getMessage().indexOf(CSMQBean.INVALID_STATE_CHANGE_ERROR) >
+                       -1) { // it's a name already in use error
+                messageText =
+                        termName + " is Pending Impact Assessment and must be deleted in Impact Assessment to Update the Current NMQ.";
+            } else { // it's something else
+                messageText =
+                        "The following error occurred.  " + termName + " was not " + action + " successfully.\n" +
+                        e.getMessage();
+                e.printStackTrace();
+            }
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, messageText, "");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+        return retVal;
+    }
 
     public static Hashtable saveNotesAndDescInfo(String dictContentId, String extension, String infoNotes,
                                                  String infoDesc, String infoSource) {
