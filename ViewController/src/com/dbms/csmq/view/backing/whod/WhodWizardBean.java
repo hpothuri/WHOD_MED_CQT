@@ -330,10 +330,22 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
     }
 
     public String setModeBrowseSearch() {
-        userBean.setCurrentMenuPath("Browse & Search");
-        userBean.setCurrentMenu("BROWSE_SEARCH_CDG");
-        this.mode = CSMQBean.MODE_BROWSE_SEARCH;
-        this.updateParam = CSMQBean.DML_NONE;
+        Object clickedMenu = ADFContext.getCurrent().getPageFlowScope().get("setMode");
+
+        //System.out.println("----where am I clicked-----" + ADFContext.getCurrent().getPageFlowScope().get("setMode"));
+        if (clickedMenu != null) {
+            if ("browseAndSearch".equalsIgnoreCase(clickedMenu.toString())) {
+                userBean.setCurrentMenuPath("Browse & Search");
+                userBean.setCurrentMenu("BROWSE_SEARCH_CDG");
+                this.mode = CSMQBean.MODE_BROWSE_SEARCH;
+                this.updateParam = CSMQBean.DML_NONE;
+            } else if ("update".equalsIgnoreCase(clickedMenu.toString())) {
+                userBean.setCurrentMenuPath("Update");
+                userBean.setCurrentMenu("UPDATE_CDG");
+                this.mode = CSMQBean.MODE_UPDATE_SMQ;
+                this.updateParam = CSMQBean.DML_UPDATE;
+            }
+        }
         CSMQBean.logger.info(userBean.getCaller() + " SETTING MODE: " + this.mode);
         setDefaultDictionary();
         return null;
