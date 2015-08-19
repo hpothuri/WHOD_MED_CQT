@@ -211,7 +211,7 @@
                                                         <af:selectOneChoice id="soc10" label="Level"
                                                                             partialTriggers="soc9"
                                                                             binding="#{pageFlowScope.WhodSourceTermSearchBean.controlLevel}"
-                                                                            value="%" valuePassThru="true">
+                                                                            value="ATC1" valuePassThru="true">
                                                             <af:selectItem label="ATC 1" value="ATC1" id="si43"
                                                                            rendered="#{pageFlowScope.WhodSourceTermSearchBean.showBaseLevelSelItems}"/>
                                                             <af:selectItem label="ATC 2" value="ATC2" id="si6"

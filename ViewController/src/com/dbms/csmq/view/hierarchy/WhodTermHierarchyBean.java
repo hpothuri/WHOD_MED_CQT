@@ -148,6 +148,7 @@ public class WhodTermHierarchyBean extends Hierarchy {
         root.setStatus(Utils.getAsString(row, "Status"));
         // set it as expanded so that it won't get called again
         root.setIsExpanded(true);
+        root.setEditable(true);
         populateTreeNodes(root, row);
         //clean up the hashmap
         parentNodesByLevel = null;
@@ -197,6 +198,8 @@ public class WhodTermHierarchyBean extends Hierarchy {
         }
         termNode.setHasScope(this.hasScope);
         termNode.setEditable(this.editable);
+        //termNode.setIsExpanded(true);
+        termNode.setEditable(true);
         //termNode.setFormattedScope(Utils.getAsString(row, "FormattedScope"));
         String childLevel = Utils.getAsString(row, "ChildLevel");
         String subLevelRefName = Utils.getAsString(row, "LevelRefName");
@@ -218,6 +221,7 @@ public class WhodTermHierarchyBean extends Hierarchy {
         } else {
             termNode.setLevelName(childLevel);
         }
+        termNode.setShowHasChildrenButton(true);
 
         //        CSMQBean.logger.info(userBean.getCaller() + " parentNodesByLevel: " + parentNodesByLevel +
         //                             ":; termNode.getParent()=" + termNode.getParent());
