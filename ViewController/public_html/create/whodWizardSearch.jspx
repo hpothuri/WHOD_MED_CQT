@@ -31,7 +31,8 @@
                                                                     value="#{pageFlowScope.WhodWizardBean.currentDictionary}"
                                                                     labelStyle="white-space:nowrap"
                                                                     valuePassThru="true">
-                                                    <af:selectItem id="si30" label="CQTSDG Dictionary" value="CQTSDG"/>
+                                                    <f:selectItems value="#{pageFlowScope.WhodWizardBean.whodDictinoriesSI}"
+                                                                   id="si30"/>
                                                 </af:selectOneChoice>
                                                 <af:outputText value="" id="ot4" rendered="false"/>
                                                 <af:selectOneChoice label="Extension" id="soc6"
@@ -86,7 +87,7 @@
                                                                      labelStyle="white-space:nowrap"
                                                                      selectAllVisible="false"
                                                                      contentStyle="color:#000000;">
-                                                    <f:selectItems value="#{pageFlowScope.WhodWizardSearchBean.whodProductSI}"
+                                                    <f:selectItems value="#{pageFlowScope.WhodWizardBean.whodProductSI}"
                                                                    id="si1"/>
                                                 </af:selectManyChoice>
                                                 <af:selectOneChoice label="Status" id="smc6"

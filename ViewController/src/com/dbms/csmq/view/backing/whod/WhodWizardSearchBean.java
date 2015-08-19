@@ -77,7 +77,7 @@ public class WhodWizardSearchBean {
 
     public List<SelectItem> getWhodReleaseGroupSI() {
         if (whodReleaseGroupSI == null) {
-            whodReleaseGroupSI = ADFUtils.selectItemsForIterator("WHODGroupList1Iterator", "ShortVal", "LongValue");
+            whodReleaseGroupSI = ADFUtils.selectItemsForIterator("WHODGroupList1Iterator", "ShortValue", "LongValue");
         }
         return whodReleaseGroupSI;
     }

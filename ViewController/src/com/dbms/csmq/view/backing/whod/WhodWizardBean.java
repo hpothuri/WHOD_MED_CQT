@@ -193,8 +193,8 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
         currentRequestor = userBean.getCurrentUser();
 
         // LOAD DEFAULTS FROM APP BEAN
-        this.currentBaseDictionaryShortName = cSMQBean.getDefaultBaseDictionaryShortName();
-        this.currentFilterDictionaryShortName = cSMQBean.getDefaultFilterDictionaryShortName();
+        this.currentBaseDictionaryShortName = cSMQBean.getDefaultWhodBaseDictionaryShortName();
+        this.currentFilterDictionaryShortName = cSMQBean.getDefaultWhodFilterDictionaryShortName();
 
 
         this.noteInformativeNoteShortName = cSMQBean.getProperty("SMQ_NOTE_INFORMATIVE_NOTE");
@@ -381,12 +381,12 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
 
 
     private void setDefaultDictionary() {
-        currentDictionary = cSMQBean.getDefaultBaseDictionaryShortName();
+        currentDictionary = cSMQBean.getDefaultWhodBaseDictionaryShortName();
         if (this.mode == CSMQBean.MODE_UPDATE_EXISTING || this.mode == CSMQBean.MODE_COPY_EXISTING ||
             this.mode == CSMQBean.MODE_UPDATE_SMQ || this.mode == CSMQBean.MODE_BROWSE_SEARCH)
-            currentDictionary = cSMQBean.getDefaultFilterDictionaryShortName();
-        //TODO:WHOD Need to remove hardcoding
-        currentDictionary = "CQTSDG";
+            currentDictionary = cSMQBean.getDefaultWhodFilterDictionaryShortName();
+//        //TODO:WHOD Need to remove hardcoding
+//        currentDictionary = "CQTSDG";
     }
 
 
@@ -1683,8 +1683,8 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
 
     public List<SelectItem> getWhodDictinoriesSI() {
         if (whodDictinoriesSI == null) {
-//            whodDictinoriesSI =
-//                    ADFUtils.selectItemsForIterator("WHODReleaseStatuListVO1Iterator", "ShortValue", "LongValue");
+            whodDictinoriesSI =
+                    ADFUtils.selectItemsForIterator("WhodDictionariesListVO1Iterator", "ShortValue", "LongValue");
         }
         return whodDictinoriesSI;
     }
@@ -1700,4 +1700,5 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
         }
         return whodDictinoryLevelSI;
     }
+
 }

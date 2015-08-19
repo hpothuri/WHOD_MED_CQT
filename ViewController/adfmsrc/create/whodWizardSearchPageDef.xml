@@ -22,6 +22,8 @@
                   RangeSize="-1"/>
         <iterator id="WHODReleaseStatuListVO1Iterator" Binds="WHODReleaseStatuListVO1"
                   DataControl="WHODModuleDataControl" RangeSize="-1"/>
+        <iterator id="WhodDictionariesListVO1Iterator" Binds="WhodDictionariesListVO1"
+                  DataControl="WHODModuleDataControl" RangeSize="25"/>
     </executables>
     <bindings>
         <tree IterBinding="WHODSimpleSearch1Iterator" id="WHODSimpleSearch1">

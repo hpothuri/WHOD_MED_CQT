@@ -33,6 +33,9 @@
   <ViewUsage
     Name="WHODReleaseStatuListVO1"
     ViewObjectName="com.dbms.csmq.model.WHOD.WHODReleaseStatuListVO"/>
+  <ViewUsage
+    Name="WhodDictionariesListVO1"
+    ViewObjectName="com.dbms.csmq.model.WHOD.WhodDictionariesListVO"/>
   <ResourceBundle>
     <PropertiesBundle
       PropertiesFile="com.dbms.csmq.model.ModelBundle"/>

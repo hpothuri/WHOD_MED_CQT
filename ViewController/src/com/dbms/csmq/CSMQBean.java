@@ -217,6 +217,9 @@ public class CSMQBean {
     // DICTIONARIES
     public static String defaultFilterDictionaryShortName;
     public static String defaultBaseDictionaryShortName;
+    public static String defaultWhodFilterDictionaryShortName;
+    public static String defaultWhodBaseDictionaryShortName;
+    
     private String validDictionaryList;
 
     // RELEASE GROUPS - these are for EL access
@@ -241,6 +244,7 @@ public class CSMQBean {
     private static final ArrayList<SelectItem> reportsSelectItems = new ArrayList<SelectItem>();
     private String configFileName;
     private static Hashtable properties;
+    private static Hashtable whodProperties;
 
     public CSMQBean() {
  
@@ -277,6 +281,8 @@ public class CSMQBean {
         
         this.defaultFilterDictionaryShortName = getProperty("DEFAULT_FILTER_DICTIONARY_SHORT_NAME");
         this.defaultBaseDictionaryShortName = getProperty("DEFAULT_BASE_DICTIONARY_SHORT_NAME");
+        this.defaultWhodFilterDictionaryShortName = getWhodProperty("FILTER");
+        this.defaultWhodBaseDictionaryShortName = getWhodProperty("BASE");
 
         this.defaultMedDRAReleaseGroup = getProperty("DEFAULT_MEDDRA_RELEASE_GROUP");
         this.defaultDraftReleaseGroup = getProperty("DEFAULT_DRAFT_RELEASE_GROUP");
@@ -494,6 +500,16 @@ public class CSMQBean {
     
     private boolean loadPropsFromDB () {
         
+        if(!loadPropsFromNMAT())
+            return false;
+        if(!loadPropsFromWHOD())
+            return false;
+        
+        return true;
+        
+    }
+    
+    private boolean loadPropsFromNMAT(){
         if (properties == null) properties = new Hashtable();
         properties.clear();
         
@@ -526,6 +542,39 @@ public class CSMQBean {
         return true;
         
     }
+    
+    private boolean loadPropsFromWHOD(){
+        if (whodProperties == null) whodProperties = new Hashtable();
+        whodProperties.clear();
+        
+        String sql = "SELECT * FROM TABLE(cqt_whod_ui_tms_utils.query_whod_properties())";
+        DBTransaction dBTransaction = DMLUtils.getDBTransaction();
+        CallableStatement cstmt = dBTransaction.createCallableStatement(sql, DBTransaction.DEFAULT);
+        ResultSet rs;
+
+
+        try {
+            rs = cstmt.executeQuery();
+        } catch (SQLException e) {
+            return false;
+        }
+
+
+        try {
+            String p, v = null;
+            while (rs.next()) {
+                p = rs.getString("PROP_NAME");
+                v = rs.getString("PROP_VALUE") + "";
+                
+                logger.info ("*** " + p + "=" + v);
+                whodProperties.put(p,v);
+                }
+        } catch (SQLException e) {
+        return false;
+        }
+        return true;
+    }
+    
 
     /*
      * @author MTW
@@ -692,7 +741,16 @@ public class CSMQBean {
         return retVal;
         
     }
-
+    
+    public static String getWhodProperty (String property) {
+        String retVal = null;
+        if (whodProperties == null) return "";
+        Object o = whodProperties.get(property);
+        if (o!=null) retVal = (String)o;
+        return retVal;
+        
+    }
+    
     public String refreshProperties() {
         loadProperties();
         return null;
@@ -727,6 +785,22 @@ public class CSMQBean {
     public String getInitialize() {
         initialize = "APP INIT";
         return initialize;
+    }
+
+    public static void setDefaultWhodFilterDictionaryShortName(String defaultWhodFilterDictionaryShortName) {
+        CSMQBean.defaultWhodFilterDictionaryShortName = defaultWhodFilterDictionaryShortName;
+    }
+
+    public static String getDefaultWhodFilterDictionaryShortName() {
+        return defaultWhodFilterDictionaryShortName;
+    }
+
+    public static void setDefaultWhodBaseDictionaryShortName(String defaultWhodBaseDictionaryShortName) {
+        CSMQBean.defaultWhodBaseDictionaryShortName = defaultWhodBaseDictionaryShortName;
+    }
+
+    public static String getDefaultWhodBaseDictionaryShortName() {
+        return defaultWhodBaseDictionaryShortName;
     }
 }
 
