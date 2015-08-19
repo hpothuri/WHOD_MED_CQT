@@ -18,6 +18,10 @@
         <iterator Binds="InfNotesVO1" RangeSize="10" DataControl="InfNotesModuleDataControl" id="InfNotesVO1Iterator"/>
         <iterator id="WHODInfoNotesIterator" Binds="WHODInfoNotes" DataControl="WHODInfoNotesModuleDataControl"
                   RangeSize="25"/>
+        <iterator id="WHODStateListVO1Iterator" Binds="WHODStateListVO1" DataControl="WHODModuleDataControl"
+                  RangeSize="-1"/>
+        <iterator id="WHODReleaseStatuListVO1Iterator" Binds="WHODReleaseStatuListVO1"
+                  DataControl="WHODModuleDataControl" RangeSize="-1"/>
     </executables>
     <bindings>
         <tree IterBinding="WHODSimpleSearch1Iterator" id="WHODSimpleSearch1">

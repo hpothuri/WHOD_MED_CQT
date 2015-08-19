@@ -13,10 +13,7 @@
   <DesignTime>
     <Attr Name="_isExpertMode" Value="true"/>
   </DesignTime>
-  <SQLQuery><![CDATA[SELECT SHORT_VALUE, LONG_VALUE
-FROM CQT_WHOD_GROUPS_LOV
-WHERE ACTIVE_FLAG = 'Y'
-ORDER BY LONG_VALUE]]></SQLQuery>
+  <SQLQuery><![CDATA[SELECT short_value, long_value FROM TABLE(cqt_whod_ui_tms_utils.lov_lookup(pLookupType => 'GROUP'))]]></SQLQuery>
   <ViewAttribute
     Name="ShortValue"
     IsUpdateable="false"

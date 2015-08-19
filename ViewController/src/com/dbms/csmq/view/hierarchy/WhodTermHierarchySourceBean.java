@@ -89,6 +89,7 @@ public class WhodTermHierarchySourceBean extends Hierarchy {
         root.setLevelName(parentRowData.getLevelName());
         root.setDictContentId(parentRowData.getDictContentId());
         root.setDictContentCode(parentRowData.getDictContentCode());
+        root.setPrikey(root.getDictContentId() + "." + root.getDictContentCode());
         formChildNodes();
     }
 
@@ -106,6 +107,7 @@ public class WhodTermHierarchySourceBean extends Hierarchy {
             termNode.setLevelName(Utils.getAsString(row, "LevelName"));
             termNode.setDictContentId(Utils.getAsString(row, "DictContentId"));
             termNode.setDictContentCode(Utils.getAsString(row, "DictContentCode"));
+            termNode.setPrikey(termNode.getDictContentId() + "." + termNode.getDictContentCode());
             root.getChildren().add(termNode);
         }
     }

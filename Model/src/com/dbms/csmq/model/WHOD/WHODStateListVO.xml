@@ -3,11 +3,10 @@
 <!---->
 <ViewObject
   xmlns="http://xmlns.oracle.com/bc4j"
-  Name="WHODProductListVO"
+  Name="WHODStateListVO"
   Version="11.1.2.64.36"
   BindingStyle="OracleName"
   CustomQuery="true"
-  FetchMode="FETCH_AS_NEEDED"
   PageIterMode="Full"
   UseGlueCode="false">
   <DesignTime>
@@ -16,23 +15,23 @@
   <Properties>
     <SchemaBasedProperties>
       <LABEL
-        ResId="com.dbms.csmq.model.product.WHODProductListVO_LABEL"/>
+        ResId="com.dbms.csmq.model.WHOD.WHODStateListVO_LABEL"/>
     </SchemaBasedProperties>
   </Properties>
-  <SQLQuery><![CDATA[SELECT long_value, short_value FROM TABLE(cqt_whod_ui_tms_utils.lov_lookup(pLookupType => 'PRODUCT'))]]></SQLQuery>
+  <SQLQuery><![CDATA[SELECT long_value, short_value FROM TABLE(cqt_whod_ui_tms_utils.lov_lookup(pLookupType => 'STATE'))]]></SQLQuery>
   <ViewAttribute
     Name="LongValue"
     IsUpdateable="false"
     IsPersistent="false"
     PrecisionRule="true"
-    Precision="60"
+    Precision="255"
     Type="java.lang.String"
     ColumnType="VARCHAR2"
     AliasName="LONG_VALUE"
     Expression="LONG_VALUE"
     SQLType="VARCHAR">
     <DesignTime>
-      <Attr Name="_DisplaySize" Value="60"/>
+      <Attr Name="_DisplaySize" Value="120"/>
     </DesignTime>
   </ViewAttribute>
   <ViewAttribute
@@ -40,16 +39,19 @@
     IsUpdateable="false"
     IsPersistent="false"
     PrecisionRule="true"
-    Precision="15"
+    Precision="30"
     Type="java.lang.String"
     ColumnType="VARCHAR2"
     AliasName="SHORT_VALUE"
     Expression="SHORT_VALUE"
     SQLType="VARCHAR">
     <DesignTime>
-      <Attr Name="_DisplaySize" Value="15"/>
+      <Attr Name="_DisplaySize" Value="30"/>
     </DesignTime>
   </ViewAttribute>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="ShortValue"/>
+  </AttrArray>
   <ResourceBundle>
     <PropertiesBundle
       PropertiesFile="com.dbms.csmq.model.ModelBundle"/>

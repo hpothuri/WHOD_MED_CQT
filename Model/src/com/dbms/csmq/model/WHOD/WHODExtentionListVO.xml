@@ -19,9 +19,7 @@
         ResId="com.dbms.csmq.model.WHOD.WHODExtentionListVO_LABEL"/>
     </SchemaBasedProperties>
   </Properties>
-  <SQLQuery><![CDATA[SELECT long_value, SHORT_VALUE
-FROM CQT_WHOD_EXTENSIONS_LOV
-WHERE active_flag = 'Y']]></SQLQuery>
+  <SQLQuery><![CDATA[SELECT long_value, short_value FROM TABLE(cqt_whod_ui_tms_utils.lov_lookup(pLookupType => 'EXTENSION'))]]></SQLQuery>
   <ViewAttribute
     Name="LongValue"
     IsUpdateable="false"

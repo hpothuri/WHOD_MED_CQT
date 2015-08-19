@@ -59,8 +59,10 @@
                                                                     autoSubmit="true"
                                                                     valueChangeListener="#{pageFlowScope.WhodWizardSearchBean.releaseStatusChanged}">
                                                     <af:selectItem label="All" value="ALL" id="si3"/>
-                                                    <af:selectItem label="Current" value="CURRENT" id="si3a"/>
-                                                    <af:selectItem label="Pending" value="PENDING" id="si2"/>
+                                                    <!--af:selectItem label="Current" value="CURRENT" id="si3a"/>
+                                                    <af:selectItem label="Pending" value="PENDING" id="si2"/-->
+                                                    <f:selectItems value="#{pageFlowScope.WhodWizardSearchBean.whodReleaseGroupSI}"
+                                                                   id="si8"/>
                                                 </af:selectOneChoice>
                                                 <af:selectOneChoice label="Approved" id="soc10"
                                                                     value="#{pageFlowScope.WhodWizardSearchBean.paramApproved}">
@@ -85,7 +87,7 @@
                                                                      selectAllVisible="false"
                                                                      contentStyle="color:#000000;">
                                                     <f:selectItems value="#{pageFlowScope.WhodWizardSearchBean.whodProductSI}"
-                                                                   id="si8"/>
+                                                                   id="si1"/>
                                                 </af:selectManyChoice>
                                                 <af:selectOneChoice label="Status" id="smc6"
                                                                     helpTopicId="NMAT_HELP_ACTIVITY_STATUS"
@@ -104,12 +106,14 @@
                                                                      helpTopicId="NMAT_HELP_STATE"
                                                                      labelStyle="white-space:nowrap"
                                                                      valuePassThru="true">
-                                                    <af:selectItem label="Proposed" value="Proposed" id="si7"/>
+                                                    <!--af:selectItem label="Proposed" value="Proposed" id="si7"/>
                                                     <af:selectItem label="Requested" value="Requested" id="si9"/>
                                                     <af:selectItem label="Draft" value="Draft" id="si11"/>
                                                     <af:selectItem label="Reviewed" value="Reviewed" id="si4"/>
                                                     <af:selectItem label="Approved" value="Approved" id="si6"/>
-                                                    <af:selectItem label="Published" value="Published" id="si5"/>
+                                                    <af:selectItem label="Published" value="Published" id="si5"/-->
+                                                    <f:selectItems value="#{pageFlowScope.WhodWizardSearchBean.whodStateSI}"
+                                                                   id="si2"/>
                                                 </af:selectManyChoice>
                                                 <af:selectManyChoice value="#{pageFlowScope.WhodWizardSearchBean.groupList}"
                                                                      label="Group" id="smc8"

@@ -36,6 +36,8 @@ public class WhodWizardSearchBean {
     private List<SelectItem> whodReleaseGroupSI;
     private List<SelectItem> whodProductSI;
     private List<SelectItem> whodGroupSI;
+    private List<SelectItem> whodStateSI;
+    private List<SelectItem> whodReleaseStatusSI;
 
     private String paramExtension = "%";
     private String paramLevel = CSMQBean.FILTER_LEVEL_ONE;
@@ -64,8 +66,7 @@ public class WhodWizardSearchBean {
     public List<SelectItem> getWhodExtensionSI() {
         if (whodExtensionSI == null) {
             whodExtensionSI =
-                    ADFUtils.selectItemsForIterator("WHODExtentionListVO1Iterator", "ShortValue",
-                                                    "LongValue");
+                    ADFUtils.selectItemsForIterator("WHODExtentionListVO1Iterator", "ShortValue", "LongValue");
         }
         return whodExtensionSI;
     }
@@ -225,23 +226,23 @@ public class WhodWizardSearchBean {
         String currentCreatedBy = Utils.getAsString(row, "CreatedBy");
         CSMQBean.logger.info(userBean.getCaller() + " Createdby:" + currentCreatedBy);
         // currentExtension = Utils.getAsString(row, "Extension");
-       
+
         String currentState = Utils.getAsString(row, "State");
         CSMQBean.logger.info(userBean.getCaller() + " currentState:" + currentState);
         String currentStatus = Utils.getAsString(row, "ReleaseStatus");
         CSMQBean.logger.info(userBean.getCaller() + " currentStatus:" + currentStatus);
         String levelName = Utils.getAsString(row, "LevelName");
         CSMQBean.logger.info(userBean.getCaller() + " CurrentTermLevel:" + levelName);
-       // System.out.println("--------"+levelName);
-        String currentExtension = levelName.substring(0, 3);    
+        // System.out.println("--------"+levelName);
+        String currentExtension = levelName.substring(0, 3);
         CSMQBean.logger.info(userBean.getCaller() + " Extension:" + currentExtension);
-        
+
         String currentMqproduct = Utils.getAsString(row, "Value3");
         CSMQBean.logger.info(userBean.getCaller() + " Product:" + currentMqproduct);
-        
+
         String currentMqgroups = Utils.getAsString(row, "Value4");
         CSMQBean.logger.info(userBean.getCaller() + " Group:" + currentMqgroups);
-        
+
         WhodWizardBean whodWizardBean = WhodUtils.getWhodWizardBean();
         whodWizardBean.setCurrentExtension(currentExtension);
         whodWizardBean.setCurrentTermName(currentTermName);
@@ -267,7 +268,7 @@ public class WhodWizardSearchBean {
         whodWizardBean.setCurrentMQCRTEV(currentCriticalEvent);
         whodWizardBean.setCurrentMQALGO(currentMqalgo);
         whodWizardBean.setCurrentMQGROUP(currentMqgroups);
-        whodWizardBean.setCurrentProduct(currentMqproduct);        
+        whodWizardBean.setCurrentProduct(currentMqproduct);
         whodWizardBean.setCurrentDateRequested(currentDateRequested);
         whodWizardBean.setCurrentRequestedByDate(requestedByDate);
         whodWizardBean.setCurrentReasonForRequest(currentReasonForRequest);
@@ -316,7 +317,6 @@ public class WhodWizardSearchBean {
         //        }
 
 
-        
         if (currentMqproduct != null) {
             currentMqproduct = currentMqproduct.replace(CSMQBean.DEFAULT_DELIMETER_CHAR, '%');
             Collections.addAll(whodWizardBean.getProductList(), currentMqproduct.split("%"));
@@ -347,28 +347,28 @@ public class WhodWizardSearchBean {
             DCIteratorBinding dciterb = ADFUtils.findIterator("WHODInfoNotesIterator");
             ViewObject vo = dciterb.getViewObject();
             //currentDictContentID = "918101681";
-           
+
             vo.setNamedWhereClauseParam("dDictContentId", currentDictContentID);
             vo.executeQuery();
             WhodWizardBean whodWizardBean = WhodUtils.getWhodWizardBean();
-            if(vo.getRowCount() > 0){
-                while(vo.hasNext()){
-                WHODInfoNotesVORowImpl row = (WHODInfoNotesVORowImpl)vo.next();
-                if(row.getInfoNoteType() != null && row.getInfoNoteType().equals("DESC"))
-                whodWizardBean.setCurrentInfNoteDescription(Utils.getAsString(row, "InfoNoteValue"));
-                if(row.getInfoNoteType() != null && row.getInfoNoteType().equals("NOTE"))
-                whodWizardBean.setCurrentInfNoteNotes(Utils.getAsString(row, "InfoNoteValue"));
+            if (vo.getRowCount() > 0) {
+                while (vo.hasNext()) {
+                    WHODInfoNotesVORowImpl row = (WHODInfoNotesVORowImpl)vo.next();
+                    if (row.getInfoNoteType() != null && row.getInfoNoteType().equals("DESC"))
+                        whodWizardBean.setCurrentInfNoteDescription(Utils.getAsString(row, "InfoNoteValue"));
+                    if (row.getInfoNoteType() != null && row.getInfoNoteType().equals("NOTE"))
+                        whodWizardBean.setCurrentInfNoteNotes(Utils.getAsString(row, "InfoNoteValue"));
                 }
             }
-            
-            
+
+
         } catch (java.util.NoSuchElementException e) {
             CSMQBean.logger.error(e.getMessage(), e);
         }
     }
-    
+
     public void getInfNotes1(String currentState, String currentStatus, String currentMqcode, String currentDictionary,
-                            String currentDictContentID) {
+                             String currentDictContentID) {
         try {
             CSMQBean cSMQBean = WhodUtils.getCSMQBean();
             UserBean userBean = WhodUtils.getUserBean();
@@ -593,5 +593,28 @@ public class WhodWizardSearchBean {
 
     public RichTable getCtrlSearchResults() {
         return ctrlSearchResults;
+    }
+
+    public void setWhodStateSI(List<SelectItem> whodStateSI) {
+        this.whodStateSI = whodStateSI;
+    }
+
+    public List<SelectItem> getWhodStateSI() {
+        if (whodStateSI == null) {
+            whodStateSI = ADFUtils.selectItemsForIterator("WHODStateListVO1Iterator", "ShortValue", "LongValue");
+        }
+        return whodStateSI;
+    }
+
+    public void setWhodReleaseStatusSI(List<SelectItem> whodReleaseStatusSI) {
+        this.whodReleaseStatusSI = whodReleaseStatusSI;
+    }
+
+    public List<SelectItem> getWhodReleaseStatusSI() {
+        if (whodReleaseStatusSI == null) {
+            whodReleaseStatusSI =
+                    ADFUtils.selectItemsForIterator("WHODReleaseStatuListVO1Iterator", "ShortValue", "LongValue");
+        }
+        return whodReleaseStatusSI;
     }
 }

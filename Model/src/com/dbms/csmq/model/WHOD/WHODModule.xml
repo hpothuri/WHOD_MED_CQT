@@ -27,6 +27,12 @@
   <ViewUsage
     Name="WhodHierarchySourceRelationSearchVO1"
     ViewObjectName="com.dbms.csmq.model.WHOD.WhodHierarchySourceRelationSearchVO"/>
+  <ViewUsage
+    Name="WHODStateListVO1"
+    ViewObjectName="com.dbms.csmq.model.WHOD.WHODStateListVO"/>
+  <ViewUsage
+    Name="WHODReleaseStatuListVO1"
+    ViewObjectName="com.dbms.csmq.model.WHOD.WHODReleaseStatuListVO"/>
   <ResourceBundle>
     <PropertiesBundle
       PropertiesFile="com.dbms.csmq.model.ModelBundle"/>

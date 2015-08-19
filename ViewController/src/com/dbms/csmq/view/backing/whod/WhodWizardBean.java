@@ -172,6 +172,10 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
     private List<SelectItem> whodProductSI;
     private List<SelectItem> whodGroupSI;
     private List<SelectItem> whodDesigneeSI;
+    private List<SelectItem> whodStateSI;
+    private List<SelectItem> whodReleaseStatusSI;
+    private List<SelectItem> whodDictinoriesSI;
+    private List<SelectItem> whodDictinoryLevelSI;
 
     public WhodWizardBean() {
 
@@ -587,7 +591,7 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
                     NMQUtils.saveIADetails(tempName, currentProduct, currentTermLevel, currentScope, currentMQALGO, currentMQCRTEV,
                                            currentMQGROUP, currentContentCode, this.getUpdateParam(), currentRequestor,
                                            currentDictContentID, userBean.getUserRole(), action);
-        } else if(mode == CSMQBean.MODE_UPDATE_EXISTING){
+        } else if (mode == CSMQBean.MODE_UPDATE_EXISTING) {
             CSMQBean.logger.info(userBean.getCaller() + " CALLING: saveDetails");
             String designeeListString = "";
             if (designeeList != null)
@@ -601,10 +605,11 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
             String designee = WhodUtils.getDelimStr(getDesigneeList(), CSMQBean.DEFAULT_DELIMETER_CHAR);
 
             results =
-                    WhodUtils.saveUpdatedDetails(currentDictContentID, levelName, levelExtension, approvedFlag, getCurrentTermName(), getCurrentScope(),
-                                          getCurrentStatus(), dGProductLIST, dGGroupLIST, commentText, designee,
-                                          userBean.getUserRole(), action,this.currentState);
-        }else {
+                    WhodUtils.saveUpdatedDetails(currentDictContentID, levelName, levelExtension, approvedFlag, getCurrentTermName(),
+                                                 getCurrentScope(), getCurrentStatus(), dGProductLIST, dGGroupLIST,
+                                                 commentText, designee, userBean.getUserRole(), action,
+                                                 this.currentState);
+        } else {
 
             CSMQBean.logger.info(userBean.getCaller() + " CALLING: saveDetails");
             String designeeListString = "";
@@ -656,9 +661,9 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
         currentTermName = tempName;
 
         //UPDATE THE RELATIONS TREE WITH THE NEW DICT ID
-//        if (mode !=
-//            CSMQBean.MODE_IMPACT_ASSESSMENT) // we don't need to refresh the tree when making impact changes since it's only for SMQs
-//            updateRelations();
+        //        if (mode !=
+        //            CSMQBean.MODE_IMPACT_ASSESSMENT) // we don't need to refresh the tree when making impact changes since it's only for SMQs
+        //            updateRelations();
 
         return true;
     }
@@ -787,8 +792,8 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
 
         } else {
             Hashtable ht =
-                WhodUtils.saveNotesAndDescInfo(getCurrentDictContentID(), getCurrentExtension(), getCurrentInfNoteNotes(),getCurrentInfNoteDescription(),
-                                                getCurrentInfNoteSource());
+                WhodUtils.saveNotesAndDescInfo(getCurrentDictContentID(), getCurrentExtension(), getCurrentInfNoteNotes(),
+                                               getCurrentInfNoteDescription(), getCurrentInfNoteSource());
             String notesPredictInfoHdrID = (String)ht.get("NOTES_PRED_ID");
             String descPredictInfoHdrID = (String)ht.get("DESC_PRED_ID");
             if ("-1".equals(notesPredictInfoHdrID) || "-1".equals(descPredictInfoHdrID)) {
@@ -1647,5 +1652,52 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
             whodDesigneeSI = ADFUtils.selectItemsForIterator("designeeListVO1Iterator", "OaAccountName", "PersonName");
         }
         return whodDesigneeSI;
+    }
+
+    public void setWhodStateSI(List<SelectItem> whodStateSI) {
+        this.whodStateSI = whodStateSI;
+    }
+
+    public List<SelectItem> getWhodStateSI() {
+        if (whodStateSI == null) {
+            whodStateSI = ADFUtils.selectItemsForIterator("WHODStateListVO1Iterator", "ShortValue", "LongValue");
+        }
+        return whodStateSI;
+    }
+
+    public void setWhodReleaseStatusSI(List<SelectItem> whodReleaseStatusSI) {
+        this.whodReleaseStatusSI = whodReleaseStatusSI;
+    }
+
+    public List<SelectItem> getWhodReleaseStatusSI() {
+        if (whodReleaseStatusSI == null) {
+            whodReleaseStatusSI =
+                    ADFUtils.selectItemsForIterator("WHODReleaseStatuListVO1Iterator", "ShortValue", "LongValue");
+        }
+        return whodReleaseStatusSI;
+    }
+
+    public void setWhodDictinoriesSI(List<SelectItem> whodDictinoriesSI) {
+        this.whodDictinoriesSI = whodDictinoriesSI;
+    }
+
+    public List<SelectItem> getWhodDictinoriesSI() {
+        if (whodDictinoriesSI == null) {
+//            whodDictinoriesSI =
+//                    ADFUtils.selectItemsForIterator("WHODReleaseStatuListVO1Iterator", "ShortValue", "LongValue");
+        }
+        return whodDictinoriesSI;
+    }
+
+    public void setWhodDictinoryLevelSI(List<SelectItem> whodDictinoryLevelSI) {
+        this.whodDictinoryLevelSI = whodDictinoryLevelSI;
+    }
+
+    public List<SelectItem> getWhodDictinoryLevelSI() {
+        if (whodDictinoryLevelSI == null) {
+            whodDictinoryLevelSI =
+                    ADFUtils.selectItemsForIterator("WHODReleaseStatuListVO1Iterator", "ShortValue", "LongValue");
+        }
+        return whodDictinoryLevelSI;
     }
 }
