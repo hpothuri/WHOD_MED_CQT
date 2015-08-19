@@ -31,6 +31,8 @@
                   id="WHODSourceTreeVO1Iterator"/>
         <iterator Binds="WhodHierarchySourceRelationSearchVO1" RangeSize="-1" DataControl="WHODModuleDataControl"
                   id="WhodHierarchySourceRelationSearchVO1Iterator"/>
+        <iterator id="WhodDictionariesListVO1Iterator" Binds="WhodDictionariesListVO1"
+                  DataControl="WHODModuleDataControl" RangeSize="25"/>
     </executables>
     <bindings>
         <!--tree IterBinding="SmallTreeVO1Iterator" id="SmallTreeVO1">

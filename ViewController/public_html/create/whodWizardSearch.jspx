@@ -62,7 +62,7 @@
                                                     <af:selectItem label="All" value="ALL" id="si3"/>
                                                     <!--af:selectItem label="Current" value="CURRENT" id="si3a"/>
                                                     <af:selectItem label="Pending" value="PENDING" id="si2"/-->
-                                                    <f:selectItems value="#{pageFlowScope.WhodWizardSearchBean.whodReleaseGroupSI}"
+                                                    <f:selectItems value="#{pageFlowScope.WhodWizardSearchBean.whodReleaseStatusSI}"
                                                                    id="si8"/>
                                                 </af:selectOneChoice>
                                                 <af:selectOneChoice label="Approved" id="soc10"

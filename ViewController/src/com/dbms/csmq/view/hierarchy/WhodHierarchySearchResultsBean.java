@@ -29,6 +29,15 @@ public class WhodHierarchySearchResultsBean {
     public WhodHierarchySearchResultsBean() {
     }
 
+    public void clear() {
+        nodes = new ArrayList();
+        treemodel = new ChildPropertyTreeModel(nodes, "children") {
+                public boolean isContainer() {
+                    return false;
+                }
+            };
+    }
+
     public void init() {
         nodes = new ArrayList();
         createTree();

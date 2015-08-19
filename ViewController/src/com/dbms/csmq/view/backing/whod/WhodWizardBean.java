@@ -175,7 +175,6 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
     private List<SelectItem> whodStateSI;
     private List<SelectItem> whodReleaseStatusSI;
     private List<SelectItem> whodDictinoriesSI;
-    private List<SelectItem> whodDictinoryLevelSI;
 
     public WhodWizardBean() {
 
@@ -1687,18 +1686,6 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
                     ADFUtils.selectItemsForIterator("WhodDictionariesListVO1Iterator", "ShortValue", "LongValue");
         }
         return whodDictinoriesSI;
-    }
-
-    public void setWhodDictinoryLevelSI(List<SelectItem> whodDictinoryLevelSI) {
-        this.whodDictinoryLevelSI = whodDictinoryLevelSI;
-    }
-
-    public List<SelectItem> getWhodDictinoryLevelSI() {
-        if (whodDictinoryLevelSI == null) {
-            whodDictinoryLevelSI =
-                    ADFUtils.selectItemsForIterator("WHODReleaseStatuListVO1Iterator", "ShortValue", "LongValue");
-        }
-        return whodDictinoryLevelSI;
     }
 
 }

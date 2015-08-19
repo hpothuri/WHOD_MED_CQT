@@ -120,17 +120,27 @@
                                                                             <af:selectItem label="SMQ 4" value="MQ4" id="si27" rendered="#{pageFlowScope.WhodSourceTermSearchBean.showSMQSelItems}"/>
                                                                             <af:selectItem label="SMQ 5" value="MQ5" id="si28" rendered="#{pageFlowScope.WhodSourceTermSearchBean.showSMQSelItems}"/>
                                                                             
-                                                                            <af:selectItem label="Custom 1" value="NMQ1" id="si29" rendered="#{pageFlowScope.WhodSourceTermSearchBean.showNMQSelItems}"/>
-                                                                            <af:selectItem label="Custom 2" value="NMQ2" id="si31" rendered="#{pageFlowScope.WhodSourceTermSearchBean.showNMQSelItems}"/>
-                                                                            <af:selectItem label="Custom 3" value="NMQ3" id="si32" rendered="#{pageFlowScope.WhodSourceTermSearchBean.showNMQSelItems}"/>
-                                                                            <af:selectItem label="Custom 4" value="NMQ4" id="si30" rendered="#{pageFlowScope.WhodSourceTermSearchBean.showNMQSelItems}"/>
-                                                                            <af:selectItem label="Custom 5" value="NMQ5" id="si34" rendered="#{pageFlowScope.WhodSourceTermSearchBean.showNMQSelItems}"/>
+                                                                            <af:selectItem label="Custom 1" value="NMQ1" id="si29"
+                                                                                           rendered="#{pageFlowScope.WhodSourceTermSearchBean.showFilterSelItems}"/>
+                                                                            <af:selectItem label="Custom 2" value="NMQ2" id="si31"
+                                                                                           rendered="#{pageFlowScope.WhodSourceTermSearchBean.showFilterSelItems}"/>
+                                                                            <af:selectItem label="Custom 3" value="NMQ3" id="si32"
+                                                                                           rendered="#{pageFlowScope.WhodSourceTermSearchBean.showFilterSelItems}"/>
+                                                                            <af:selectItem label="Custom 4" value="NMQ4" id="si30"
+                                                                                           rendered="#{pageFlowScope.WhodSourceTermSearchBean.showFilterSelItems}"/>
+                                                                            <af:selectItem label="Custom 5" value="NMQ5" id="si34"
+                                                                                           rendered="#{pageFlowScope.WhodSourceTermSearchBean.showFilterSelItems}"/>
                                                                             
-                                                                            <af:selectItem label="SOC" value="SOC" id="si35" rendered="#{pageFlowScope.WhodSourceTermSearchBean.showMedDRASelItems}"/>
-                                                                            <af:selectItem label="HLGT" value="HLGT" id="si36" rendered="#{pageFlowScope.WhodSourceTermSearchBean.showMedDRASelItems}"/>
-                                                                            <af:selectItem label="HLT" value="HLT" id="si37" rendered="#{pageFlowScope.WhodSourceTermSearchBean.showMedDRASelItems}"/>
-                                                                            <af:selectItem label="PT" value="PT" id="si38" rendered="#{pageFlowScope.WhodSourceTermSearchBean.showMedDRASelItems}"/>
-                                                                            <af:selectItem label="LLT" value="LLT" id="si39" rendered="#{pageFlowScope.WhodSourceTermSearchBean.showMedDRASelItems}"/>
+                                                                            <af:selectItem label="SOC" value="SOC" id="si35"
+                                                                                           rendered="#{pageFlowScope.WhodSourceTermSearchBean.showBaseLevelSelItems}"/>
+                                                                            <af:selectItem label="HLGT" value="HLGT" id="si36"
+                                                                                           rendered="#{pageFlowScope.WhodSourceTermSearchBean.showBaseLevelSelItems}"/>
+                                                                            <af:selectItem label="HLT" value="HLT" id="si37"
+                                                                                           rendered="#{pageFlowScope.WhodSourceTermSearchBean.showBaseLevelSelItems}"/>
+                                                                            <af:selectItem label="PT" value="PT" id="si38"
+                                                                                           rendered="#{pageFlowScope.WhodSourceTermSearchBean.showBaseLevelSelItems}"/>
+                                                                            <af:selectItem label="LLT" value="LLT" id="si39"
+                                                                                           rendered="#{pageFlowScope.WhodSourceTermSearchBean.showBaseLevelSelItems}"/>
                       
                                             </af:selectOneChoice>
                                             <af:inputText label="Term " id="it1" binding="#{WhodSourceTermSearchUIBean.controlTerm}"/>

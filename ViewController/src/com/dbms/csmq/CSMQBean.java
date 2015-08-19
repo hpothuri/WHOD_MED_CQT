@@ -213,6 +213,9 @@ public class CSMQBean {
     public static final int MQ_MODIFIED = 2;
     public static final int MQ_SAVE_ERROR = 3;
     public static final int MQ_REFRESHED = 4;
+    
+    public static final String WHOD_BASE_DICTIONARY = "UMCWHO2";    
+    public static final String WHOD_FILTER_DICTIONARY = "UMCSDG2";
 
     // DICTIONARIES
     public static String defaultFilterDictionaryShortName;

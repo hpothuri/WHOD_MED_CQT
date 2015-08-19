@@ -66,9 +66,8 @@ public class WhodSourceTermSearchBean extends HierarchyAccessor {
     private boolean impactSearch = false;
     private boolean multiSearch = false;
 
-    boolean showMedDRASelItems = true; // this is the default
-    boolean showNMQSelItems = false;
-    boolean showSMQSelItems = false;
+    boolean showBaseLevelSelItems = true; // this is the default
+    boolean showFilterSelItems = false;
 
     private String currentDictId;
     private GenericTreeNode currentRowData;
@@ -156,7 +155,7 @@ public class WhodSourceTermSearchBean extends HierarchyAccessor {
         DCBindingContainer binding = (DCBindingContainer)bc.getCurrentBindingsEntry();
         DCIteratorBinding dciterb = (DCIteratorBinding)binding.get("WhodHierarchySourceTermSearchVO1Iterator");
         ViewObject vo = dciterb.getViewObject();
-        vo.setNamedWhereClauseParam("dictionaryName", getParamDictionary());
+        vo.setNamedWhereClauseParam("dictionaryName", getParamDictionaryType());
         String paramTermVal = getParamTerm();
         if (null != paramTermVal && !paramTermVal.isEmpty()) {
             paramTermVal = paramTermVal.replace("'", "\''");
@@ -472,35 +471,21 @@ public class WhodSourceTermSearchBean extends HierarchyAccessor {
         if (valueChangeEvent == null)
             return;
         String newDictionary = valueChangeEvent.getNewValue().toString();
-
-        if (newDictionary.equals("BASE")) {
+        if (newDictionary.equals(CSMQBean.WHOD_BASE_DICTIONARY)) {
             this.paramDictionary = nMQWizardBean.getCurrentBaseDictionaryShortName();
             nMQWizardBean.setIsMedDRA(true);
-            controlLevel.setValue("SOC");
-            this.showMedDRASelItems = true;
-            this.showNMQSelItems = false;
-            this.showSMQSelItems = false;
+            controlLevel.setValue("ATC1");
+            this.showBaseLevelSelItems = true;
+            this.showFilterSelItems = false;
         } else {
             this.paramDictionary = nMQWizardBean.getCurrentFilterDictionaryShortName();
             nMQWizardBean.setIsMedDRA(false);
-
-            if (nMQWizardBean.isIsNMQ()) {
-                this.showMedDRASelItems = false;
-                this.showNMQSelItems = true;
-                this.showSMQSelItems = true;
-                controlLevel.setValue("MQ1");
-            } else {
-                this.showMedDRASelItems = false;
-                this.showNMQSelItems = false;
-                this.showSMQSelItems = true;
-                controlLevel.setValue("MQ1");
-            }
-
+            this.showBaseLevelSelItems = false;
+            this.showFilterSelItems = true;
+            controlLevel.setValue("CDG1");
         }
-
         AdfFacesContext.getCurrentInstance().addPartialTarget(getControlLevel());
         AdfFacesContext.getCurrentInstance().partialUpdateNotify(getControlLevel());
-
         //refreshLevelList(paramDictionary);
     }
 
@@ -697,30 +682,21 @@ public class WhodSourceTermSearchBean extends HierarchyAccessor {
     }
 
 
-    public void setShowMedDRASelItems(boolean showMedDRASelItems) {
-        this.showMedDRASelItems = showMedDRASelItems;
+    public void setShowBaseLevelSelItems(boolean showMedDRASelItems) {
+        this.showBaseLevelSelItems = showMedDRASelItems;
     }
 
-    public boolean isShowMedDRASelItems() {
-        return showMedDRASelItems;
+    public boolean isShowBaseLevelSelItems() {
+        return showBaseLevelSelItems;
     }
 
-    public void setShowNMQSelItems(boolean showNMQSelItems) {
-        this.showNMQSelItems = showNMQSelItems;
+    public void setShowFilterSelItems(boolean showNMQSelItems) {
+        this.showFilterSelItems = showNMQSelItems;
     }
 
-    public boolean isShowNMQSelItems() {
-        return showNMQSelItems;
+    public boolean isShowFilterSelItems() {
+        return showFilterSelItems;
     }
-
-    public void setShowSMQSelItems(boolean showSMQSelItems) {
-        this.showSMQSelItems = showSMQSelItems;
-    }
-
-    public boolean isShowSMQSelItems() {
-        return showSMQSelItems;
-    }
-
 
     public DnDAction onMultiTreeDrop(DropEvent dropEvent) {
         RichTreeTable source = multiHierarchySourceTree;
@@ -813,5 +789,5 @@ public class WhodSourceTermSearchBean extends HierarchyAccessor {
         }
 
         return 0;
-    }
+    }    
 }

@@ -51,8 +51,9 @@
                                                                                    filename="#{pageFlowScope.WhodHierarchyExportBean.excelFileName}"/>
                                                 </af:commandToolbarButton>
                                                 <af:commandToolbarButton text="Hierarchy Search" id="cb6"
-                                                                         icon="/image/tree.png">
-                                                    <af:showPopupBehavior popupId="::p1"/>
+                                                                         icon="/image/tree.png" partialSubmit="true"
+                                                                         actionListener="#{WhodSourceTermSearchUIBean.openHierarchySearchPopupAction}">
+                                                    <!--<af:showPopupBehavior popupId="::p1"/>-->
                                                 </af:commandToolbarButton>
                                             </af:toolbar>
                                         </f:facet>
@@ -187,7 +188,7 @@
                                         </f:facet>
                                     </af:panelCollection>
                                     <af:popup id="p1" binding="#{WhodSourceTermSearchUIBean.searchPopUp}"
-                                              autoCancel="disabled">
+                                              autoCancel="disabled" contentDelivery="lazyUncached">
                                         <af:dialog type="cancel" closeIconVisible="true" title="Hierarchy Search"
                                                    id="d3" stretchChildren="none" modal="false" resize="off">
                                             <!-- ****************************************************************************************************************** -->
@@ -201,24 +202,44 @@
                                                         <af:selectOneChoice label="Dictionary" id="soc9"
                                                                             autoSubmit="true"
                                                                             valueChangeListener="#{pageFlowScope.WhodSourceTermSearchBean.dictionaryTypeChanged}"
-                                                                            value="BASE"
+                                                                            value="UMCWHO2"
                                                                             binding="#{pageFlowScope.WhodSourceTermSearchBean.controlDictionaryType}"
                                                                             valuePassThru="true">
-                                                            <af:selectItem label="CQTSDG Dictionary" value="BASE"
-                                                                           id="si40"/>
-                                                            <af:selectItem label="Filter" value="FILTER" id="si41"/>
+                                                            <f:selectItems value="#{pageFlowScope.WhodWizardBean.whodDictinoriesSI}"
+                                                                           id="si1"/>
                                                         </af:selectOneChoice>
                                                         <af:selectOneChoice id="soc10" label="Level"
                                                                             partialTriggers="soc9"
                                                                             binding="#{pageFlowScope.WhodSourceTermSearchBean.controlLevel}"
                                                                             value="%" valuePassThru="true">
-                                                            <af:selectItem label="ALL" value="%" id="si42"/>
-                                                            <af:selectItem label="ATC 1" value="ATC1" id="si43"/>
-                                                            <af:selectItem label="ATC 2" value="ATC2" id="si1"/>
-                                                            <af:selectItem label="ATC 3" value="ATC3" id="si2"/>
-                                                            <af:selectItem label="ATC 4" value="ATC4" id="si3"/>
-                                                            <af:selectItem label="ATC 5" value="ATC5" id="si5"/>
-                                                            <af:selectItem label="PT" value="PT" id="si55"/>
+                                                            <af:selectItem label="ATC 1" value="ATC1" id="si43"
+                                                                           rendered="#{pageFlowScope.WhodSourceTermSearchBean.showBaseLevelSelItems}"/>
+                                                            <af:selectItem label="ATC 2" value="ATC2" id="si6"
+                                                                           rendered="#{pageFlowScope.WhodSourceTermSearchBean.showBaseLevelSelItems}"/>
+                                                            <af:selectItem label="ATC 3" value="ATC3" id="si2"
+                                                                           rendered="#{pageFlowScope.WhodSourceTermSearchBean.showBaseLevelSelItems}"/>
+                                                            <af:selectItem label="ATC 4" value="ATC4" id="si3"
+                                                                           rendered="#{pageFlowScope.WhodSourceTermSearchBean.showBaseLevelSelItems}"/>
+                                                            <af:selectItem label="ATC 5" value="ATC5" id="si5"
+                                                                           rendered="#{pageFlowScope.WhodSourceTermSearchBean.showBaseLevelSelItems}"/>
+                                                            <af:selectItem label="PT" value="PT" id="si55"
+                                                                           rendered="#{pageFlowScope.WhodSourceTermSearchBean.showBaseLevelSelItems}"/>
+                                                            <af:selectItem label="CDG 1" value="CDG1" id="si8"
+                                                                           rendered="#{pageFlowScope.WhodSourceTermSearchBean.showFilterSelItems}"/>
+                                                            <af:selectItem label="CDG 2" value="CDG2" id="si9"
+                                                                           rendered="#{pageFlowScope.WhodSourceTermSearchBean.showFilterSelItems}"/>
+                                                            <af:selectItem label="CDG 3" value="CDG3" id="si10"
+                                                                           rendered="#{pageFlowScope.WhodSourceTermSearchBean.showFilterSelItems}"/>
+                                                            <af:selectItem label="CDG 4" value="CDG4" id="si11"
+                                                                           rendered="#{pageFlowScope.WhodSourceTermSearchBean.showFilterSelItems}"/>
+                                                            <af:selectItem label="SDG 1" value="SDG1" id="si12"
+                                                                           rendered="#{pageFlowScope.WhodSourceTermSearchBean.showFilterSelItems}"/>
+                                                            <af:selectItem label="SDG 2" value="SDG2" id="si13"
+                                                                           rendered="#{pageFlowScope.WhodSourceTermSearchBean.showFilterSelItems}"/>
+                                                            <af:selectItem label="SDG 3" value="SDG3" id="si14"
+                                                                           rendered="#{pageFlowScope.WhodSourceTermSearchBean.showFilterSelItems}"/>
+                                                            <af:selectItem label="SDG 4" value="SDG4" id="si15"
+                                                                           rendered="#{pageFlowScope.WhodSourceTermSearchBean.showFilterSelItems}"/>
                                                         </af:selectOneChoice>
                                                     </af:panelFormLayout>
                                                     <af:panelFormLayout id="pfl4" labelAlignment="start">

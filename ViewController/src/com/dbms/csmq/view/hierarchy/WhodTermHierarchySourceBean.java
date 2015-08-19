@@ -51,6 +51,17 @@ public class WhodTermHierarchySourceBean extends Hierarchy {
     public WhodTermHierarchySourceBean() {
     }
 
+    public void clearWhodTermHierarchySourceBean() {
+        List nodes = new ArrayList();
+        treemodel = new ChildPropertyTreeModel(nodes, "children") {
+                public boolean isContainer() {
+                    if (getRowData() == null)
+                        return false;
+                    return ((GenericTreeNode)getRowData()).getChildCount() > 0;
+                }
+            };
+    }
+
     public void init(boolean hasScope) {
         this.hasScope = hasScope;
         parentNodesByLevel = new HashMap();

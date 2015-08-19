@@ -1,11 +1,21 @@
 package com.dbms.csmq.view.backing.whod;
 
+
+import com.dbms.csmq.view.hierarchy.WhodHierarchySearchResultsBean;
+import com.dbms.csmq.view.hierarchy.WhodTermHierarchySourceBean;
+import com.dbms.csmq.view.util.ADFUtils;
+
+import javax.faces.event.ActionEvent;
+
+import oracle.adf.share.ADFContext;
 import oracle.adf.view.rich.component.rich.RichPopup;
 import oracle.adf.view.rich.component.rich.data.RichTable;
 import oracle.adf.view.rich.component.rich.input.RichInputText;
 import oracle.adf.view.rich.component.rich.input.RichSelectBooleanCheckbox;
 import oracle.adf.view.rich.component.rich.input.RichSelectOneChoice;
 import oracle.adf.view.rich.component.rich.layout.RichPanelGroupLayout;
+import oracle.adf.view.rich.context.AdfFacesContext;
+
 
 public class WhodSourceTermSearchUIBean {
     private RichSelectOneChoice controlReleaseGroup;
@@ -18,12 +28,9 @@ public class WhodSourceTermSearchUIBean {
     private RichSelectBooleanCheckbox ctrlNewTermsOnly;
     private RichSelectBooleanCheckbox ctrlReturnPrimLinkPath;
     private RichSelectBooleanCheckbox cntrlNarrowScope;
-    
-    private RichPanelGroupLayout cntrlResultsPanel;
-    
-    
 
-    
+    private RichPanelGroupLayout cntrlResultsPanel;
+
 
     public void setControlReleaseGroup(RichSelectOneChoice controlReleaseGroup) {
         this.controlReleaseGroup = controlReleaseGroup;
@@ -48,7 +55,7 @@ public class WhodSourceTermSearchUIBean {
     public RichTable getControlResultsTable() {
         return controlResultsTable;
     }
-    
+
     public void setControlDictionary(RichSelectOneChoice controlDictionary) {
         this.controlDictionary = controlDictionary;
     }
@@ -56,8 +63,8 @@ public class WhodSourceTermSearchUIBean {
     public RichSelectOneChoice getControlDictionary() {
         return controlDictionary;
     }
-    
-    
+
+
     public void setCntrlSortList(RichSelectOneChoice cntrlSortList) {
         this.cntrlSortList = cntrlSortList;
     }
@@ -73,10 +80,11 @@ public class WhodSourceTermSearchUIBean {
     public RichSelectOneChoice getCntrlScope() {
         return cntrlScope;
     }
-    
+
     public WhodSourceTermSearchUIBean() {
         super();
     }
+
     public void setCntrlNarrowScope(RichSelectBooleanCheckbox cntrlNarrowScope) {
         this.cntrlNarrowScope = cntrlNarrowScope;
     }
@@ -84,7 +92,7 @@ public class WhodSourceTermSearchUIBean {
     public RichSelectBooleanCheckbox getCntrlNarrowScope() {
         return cntrlNarrowScope;
     }
-    
+
     public void setCntrlResultsPanel(RichPanelGroupLayout cntrlResultsPanel) {
         this.cntrlResultsPanel = cntrlResultsPanel;
     }
@@ -92,7 +100,7 @@ public class WhodSourceTermSearchUIBean {
     public RichPanelGroupLayout getCntrlResultsPanel() {
         return cntrlResultsPanel;
     }
-    
+
     public void setSearchPopUp(RichPopup searchPopUp) {
         this.searchPopUp = searchPopUp;
     }
@@ -100,6 +108,7 @@ public class WhodSourceTermSearchUIBean {
     public RichPopup getSearchPopUp() {
         return searchPopUp;
     }
+
     public void setCtrlNewTermsOnly(RichSelectBooleanCheckbox ctrlNewTermsOnly) {
         this.ctrlNewTermsOnly = ctrlNewTermsOnly;
     }
@@ -107,12 +116,22 @@ public class WhodSourceTermSearchUIBean {
     public RichSelectBooleanCheckbox getCtrlNewTermsOnly() {
         return ctrlNewTermsOnly;
     }
-    
+
     public void setCtrlReturnPrimLinkPath(RichSelectBooleanCheckbox ctrlreturnPrimLinkPath) {
         this.ctrlReturnPrimLinkPath = ctrlreturnPrimLinkPath;
     }
 
     public RichSelectBooleanCheckbox getCtrlReturnPrimLinkPath() {
         return ctrlReturnPrimLinkPath;
+    }
+
+    public void openHierarchySearchPopupAction(ActionEvent actionEvent) {
+        WhodHierarchySearchResultsBean hierarchySearchResultsBean =
+            (WhodHierarchySearchResultsBean)ADFContext.getCurrent().getPageFlowScope().get("WhodHierarchySearchResultsBean");
+        hierarchySearchResultsBean.clear();
+        WhodTermHierarchySourceBean termHierarchySourceBean1 =
+            (WhodTermHierarchySourceBean)AdfFacesContext.getCurrentInstance().getPageFlowScope().get("WhodTermHierarchySourceBean");
+        termHierarchySourceBean1.clearWhodTermHierarchySourceBean();
+        ADFUtils.showPopup(getSearchPopUp());
     }
 }
