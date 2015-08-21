@@ -40,8 +40,10 @@ public class WhodWizardSearchBean {
     private List<SelectItem> whodGroupSI;
     private List<SelectItem> whodStateSI;
     private List<SelectItem> whodReleaseStatusSI;
+    private List<SelectItem> whodLevelGroupSI;
 
     private String paramExtension = "%";
+    private String paramLevelGroup = "%";
     private String paramLevel = CSMQBean.FILTER_LEVEL_ONE;
     private String paramReleaseGroup = CSMQBean.WILDCARD;
     private String paramApproved = CSMQBean.WILDCARD;
@@ -113,6 +115,11 @@ public class WhodWizardSearchBean {
      * @param valueChangeEvent
      */
     public void dictionaryChange(ValueChangeEvent valueChangeEvent) {
+        Object currentDictionay = valueChangeEvent.getNewValue();
+        if(currentDictionay != null){
+        WhodUtils.getWhodWizardBean().setCurrentDictionary(currentDictionay.toString());
+        getWhodLevelGroupSI();
+        }
     }
 
     /**
@@ -145,7 +152,7 @@ public class WhodWizardSearchBean {
         UserBean userBean = WhodUtils.getUserBean();
         DCIteratorBinding dciterb = ADFUtils.findIterator("WHODSimpleSearch1Iterator");
         ViewObject vo = dciterb.getViewObject();
-
+        WhodWizardBean whodWizardBean = WhodUtils.getWhodWizardBean();
         vo.setNamedWhereClauseParam("approvedFlag", getParamApproved());
         vo.setNamedWhereClauseParam("levelName", getSearchLevelParam());
         vo.setNamedWhereClauseParam("dGActiveStatus", getParamStatus());
@@ -153,7 +160,11 @@ public class WhodWizardSearchBean {
         vo.setNamedWhereClauseParam("dGProductLIST", getParamProductList()); // search needs ^ as the delimiter
         vo.setNamedWhereClauseParam("dGScopeFlag", getParamScope());
         vo.setNamedWhereClauseParam("dReleaseStatus", getCurrentRelaseStatus());
-
+        if(whodWizardBean != null && whodWizardBean.getCurrentDictionary().equals("UMCSDG2"))
+        vo.setNamedWhereClauseParam("dictionary_type", "FILTER");
+        else
+        vo.setNamedWhereClauseParam("dictionary_type", "BASE");
+        
         String paramTermVal = getParamTerm();
         if (null != paramTermVal && !paramTermVal.isEmpty()) {
             paramTermVal = paramTermVal.replace("'", "\''");
@@ -179,11 +190,17 @@ public class WhodWizardSearchBean {
 
     private String getSearchLevelParam() {
         Object setMode = ADFContext.getCurrent().getPageFlowScope().get("setMode");
-        if ((getParamExtension() != null && getParamExtension().equals("CDG")) ||
-            (setMode != null && setMode.toString().equals("update")))
-            return "CDG" + getParamLevel() + "%";
+        if(setMode != null && setMode.toString().equals("update")){
+        if ((getParamExtension() != null && getParamExtension().equals("TDG")))
+            return "TDG" + getParamLevel() + "%";
         else
-            return getParamExtension() + "DG" + getParamLevel() + "%";
+            return "CDG" + getParamLevel() + "%";
+        }else{
+            if(getParamLevelGroup() == null || getParamLevelGroup().equals("")){
+                return "%";
+            }else
+            return getParamLevelGroup() + getParamLevel() + "%";
+        }
     }
 
     public void onTableNodeSelection(SelectionEvent selectionEvent) {
@@ -672,7 +689,7 @@ public class WhodWizardSearchBean {
         return currentRelaseStatus;
     }
 
-    public void loadAllLOVs() {
+		public void loadAllLOVs() {
         try {
             getWhodStateSI();
             getWhodReleaseStatusSI();
@@ -680,4 +697,38 @@ public class WhodWizardSearchBean {
             e.printStackTrace();
         }
     }
-}
+public void setWhodLevelGroupSI(List<SelectItem> whodLevelGroupSI) {
+        this.whodLevelGroupSI = whodLevelGroupSI;
+    }
+
+    public List<SelectItem> getWhodLevelGroupSI() {
+        //if (whodLevelGroupSI == null) {
+            
+            List<SelectItem> selectItems = new ArrayList<SelectItem>();
+            List<SelectItem> selectItemsToSet = new ArrayList<SelectItem>();
+            selectItems = ADFUtils.selectItemsForIterator("WHODGroupLevelVO1Iterator", "ShortValue", "LongValue");
+            WhodWizardBean whodWizardBean = WhodUtils.getWhodWizardBean();
+            if(whodWizardBean != null && whodWizardBean.getCurrentDictionary().equals("UMCSDG2")){
+                for(SelectItem selectItem : selectItems){
+                    if(selectItem.getValue().toString().equals("CDG") || selectItem.getValue().toString().equals("SDG"))
+                    selectItemsToSet.add(selectItem) ;
+                }
+                whodLevelGroupSI =selectItemsToSet;
+            }else {
+                for(SelectItem selectItem : selectItems){
+                    if(selectItem.getValue().toString().equals("ATC"))
+                    selectItemsToSet.add(selectItem) ;
+                }
+                whodLevelGroupSI =selectItemsToSet; 
+            }
+       // }
+        return whodLevelGroupSI;
+    }
+
+    public void setParamLevelGroup(String paramLevelGroup) {
+        this.paramLevelGroup = paramLevelGroup;
+    }
+
+    public String getParamLevelGroup() {
+        return paramLevelGroup;
+    }}

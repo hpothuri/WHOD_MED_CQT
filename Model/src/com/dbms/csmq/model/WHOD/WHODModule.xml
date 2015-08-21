@@ -36,6 +36,9 @@
   <ViewUsage
     Name="WhodDictionariesListVO1"
     ViewObjectName="com.dbms.csmq.model.WHOD.WhodDictionariesListVO"/>
+  <ViewUsage
+    Name="WHODGroupLevelVO1"
+    ViewObjectName="com.dbms.csmq.model.WHOD.WHODGroupLevelVO"/>
   <ResourceBundle>
     <PropertiesBundle
       PropertiesFile="com.dbms.csmq.model.ModelBundle"/>

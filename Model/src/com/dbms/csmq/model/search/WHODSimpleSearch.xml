@@ -103,10 +103,26 @@
     Kind="where"
     Type="java.lang.String"
     DefaultValue="%"/>
+  <Variable
+    Name="dDictionaryName"
+    Kind="where"
+    Type="java.lang.String"
+    DefaultValue="%"/>
+  <Variable
+    Name="dLevelGroupName"
+    Kind="where"
+    Type="java.lang.String"
+    DefaultValue="%"/>
+  <Variable
+    Name="dictionary_type"
+    Kind="where"
+    Type="java.lang.String"/>
   <SQLQuery><![CDATA[SELECT * 
 FROM TABLE(CQT_WHOD_UI_TMS_UTILS.QUERY_CONTENT_DATA
         (pReleaseStatus       => :dReleaseStatus,
          pReleaseTypeLIST     => :dReleaseTypeLIST,
+         pDictionaryName      => :dDictionaryName,
+         pLevelGroupName      => :dLevelGroupName,
          pLevelName           => :levelName,
          pLevelExtension      => :subLevelName,
          pTermSubtype         => :dTermSubType,
@@ -122,7 +138,8 @@ FROM TABLE(CQT_WHOD_UI_TMS_UTILS.QUERY_CONTENT_DATA
          pStateLIST           => :dStateLIST,
          pDGProductLIST       => :dGProductLIST,
          pDGGroupLIST         => :dGGroupLIST,
-         pDesigneeLIST        => :dDesigneeLIST))]]></SQLQuery>
+         pDesigneeLIST        => :dDesigneeLIST))
+WHERE dictionary_type = :dictionary_type]]></SQLQuery>
   <ViewAttribute
     Name="ReleaseStatus"
     IsUpdateable="false"

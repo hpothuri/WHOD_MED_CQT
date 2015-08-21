@@ -1712,9 +1712,22 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
 
     public List<SelectItem> getWhodDictinoriesSI() {
         if (whodDictinoriesSI == null) {
-            whodDictinoriesSI =
+            List<SelectItem> selectItems = new ArrayList<SelectItem>();
+            List<SelectItem> selectItemsToSet = new ArrayList<SelectItem>();
+            selectItems =
                     ADFUtils.selectItemsForIteratorbyPageDef(WHOD_SEARCH_PAGE_DEF, "WhodDictionariesListVO1Iterator",
                                                              "ShortValue", "LongValue");
+            Object mode = ADFContext.getCurrent().getPageFlowScope().get("setMode");
+            
+            if(mode != null && mode.toString().equals("update")){
+                for(SelectItem selectItem : selectItems){
+                    if(selectItem.getValue().toString().equals("UMCSDG2"))
+                    selectItemsToSet.add(selectItem) ;
+                }
+                whodDictinoriesSI =selectItemsToSet;
+            }else {
+                whodDictinoriesSI =selectItems; 
+            }
         }
         return whodDictinoriesSI;
     }
