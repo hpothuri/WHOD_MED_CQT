@@ -191,21 +191,21 @@
                                 <af:setPropertyListener type="action" from="copy" to="#{pageFlowScope.setMode}"/>
                                 </af:commandMenuItem>
                             </af:menu>   
-                            <af:commandMenuItem text="Update SMQs" id="pt_cmi6" action="UPDATE_SMQ"
+                           <!-- <af:commandMenuItem text="Update SMQs" id="pt_cmi6" action="UPDATE_SMQ"
                                                 rendered='#{securityContext.userInRole["MQM"]}'
-                                                inlineStyle="font-weight:#{UserBean.currentMenu eq 'UPDATE_SMQ' ? 'bold' : 'normal'};"/>
-                            <!--<af:menu text="Update SMQs" id="pt_m6"
+                                                inlineStyle="font-weight:#{UserBean.currentMenu eq 'UPDATE_SMQ' ? 'bold' : 'normal'};"/>-->
+                            <af:menu text="Update Standards" id="pt_m6"
                                      inlineStyle="font-weight:#{UserBean.currentMenu eq 'UPDATE_SMQ' or UserBean.currentMenu eq 'UPDATE_CQT' ? 'bold' : 'normal'};"
                                      rendered='#{securityContext.userInRole["MQM"]}'>
-                                <af:commandMenuItem text="Update SMQs ?" id="pt_cmi6" action="UPDATE_SMQ"
+                                <af:commandMenuItem text="Update SMQ" id="pt_cmi61" action="UPDATE_SMQ"
                                                 rendered='#{securityContext.userInRole["MQM"]}'
                                                 inlineStyle="font-weight:#{UserBean.currentMenu eq 'UPDATE_SMQ' ? 'bold' : 'normal'};"/>
-                                <af:commandMenuItem text="Update SMQs ?" id="pt_cmi16" action="UPDATE_WHOD_SMQ"
+                                <af:commandMenuItem text="Update SDG" id="pt_cmi16" action="UPDATE_WHOD_SMQ"
                                                 rendered='#{securityContext.userInRole["MQM"]}'
                                                 inlineStyle="font-weight:#{UserBean.currentMenu eq 'UPDATE_WHOD_SMQ' ? 'bold' : 'normal'};">
                                 <af:setPropertyListener type="action" from="updateSMQ" to="#{pageFlowScope.setMode}"/>
                                 </af:commandMenuItem>
-                            </af:menu>-->
+                            </af:menu>
                             <af:menu text="Browse &amp; Search" id="pt_m7"
                                      inlineStyle="font-weight:#{UserBean.currentMenu eq 'BROWSE_SEARCH' or UserBean.currentMenu eq 'BROWSE_SEARCH_CDG' ? 'bold' : 'normal'};">
                                 <af:commandMenuItem text="Browse &amp; Search CMQ/SMQ" id="pt_cmi17" action="BROWSE_SEARCH"

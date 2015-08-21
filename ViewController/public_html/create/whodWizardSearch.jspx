@@ -30,7 +30,7 @@
                                                                     valueChangeListener="#{pageFlowScope.WhodWizardSearchBean.dictionaryChange}"
                                                                     value="#{pageFlowScope.WhodWizardBean.currentDictionary}"
                                                                     labelStyle="white-space:nowrap"
-                                                                    valuePassThru="true">
+                                                                    valuePassThru="true" readOnly="true">
                                                     <f:selectItems value="#{pageFlowScope.WhodWizardBean.whodDictinoriesSI}"
                                                                    id="si30"/>
                                                 </af:selectOneChoice>
@@ -56,10 +56,11 @@
                                                 <af:selectOneChoice label="Release Status" id="smc1"
                                                                     showRequired="false"
                                                                     helpTopicId="NMAT_HELP_RELEASE_STATUS"
-                                                                    labelStyle="white-space:nowrap" value="CURRENT"
+                                                                    labelStyle="white-space:nowrap" value="#{pageFlowScope.WhodWizardSearchBean.currentRelaseStatus}"
                                                                     autoSubmit="true"
                                                                     valueChangeListener="#{pageFlowScope.WhodWizardSearchBean.releaseStatusChanged}">
-                                                    <af:selectItem label="All" value="ALL" id="si3"/>
+                                                    <af:selectItem label="All" value="ALL" id="si3"
+                                                                   rendered='#{securityContext.userInRole["MQM"] or securityContext.userInRole ["Requestor"]}'/>
                                                     <!--af:selectItem label="Current" value="CURRENT" id="si3a"/>
                                                     <af:selectItem label="Pending" value="PENDING" id="si2"/-->
                                                     <f:selectItems value="#{pageFlowScope.WhodWizardSearchBean.whodReleaseStatusSI}"
@@ -95,9 +96,12 @@
                                                                     labelStyle="white-space:nowrap"
                                                                     value="#{pageFlowScope.WhodWizardSearchBean.paramStatus}"
                                                                     autoSubmit="true">
-                                                    <af:selectItem label="All" value="%" id="si19"/>
-                                                    <af:selectItem label="Active" value="A" id="si19a"/>
-                                                    <af:selectItem label="Inactive" value="I" id="si16"/>
+                                                    <af:selectItem label="All" value="%" id="si19"
+                                                                   rendered='#{securityContext.userInRole["MQM"] or securityContext.userInRole ["Requestor"]}'/>
+                                                    <af:selectItem label="Active" value="A" id="si19a"
+                                                                   rendered='#{securityContext.userInRole["MQM"] or securityContext.userInRole ["Requestor"]}'/>
+                                                    <af:selectItem label="Inactive" value="I" id="si16"
+                                                                   rendered='#{securityContext.userInRole["MQM"] or securityContext.userInRole ["Requestor"]}'/>
                                                     <af:selectItem label="Pending" value="P" id="si18"/>
                                                 </af:selectOneChoice>
                                             </af:panelFormLayout>
@@ -106,7 +110,7 @@
                                                                      value="#{pageFlowScope.WhodWizardSearchBean.stateList}"
                                                                      helpTopicId="NMAT_HELP_STATE"
                                                                      labelStyle="white-space:nowrap"
-                                                                     valuePassThru="true">
+                                                                     valuePassThru="true" partialTriggers="smc1">
                                                     <!--af:selectItem label="Proposed" value="Proposed" id="si7"/>
                                                     <af:selectItem label="Requested" value="Requested" id="si9"/>
                                                     <af:selectItem label="Draft" value="Draft" id="si11"/>
@@ -166,7 +170,6 @@
                                               inlineStyle="height:230px;" persist="ALL"
                                               summary="This table gives search result"
                                               binding="#{pageFlowScope.WhodWizardSearchBean.ctrlSearchResults}"
-                                              selectedRowKeys="#{bindings.WHODSimpleSearch1.collectionModel.selectedRow}"
                                               editingMode="clickToEdit">
                                         <af:column sortProperty="Term" sortable="true" headerText="Term" id="c20"
                                                    filterable="true" width="300" align="left"> 

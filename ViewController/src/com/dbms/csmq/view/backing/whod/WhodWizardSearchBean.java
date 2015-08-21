@@ -20,6 +20,7 @@ import javax.faces.model.SelectItem;
 import oracle.adf.model.BindingContext;
 import oracle.adf.model.binding.DCBindingContainer;
 import oracle.adf.model.binding.DCIteratorBinding;
+import oracle.adf.share.ADFContext;
 import oracle.adf.view.rich.component.rich.data.RichTable;
 import oracle.adf.view.rich.context.AdfFacesContext;
 
@@ -32,6 +33,7 @@ import org.apache.myfaces.trinidad.event.SelectionEvent;
 
 
 public class WhodWizardSearchBean {
+    public static final String INITIAL_RELEASE_STATUS = "CURRENT";
     private List<SelectItem> whodExtensionSI;
     private List<SelectItem> whodReleaseGroupSI;
     private List<SelectItem> whodProductSI;
@@ -47,6 +49,7 @@ public class WhodWizardSearchBean {
     private String paramScope = CSMQBean.WILDCARD;
     private String paramTerm = null;
     private String paramCode = null;
+    private String currentRelaseStatus = INITIAL_RELEASE_STATUS;;
 
     private List<String> groupList = new ArrayList<String>();
     private List<String> productList = new ArrayList<String>();
@@ -123,6 +126,9 @@ public class WhodWizardSearchBean {
      * @param valueChangeEvent
      */
     public void releaseStatusChanged(ValueChangeEvent valueChangeEvent) {
+        String currentRelaseStatus = valueChangeEvent.getNewValue().toString();
+        this.setCurrentRelaseStatus(currentRelaseStatus);
+        getWhodStateSI();
     }
 
     public void setFocusToSelectedRowBack() {
@@ -145,6 +151,7 @@ public class WhodWizardSearchBean {
         vo.setNamedWhereClauseParam("dGGroupLIST", getParamGroupList()); // search needs ^ as the delimiter
         vo.setNamedWhereClauseParam("dGProductLIST", getParamProductList()); // search needs ^ as the delimiter
         vo.setNamedWhereClauseParam("dGScopeFlag", getParamScope());
+        vo.setNamedWhereClauseParam("dReleaseStatus", getCurrentRelaseStatus());
 
         String paramTermVal = getParamTerm();
         if (null != paramTermVal && !paramTermVal.isEmpty()) {
@@ -170,7 +177,11 @@ public class WhodWizardSearchBean {
     }
 
     private String getSearchLevelParam() {
-        return getParamExtension() + getParamLevel() + "%";
+        Object setMode = ADFContext.getCurrent().getPageFlowScope().get("setMode");
+        if((getParamExtension() != null && getParamExtension().equals("CDG"))||(setMode != null && setMode.toString().equals("update")))
+        return "CDG" + getParamLevel() + "%";
+        else
+        return getParamExtension() + "DG" + getParamLevel() + "%";    
     }
 
     public void onTableNodeSelection(SelectionEvent selectionEvent) {
@@ -521,12 +532,14 @@ public class WhodWizardSearchBean {
     }
 
     private String formSearchStringFromStrList(List<String> selected) {
+        int size = 0;
         if (selected == null || selected.size() == 0) {
             return CSMQBean.WILDCARD;
         }
 
         String paramGroupList = CSMQBean.WILDCARD;
         String temp = "";
+        size = selected.size();
         for (Object s : selected)
             temp = temp + s + CSMQBean.DEFAULT_DELIMETER_CHAR;
 
@@ -535,8 +548,10 @@ public class WhodWizardSearchBean {
 
         if (temp != null & temp.length() > 0)
             paramGroupList = temp.substring(0, temp.length() - 1);
+        if(size == 1)
+        paramGroupList = "%"+paramGroupList+"%";
 
-        return paramGroupList.replace(CSMQBean.DEFAULT_DELIMETER_CHAR, CSMQBean.DEFAULT_SEARCH_DELIMETER_CHAR);
+        return paramGroupList.replace(CSMQBean.DEFAULT_DELIMETER_CHAR, CSMQBean.DEFAULT_DELIMETER_CHAR);
     }
 
     /**
@@ -600,9 +615,23 @@ public class WhodWizardSearchBean {
     }
 
     public List<SelectItem> getWhodStateSI() {
-        if (whodStateSI == null) {
-            whodStateSI = ADFUtils.selectItemsForIterator("WHODStateListVO1Iterator", "ShortValue", "LongValue");
-        }
+       // if (whodStateSI == null) {
+            UserBean userBean = WhodUtils.getUserBean();
+            List<SelectItem> selectItems = new ArrayList<SelectItem>();
+            List<SelectItem> selectItemsBeforeLogin = new ArrayList<SelectItem>();
+            selectItems = ADFUtils.selectItemsForIterator("WHODStateListVO1Iterator", "ShortValue", "ShortValue");
+            if(userBean.isLoggedIn() && !this.getCurrentRelaseStatus().equals("CURRENT"))
+            whodStateSI = selectItems;
+            else{
+                for(SelectItem selectItem : selectItems){
+                    System.out.println("---"+selectItem.getValue());
+                    if(selectItem.getValue() != null && selectItem.getValue().toString().equals("ACTIVATED")){
+                        selectItemsBeforeLogin.add(selectItem);
+                    }
+                    whodStateSI  = selectItemsBeforeLogin;
+                }
+            }
+       // }
         return whodStateSI;
     }
 
@@ -612,9 +641,30 @@ public class WhodWizardSearchBean {
 
     public List<SelectItem> getWhodReleaseStatusSI() {
         if (whodReleaseStatusSI == null) {
-            whodReleaseStatusSI =
-                    ADFUtils.selectItemsForIterator("WHODReleaseStatuListVO1Iterator", "ShortValue", "LongValue");
+            UserBean userBean = WhodUtils.getUserBean();
+            List<SelectItem> selectItems = new ArrayList<SelectItem>();
+            List<SelectItem> selectItemsBeforeLogin = new ArrayList<SelectItem>();
+            selectItems = ADFUtils.selectItemsForIterator("WHODReleaseStatuListVO1Iterator", "ShortValue", "LongValue");
+            if(userBean.isLoggedIn())
+            whodReleaseStatusSI = selectItems;
+            else{
+                for(SelectItem selectItem : selectItems){
+                    System.out.println("---"+selectItem.getValue());
+                    if(selectItem.getValue() != null && selectItem.getValue().toString().equals("CURRENT")){
+                        selectItemsBeforeLogin.add(selectItem);
+                    }
+                    whodReleaseStatusSI  = selectItemsBeforeLogin;
+                }
+            }
         }
         return whodReleaseStatusSI;
+    }
+
+    public void setCurrentRelaseStatus(String currentRelaseStatus) {
+        this.currentRelaseStatus = currentRelaseStatus;
+    }
+
+    public String getCurrentRelaseStatus() {
+        return currentRelaseStatus;
     }
 }

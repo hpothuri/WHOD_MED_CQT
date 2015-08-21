@@ -121,6 +121,7 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
     private boolean standardProduct = true;
     private boolean saved = false;
     private String currentDictionary;
+    private String currentRelaseStatus;
     private boolean isMedDRA = false;
     private boolean isNMQ = false;
     private boolean isSMQ = false;
@@ -384,6 +385,7 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
         if (this.mode == CSMQBean.MODE_UPDATE_EXISTING || this.mode == CSMQBean.MODE_COPY_EXISTING ||
             this.mode == CSMQBean.MODE_UPDATE_SMQ || this.mode == CSMQBean.MODE_BROWSE_SEARCH)
             currentDictionary = cSMQBean.getDefaultWhodFilterDictionaryShortName();
+        
 //        //TODO:WHOD Need to remove hardcoding
 //        currentDictionary = "CQTSDG";
     }
@@ -1688,4 +1690,11 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
         return whodDictinoriesSI;
     }
 
+    public void setCurrentRelaseStatus(String currentRelaseStatus) {
+        this.currentRelaseStatus = currentRelaseStatus;
+    }
+
+    public String getCurrentRelaseStatus() {
+        return currentRelaseStatus;
+    }
 }

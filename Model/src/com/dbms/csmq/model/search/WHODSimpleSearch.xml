@@ -82,8 +82,7 @@
   <Variable
     Name="dReleaseStatus"
     Kind="where"
-    Type="java.lang.String"
-    DefaultValue="%"/>
+    Type="java.lang.String"/>
   <Variable
     Name="dTermSubType"
     Kind="where"
