@@ -45,7 +45,7 @@ public class WhodTermHierarchyBean extends Hierarchy {
     //private GenericTreeNode root;
     private Enumeration rows;
     private HashMap parentNodesByLevel;
-    private boolean editable;
+    private boolean editable = true;
     private String queryLevel;
 
     //Search terms used for term list box
@@ -216,12 +216,13 @@ public class WhodTermHierarchyBean extends Hierarchy {
                     termNode.setFormattedScope("3");
                 }
             }
-            termNode.setShowHasChildrenButton(false);
+            if (subLevelRefName.contains("PT")) {
+                termNode.setShowHasChildrenButton(false);
+            }
             termNode.setLevelName(subLevelRefName);
         } else {
             termNode.setLevelName(childLevel);
         }
-        termNode.setShowHasChildrenButton(true);
 
         //        CSMQBean.logger.info(userBean.getCaller() + " parentNodesByLevel: " + parentNodesByLevel +
         //                             ":; termNode.getParent()=" + termNode.getParent());

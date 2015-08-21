@@ -618,7 +618,7 @@ public class WhodWizardUIBean implements TransactionalDataControl, UpdateableDat
 
         termHierarchyBean.setHasScope(newVal.contains(CSMQBean.HAS_SCOPE));
         whodWizardBean.setCurrentScope(newVal.contains(CSMQBean.HAS_SCOPE) ? CSMQBean.HAS_SCOPE : CSMQBean.FALSE);
-        updateRelations();
+        //updateRelations();
     }
 
     public void maxLevelsChanged(ValueChangeEvent valueChangeEvent) {

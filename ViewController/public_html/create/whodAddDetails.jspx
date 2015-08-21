@@ -23,11 +23,10 @@
                                     <af:panelGroupLayout id="pgl4" valign="top">
                                         <af:panelFormLayout id="pfl1">
                                             <af:selectOneChoice value="#{pageFlowScope.WhodWizardBean.currentExtension}"
-                                                                label="Extension" id="soc5"  autoSubmit="true"
+                                                                label="Extension" id="soc5" autoSubmit="true"
                                                                 rendered="#{WhodRenderingRulesBean.wizardDetailsRenderExtension}"
-                                                                contentStyle="color:#000000;"
-                                                                disabled="true">
-                                                    <!--disabled="#{WhodRenderingRulesBean.wizardDetailsDisableExtention}-->
+                                                                contentStyle="color:#000000;" disabled="true">
+                                                <!--disabled="#{WhodRenderingRulesBean.wizardDetailsDisableExtention}-->
                                                 <f:selectItems value="#{pageFlowScope.WhodWizardBean.whodExtensionSI}"
                                                                id="si31"/>
                                             </af:selectOneChoice>
@@ -66,15 +65,10 @@
                                                                  labelStyle="white-space:nowrap"
                                                                  selectAllVisible="false"
                                                                  readOnly="#{WhodRenderingRulesBean.wizardDetailsDisableNMQProduct}"
-                                                                 rendered="#{WhodRenderingRulesBean.wizardDetailsRenderNMQProduct}"
                                                                  inlineStyle="width:130px;">
                                                 <f:selectItems value="#{pageFlowScope.WhodWizardBean.whodProductSI}"
                                                                id="si18"/>
                                             </af:selectManyChoice>
-                                            <af:inputText label="Product" id="it1"
-                                                          value="#{pageFlowScope.WhodWizardBean.currentProduct}"
-                                                          rendered="#{!WhodRenderingRulesBean.wizardDetailsRenderNMQProduct}"
-                                                          readOnly="true"/>
                                             <af:selectManyChoice label="Designee" id="smc1" autoSubmit="true"
                                                                  valuePassThru="true"
                                                                  value="#{pageFlowScope.WhodWizardBean.designeeList}"
@@ -108,7 +102,8 @@
                                                           contentStyle="color:#000000;"/>
                                             <af:selectOneChoice label="Level" id="soc1" partialTriggers="soc5"
                                                                 value="#{pageFlowScope.WhodWizardBean.currentTermLevel}"
-                                                                labelStyle="white-space:nowrap">
+                                                                labelStyle="white-space:nowrap"
+                                                                readOnly="#{WhodRenderingRulesBean.wizardDetailsDisableNMQLevel}">
                                                 <af:selectItem label="1" value="SDG1"
                                                                rendered="#{pageFlowScope.WhodWizardBean.currentExtension eq 'SDG'}"
                                                                id="si1"/>
@@ -139,21 +134,40 @@
                                                                  requiredMessageDetail="An Group is required."
                                                                  rendered="#{WhodRenderingRulesBean.wizardDetailsRenderNMQGroup}"
                                                                  autoSubmit="true"
+                                                                 readOnly="#{WhodRenderingRulesBean.wizardDetailsDisableNMQGroup}"
                                                                  labelStyle='white-space:nowrap" inlineStyle="width:130px;'
                                                                  contentStyle="color:#000000;">
                                                 <f:selectItems value="#{pageFlowScope.WhodWizardBean.whodGroupSI}"
                                                                id="si7"/>
                                             </af:selectManyChoice>
-                                            <af:inputText label="Group" id="it102" columns="75" showRequired="true"
-                                                          requiredMessageDetail="An MQ Name is required."
-                                                          value="#{pageFlowScope.WhodWizardBean.currentMQGROUP}"
-                                                          immediate="false"
-                                                          rendered="#{!WhodRenderingRulesBean.wizardDetailsRenderNMQGroup}"
-                                                          labelStyle="white-space:nowrap"
-                                                          contentStyle="color:#000000;"/>
                                             <af:inputText label="Code" id="it7" readOnly="true" columns="8" rows="1"
                                                           labelStyle="white-space:nowrap" contentStyle="color:#000000;"
                                                           value="#{(WhodRenderingRulesBean.wizardDetailsDisplayContentCode || pageFlowScope.WhodWizardBean.saved) ? pageFlowScope.WhodWizardBean.currentContentCode : null}"/>
+                                        </af:panelFormLayout>
+                                    </af:panelGroupLayout>
+                                    <af:panelGroupLayout id="pgl6">
+                                        <af:panelFormLayout id="pfl4"
+                                                            rendered="#{WhodRenderingRulesBean.wizardDetailsRenderInitalCreateInfo}">
+                                            <af:inputText value="#{pageFlowScope.WhodWizardBean.currentInitialCreationBy}"
+                                                          label="Initial Creation By " id="it2"
+                                                          rendered="#{WhodRenderingRulesBean.wizardDetailsRenderActivationInfo}"
+                                                          contentStyle="color:#000000;" readOnly="true"
+                                                          labelStyle="white-space:nowrap" columns="25"/>
+                                            <af:inputText value="#{pageFlowScope.WhodWizardBean.currentInitialCreationDate}"
+                                                          label="Initial Creation Date" id="it5"
+                                                          rendered="#{WhodRenderingRulesBean.wizardDetailsRenderActivationInfo}"
+                                                          contentStyle="color:#000000;" readOnly="true"
+                                                          labelStyle="white-space:nowrap" columns="20"/>
+                                            <af:inputText value="#{pageFlowScope.WhodWizardBean.currentActivationBy}"
+                                                          label="Last Activation By" id="it13"
+                                                          rendered="#{WhodRenderingRulesBean.wizardDetailsRenderActivationInfo}"
+                                                          contentStyle="color:#000000;" readOnly="true"
+                                                          labelStyle="white-space:nowrap" columns="25"/>
+                                            <af:inputText value="#{pageFlowScope.WhodWizardBean.currentLastActivationDate}"
+                                                          label="Last Activation Date" id="it12"
+                                                          rendered="#{WhodRenderingRulesBean.wizardDetailsRenderActivationInfo}"
+                                                          contentStyle="color:#000000;" readOnly="true"
+                                                          labelStyle="white-space:nowrap" columns="20"/>
                                         </af:panelFormLayout>
                                     </af:panelGroupLayout>
                                 </af:panelGroupLayout>

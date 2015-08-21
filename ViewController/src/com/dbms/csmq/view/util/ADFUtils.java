@@ -173,6 +173,35 @@ public class ADFUtils {
         return selectItemsForIterator(findIterator(iteratorName), valueAttrName, displayAttrName);
     }
 
+    public static List<SelectItem> selectItemsForIteratorbyPageDef(String pageDefName, String iteratorName,
+                                                          String valueAttrName, String displayAttrName) {
+        return selectItemsForIterator(findIterator(pageDefName, iteratorName), valueAttrName, displayAttrName);
+    }
+
+    /**
+     * Find the BindingContainer for a page definition by name.
+     *
+     * Typically used to refer eagerly to page definition parameters. It is
+     * not best practice to reference or set bindings in binding containers
+     * that are not the one for the current page.
+     *
+     * @param pageDefName name of the page defintion XML file to use
+     * @return BindingContainer ref for the named definition
+     */
+    private static DCBindingContainer findBindingContainerByPageDef(String pageDefName) {
+        BindingContext bctx = BindingContext.getCurrent();
+        DCBindingContainer foundContainer = (DCBindingContainer)bctx.findBindingContainer(pageDefName);
+        return foundContainer;
+    }
+
+    public static DCIteratorBinding findIterator(String pageDefName, String name) {
+        DCIteratorBinding iter = findBindingContainerByPageDef(pageDefName).findIteratorBinding(name);
+        if (iter == null) {
+            throw new RuntimeException("Iterator '" + name + "' not found");
+        }
+        return iter;
+    }
+
     /**
      * Get List of ADF Faces SelectItem for an iterator binding with description.
      *
@@ -563,7 +592,8 @@ public class ADFUtils {
     //            return pfs;
     //        }
 
-    public static Object resolveMethodExpression(String expression, Class returnType, Class[] argTypes, Object[] argValues) {
+    public static Object resolveMethodExpression(String expression, Class returnType, Class[] argTypes,
+                                                 Object[] argValues) {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         Application app = facesContext.getApplication();
         ExpressionFactory elFactory = app.getExpressionFactory();

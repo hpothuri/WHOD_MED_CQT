@@ -40,7 +40,7 @@
                                                                     autoSubmit="true" helpTopicId="NMAT_HELP_QUERY_TYPE"
                                                                     value="#{pageFlowScope.WhodWizardSearchBean.paramExtension}"
                                                                     valueChangeListener="#{pageFlowScope.WhodWizardSearchBean.extensionChanged}">
-                                                    <f:selectItems value="#{pageFlowScope.WhodWizardSearchBean.whodExtensionSI}"
+                                                    <f:selectItems value="#{pageFlowScope.WhodWizardBean.whodExtensionSI}"
                                                                    id="si31"/>
                                                     <af:selectItem id="si301" label="ALL" value="%"/>
                                                 </af:selectOneChoice>
@@ -111,12 +111,6 @@
                                                                      helpTopicId="NMAT_HELP_STATE"
                                                                      labelStyle="white-space:nowrap"
                                                                      valuePassThru="true" partialTriggers="smc1">
-                                                    <!--af:selectItem label="Proposed" value="Proposed" id="si7"/>
-                                                    <af:selectItem label="Requested" value="Requested" id="si9"/>
-                                                    <af:selectItem label="Draft" value="Draft" id="si11"/>
-                                                    <af:selectItem label="Reviewed" value="Reviewed" id="si4"/>
-                                                    <af:selectItem label="Approved" value="Approved" id="si6"/>
-                                                    <af:selectItem label="Published" value="Published" id="si5"/-->
                                                     <f:selectItems value="#{pageFlowScope.WhodWizardSearchBean.whodStateSI}"
                                                                    id="si2"/>
                                                 </af:selectManyChoice>
@@ -124,7 +118,7 @@
                                                                      label="Group" id="smc8"
                                                                      helpTopicId="NMAT_HELP_MQ_GROUP"
                                                                      labelStyle="white-space:nowrap">
-                                                    <f:selectItems value="#{pageFlowScope.WhodWizardSearchBean.whodGroupSI}"
+                                                    <f:selectItems value="#{pageFlowScope.WhodWizardBean.whodGroupSI}"
                                                                    id="si12"/>
                                                 </af:selectManyChoice>
                                                 <af:selectOneChoice label="Scope" id="soc3"

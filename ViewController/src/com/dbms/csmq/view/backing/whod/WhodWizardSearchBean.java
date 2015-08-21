@@ -49,7 +49,7 @@ public class WhodWizardSearchBean {
     private String paramScope = CSMQBean.WILDCARD;
     private String paramTerm = null;
     private String paramCode = null;
-    private String currentRelaseStatus = INITIAL_RELEASE_STATUS;;
+    private String currentRelaseStatus = INITIAL_RELEASE_STATUS;
 
     private List<String> groupList = new ArrayList<String>();
     private List<String> productList = new ArrayList<String>();
@@ -60,6 +60,7 @@ public class WhodWizardSearchBean {
 
     public WhodWizardSearchBean() {
         super();
+        loadAllLOVs();
     }
 
     public void setWhodExtensionSI(List<SelectItem> whodExtensionSI) {
@@ -178,10 +179,11 @@ public class WhodWizardSearchBean {
 
     private String getSearchLevelParam() {
         Object setMode = ADFContext.getCurrent().getPageFlowScope().get("setMode");
-        if((getParamExtension() != null && getParamExtension().equals("CDG"))||(setMode != null && setMode.toString().equals("update")))
-        return "CDG" + getParamLevel() + "%";
+        if ((getParamExtension() != null && getParamExtension().equals("CDG")) ||
+            (setMode != null && setMode.toString().equals("update")))
+            return "CDG" + getParamLevel() + "%";
         else
-        return getParamExtension() + "DG" + getParamLevel() + "%";    
+            return getParamExtension() + "DG" + getParamLevel() + "%";
     }
 
     public void onTableNodeSelection(SelectionEvent selectionEvent) {
@@ -548,8 +550,8 @@ public class WhodWizardSearchBean {
 
         if (temp != null & temp.length() > 0)
             paramGroupList = temp.substring(0, temp.length() - 1);
-        if(size == 1)
-        paramGroupList = "%"+paramGroupList+"%";
+        if (size == 1)
+            paramGroupList = "%" + paramGroupList + "%";
 
         return paramGroupList.replace(CSMQBean.DEFAULT_DELIMETER_CHAR, CSMQBean.DEFAULT_DELIMETER_CHAR);
     }
@@ -615,23 +617,24 @@ public class WhodWizardSearchBean {
     }
 
     public List<SelectItem> getWhodStateSI() {
-       // if (whodStateSI == null) {
-            UserBean userBean = WhodUtils.getUserBean();
-            List<SelectItem> selectItems = new ArrayList<SelectItem>();
-            List<SelectItem> selectItemsBeforeLogin = new ArrayList<SelectItem>();
-            selectItems = ADFUtils.selectItemsForIterator("WHODStateListVO1Iterator", "ShortValue", "ShortValue");
-            if(userBean.isLoggedIn() && !this.getCurrentRelaseStatus().equals("CURRENT"))
+        // if (whodStateSI == null) {
+        UserBean userBean = WhodUtils.getUserBean();
+        List<SelectItem> selectItems = new ArrayList<SelectItem>();
+        List<SelectItem> selectItemsBeforeLogin = new ArrayList<SelectItem>();
+        selectItems =
+                ADFUtils.selectItemsForIteratorbyPageDef(WhodWizardBean.WHOD_SEARCH_PAGE_DEF, "WHODStateListVO1Iterator",
+                                                         "ShortValue", "ShortValue");
+        if (userBean.isLoggedIn() && !this.getCurrentRelaseStatus().equals("CURRENT"))
             whodStateSI = selectItems;
-            else{
-                for(SelectItem selectItem : selectItems){
-                    System.out.println("---"+selectItem.getValue());
-                    if(selectItem.getValue() != null && selectItem.getValue().toString().equals("ACTIVATED")){
-                        selectItemsBeforeLogin.add(selectItem);
-                    }
-                    whodStateSI  = selectItemsBeforeLogin;
+        else {
+            for (SelectItem selectItem : selectItems) {
+                if (selectItem.getValue() != null && selectItem.getValue().toString().equals("ACTIVATED")) {
+                    selectItemsBeforeLogin.add(selectItem);
                 }
+                whodStateSI = selectItemsBeforeLogin;
             }
-       // }
+        }
+        // }
         return whodStateSI;
     }
 
@@ -644,16 +647,17 @@ public class WhodWizardSearchBean {
             UserBean userBean = WhodUtils.getUserBean();
             List<SelectItem> selectItems = new ArrayList<SelectItem>();
             List<SelectItem> selectItemsBeforeLogin = new ArrayList<SelectItem>();
-            selectItems = ADFUtils.selectItemsForIterator("WHODReleaseStatuListVO1Iterator", "ShortValue", "LongValue");
-            if(userBean.isLoggedIn())
-            whodReleaseStatusSI = selectItems;
-            else{
-                for(SelectItem selectItem : selectItems){
-                    System.out.println("---"+selectItem.getValue());
-                    if(selectItem.getValue() != null && selectItem.getValue().toString().equals("CURRENT")){
+            selectItems =
+                    ADFUtils.selectItemsForIteratorbyPageDef(WhodWizardBean.WHOD_SEARCH_PAGE_DEF, "WHODReleaseStatuListVO1Iterator",
+                                                             "ShortValue", "LongValue");
+            if (userBean.isLoggedIn())
+                whodReleaseStatusSI = selectItems;
+            else {
+                for (SelectItem selectItem : selectItems) {
+                    if (selectItem.getValue() != null && selectItem.getValue().toString().equals("CURRENT")) {
                         selectItemsBeforeLogin.add(selectItem);
                     }
-                    whodReleaseStatusSI  = selectItemsBeforeLogin;
+                    whodReleaseStatusSI = selectItemsBeforeLogin;
                 }
             }
         }
@@ -666,5 +670,14 @@ public class WhodWizardSearchBean {
 
     public String getCurrentRelaseStatus() {
         return currentRelaseStatus;
+    }
+
+    public void loadAllLOVs() {
+        try {
+            getWhodStateSI();
+            getWhodReleaseStatusSI();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

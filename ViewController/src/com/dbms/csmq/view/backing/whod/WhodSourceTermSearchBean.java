@@ -197,8 +197,6 @@ public class WhodSourceTermSearchBean extends HierarchyAccessor {
                 this.paramDictionary = nMQWizardBean.getCurrentBaseDictionaryShortName();
             else
                 this.paramDictionary = nMQWizardBean.getCurrentFilterDictionaryShortName();
-            //TODO - Remove hardcode and validate above logic
-            this.paramDictionary = "UMCWHO2"; //"UMCSDG2";
         } catch (Exception e) {
         }
         return paramDictionary;
@@ -789,5 +787,5 @@ public class WhodSourceTermSearchBean extends HierarchyAccessor {
         }
 
         return 0;
-    }    
+    }
 }

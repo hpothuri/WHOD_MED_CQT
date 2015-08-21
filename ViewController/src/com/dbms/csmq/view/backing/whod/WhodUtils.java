@@ -1117,6 +1117,9 @@ new FacesMessage(FacesMessage.SEVERITY_INFO, "Impacted list refreshed for dictio
             System.out.println("newDictContentID==" + newDictContentID);
             if (newDictContentID != null)
                 retVal.put("NEW_DICT_CONTENT_ID", "" + newDictContentID);
+            //            String newDictContentCode = cstmt.getString(1);
+            //           System.out.println("newDictContentCode ==" + newDictContentCode);
+            //            retVal.put("NEW_DICT_CONTENT_CODE", "" + newDictContentCode);
         } catch (SQLException e) {
             e.printStackTrace();
             String messageText;
@@ -1142,10 +1145,12 @@ new FacesMessage(FacesMessage.SEVERITY_INFO, "Impacted list refreshed for dictio
         }
         return retVal;
     }
-    public static Hashtable saveUpdatedDetails(String currentDictContentID, String levelName, String levelExtension, String approvedFlag, String termName,
-                                        String dGScopeFlag, String dGActiveStatus, String dGProductLIST,
-                                        String dGGroupLIST, String commentText, String designee, String userRole,
-                                        String action, String state) {
+
+    public static Hashtable saveUpdatedDetails(String currentDictContentID, String levelName, String levelExtension,
+                                               String approvedFlag, String termName, String dGScopeFlag,
+                                               String dGActiveStatus, String dGProductLIST, String dGGroupLIST,
+                                               String commentText, String designee, String userRole, String action,
+                                               String state) {
 
         dGActiveStatus = "A"; //TODO need to remove this hard coding
         designee = "TEST_REQUESTOR|CQT|CQTOWNER"; //TODO need to remove this hard coding

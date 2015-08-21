@@ -1,20 +1,20 @@
 package com.dbms.csmq.view;
 
+
 import com.dbms.csmq.CSMQBean;
 import com.dbms.csmq.UserBean;
 import com.dbms.csmq.view.backing.whod.WhodWizardBean;
-import com.dbms.csmq.view.backing.NMQ.NMQWizardBean;
 
 import oracle.adf.share.ADFContext;
 import oracle.adf.view.rich.context.AdfFacesContext;
 
 public class WhodRenderingRulesBean {
-    
-    
+
+
     // ******************************** RENDERED *******************************************
-    
+
     // SEARCH
-    private boolean wizardSearchRenderQueryType = true;   
+    private boolean wizardSearchRenderQueryType = true;
     private boolean wizardSearchRenderScope = true;
     private boolean wizardSearchRenderSMQStatus = true;
     private boolean wizardSearchRenderCriticalEvent = true;
@@ -46,43 +46,43 @@ public class WhodRenderingRulesBean {
     private boolean wizardDetailsShowDesigneeList = true;
     private boolean wizardDetailsRenderDesignee = true;
     private boolean wizardDetailsRenderInitalCreateInfo = true;
-    
+
     // RELATIONS
     private boolean wizardRelationsRenderSourceTree = true;
     private boolean wizardRelationsRenderDelete = true;
     private boolean wizardRelationsRenderSave = true;
     private boolean wizardRelationsRenderScope = true;
-    
+
     // INF NOTES
     private boolean wizardInfNotesRenderSave = true;
     private boolean wizardInfNotesRenderTrainStop = true;
-    
+
     // CONFIRM
     private boolean wizardConfirmRenderReactivate = true;
     private boolean wizardConfirmRenderRetire = true;
     private boolean wizardConfirmRenderSubmitToMQM = true;
     private boolean wizardConfirmRenderDelete = true;
     private boolean wizardConfirmRenderInitalCreateInfo = true;
-    
+
     // MENU
     private boolean renderMenu = true;
-    
+
     // ADD RELATIONS SEARCH
-    private boolean addRelationsSearchSelectItemMedDRA= false;
+    private boolean addRelationsSearchSelectItemMedDRA = false;
     private boolean addRelationsSearchSelectItemSMQ = false;
     private boolean addRelationsSearchSelectItemCustom = false;
-    
-        
-    //************************************ DISABLED *******************************************  
-    
+
+
+    //************************************ DISABLED *******************************************
+
     // SEARCH
     private boolean wizardSearchDisableDictionary = false;
     private boolean wizardSearchDisableReleaseStatus = false;
     private boolean wizardSearchDisableQueryType = false;
     private boolean wizardSearchDisableLevel = false;
     private boolean wizardSearchDisableExtension = false;
-    
-    
+
+
     // DETAILS
     private boolean wizardDetailsDisableNMQName = false;
     private boolean wizardDetailsDisableDictionary = false;
@@ -99,7 +99,7 @@ public class WhodRenderingRulesBean {
     private boolean wizardDetailsDisableExtention = false;
     private boolean wizardDetialsDisableCurrentUserDesigneeSelectItem = false;
     private boolean wizardDetailsDisplayContentCode = false;
-    
+
     /*
      * @author MTW
      * 06/20/2014
@@ -108,11 +108,11 @@ public class WhodRenderingRulesBean {
     private boolean wizardDetailsDisableDesignee = false;
     // INF NOTES
     private boolean wizardInfNotesDisableEdit = false;
-    
+
     // RELATIONS
     private boolean wizardRelationsDisableDelete = false;
     private boolean wizardRelationsDisableSave = false;
-    
+
     // CONFIRM
     private boolean wizardConfirmDisableReactivate = false;
     private boolean wizardConfirmDisableRetire = false;
@@ -122,9 +122,9 @@ public class WhodRenderingRulesBean {
     private boolean wizardConfirmDisableReviewed = false;
     private boolean wizardConfirmDisableApproved = false;
     private boolean wizardConfirmDisablePublished = false;
-    
+
     // ************************************ REQUIRED *******************************************
-    
+
     // **** REQUIRED ****
     private boolean wizardDetailsRequireNMQAlgorithm = false;
     private boolean wizardDetailsRequireNMQGroup = false;
@@ -135,34 +135,34 @@ public class WhodRenderingRulesBean {
     *  @fsds NMAT-UC01.01 & NMAT-UC11.01
     */
     private boolean wizardDetailsRequireDesignee = false;
-    
-    
+
+
     //STYLES
     private String wizardRelationsBackgroundFieldColor;
-    
-    
+
+
     // **** LABELS ****
     private String wizardInformativeNotesLabelPrefix;
     private String wizardConfirmLabelPrefix;
     private String wizardDetailsTermName;
     private String wizardSearchQueryType;
-    
+
     // @TODO ARE THESE NEEDED NOW?
     private boolean wizardSearchNMQScopeParam = false;
     private boolean wizardSearchSMQScopeParam = false;
-    
-    
+
+
     // SELECT ITEM FILTERS
     private boolean SMQspecific = false;
     private boolean NMQspecific = false;
     private boolean MEDspecific = false;
-    
+
     // MISC
     private String wizardDetailsCancelButtonText = "Cancel";
     private String wizardDetailsCancelButtonHoverText = "";
 
-    
-    // ROLES            
+
+    // ROLES
     private boolean USER_MQM;
     private boolean USER_REQ;
     private boolean USER_ADMIN;
@@ -174,8 +174,8 @@ public class WhodRenderingRulesBean {
      * @fsds NMAT-UC01.01 & NMAT-UC11.01 & NMAT-UC01.02 & NMAT-UC11.02
      */
     private boolean USER_DESIGNEE;
-                        
-    // MODES            
+
+    // MODES
     private boolean MODE_NEW;
     private boolean MODE_UPDATE;
     private boolean MODE_COPY;
@@ -183,15 +183,15 @@ public class WhodRenderingRulesBean {
     private boolean MODE_BROWSE;
     private boolean MODE_HISTORIC;
     private boolean MODE_IMPACT_ASSESSMENT;
-    
+
     // DICTIONARY
     private boolean DICT_MED;
-    
+
     // QUERY TYPE
     private boolean QUERY_NMQ;
     private boolean QUERY_SMQ;
     private boolean QUERY_CUSTOM;
-    
+
     // STATES
     private boolean STATE_DRAFT;
     private boolean STATE_REQUESTED;
@@ -199,25 +199,26 @@ public class WhodRenderingRulesBean {
     private boolean STATE_PUBLISHED;
     private boolean STATE_PROPOSED;
     private boolean STATE_REVIEWED;
-    
+
     // RELEASE STATUS
     private boolean CURRENT_RELEASE_STATUS;
     private boolean PENDING_RELEASE_STATUS;
-    
+
     // ACTIVITY STATUS
     private boolean ACTIVE_ACTIVITY_STATUS;
     private boolean INACTIVE_ACTIVITY_STATUS;
     private boolean PENDING_ACTIVITY_STATUS;
 
-    WhodWizardBean nMQWizardBean = (WhodWizardBean) AdfFacesContext.getCurrentInstance().getPageFlowScope().get("WhodWizardBean");
+    WhodWizardBean nMQWizardBean =
+        (WhodWizardBean)AdfFacesContext.getCurrentInstance().getPageFlowScope().get("WhodWizardBean");
     UserBean userBean = (UserBean)ADFContext.getCurrent().getSessionScope().get("UserBean");
     String CSMQName = CSMQBean.customMQName;
-    
-     public WhodRenderingRulesBean() {
-        
+
+    public WhodRenderingRulesBean() {
+
         // ROLES
-        USER_MQM = userBean.isUserInRole("MQM"); 
-        USER_REQ = userBean.isUserInRole("Requestor"); 
+        USER_MQM = userBean.isUserInRole("MQM");
+        USER_REQ = userBean.isUserInRole("Requestor");
         USER_ADMIN = userBean.isUserInRole("Admin");
         USER_USER = userBean.isUserInRole("User");
         USER_LOGGED_IN = userBean.isLoggedIn();
@@ -227,7 +228,7 @@ public class WhodRenderingRulesBean {
          * @fsds NMAT-UC01.01 & NMAT-UC11.01 & NMAT-UC01.02 & NMAT-UC11.02
          */
         USER_DESIGNEE = userBean.isUserInRole("Designee");
-        
+
         // MODES
         MODE_NEW = (nMQWizardBean.getMode() == CSMQBean.MODE_INSERT_NEW);
         MODE_UPDATE = (nMQWizardBean.getMode() == CSMQBean.MODE_UPDATE_EXISTING);
@@ -236,16 +237,16 @@ public class WhodRenderingRulesBean {
         MODE_BROWSE = (nMQWizardBean.getMode() == CSMQBean.MODE_BROWSE_SEARCH);
         MODE_HISTORIC = (nMQWizardBean.getMode() == CSMQBean.MODE_HISTORIC);
         MODE_IMPACT_ASSESSMENT = (nMQWizardBean.getMode() == CSMQBean.MODE_IMPACT_ASSESSMENT);
-            
+
         // DICTIONARY
         DICT_MED = nMQWizardBean.isIsMedDRA();
-        MEDspecific = DICT_MED;  
-        
+        MEDspecific = DICT_MED;
+
         // QUERY TYPES
-        QUERY_NMQ = nMQWizardBean.isIsNMQ(); 
-        QUERY_SMQ = nMQWizardBean.isIsSMQ(); 
+        QUERY_NMQ = nMQWizardBean.isIsNMQ();
+        QUERY_SMQ = nMQWizardBean.isIsSMQ();
         QUERY_CUSTOM = !(QUERY_NMQ || QUERY_SMQ);
-        
+
         // STATES
         if (nMQWizardBean.getCurrentState() != null) {
             STATE_APPROVED = (nMQWizardBean.getCurrentState().equals(CSMQBean.STATE_APPROVED));
@@ -254,23 +255,23 @@ public class WhodRenderingRulesBean {
             STATE_DRAFT = (nMQWizardBean.getCurrentState().equals(CSMQBean.STATE_DRAFT));
             STATE_REQUESTED = (nMQWizardBean.getCurrentState().equals(CSMQBean.STATE_REQUESTED));
             STATE_REVIEWED = (nMQWizardBean.getCurrentState().equals(CSMQBean.STATE_REVIEWED));
-            }
+        }
 
         // RELEASE STATUS
         if (nMQWizardBean.getCurrentStatus() != null) {
             CURRENT_RELEASE_STATUS = (nMQWizardBean.getCurrentStatus().equals(CSMQBean.CURRENT_RELEASE_STATUS));
             PENDING_RELEASE_STATUS = (nMQWizardBean.getCurrentStatus().equals(CSMQBean.PENDING_RELEASE_STATUS));
-            }
-        
+        }
+
         // ACTIVITY STATUS
         String tempActivityStatus = nMQWizardBean.getCurrentStatus();
-        
+
         if (tempActivityStatus != null) {
             ACTIVE_ACTIVITY_STATUS = (tempActivityStatus.equals(CSMQBean.ACTIVE_ACTIVITY_STATUS));
             INACTIVE_ACTIVITY_STATUS = (tempActivityStatus.equals(CSMQBean.INACTIVE_ACTIVITY_STATUS));
             PENDING_ACTIVITY_STATUS = (tempActivityStatus.equals(CSMQBean.PENDING_ACTIVITY_STATUS));
-            }
         }
+    }
 
     //  *******************  RENDERED *****************
 
@@ -295,7 +296,8 @@ public class WhodRenderingRulesBean {
     }
 
     public boolean isWizardDetailsRenderReleaseGroup() {
-        if (CURRENT_RELEASE_STATUS || MODE_HISTORIC) wizardDetailsRenderReleaseGroup= false;
+        if (CURRENT_RELEASE_STATUS || MODE_HISTORIC)
+            wizardDetailsRenderReleaseGroup = false;
         return wizardDetailsRenderReleaseGroup;
     }
 
@@ -304,7 +306,8 @@ public class WhodRenderingRulesBean {
     }
 
     public boolean isWizardDetailsRenderNMQStatus() {
-        if (MODE_EDIT_SMQ || MODE_IMPACT_ASSESSMENT) wizardDetailsRenderNMQStatus = false;
+        if (MODE_EDIT_SMQ || MODE_IMPACT_ASSESSMENT)
+            wizardDetailsRenderNMQStatus = false;
         return wizardDetailsRenderNMQStatus;
     }
 
@@ -313,7 +316,8 @@ public class WhodRenderingRulesBean {
     }
 
     public boolean isWizardDetailsRenderNMQAlgorithm() {
-        if (DICT_MED) wizardDetailsRenderNMQAlgorithm = false;
+        if (DICT_MED)
+            wizardDetailsRenderNMQAlgorithm = false;
         return wizardDetailsRenderNMQAlgorithm;
     }
 
@@ -322,7 +326,8 @@ public class WhodRenderingRulesBean {
     }
 
     public boolean isWizardDetailsRenderNMQProduct() {
-        if (MODE_EDIT_SMQ || MODE_IMPACT_ASSESSMENT || (MODE_BROWSE && !QUERY_NMQ)) wizardDetailsRenderNMQProduct = false;
+        if (MODE_EDIT_SMQ || MODE_IMPACT_ASSESSMENT || (MODE_BROWSE && !QUERY_NMQ))
+            wizardDetailsRenderNMQProduct = false;
         return wizardDetailsRenderNMQProduct;
     }
 
@@ -331,7 +336,8 @@ public class WhodRenderingRulesBean {
     }
 
     public boolean isWizardDetailsRenderCriticalEvent() {
-        if (DICT_MED) wizardDetailsRenderCriticalEvent = false;
+        if (DICT_MED)
+            wizardDetailsRenderCriticalEvent = false;
         return wizardDetailsRenderCriticalEvent;
     }
 
@@ -348,7 +354,8 @@ public class WhodRenderingRulesBean {
     }
 
     public boolean isWizardDetailsRenderNMQScope() {
-         if (DICT_MED) wizardDetailsRenderNMQScope = false;
+        if (DICT_MED)
+            wizardDetailsRenderNMQScope = false;
         return wizardDetailsRenderNMQScope;
     }
 
@@ -357,7 +364,8 @@ public class WhodRenderingRulesBean {
     }
 
     public boolean isWizardDetailsRenderNMQGroup() {
-        if (DICT_MED) wizardDetailsRenderNMQGroup = false;
+        if (DICT_MED)
+            wizardDetailsRenderNMQGroup = false;
         return wizardDetailsRenderNMQGroup;
     }
 
@@ -369,56 +377,62 @@ public class WhodRenderingRulesBean {
         return wizardDetailsRenderNMQCode;
     }
 
-     public void setWizardDetailsRenderQueryType(boolean renderQueryType) {
+    public void setWizardDetailsRenderQueryType(boolean renderQueryType) {
         this.wizardDetailsRenderQueryType = renderQueryType;
     }
 
     public boolean isWizardDetailsRenderQueryType() {
-        if (MODE_COPY) this.wizardDetailsRenderQueryType = true;
+        if (MODE_COPY)
+            this.wizardDetailsRenderQueryType = true;
         return wizardDetailsRenderQueryType;
     }
-    
+
     public void setWizardDetailsRenderIsApproved(boolean wizardDetailsRenderIsApproved) {
         this.wizardDetailsRenderIsApproved = wizardDetailsRenderIsApproved;
     }
 
     public boolean isWizardDetailsRenderIsApproved() {
-        if (!MODE_BROWSE) wizardDetailsRenderIsApproved = false;
+        if (!MODE_BROWSE)
+            wizardDetailsRenderIsApproved = false;
         return wizardDetailsRenderIsApproved;
     }
-    
+
     public void setWizardInfNotesRenderTrainStop(boolean wizardInfNotesRenderTrainStop) {
         this.wizardInfNotesRenderTrainStop = wizardInfNotesRenderTrainStop;
     }
 
     public boolean isWizardInfNotesRenderTrainStop() {
-        if (MODE_BROWSE && DICT_MED) wizardInfNotesRenderTrainStop = false;
+        if (MODE_BROWSE && DICT_MED)
+            wizardInfNotesRenderTrainStop = false;
         return wizardInfNotesRenderTrainStop;
     }
-    
-     public void setWizardDetailsRenderState(boolean wizardDetailsRenderState) {
+
+    public void setWizardDetailsRenderState(boolean wizardDetailsRenderState) {
         this.wizardDetailsRenderState = wizardDetailsRenderState;
     }
 
     public boolean isWizardDetailsRenderState() {
-        if (MODE_EDIT_SMQ || MODE_IMPACT_ASSESSMENT || MODE_BROWSE) wizardDetailsRenderState = false;
+        if (MODE_EDIT_SMQ || MODE_IMPACT_ASSESSMENT || MODE_BROWSE)
+            wizardDetailsRenderState = false;
         return wizardDetailsRenderState;
     }
-    
+
     public void setWizardDetailsRenderExtension(boolean wizardDetailsRenderExtension) {
         this.wizardDetailsRenderExtension = wizardDetailsRenderExtension;
     }
 
     public boolean getWizardDetailsRenderExtension() {
-        if (MODE_IMPACT_ASSESSMENT || DICT_MED) wizardDetailsRenderExtension = false;
+        if (MODE_IMPACT_ASSESSMENT || DICT_MED)
+            wizardDetailsRenderExtension = false;
         return wizardDetailsRenderExtension;
     }
-    
+
     /*
      * @author MTW
      * 06/20/2014
      * @fsds NMAT-UC01.02 & NMAT-UC11.02
      */
+
     public void setWizardDetailsRenderDesignee(boolean wizardDetailsRenderDesignee) {
         this.wizardDetailsRenderDesignee = wizardDetailsRenderDesignee;
     }
@@ -427,15 +441,17 @@ public class WhodRenderingRulesBean {
         return wizardDetailsRenderDesignee;
     }
 
-    
+
     //  ***********************   DISABLED   *******************
-    
+
     public void setWizardDetailsDisableNMQName(boolean disableNMQName) {
         this.wizardDetailsDisableNMQName = disableNMQName;
     }
 
     public boolean isWizardDetailsDisableNMQName() {
-        if (MODE_EDIT_SMQ || MODE_IMPACT_ASSESSMENT || MODE_BROWSE || (MODE_UPDATE && (STATE_APPROVED || STATE_PUBLISHED))) wizardDetailsDisableNMQName = true;
+        if (MODE_EDIT_SMQ || MODE_IMPACT_ASSESSMENT || MODE_BROWSE ||
+            (MODE_UPDATE && (STATE_APPROVED || STATE_PUBLISHED)))
+            wizardDetailsDisableNMQName = true;
         return wizardDetailsDisableNMQName;
     }
 
@@ -452,7 +468,9 @@ public class WhodRenderingRulesBean {
     }
 
     public boolean isWizardDetailsDisableReleaseGroup() {
-        if (MODE_NEW || MODE_UPDATE || MODE_BROWSE || MODE_EDIT_SMQ || MODE_IMPACT_ASSESSMENT || (MODE_UPDATE && (STATE_APPROVED || STATE_PUBLISHED))) this.wizardDetailsDisableReleaseGroup = true;
+        if (MODE_NEW || MODE_UPDATE || MODE_BROWSE || MODE_EDIT_SMQ || MODE_IMPACT_ASSESSMENT ||
+            (MODE_UPDATE && (STATE_APPROVED || STATE_PUBLISHED)))
+            this.wizardDetailsDisableReleaseGroup = true;
         return wizardDetailsDisableReleaseGroup;
     }
 
@@ -469,7 +487,8 @@ public class WhodRenderingRulesBean {
     }
 
     public boolean isWizardDetailsDisableNMQAlgorithm() {
-         if (MODE_BROWSE || MODE_IMPACT_ASSESSMENT || MODE_EDIT_SMQ || (MODE_UPDATE && (STATE_APPROVED || STATE_PUBLISHED))) this.wizardDetailsDisableNMQAlgorithm = true;
+        if (MODE_BROWSE || MODE_EDIT_SMQ || (MODE_UPDATE && (STATE_APPROVED || STATE_PUBLISHED)))
+            this.wizardDetailsDisableNMQAlgorithm = true;
         return wizardDetailsDisableNMQAlgorithm;
     }
 
@@ -478,7 +497,8 @@ public class WhodRenderingRulesBean {
     }
 
     public boolean isWizardDetailsDisableNMQProduct() {
-        if (MODE_BROWSE || (MODE_UPDATE && (STATE_APPROVED || STATE_PUBLISHED))) this.wizardDetailsDisableNMQProduct = true;
+        if (MODE_BROWSE || (MODE_UPDATE && (STATE_APPROVED || STATE_PUBLISHED)))
+            this.wizardDetailsDisableNMQProduct = true;
         return wizardDetailsDisableNMQProduct;
     }
 
@@ -487,7 +507,8 @@ public class WhodRenderingRulesBean {
     }
 
     public boolean isWizardDetailsDisableCriticalEvent() {
-        if (USER_REQ || USER_ADMIN || USER_USER || MODE_BROWSE || (MODE_UPDATE && (STATE_APPROVED || STATE_PUBLISHED))) this.wizardDetailsDisableCriticalEvent = true;
+        if (USER_REQ || USER_ADMIN || USER_USER || MODE_BROWSE || (MODE_UPDATE && (STATE_APPROVED || STATE_PUBLISHED)))
+            this.wizardDetailsDisableCriticalEvent = true;
         return wizardDetailsDisableCriticalEvent;
     }
 
@@ -497,7 +518,8 @@ public class WhodRenderingRulesBean {
 
     public boolean isWizardDetailsDisableNMQLevel() {
         //if (!QUERY_NMQ ||  MODE_EDIT_SMQ ||  MODE_BROWSE  ||  MODE_IMPACT_ASSESSMENT || (MODE_UPDATE && (STATE_APPROVED || STATE_PUBLISHED))) this.wizardDetailsDisableNMQLevel = true;
-        if (!(QUERY_NMQ && (MODE_NEW || MODE_COPY))) this.wizardDetailsDisableNMQLevel = true;
+        if (!(MODE_NEW || MODE_COPY))
+            this.wizardDetailsDisableNMQLevel = true;
         return wizardDetailsDisableNMQLevel;
     }
 
@@ -512,8 +534,10 @@ public class WhodRenderingRulesBean {
      * Added USER_REQ
      * @TODO Add USER_DESIGNEE
      */
+
     public boolean isWizardDetailsDisableNMQScope() {
-        if (USER_DESIGNEE || USER_REQ || USER_ADMIN || USER_USER || MODE_BROWSE || (MODE_UPDATE && (STATE_APPROVED || STATE_PUBLISHED))) this.wizardDetailsDisableNMQScope = true;
+        if (MODE_BROWSE || (MODE_UPDATE && (STATE_APPROVED || STATE_PUBLISHED)))
+            this.wizardDetailsDisableNMQScope = true;
         return wizardDetailsDisableNMQScope;
     }
 
@@ -527,8 +551,10 @@ public class WhodRenderingRulesBean {
      * @fsds NMAT-UC01.01 & NMAT-UC11.01 & NMAT-UC01.02 & NMAT-UC11.02
      * Removed USER_REQ (Requestor)
      */
+
     public boolean isWizardDetailsDisableNMQGroup() {
-        if (USER_ADMIN || USER_USER || MODE_BROWSE || (MODE_UPDATE && (STATE_APPROVED || STATE_PUBLISHED))) this.wizardDetailsDisableNMQGroup = true;
+        if (MODE_BROWSE || (MODE_UPDATE && (STATE_APPROVED || STATE_PUBLISHED)))
+            this.wizardDetailsDisableNMQGroup = true;
 
         return wizardDetailsDisableNMQGroup;
     }
@@ -546,7 +572,8 @@ public class WhodRenderingRulesBean {
     }
 
     public boolean isWizardSearchDisableDictionary() {
-        if (MODE_UPDATE || MODE_COPY || MODE_EDIT_SMQ || MODE_IMPACT_ASSESSMENT) this.wizardSearchDisableDictionary = true;
+        if (MODE_UPDATE || MODE_COPY || MODE_EDIT_SMQ || MODE_IMPACT_ASSESSMENT)
+            this.wizardSearchDisableDictionary = true;
         return wizardSearchDisableDictionary;
     }
 
@@ -555,7 +582,8 @@ public class WhodRenderingRulesBean {
     }
 
     public boolean isWizardSearchDisableQueryType() {
-        if (MODE_UPDATE || MODE_EDIT_SMQ || MODE_IMPACT_ASSESSMENT) this.wizardSearchDisableQueryType = true;
+        if (MODE_UPDATE || MODE_EDIT_SMQ || MODE_IMPACT_ASSESSMENT)
+            this.wizardSearchDisableQueryType = true;
         return wizardSearchDisableQueryType;
     }
 
@@ -580,13 +608,14 @@ public class WhodRenderingRulesBean {
     }
 
     /* Author: AMC
-     * Removed MODE_UPDATE from the parameters to get the Update module to display the Extension field 
-     * NMAT-UC03.03 
+     * Removed MODE_UPDATE from the parameters to get the Update module to display the Extension field
+     * NMAT-UC03.03
      * NMAT-UC12.03
      */
+
     public boolean isWizardSearchRenderQueryType() {
         return true;
-       // if (MODE_EDIT_SMQ || MODE_IMPACT_ASSESSMENT) this.wizardSearchRenderQueryType = false;
+        // if (MODE_EDIT_SMQ || MODE_IMPACT_ASSESSMENT) this.wizardSearchRenderQueryType = false;
         //return wizardSearchRenderQueryType;
     }
 
@@ -594,8 +623,9 @@ public class WhodRenderingRulesBean {
         this.SMQspecific = SMQspecific;
     }
 
-    public boolean isSMQspecific() {  // this is used to determine which 
-        if (MODE_EDIT_SMQ || MODE_IMPACT_ASSESSMENT || MODE_BROWSE) SMQspecific = true;
+    public boolean isSMQspecific() { // this is used to determine which
+        if (MODE_EDIT_SMQ || MODE_IMPACT_ASSESSMENT || MODE_BROWSE)
+            SMQspecific = true;
         return SMQspecific;
     }
 
@@ -604,7 +634,8 @@ public class WhodRenderingRulesBean {
     }
 
     public boolean isNMQspecific() {
-        if (MODE_NEW || MODE_UPDATE || MODE_COPY || MODE_BROWSE) NMQspecific = true;
+        if (MODE_NEW || MODE_UPDATE || MODE_COPY || MODE_BROWSE)
+            NMQspecific = true;
         return NMQspecific;
     }
 
@@ -613,7 +644,8 @@ public class WhodRenderingRulesBean {
     }
 
     public boolean isWizardInfNotesDisableEdit() {
-        if (MODE_EDIT_SMQ || MODE_BROWSE || STATE_APPROVED || STATE_PUBLISHED) wizardInfNotesDisableEdit = true;
+        if (MODE_EDIT_SMQ || MODE_BROWSE || STATE_APPROVED || STATE_PUBLISHED)
+            wizardInfNotesDisableEdit = true;
         return wizardInfNotesDisableEdit;
     }
 
@@ -622,7 +654,8 @@ public class WhodRenderingRulesBean {
     }
 
     public boolean isWizardRelationsRenderSourceTree() {
-        if (MODE_EDIT_SMQ || MODE_BROWSE || MODE_HISTORIC || MODE_IMPACT_ASSESSMENT) wizardRelationsRenderSourceTree = false;
+        if (MODE_EDIT_SMQ || MODE_BROWSE || MODE_HISTORIC || MODE_IMPACT_ASSESSMENT)
+            wizardRelationsRenderSourceTree = false;
         return wizardRelationsRenderSourceTree;
     }
 
@@ -631,7 +664,8 @@ public class WhodRenderingRulesBean {
     }
 
     public boolean isWizardRelationsRenderDelete() {
-        if (MODE_EDIT_SMQ || MODE_BROWSE || MODE_HISTORIC) wizardRelationsRenderDelete = false;
+        if (MODE_EDIT_SMQ || MODE_BROWSE || MODE_HISTORIC)
+            wizardRelationsRenderDelete = false;
         return wizardRelationsRenderDelete;
     }
 
@@ -640,7 +674,8 @@ public class WhodRenderingRulesBean {
     }
 
     public boolean isWizardInfNotesRenderSave() {
-        if (MODE_EDIT_SMQ || MODE_BROWSE) wizardInfNotesRenderSave = false;
+        if (MODE_EDIT_SMQ || MODE_BROWSE)
+            wizardInfNotesRenderSave = false;
         return wizardInfNotesRenderSave;
     }
 
@@ -649,7 +684,8 @@ public class WhodRenderingRulesBean {
     }
 
     public boolean isWizardDetailsRenderSave() {
-        if (MODE_BROWSE) wizardDetailsRenderSave = false;
+        if (MODE_BROWSE)
+            wizardDetailsRenderSave = false;
         return wizardDetailsRenderSave;
     }
 
@@ -684,13 +720,14 @@ public class WhodRenderingRulesBean {
     public boolean isWizardSearchRenderGroup() {
         return wizardSearchRenderGroup;
     }
-    
+
     public void setWizardRelationsRenderSave(boolean wizardRelationsRenderSave) {
         this.wizardRelationsRenderSave = wizardRelationsRenderSave;
     }
 
     public boolean isWizardRelationsRenderSave() {
-        if (MODE_EDIT_SMQ || MODE_BROWSE || MODE_HISTORIC) wizardRelationsRenderSave = false;
+        if (MODE_EDIT_SMQ || MODE_BROWSE || MODE_HISTORIC)
+            wizardRelationsRenderSave = false;
         return wizardRelationsRenderSave;
     }
 
@@ -699,7 +736,8 @@ public class WhodRenderingRulesBean {
     }
 
     public boolean isWizardConfirmRenderReactivate() {
-        if (MODE_EDIT_SMQ) wizardConfirmRenderReactivate = false;
+        if (MODE_EDIT_SMQ)
+            wizardConfirmRenderReactivate = false;
         return wizardConfirmRenderReactivate;
     }
 
@@ -708,7 +746,8 @@ public class WhodRenderingRulesBean {
     }
 
     public boolean isWizardConfirmRenderRetire() {
-        if (MODE_EDIT_SMQ) wizardConfirmRenderRetire = false;
+        if (MODE_EDIT_SMQ)
+            wizardConfirmRenderRetire = false;
         return wizardConfirmRenderRetire;
     }
 
@@ -717,7 +756,8 @@ public class WhodRenderingRulesBean {
     }
 
     public boolean isWizardConfirmRenderSubmitToMQM() {
-        if (USER_MQM) wizardConfirmRenderSubmitToMQM = false;
+        if (USER_MQM)
+            wizardConfirmRenderSubmitToMQM = false;
         return wizardConfirmRenderSubmitToMQM;
     }
 
@@ -726,7 +766,8 @@ public class WhodRenderingRulesBean {
     }
 
     public boolean isWizardConfirmRenderDelete() {
-        if (MODE_NEW || MODE_COPY || MODE_EDIT_SMQ || MODE_BROWSE) wizardConfirmRenderDelete = false;
+        if (MODE_NEW || MODE_COPY || MODE_EDIT_SMQ || MODE_BROWSE)
+            wizardConfirmRenderDelete = false;
         return wizardConfirmRenderDelete;
     }
 
@@ -735,7 +776,7 @@ public class WhodRenderingRulesBean {
     }
 
     public String getWizardDetailsCancelButtonText() {
-       if (MODE_NEW || MODE_COPY || MODE_UPDATE || MODE_EDIT_SMQ) 
+        if (MODE_NEW || MODE_COPY || MODE_UPDATE || MODE_EDIT_SMQ)
             wizardDetailsCancelButtonText = "Cancel/Exit";
         return wizardDetailsCancelButtonText;
     }
@@ -745,7 +786,9 @@ public class WhodRenderingRulesBean {
     }
 
     public String getWizardDetailsCancelButtonHoverText() {
-        if (MODE_NEW || MODE_COPY || MODE_UPDATE || MODE_EDIT_SMQ) wizardDetailsCancelButtonHoverText = "Save your work before Cancel/Exit.  Only work that has been Saved will be available.";
+        if (MODE_NEW || MODE_COPY || MODE_UPDATE || MODE_EDIT_SMQ)
+            wizardDetailsCancelButtonHoverText =
+                    "Save your work before Cancel/Exit.  Only work that has been Saved will be available.";
         return wizardDetailsCancelButtonHoverText;
     }
 
@@ -754,7 +797,8 @@ public class WhodRenderingRulesBean {
     }
 
     public boolean isRenderMenu() {
-        if (MODE_BROWSE) renderMenu = false;
+        if (MODE_BROWSE)
+            renderMenu = false;
         return renderMenu;
     }
 
@@ -763,7 +807,8 @@ public class WhodRenderingRulesBean {
     }
 
     public boolean isWizardConfirmDisableReactivate() {
-        if (!USER_MQM || !INACTIVE_ACTIVITY_STATUS) wizardConfirmDisableReactivate = true;
+        if (!USER_MQM || !INACTIVE_ACTIVITY_STATUS)
+            wizardConfirmDisableReactivate = true;
         return wizardConfirmDisableReactivate;
     }
 
@@ -772,7 +817,8 @@ public class WhodRenderingRulesBean {
     }
 
     public boolean isWizardConfirmDisableRetire() {
-        if (!USER_MQM || MODE_EDIT_SMQ || PENDING_RELEASE_STATUS || INACTIVE_ACTIVITY_STATUS) wizardConfirmDisableRetire = true;
+        if (!USER_MQM || MODE_EDIT_SMQ || PENDING_RELEASE_STATUS || INACTIVE_ACTIVITY_STATUS)
+            wizardConfirmDisableRetire = true;
         return wizardConfirmDisableRetire;
     }
 
@@ -781,7 +827,8 @@ public class WhodRenderingRulesBean {
     }
 
     public boolean isWizardConfirmDisableSubmitToMQM() {
-        if(!(USER_REQ && STATE_PROPOSED)) wizardConfirmDisableSubmitToMQM = true;
+        if (!(USER_REQ && STATE_PROPOSED))
+            wizardConfirmDisableSubmitToMQM = true;
         return wizardConfirmDisableSubmitToMQM;
     }
 
@@ -790,8 +837,9 @@ public class WhodRenderingRulesBean {
     }
 
     public boolean isWizardConfirmDisableDelete() {
-    if (CURRENT_RELEASE_STATUS || (!QUERY_CUSTOM && USER_REQ && !STATE_PROPOSED)) wizardConfirmDisableDelete = true;
-            return wizardConfirmDisableDelete;
+        if (CURRENT_RELEASE_STATUS || (!QUERY_CUSTOM && USER_REQ && !STATE_PROPOSED))
+            wizardConfirmDisableDelete = true;
+        return wizardConfirmDisableDelete;
     }
 
     public void setWizardConfirmDisableDemoteToDraft(boolean wizardConfirmDisableDemoteToDraft) {
@@ -799,9 +847,10 @@ public class WhodRenderingRulesBean {
     }
 
     public boolean isWizardConfirmDisableDemoteToDraft() {
-        
-        if ((STATE_DRAFT || STATE_REQUESTED || STATE_PROPOSED || CURRENT_RELEASE_STATUS) || 
-            (USER_REQ && (!QUERY_CUSTOM || !STATE_PUBLISHED))) wizardConfirmDisableDemoteToDraft = true;
+
+        if ((STATE_DRAFT || STATE_REQUESTED || STATE_PROPOSED || CURRENT_RELEASE_STATUS) ||
+            (USER_REQ && (!QUERY_CUSTOM || !STATE_PUBLISHED)))
+            wizardConfirmDisableDemoteToDraft = true;
         //if (!USER_MQM || STATE_DRAFT || STATE_REQUESTED || STATE_PROPOSED || CURRENT_RELEASE_STATUS) wizardConfirmDisableDemoteToDraft = true;
         return wizardConfirmDisableDemoteToDraft;
     }
@@ -819,16 +868,18 @@ public class WhodRenderingRulesBean {
     }
 
     public boolean isWizardDetailsDisableSave() {
-        if (STATE_APPROVED || STATE_PUBLISHED) wizardDetailsDisableSave = true;                         
+        if (STATE_APPROVED || STATE_PUBLISHED)
+            wizardDetailsDisableSave = true;
         return wizardDetailsDisableSave;
     }
-    
+
     public void setWizardDetailsDisableExtention(boolean wizardDetailsDisableExtention) {
         this.wizardDetailsDisableExtention = wizardDetailsDisableExtention;
     }
 
     public boolean isWizardDetailsDisableExtention() {
-        if ((MODE_UPDATE && !USER_MQM) || (MODE_EDIT_SMQ || MODE_BROWSE || STATE_APPROVED || STATE_PUBLISHED)) wizardDetailsDisableExtention = true;
+        if ((MODE_UPDATE && !USER_MQM) || (MODE_EDIT_SMQ || MODE_BROWSE || STATE_APPROVED || STATE_PUBLISHED))
+            wizardDetailsDisableExtention = true;
         return wizardDetailsDisableExtention;
     }
 
@@ -837,7 +888,8 @@ public class WhodRenderingRulesBean {
     }
 
     public boolean isWizardRelationsDisableDelete() {
-        if (STATE_APPROVED || STATE_PUBLISHED) wizardRelationsDisableDelete = true;
+        if (STATE_APPROVED || STATE_PUBLISHED)
+            wizardRelationsDisableDelete = true;
         return wizardRelationsDisableDelete;
     }
 
@@ -846,7 +898,8 @@ public class WhodRenderingRulesBean {
     }
 
     public boolean isWizardRelationsDisableSave() {
-        if (STATE_APPROVED || STATE_PUBLISHED) wizardRelationsDisableSave = true;
+        if (STATE_APPROVED || STATE_PUBLISHED)
+            wizardRelationsDisableSave = true;
         return wizardRelationsDisableSave;
     }
 
@@ -856,7 +909,8 @@ public class WhodRenderingRulesBean {
     }
 
     public boolean isWizardConfirmDisableReviewed() {
-        if (!(STATE_DRAFT  && USER_MQM)) wizardConfirmDisableReviewed = true;
+        if (!(STATE_DRAFT && USER_MQM))
+            wizardConfirmDisableReviewed = true;
         return wizardConfirmDisableReviewed;
     }
 
@@ -865,24 +919,26 @@ public class WhodRenderingRulesBean {
     }
 
     public boolean isWizardConfirmDisableApproved() {
-        if (!((STATE_REVIEWED) && USER_MQM)) wizardConfirmDisableApproved = true;
+        if (!((STATE_REVIEWED) && USER_MQM))
+            wizardConfirmDisableApproved = true;
         return wizardConfirmDisableApproved;
     }
-    
+
     /*
      * @author MTW
      * 06/20/2014
      * @fsds NMAT-UC01.01 & NMAT-UC11.01 & NMAT-UC01.02 & NMAT-UC11.02
      */
+
     public void setWizardDetailsDisableDesignee(boolean wizardDetailsDisableDesignee) {
         this.wizardDetailsDisableDesignee = wizardDetailsDisableDesignee;
     }
 
     public boolean isWizardDetailsDisableDesignee() {
-        if (MODE_BROWSE || (MODE_UPDATE && (STATE_APPROVED || STATE_PUBLISHED))) this.wizardDetailsDisableDesignee = true;
+        if (MODE_BROWSE || (MODE_UPDATE && (STATE_APPROVED || STATE_PUBLISHED)))
+            this.wizardDetailsDisableDesignee = true;
         return wizardDetailsDisableDesignee;
     }
-    
 
 
     ///  ******** REQUIRED *****
@@ -932,10 +988,11 @@ public class WhodRenderingRulesBean {
     * 06/12/2014
     * NMAT-UC01.02 & NMAT-UC11.02
     */
+
     public void setWizardDetailsRequireDesignee(boolean wizardDetailsRequireDesignee) {
         this.wizardDetailsRequireDesignee = wizardDetailsRequireDesignee;
     }
-    
+
     public boolean isWizardDetailsRequireDesignee() {
         if (!QUERY_NMQ && (MODE_COPY || MODE_EDIT_SMQ || MODE_NEW || MODE_UPDATE || MODE_IMPACT_ASSESSMENT))
             wizardDetailsRequireDesignee = true;
@@ -948,7 +1005,8 @@ public class WhodRenderingRulesBean {
 
     public String getWizardInformativeNotesLabelPrefix() {
         wizardInformativeNotesLabelPrefix = CSMQBean.customMQName;
-        if (MODE_BROWSE) wizardInformativeNotesLabelPrefix = CSMQBean.customMQName + "/" + CSMQBean.SMQ_NAME;
+        if (MODE_BROWSE)
+            wizardInformativeNotesLabelPrefix = CSMQBean.customMQName + "/" + CSMQBean.SMQ_NAME;
         return wizardInformativeNotesLabelPrefix;
     }
 
@@ -958,18 +1016,20 @@ public class WhodRenderingRulesBean {
 
     public String getWizardConfirmLabelPrefix() {
         wizardConfirmLabelPrefix = CSMQBean.customMQName;
-        if (MODE_EDIT_SMQ) wizardConfirmLabelPrefix = CSMQBean.SMQ_NAME;
+        if (MODE_EDIT_SMQ)
+            wizardConfirmLabelPrefix = CSMQBean.SMQ_NAME;
         return wizardConfirmLabelPrefix;
-        
+
     }
 
     public void setWizardDetailsTermName(String wizardDetailsTermName) {
         this.wizardDetailsTermName = wizardDetailsTermName;
     }
 
-    public String getWizardDetailsTermName() {       
+    public String getWizardDetailsTermName() {
         wizardDetailsTermName = CSMQBean.customMQName + " Name";
-        if (MODE_BROWSE) wizardDetailsTermName = "term";
+        if (MODE_BROWSE)
+            wizardDetailsTermName = "term";
         return wizardDetailsTermName;
     }
 
@@ -979,7 +1039,8 @@ public class WhodRenderingRulesBean {
 
     public String getWizardSearchQueryType() {
         wizardSearchQueryType = "Level";
-        if (MODE_COPY || MODE_EDIT_SMQ) wizardSearchQueryType = "Query Type";
+        if (MODE_COPY || MODE_EDIT_SMQ)
+            wizardSearchQueryType = "Query Type";
         return wizardSearchQueryType;
     }
 
@@ -988,7 +1049,8 @@ public class WhodRenderingRulesBean {
     }
 
     public boolean isWizardRelationsRenderScope() {
-        if (DICT_MED) wizardRelationsRenderScope = false;        
+        if (DICT_MED)
+            wizardRelationsRenderScope = false;
         return wizardRelationsRenderScope;
     }
 
@@ -999,20 +1061,21 @@ public class WhodRenderingRulesBean {
 
     public String getWizardRelationsBackgroundFieldColor() {
         wizardRelationsBackgroundFieldColor = "background-color:transparent;";
-      
+
         if ((nMQWizardBean.getCurrentScope() == null) || (!nMQWizardBean.getCurrentScope().equals(CSMQBean.HAS_SCOPE)))
             wizardRelationsBackgroundFieldColor = "font-style:italic; background-color:Silver;";
-        
+
         return wizardRelationsBackgroundFieldColor;
     }
-    
+
 
     public void setWizardSearchDisableReleaseStatus(boolean wizardSearchDisableReleaseStatus) {
         this.wizardSearchDisableReleaseStatus = wizardSearchDisableReleaseStatus;
     }
 
     public boolean isWizardSearchDisableReleaseStatus() {
-        if (!USER_LOGGED_IN) wizardSearchDisableReleaseStatus = true;
+        if (!USER_LOGGED_IN)
+            wizardSearchDisableReleaseStatus = true;
         return wizardSearchDisableReleaseStatus;
     }
 
@@ -1021,7 +1084,8 @@ public class WhodRenderingRulesBean {
     }
 
     public boolean isAddRelationsSearchSelectItemMedDRA() {
-        if (DICT_MED) addRelationsSearchSelectItemMedDRA = true;
+        if (DICT_MED)
+            addRelationsSearchSelectItemMedDRA = true;
         return addRelationsSearchSelectItemMedDRA;
     }
 
@@ -1030,7 +1094,8 @@ public class WhodRenderingRulesBean {
     }
 
     public boolean isAddRelationsSearchSelectItemSMQ() {
-        if (!DICT_MED && QUERY_NMQ) addRelationsSearchSelectItemSMQ = true;
+        if (!DICT_MED && QUERY_NMQ)
+            addRelationsSearchSelectItemSMQ = true;
         return addRelationsSearchSelectItemSMQ;
     }
 
@@ -1039,7 +1104,8 @@ public class WhodRenderingRulesBean {
     }
 
     public boolean isAddRelationsSearchSelectItemCustom() {
-        if (!DICT_MED && QUERY_CUSTOM) addRelationsSearchSelectItemCustom = true;
+        if (!DICT_MED && QUERY_CUSTOM)
+            addRelationsSearchSelectItemCustom = true;
         return addRelationsSearchSelectItemCustom;
     }
 
@@ -1048,8 +1114,9 @@ public class WhodRenderingRulesBean {
     }
 
     public boolean isWizardDetailsRenderActivationInfo() {
-        if (MODE_NEW || MODE_UPDATE || MODE_BROWSE || MODE_COPY) wizardDetailsRenderActivationInfo = true;
-        
+        if (MODE_NEW || MODE_UPDATE || MODE_BROWSE || MODE_COPY)
+            wizardDetailsRenderActivationInfo = true;
+
         return wizardDetailsRenderActivationInfo;
     }
 
@@ -1058,7 +1125,8 @@ public class WhodRenderingRulesBean {
     }
 
     public boolean isWizardDetailsRenderNMQSelItems() {
-        if (QUERY_NMQ || QUERY_CUSTOM ) wizardDetailsRenderNMQSelItems = true;
+        if (QUERY_NMQ || QUERY_CUSTOM)
+            wizardDetailsRenderNMQSelItems = true;
         return wizardDetailsRenderNMQSelItems;
     }
 
@@ -1067,7 +1135,8 @@ public class WhodRenderingRulesBean {
     }
 
     public boolean isWizardDetailsRenderSMQSelItems() {
-        if (QUERY_SMQ || MODE_COPY) wizardDetailsRenderSMQSelItems = true;
+        if (QUERY_SMQ || MODE_COPY)
+            wizardDetailsRenderSMQSelItems = true;
         return wizardDetailsRenderSMQSelItems;
     }
 
@@ -1076,7 +1145,8 @@ public class WhodRenderingRulesBean {
     }
 
     public boolean isWizardDetailsRenderMedDRASelItems() {
-        if (DICT_MED) wizardDetailsRenderMedDRASelItems = true;
+        if (DICT_MED)
+            wizardDetailsRenderMedDRASelItems = true;
         return wizardDetailsRenderMedDRASelItems;
     }
 
@@ -1085,7 +1155,8 @@ public class WhodRenderingRulesBean {
     }
 
     public boolean isWizardSearchDisableLevel() {
-        if (!DICT_MED || QUERY_CUSTOM) wizardSearchDisableLevel = true;
+        if (!DICT_MED || QUERY_CUSTOM)
+            wizardSearchDisableLevel = true;
         return wizardSearchDisableLevel;
     }
 
@@ -1093,8 +1164,9 @@ public class WhodRenderingRulesBean {
         this.wizardConfirmDisablePublished = wizardConfirmPublished;
     }
 
-    public boolean isWizardConfirmDisablePublished() { 
-        if (!(QUERY_CUSTOM && STATE_DRAFT) || STATE_PUBLISHED) wizardConfirmDisablePublished = true;
+    public boolean isWizardConfirmDisablePublished() {
+        if (!(QUERY_CUSTOM && STATE_DRAFT) || STATE_PUBLISHED)
+            wizardConfirmDisablePublished = true;
         return wizardConfirmDisablePublished;
     }
 
@@ -1103,7 +1175,8 @@ public class WhodRenderingRulesBean {
     }
 
     public boolean isWizardDetailsShowSMQInSelectList() {
-        if (MODE_BROWSE || MODE_EDIT_SMQ) wizardDetailsShowSMQInSelectList = true;        
+        if (MODE_BROWSE || MODE_EDIT_SMQ)
+            wizardDetailsShowSMQInSelectList = true;
         return wizardDetailsShowSMQInSelectList;
     }
 
@@ -1112,7 +1185,8 @@ public class WhodRenderingRulesBean {
     }
 
     public boolean isWizardDetailsShowDesigneeList() {
-        if (QUERY_SMQ && !MODE_COPY) wizardDetailsShowDesigneeList = false;
+        if (QUERY_SMQ && !MODE_COPY)
+            wizardDetailsShowDesigneeList = false;
         return wizardDetailsShowDesigneeList;
     }
 
@@ -1121,7 +1195,8 @@ public class WhodRenderingRulesBean {
     }
 
     public boolean isWizardSearchRenderSMQSelectItem() {
-        if (!(MODE_BROWSE || MODE_COPY || MODE_EDIT_SMQ)) wizardSearchRenderSMQSelectItem = false;
+        if (!(MODE_BROWSE || MODE_COPY || MODE_EDIT_SMQ))
+            wizardSearchRenderSMQSelectItem = false;
         return wizardSearchRenderSMQSelectItem;
     }
 
@@ -1130,7 +1205,8 @@ public class WhodRenderingRulesBean {
     }
 
     public boolean isWizardDetialsDisableCurrentUserDesigneeSelectItem() {
-        if (!(MODE_NEW || MODE_COPY)) wizardDetialsDisableCurrentUserDesigneeSelectItem = false;
+        if (!(MODE_NEW || MODE_COPY))
+            wizardDetialsDisableCurrentUserDesigneeSelectItem = false;
         return wizardDetialsDisableCurrentUserDesigneeSelectItem;
     }
 
@@ -1139,7 +1215,8 @@ public class WhodRenderingRulesBean {
     }
 
     public boolean isWizardDetailsRenderInitalCreateInfo() {
-        if (MODE_NEW || MODE_COPY) wizardDetailsRenderInitalCreateInfo = false;
+        if (MODE_NEW || MODE_COPY)
+            wizardDetailsRenderInitalCreateInfo = false;
         return wizardDetailsRenderInitalCreateInfo;
     }
 
@@ -1148,7 +1225,8 @@ public class WhodRenderingRulesBean {
     }
 
     public boolean isWizardConfirmRenderInitalCreateInfo() {
-        if (MODE_NEW || MODE_COPY) wizardConfirmRenderInitalCreateInfo = false;
+        if (MODE_NEW || MODE_COPY)
+            wizardConfirmRenderInitalCreateInfo = false;
         return wizardConfirmRenderInitalCreateInfo;
     }
 
@@ -1157,7 +1235,8 @@ public class WhodRenderingRulesBean {
     }
 
     public boolean isWizardSearchDisableExtension() {
-        if (MODE_EDIT_SMQ) wizardSearchDisableExtension = true;
+        if (MODE_EDIT_SMQ)
+            wizardSearchDisableExtension = true;
         return wizardSearchDisableExtension;
     }
 
@@ -1166,7 +1245,8 @@ public class WhodRenderingRulesBean {
     }
 
     public boolean isWizardDetailsDisplayContentCode() {
-        if (MODE_UPDATE || MODE_EDIT_SMQ || MODE_BROWSE) wizardDetailsDisplayContentCode = true;
+        if (MODE_UPDATE || MODE_EDIT_SMQ || MODE_BROWSE)
+            wizardDetailsDisplayContentCode = true;
         return wizardDetailsDisplayContentCode;
     }
 }

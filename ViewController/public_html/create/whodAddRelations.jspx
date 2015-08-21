@@ -43,7 +43,9 @@
                                                 <af:commandToolbarButton text="Save" id="cb3"
                                                                          actionListener="#{pageFlowScope.WhodSourceTermSearchBean.updateRelations}"
                                                                          partialSubmit="true"
-                                                                         icon="/image/database_save.png"/>
+                                                                         icon="/image/database_save.png"
+                                                                         disabled="#{!pageFlowScope.WhodTermHierarchyBean.editable or WhodRenderingRulesBean.wizardRelationsDisableSave}"
+                                                                         rendered="#{WhodRenderingRulesBean.wizardRelationsRenderSave}"/> 
                                                 <af:commandToolbarButton text="Export" id="ctb11a" disabled="false"
                                                                          icon="/image/hierarchy/EXCEL.png">
                                                     <af:fileDownloadActionListener method="#{pageFlowScope.WhodHierarchyExportBean.export}"
@@ -52,7 +54,8 @@
                                                 </af:commandToolbarButton>
                                                 <af:commandToolbarButton text="Hierarchy Search" id="cb6"
                                                                          icon="/image/tree.png" partialSubmit="true"
-                                                                         actionListener="#{WhodSourceTermSearchUIBean.openHierarchySearchPopupAction}">
+                                                                         actionListener="#{WhodSourceTermSearchUIBean.openHierarchySearchPopupAction}"
+                                                                         rendered="#{WhodRenderingRulesBean.wizardRelationsRenderSave}">
                                                     <!--<af:showPopupBehavior popupId="::p1"/>-->
                                                 </af:commandToolbarButton>
                                             </af:toolbar>
@@ -84,16 +87,16 @@
                                             </f:facet>
                                             <af:column headerText="Hierarchy Details" id="c6" width="572"
                                                        sortable="true">
-                                                <af:column id="c19" headerText="Code" width="50" sortable="true"
-                                                           filterable="true">
+                                                <af:column id="c19" headerText="Code" width="100" sortable="true"
+                                                           filterable="true">  
                                                     <af:outputText value="#{node.dictContentCode}" id="ot20"/>
                                                 </af:column>
-                                                <af:column id="c2" headerText="Level" width="50" sortable="true"
+                                                <af:column id="c2" headerText="Level" width="35" sortable="true"
                                                            filterable="true">
                                                     <af:outputText id="ot3" value="#{node.levelName}"/>
                                                     <!--value="#{pageFlowScope.TermHierarchyBean.queryLevel}"/>-->
                                                 </af:column>
-                                                <af:column id="c3" headerText="Scope" sortable="true" filterable="true"
+                                                <af:column id="c3" headerText="Scope" width="60" sortable="true" filterable="true"
                                                            rendered="#{!pageFlowScope.WhodWizardBean.isMedDRA}"
                                                            inlineStyle="#{WhodRenderingRulesBean.wizardRelationsBackgroundFieldColor}">
                                                     <af:selectOneChoice id="soc3" value="#{node.formattedScope}"
@@ -110,8 +113,7 @@
                                                         <af:selectItem label="Child Narrow" value="3" id="si4"/>
                                                     </af:selectOneChoice>
                                                 </af:column>
-                                                <af:column id="c7" width="16" rowHeader="true" align="left"
-                                                           rendered="#{!pageFlowScope.WhodWizardBean.isMedDRA}">
+                                                <af:column id="c7" width="16" rowHeader="true" align="left" rendered="#{WhodRenderingRulesBean.wizardRelationsRenderSave}">
                                                     <af:selectBooleanCheckbox id="sbc2" rendered="#{node.deletable}"
                                                                               value="#{node.markedForDeletion}"
                                                                               immediate="true" autoSubmit="true"/>
@@ -167,17 +169,14 @@
                                                                            value="DEF_LEVEL_REF_SHORT_NAME" id="si21"/>
                                                             <af:selectItem label="Scope" value="SCOPE" id="si22"/>
                                                         </af:selectOneChoice>
-                                                        <af:selectBooleanCheckbox label="Show Primary Only" id="sbc4"
-                                                                                  value="false" autoSubmit="true"
-                                                                                  valueChangeListener="#{pageFlowScope.WhodWizardBean.showSecondaryPathChanged}"/>
                                                         <af:selectOneChoice label="Scope" id="soc8"
                                                                             labelStyle="white-space:nowrap" value="0"
                                                                             autoSubmit="true" valuePassThru="true"
                                                                             valueChangeListener="#{pageFlowScope.WhodWizardBean.scopeChanged}"
                                                                             rendered="#{WhodRenderingRulesBean.wizardRelationsRenderScope}">
-                                                            <af:selectItem label="Full #{applicationScope.CSMQBean.customMQName}/SMQ"
-                                                                           value="0" id="si23"/>
-                                                            <af:selectItem label="Child Narrow" value="3" id="si24"/>
+                                                            <af:selectItem label="ALL" value="0" id="si16"/>
+                                                            <af:selectItem label="Broad" value="1" id="si18"/>
+                                                            <af:selectItem label="Narrow" value="2" id="si17"/>
                                                         </af:selectOneChoice>
                                                         <af:commandToolbarButton text="Refresh" id="ctb10"
                                                                                  actionListener="#{WhodWizardUIBean.refreshHierarchy}"

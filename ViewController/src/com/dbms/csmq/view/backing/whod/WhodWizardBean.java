@@ -51,6 +51,8 @@ import oracle.jbo.server.DBTransaction;
 
 
 public class WhodWizardBean implements TransactionalDataControl, UpdateableDataControl, ManagedDataControl {
+    public static final String WHOD_SEARCH_PAGE_DEF = "com_dbms_csmq_view_whodWizardSearchPageDef";
+    public static final String WHOD_ADD_PAGE_DEF = "com_dbms_csmq_view_whodAddDetailsPageDef";
     public static final int MAX_PRODUCT_COUNT = 3;
     public static final String INITIAL_STATUS = "PENDING";
     private boolean includeLLTsInExport = false;
@@ -205,6 +207,7 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
         if (!dictionaryInfoFetched)
             getDictionaryInfo();
 
+        loadAllLOVs();
     }
 
 
@@ -385,9 +388,9 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
         if (this.mode == CSMQBean.MODE_UPDATE_EXISTING || this.mode == CSMQBean.MODE_COPY_EXISTING ||
             this.mode == CSMQBean.MODE_UPDATE_SMQ || this.mode == CSMQBean.MODE_BROWSE_SEARCH)
             currentDictionary = cSMQBean.getDefaultWhodFilterDictionaryShortName();
-        
-//        //TODO:WHOD Need to remove hardcoding
-//        currentDictionary = "CQTSDG";
+
+        //        //TODO:WHOD Need to remove hardcoding
+        //        currentDictionary = "CQTSDG";
     }
 
 
@@ -1598,6 +1601,20 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
         return false;
     }
 
+    public void loadAllLOVs() {
+        try {
+            getWhodExtensionSI();
+            getWhodProductSI();
+            getWhodGroupSI();
+            getWhodStateSI();
+            getWhodReleaseStatusSI();
+            getWhodDictinoriesSI();
+            getWhodDesigneeSI();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public void setWhodExtensionSI(List<SelectItem> whodExtensionSI) {
         this.whodExtensionSI = whodExtensionSI;
     }
@@ -1605,7 +1622,8 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
     public List<SelectItem> getWhodExtensionSI() {
         if (whodExtensionSI == null) {
             whodExtensionSI =
-                    ADFUtils.selectItemsForIterator("WHODExtentionListVO1Iterator", "ShortValue", "LongValue");
+                    ADFUtils.selectItemsForIteratorbyPageDef(WHOD_SEARCH_PAGE_DEF, "WHODExtentionListVO1Iterator",
+                                                             "ShortValue", "LongValue");
         }
         return whodExtensionSI;
     }
@@ -1617,7 +1635,8 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
     public List<SelectItem> getWhodReleaseGroupSI() {
         if (whodReleaseGroupSI == null) {
             whodReleaseGroupSI =
-                    ADFUtils.selectItemsForIterator("releaseGroupsSearch1Iterator", "PredictGroupId", "Description");
+                    ADFUtils.selectItemsForIteratorbyPageDef(WHOD_ADD_PAGE_DEF, "releaseGroupsSearch1Iterator",
+                                                             "PredictGroupId", "Description");
         }
         return whodReleaseGroupSI;
     }
@@ -1628,7 +1647,9 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
 
     public List<SelectItem> getWhodProductSI() {
         if (whodProductSI == null) {
-            whodProductSI = ADFUtils.selectItemsForIterator("WHODProductList1Iterator", "ShortValue", "LongValue");
+            whodProductSI =
+                    ADFUtils.selectItemsForIteratorbyPageDef(WHOD_SEARCH_PAGE_DEF, "WHODProductList1Iterator", "ShortValue",
+                                                             "LongValue");
         }
         return whodProductSI;
     }
@@ -1639,7 +1660,9 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
 
     public List<SelectItem> getWhodGroupSI() {
         if (whodGroupSI == null) {
-            whodGroupSI = ADFUtils.selectItemsForIterator("WHODGroupList1Iterator", "ShortValue", "LongValue");
+            whodGroupSI =
+                    ADFUtils.selectItemsForIteratorbyPageDef(WHOD_SEARCH_PAGE_DEF, "WHODGroupList1Iterator", "ShortValue",
+                                                             "LongValue");
         }
         return whodGroupSI;
     }
@@ -1650,7 +1673,9 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
 
     public List<SelectItem> getWhodDesigneeSI() {
         if (whodDesigneeSI == null) {
-            whodDesigneeSI = ADFUtils.selectItemsForIterator("designeeListVO1Iterator", "OaAccountName", "PersonName");
+            whodDesigneeSI =
+                    ADFUtils.selectItemsForIteratorbyPageDef(WHOD_ADD_PAGE_DEF, "designeeListVO1Iterator", "OaAccountName",
+                                                             "PersonName");
         }
         return whodDesigneeSI;
     }
@@ -1661,7 +1686,9 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
 
     public List<SelectItem> getWhodStateSI() {
         if (whodStateSI == null) {
-            whodStateSI = ADFUtils.selectItemsForIterator("WHODStateListVO1Iterator", "ShortValue", "LongValue");
+            whodStateSI =
+                    ADFUtils.selectItemsForIterator(WHOD_SEARCH_PAGE_DEF, "WHODStateListVO1Iterator", "ShortValue",
+                                                    "LongValue");
         }
         return whodStateSI;
     }
@@ -1673,7 +1700,8 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
     public List<SelectItem> getWhodReleaseStatusSI() {
         if (whodReleaseStatusSI == null) {
             whodReleaseStatusSI =
-                    ADFUtils.selectItemsForIterator("WHODReleaseStatuListVO1Iterator", "ShortValue", "LongValue");
+                    ADFUtils.selectItemsForIteratorbyPageDef(WHOD_SEARCH_PAGE_DEF, "WHODReleaseStatuListVO1Iterator",
+                                                             "ShortValue", "LongValue");
         }
         return whodReleaseStatusSI;
     }
@@ -1685,7 +1713,8 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
     public List<SelectItem> getWhodDictinoriesSI() {
         if (whodDictinoriesSI == null) {
             whodDictinoriesSI =
-                    ADFUtils.selectItemsForIterator("WhodDictionariesListVO1Iterator", "ShortValue", "LongValue");
+                    ADFUtils.selectItemsForIteratorbyPageDef(WHOD_SEARCH_PAGE_DEF, "WhodDictionariesListVO1Iterator",
+                                                             "ShortValue", "LongValue");
         }
         return whodDictinoriesSI;
     }
