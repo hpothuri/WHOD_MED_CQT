@@ -12,9 +12,6 @@
                   id="WHODGroupList1Iterator"/>
         <iterator Binds="WHODSimpleSearch1" RangeSize="25" DataControl="WHODSearchModuleDataControl"
                   id="WHODSimpleSearch1Iterator"/>
-        <!--iterator Binds="SmallTreeVO1" RangeSize="-1"
-              DataControl="HierarchyModuleDataControl" id="SmallTreeVO1Iterator"
-              Refresh="renderModel"/-->
         <iterator Binds="InfNotesVO1" RangeSize="10" DataControl="InfNotesModuleDataControl" id="InfNotesVO1Iterator"/>
         <iterator id="WHODInfoNotesIterator" Binds="WHODInfoNotes" DataControl="WHODInfoNotesModuleDataControl"
                   RangeSize="25"/>

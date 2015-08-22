@@ -14,9 +14,9 @@
       <property
          name="page">/index.jspx</property>
       <property
-         name="thumbnailExpanded">false</property>
-      <property
          name="description">&lt;html>&lt;p>&lt;b>home&lt;/b>&lt;/p>&lt;p>Activity Type:  View&lt;/p></property>
+      <property
+         name="thumbnailExpanded">false</property>
       <property
          name="exceptionHandler">false</property>
       <property
@@ -368,7 +368,7 @@
       <property
          name="fromOutcome">BROWSE_SEARCH</property>
       <property
-         name="sdm:polyPoints">R54,95.02588,-193.32367,2001.0342,331.34473,L50</property>
+         name="sdm:polyPoints">R54,95.02346,-193.17426,2001.0342,331.34473,L50</property>
    </ControlFlowCase>
    <ControlFlowCase
       islink="true"
@@ -378,7 +378,7 @@
       <property
          name="fromOutcome">DIFF</property>
       <property
-         name="sdm:polyPoints">R68,92.8736,-184.18082,1723.5,405.74707,L50</property>
+         name="sdm:polyPoints">R68,92.8718,-184.0314,1723.5,405.74707,L50</property>
    </ControlFlowCase>
    <View
       id="View40">

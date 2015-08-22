@@ -468,7 +468,7 @@ public class WhodRenderingRulesBean {
     }
 
     public boolean isWizardDetailsDisableReleaseGroup() {
-        if (MODE_NEW || MODE_UPDATE || MODE_BROWSE || MODE_EDIT_SMQ || MODE_IMPACT_ASSESSMENT ||
+        if (MODE_NEW || MODE_UPDATE || MODE_BROWSE || MODE_EDIT_SMQ || MODE_IMPACT_ASSESSMENT || MODE_COPY ||
             (MODE_UPDATE && (STATE_APPROVED || STATE_PUBLISHED)))
             this.wizardDetailsDisableReleaseGroup = true;
         return wizardDetailsDisableReleaseGroup;

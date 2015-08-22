@@ -14,6 +14,7 @@ import java.util.Hashtable;
 import java.util.List;
 
 import javax.faces.event.ActionEvent;
+import javax.faces.event.PhaseId;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 
@@ -115,10 +116,37 @@ public class WhodWizardSearchBean {
      * @param valueChangeEvent
      */
     public void dictionaryChange(ValueChangeEvent valueChangeEvent) {
+        if (!valueChangeEvent.getPhaseId().equals(PhaseId.UPDATE_MODEL_VALUES)) {
+            valueChangeEvent.setPhaseId(PhaseId.UPDATE_MODEL_VALUES);
+            valueChangeEvent.queue();
+            return;
+        }
         Object currentDictionay = valueChangeEvent.getNewValue();
-        if(currentDictionay != null){
-        WhodUtils.getWhodWizardBean().setCurrentDictionary(currentDictionay.toString());
-        getWhodLevelGroupSI();
+        if (currentDictionay != null) {
+            WhodWizardBean whodWizardBean = WhodUtils.getWhodWizardBean();
+            whodWizardBean.setCurrentDictionary(currentDictionay.toString());
+            if (CSMQBean.WHOD_BASE_DICTIONARY.equals(whodWizardBean.getCurrentDictionary())) {
+                setParamLevelGroup("ATC");
+            } else if (CSMQBean.WHOD_FILTER_DICTIONARY.equals(whodWizardBean.getCurrentDictionary())) {
+                setParamLevelGroup("CDG");
+            }
+            setParamLevel("1");
+            setWhodLevelGroupSI(null);
+            whodWizardBean.setWhodDictinoryLevelsSI(null);
+        }
+    }
+
+    public void onLevelGroupChange(ValueChangeEvent valueChangeEvent) {
+        if (!valueChangeEvent.getPhaseId().equals(PhaseId.UPDATE_MODEL_VALUES)) {
+            valueChangeEvent.setPhaseId(PhaseId.UPDATE_MODEL_VALUES);
+            valueChangeEvent.queue();
+            return;
+        }
+        Object currentLevelGroup = valueChangeEvent.getNewValue();
+        if (currentLevelGroup != null) {
+            WhodWizardBean whodWizardBean = WhodUtils.getWhodWizardBean();
+            setParamLevel("1");
+            whodWizardBean.setWhodDictinoryLevelsSI(null);
         }
     }
 
@@ -127,6 +155,11 @@ public class WhodWizardSearchBean {
      * @param valueChangeEvent
      */
     public void extensionChanged(ValueChangeEvent valueChangeEvent) {
+        if (!valueChangeEvent.getPhaseId().equals(PhaseId.UPDATE_MODEL_VALUES)) {
+            valueChangeEvent.setPhaseId(PhaseId.UPDATE_MODEL_VALUES);
+            valueChangeEvent.queue();
+            return;
+        }
     }
 
     /**
@@ -160,11 +193,11 @@ public class WhodWizardSearchBean {
         vo.setNamedWhereClauseParam("dGProductLIST", getParamProductList()); // search needs ^ as the delimiter
         vo.setNamedWhereClauseParam("dGScopeFlag", getParamScope());
         vo.setNamedWhereClauseParam("dReleaseStatus", getCurrentRelaseStatus());
-        if(whodWizardBean != null && whodWizardBean.getCurrentDictionary().equals("UMCSDG2"))
-        vo.setNamedWhereClauseParam("dictionary_type", "FILTER");
+        if (whodWizardBean != null && whodWizardBean.getCurrentDictionary().equals("UMCSDG2"))
+            vo.setNamedWhereClauseParam("dictionary_type", "FILTER");
         else
-        vo.setNamedWhereClauseParam("dictionary_type", "BASE");
-        
+            vo.setNamedWhereClauseParam("dictionary_type", "BASE");
+
         String paramTermVal = getParamTerm();
         if (null != paramTermVal && !paramTermVal.isEmpty()) {
             paramTermVal = paramTermVal.replace("'", "\''");
@@ -190,16 +223,16 @@ public class WhodWizardSearchBean {
 
     private String getSearchLevelParam() {
         Object setMode = ADFContext.getCurrent().getPageFlowScope().get("setMode");
-        if(setMode != null && setMode.toString().equals("update")){
-        if ((getParamExtension() != null && getParamExtension().equals("TDG")))
-            return "TDG" + getParamLevel() + "%";
-        else
-            return "CDG" + getParamLevel() + "%";
-        }else{
-            if(getParamLevelGroup() == null || getParamLevelGroup().equals("")){
+        if (setMode != null && setMode.toString().equals("update")) {
+            if ((getParamExtension() != null && getParamExtension().equals("TDG")))
+                return "TDG" + getParamLevel() + "%";
+            else
+                return "CDG" + getParamLevel() + "%";
+        } else {
+            if (getParamLevelGroup() == null || getParamLevelGroup().equals("")) {
                 return "%";
-            }else
-            return getParamLevelGroup() + getParamLevel() + "%";
+            } else
+                return getParamLevelGroup() + getParamLevel() + "%";
         }
     }
 
@@ -264,21 +297,23 @@ public class WhodWizardSearchBean {
         String levelName = Utils.getAsString(row, "LevelName");
         CSMQBean.logger.info(userBean.getCaller() + " CurrentTermLevel:" + levelName);
         // System.out.println("--------"+levelName);
+        String currentlevelumber = levelName.substring(3, 4);
         String currentExtension = levelName.substring(0, 3);
         CSMQBean.logger.info(userBean.getCaller() + " Extension:" + currentExtension);
-
         String currentMqproduct = Utils.getAsString(row, "Value3");
         CSMQBean.logger.info(userBean.getCaller() + " Product:" + currentMqproduct);
 
         String currentMqgroups = Utils.getAsString(row, "Value4");
         CSMQBean.logger.info(userBean.getCaller() + " Group:" + currentMqgroups);
+        String currentDesignees = Utils.getAsString(row, "Designee");
+        CSMQBean.logger.info(userBean.getCaller() + " Designee:" + currentDesignees);
 
         WhodWizardBean whodWizardBean = WhodUtils.getWhodWizardBean();
         whodWizardBean.setCurrentExtension(currentExtension);
         whodWizardBean.setCurrentTermName(currentTermName);
         whodWizardBean.setCurrentFilterDictionaryShortName(currentDictionary);
         whodWizardBean.setCurrentPredictGroups(currentReleaseGroup); //<--test
-        whodWizardBean.setCurrentTermLevel(levelName); //
+        whodWizardBean.setCurrentTermLevel(currentlevelumber); //
         whodWizardBean.setCurrentContentCode(currentMqcode);
         whodWizardBean.setCurrentDictContentID(currentDictContentID);
         whodWizardBean.setActiveDictionary(currentDictionary);
@@ -289,6 +324,7 @@ public class WhodWizardSearchBean {
         whodWizardBean.setCurrentStatus(currentStatus);
         whodWizardBean.setCurrentProduct(currentMqproduct);
         whodWizardBean.setCurrentMQGROUP(currentMqgroups);
+        setParamLevelGroup(currentExtension);
 
         /*
          * //TODO:WHOD need to verify - What are all the correct values.
@@ -314,9 +350,8 @@ public class WhodWizardSearchBean {
          */
         whodWizardBean.getDictionaryInfo(); // GET BASE DICT INFO FROM FILTER
 
-        //        Hashtable<String, String> activationInfo =
-        //            WhodUtils.getActivationInfo(currentDictContentID, currentDictionary);
-        Hashtable<String, String> activationInfo = null;
+        Hashtable<String, String> activationInfo =
+            WhodUtils.getActivationInfo(currentDictContentID, currentDictionary);
 
         if (activationInfo != null) {
             whodWizardBean.setCurrentInitialCreationDate(activationInfo.get("initialCreationDate"));
@@ -357,13 +392,10 @@ public class WhodWizardSearchBean {
             Collections.addAll(whodWizardBean.getMQGroupList(), currentMqgroups.split("%"));
         }
 
-        //whodWizardBean.getProductList().clear();
-        //whodWizardBean.getMQGroupList().clear();
-        //whodWizardBean.getDesigneeList().clear();
-        //Collections.addAll(whodWizardBean.getProductList(), new String[] { "AIN457", "ABILIFY" });
-        //Collections.addAll(whodWizardBean.getMQGroupList(), new String[] { "APO", "AAA" });
-        whodWizardBean.setDesigneeList(new ArrayList<String>());
-        //Collections.addAll(whodWizardBean.getDesigneeList(), new String[] { "CQT_ML", "OPS$TEST91" });
+        if (currentDesignees != null) {
+            currentDesignees = currentDesignees.replace(CSMQBean.DEFAULT_DELIMETER_CHAR, '%');
+            Collections.addAll(whodWizardBean.getDesigneeList(), currentDesignees.split("%"));
+        }
 
         // get the notes.
         getInfNotes(currentState, currentStatus, currentMqcode, currentDictionary, currentDictContentID);
@@ -689,39 +721,45 @@ public class WhodWizardSearchBean {
         return currentRelaseStatus;
     }
 
-		public void loadAllLOVs() {
+    public void loadAllLOVs() {
         try {
             getWhodStateSI();
             getWhodReleaseStatusSI();
+            String mode = (String)ADFContext.getCurrent().getPageFlowScope().get("setMode");
+            if (!"update".equals(mode) && !"create".equals(mode)) {
+                getWhodLevelGroupSI();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-public void setWhodLevelGroupSI(List<SelectItem> whodLevelGroupSI) {
+
+    public void setWhodLevelGroupSI(List<SelectItem> whodLevelGroupSI) {
         this.whodLevelGroupSI = whodLevelGroupSI;
     }
 
     public List<SelectItem> getWhodLevelGroupSI() {
-        //if (whodLevelGroupSI == null) {
-            
+        if (whodLevelGroupSI == null) {
             List<SelectItem> selectItems = new ArrayList<SelectItem>();
             List<SelectItem> selectItemsToSet = new ArrayList<SelectItem>();
-            selectItems = ADFUtils.selectItemsForIterator("WHODGroupLevelVO1Iterator", "ShortValue", "LongValue");
+            selectItems = ADFUtils.selectItemsForIterator("WHODGroupLevelVO1Iterator", "ShortValue", "ShortValue");
             WhodWizardBean whodWizardBean = WhodUtils.getWhodWizardBean();
-            if(whodWizardBean != null && whodWizardBean.getCurrentDictionary().equals("UMCSDG2")){
-                for(SelectItem selectItem : selectItems){
-                    if(selectItem.getValue().toString().equals("CDG") || selectItem.getValue().toString().equals("SDG"))
-                    selectItemsToSet.add(selectItem) ;
+            if (whodWizardBean != null &&
+                whodWizardBean.getCurrentDictionary().equals(CSMQBean.WHOD_BASE_DICTIONARY)) {
+                for (SelectItem selectItem : selectItems) {
+                    if (selectItem.getValue().toString().equals("ATC"))
+                        selectItemsToSet.add(selectItem);
                 }
-                whodLevelGroupSI =selectItemsToSet;
-            }else {
-                for(SelectItem selectItem : selectItems){
-                    if(selectItem.getValue().toString().equals("ATC"))
-                    selectItemsToSet.add(selectItem) ;
+                whodLevelGroupSI = selectItemsToSet;
+            } else {
+                for (SelectItem selectItem : selectItems) {
+                    if (selectItem.getValue().toString().equals("CDG") ||
+                        selectItem.getValue().toString().equals("SDG"))
+                        selectItemsToSet.add(selectItem);
                 }
-                whodLevelGroupSI =selectItemsToSet; 
+                whodLevelGroupSI = selectItemsToSet;
             }
-       // }
+        }
         return whodLevelGroupSI;
     }
 
@@ -731,4 +769,5 @@ public void setWhodLevelGroupSI(List<SelectItem> whodLevelGroupSI) {
 
     public String getParamLevelGroup() {
         return paramLevelGroup;
-    }}
+    }
+}

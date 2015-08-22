@@ -74,12 +74,6 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
     private String currentContentCode;
     private String copiedDictContentID;
     private String currentRequestor;
-    /* @author MTW
-        06/12/2014
-        NMAT-UC01.02 & NMAT-UC11.02
-    */
-    //private String currentDesignee;
-    //private String currentRequestDate;
     private String currentNarrowScopeOnly = CSMQBean.FALSE;
     private String currentState;
     private String currentReasonForRequest;
@@ -112,10 +106,6 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
 
     private List<String> productList = new ArrayList<String>();
     private List<String> mQGroupList = new ArrayList<String>();
-    /*
-     * @author MTW
-     * 07/21/2014
-     */
     private List<String> designeeList = new ArrayList<String>();
 
     private int mode;
@@ -136,8 +126,6 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
 
     BindingContext bc = BindingContext.getCurrent();
     DCBindingContainer binding = (DCBindingContainer)bc.getCurrentBindingsEntry();
-
-
     private CSMQBean cSMQBean;
     private UserBean userBean;
     private oracle.jbo.domain.Date currentDateRequested;
@@ -153,18 +141,12 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
     private RichSelectOneChoice controlCriticalEvent;
 
     private String ignorePredict;
-
-    /*
-     * TES 31-JUL-2014
-     * FOR ACTIVATION INFO
-     */
     private String currentInitialCreationDate;
     private String currentInitialCreationBy;
     private String currentLastActivationDate;
     private String currentActivationBy;
 
     private String currentExtension;
-    //private UISelectItem cntrlProductListSelectItems;
     private ArrayList<SelectItem> productSelectItems;
     private String currentTermLevelNumber;
     private String designeeListAsString;
@@ -178,54 +160,29 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
     private List<SelectItem> whodStateSI;
     private List<SelectItem> whodReleaseStatusSI;
     private List<SelectItem> whodDictinoriesSI;
+    private List<SelectItem> whodDictinoryLevelsSI;
 
     public WhodWizardBean() {
-
-        /**
-             *  @author TES
-             *  @fsds NMAT-UC01.01
-             */
-
         System.out.println("NMQWizardBean");
-
         productSelectItems = new ArrayList<SelectItem>();
-
         cSMQBean = (CSMQBean)ADFContext.getCurrent().getApplicationScope().get("CSMQBean");
         userBean = (UserBean)ADFContext.getCurrent().getSessionScope().get("UserBean");
         currentRequestor = userBean.getCurrentUser();
-
         // LOAD DEFAULTS FROM APP BEAN
         this.currentBaseDictionaryShortName = cSMQBean.getDefaultWhodBaseDictionaryShortName();
         this.currentFilterDictionaryShortName = cSMQBean.getDefaultWhodFilterDictionaryShortName();
-
-
         this.noteInformativeNoteShortName = cSMQBean.getProperty("SMQ_NOTE_INFORMATIVE_NOTE");
         this.descriptionInformativeNoteShortName = cSMQBean.getProperty("SMQ_DESCRIPTION_INFORMATIVE_NOTE");
         this.sourceInformativeNoteShortName = cSMQBean.getProperty("SMQ_SOURCE_INFORMATIVE_NOTE");
-
         this.currentMQType = cSMQBean.getCustomMQName();
         if (!dictionaryInfoFetched)
             getDictionaryInfo();
-
         loadAllLOVs();
     }
 
 
     public String setModeUpdateExisting() {
         this.currentPredictGroups = cSMQBean.getDefaultDraftReleaseGroup();
-
-        /*
-         *
-         * 20141117-2   Details Page for Create, Update, or Create by Copy
-         * For a CMQ created by a requestor OR MQM, the first state must be DRAFT, not proposed.
-         * Only for NMQs created by Requestors should the state be Proposed.
-         *
-         */
-        //if (userBean.isRequestor()) this.currentState = CSMQBean.STATE_PROPOSED;
-        //if (userBean.isMQM()) this.currentState = CSMQBean.STATE_DRAFT;
-        //  CHANGED 24-MAR-2105 for all CMQs:  if (!isNMQ && (userBean.isMQM() || userBean.isRequestor())) this.currentState = CSMQBean.STATE_DRAFT;
-        // if (!isNMQ) this.currentState = CSMQBean.STATE_DRAFT;
-        // if (isNMQ && userBean.isRequestor()) this.currentState = CSMQBean.STATE_PROPOSED;
         if (isNMQ && userBean.isRequestor() && !userBean.isMQM()) {
             this.setCurrentState(CSMQBean.STATE_PROPOSED);
         } else {
@@ -242,21 +199,6 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
 
     public String setModeCopyExisting() {
         this.currentPredictGroups = cSMQBean.getDefaultDraftReleaseGroup();
-
-
-        /*
-         *
-         * 20141117-2   Details Page for Create, Update, or Create by Copy
-         * For a CMQ created by a requestor OR MQM, the first state must be DRAFT, not proposed.
-         * Only for NMQs created by Requestors should the state be Proposed.
-         *
-         */
-        //if (userBean.isRequestor()) this.currentState = CSMQBean.STATE_PROPOSED;
-        //if (userBean.isMQM()) this.currentState = CSMQBean.STATE_DRAFT;
-
-        //  CHANGED 24-MAR-2105 for all CMQs:  if (!isNMQ && (userBean.isMQM() || userBean.isRequestor())) this.currentState = CSMQBean.STATE_DRAFT;
-        //if (!isNMQ) this.currentState = CSMQBean.STATE_DRAFT;
-        //if (isNMQ && userBean.isRequestor()) this.currentState = CSMQBean.STATE_PROPOSED;
         if (isNMQ && userBean.isRequestor() && !userBean.isMQM()) {
             this.setCurrentState(CSMQBean.STATE_PROPOSED);
         } else {
@@ -278,34 +220,11 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
 
     public String setModeInsertNew() {
         this.currentPredictGroups = cSMQBean.getDefaultDraftReleaseGroup();
-        /* @author MTW
-        * 06/17/2014
-        * @fsds NMAT-UC01.01 & NMAT-UC11.01
-        * added !isNMQ || and isNMQ &&
-        */
-
-        /*
-         * 20141117-2   Details Page for Create, Update, or Create by Copy
-         * For a CMQ created by a requestor OR MQM, the first state must be DRAFT, not proposed.
-         * Only for NMQs created by Requestors should the state be Proposed.
-         *
-         */
-        //  CHANGED 24-MAR-2105 for all CMQs:  if (!isNMQ && (userBean.isMQM() || userBean.isRequestor())) this.currentState = CSMQBean.STATE_DRAFT;
-        // if (!isNMQ) this.currentState = CSMQBean.STATE_DRAFT;
-        // if (isNMQ && userBean.isRequestor()) this.currentState = CSMQBean.STATE_PROPOSED;
         if (isNMQ && userBean.isRequestor() && !userBean.isMQM()) {
             this.setCurrentState(CSMQBean.STATE_PROPOSED);
         } else {
             this.setCurrentState(CSMQBean.STATE_DRAFT);
         }
-
-
-        //if (userBean.isMQM()) this.currentState = CSMQBean.STATE_DRAFT;
-        /* @author MTW
-        * 06/18/2014
-        * @fsds NMAT-UC01.01 & NMAT-UC11.01
-        * Added if (isNMQ)
-        */
         if (isNMQ)
             productList.add(CSMQBean.DEFAULT_PRODUCT); // add the default product only if it is new or copy NMQ
 
@@ -315,7 +234,8 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
         this.updateParam = CSMQBean.DML_INSERT;
         productList.add(CSMQBean.DEFAULT_PRODUCT);
         CSMQBean.logger.info(userBean.getCaller() + userBean.getCaller() + " SETTING MODE: " + this.mode);
-        setDefaultDictionary();
+        currentDictionary = cSMQBean.WHOD_FILTER_DICTIONARY;
+        setCurrentTermLevel("1");
         setCurrentExtension("CDG");
         String designee = userBean.getCurrentUser().toUpperCase();
         CSMQBean.logger.info("ADDING DESIGNEE: " + designee);
@@ -324,8 +244,6 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
     }
 
     public String setModeUpdateSMQ() {
-        // NMQWizardSearchBean nMQWizardSearchBean = (NMQWizardSearchBean)AdfFacesContext.getCurrentInstance().getPageFlowScope().get("NMQWizardSearchBean");
-        // nMQWizardSearchBean.setParamExtension("SMQ");
         this.currentPredictGroups = cSMQBean.getDefaultDraftReleaseGroup();
         userBean.setCurrentMenuPath("Update");
         userBean.setCurrentMenu("UPDATE_SMQ");
@@ -338,8 +256,6 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
 
     public String setModeBrowseSearch() {
         Object clickedMenu = ADFContext.getCurrent().getPageFlowScope().get("setMode");
-
-        //System.out.println("----where am I clicked-----" + ADFContext.getCurrent().getPageFlowScope().get("setMode"));
         if (clickedMenu != null) {
             if ("browseAndSearch".equalsIgnoreCase(clickedMenu.toString())) {
                 userBean.setCurrentMenuPath("Browse & Search");
@@ -350,6 +266,11 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
                 userBean.setCurrentMenuPath("Update");
                 userBean.setCurrentMenu("UPDATE_CDG");
                 this.mode = CSMQBean.MODE_UPDATE_EXISTING;
+                this.updateParam = CSMQBean.DML_UPDATE;
+            } else if ("copy".equalsIgnoreCase(clickedMenu.toString())) {
+                userBean.setCurrentMenuPath("Copy");
+                userBean.setCurrentMenu("COPY_CDG");
+                this.mode = CSMQBean.MODE_COPY_EXISTING;
                 this.updateParam = CSMQBean.DML_UPDATE;
             }
         }
@@ -386,16 +307,19 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
     private void setDefaultDictionary() {
         currentDictionary = cSMQBean.getDefaultWhodBaseDictionaryShortName();
         if (this.mode == CSMQBean.MODE_UPDATE_EXISTING || this.mode == CSMQBean.MODE_COPY_EXISTING ||
-            this.mode == CSMQBean.MODE_UPDATE_SMQ || this.mode == CSMQBean.MODE_BROWSE_SEARCH)
+            this.mode == CSMQBean.MODE_UPDATE_SMQ || this.mode == CSMQBean.MODE_BROWSE_SEARCH) {
             currentDictionary = cSMQBean.getDefaultWhodFilterDictionaryShortName();
-
-        //        //TODO:WHOD Need to remove hardcoding
-        //        currentDictionary = "CQTSDG";
+            WhodWizardSearchBean whodWizardSearchBean = WhodUtils.getWhodWizardSearchBean();
+            if (CSMQBean.WHOD_BASE_DICTIONARY.equals(getCurrentDictionary())) {
+                whodWizardSearchBean.setParamLevelGroup("ATC");
+            } else if (CSMQBean.WHOD_FILTER_DICTIONARY.equals(getCurrentDictionary())) {
+                whodWizardSearchBean.setParamLevelGroup("CDG");
+            }
+            whodWizardSearchBean.setParamLevel("1");
+        }
     }
 
-
     public void loadProductSelectList() {
-
         BindingContext bc = BindingContext.getCurrent();
         DCBindingContainer binding = (DCBindingContainer)bc.getCurrentBindingsEntry();
         if (binding == null)
@@ -420,8 +344,6 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
             productSelectItems.add(selectItem);
         }
         rs.closeRowSetIterator();
-
-
     }
 
     public void setCurrentDictContentID(String currentDictContentID) {
@@ -431,7 +353,6 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
     public String getCurrentDictContentID() {
         return currentDictContentID;
     }
-
 
     public void setCurrentFilterDictionaryShortName(String currentDictionary) {
         this.currentFilterDictionaryShortName = currentDictionary;
@@ -557,11 +478,6 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
         }
         tempName = tempName.trim(); // get rid of the spaces - these cause a problem
 
-        // IF IT'S NEW or UPDATE APPEND THE PRODUCT AND NMQ TO THE NAME
-        //        if (this.mode == CSMQBean.MODE_INSERT_NEW || this.mode == CSMQBean.MODE_COPY_EXISTING ||
-        //            this.mode == CSMQBean.MODE_UPDATE_EXISTING)
-        //            tempName += " [" + currentProduct + "] (" + this.currentExtension + ")";
-
         currentState = CSMQBean.STATE_DRAFT;
         String action = (mode != CSMQBean.MODE_INSERT_NEW) ? "Updated" : "Inserted";
 
@@ -613,8 +529,10 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
                                                  getCurrentScope(), getCurrentStatus(), dGProductLIST, dGGroupLIST,
                                                  commentText, designee, userBean.getUserRole(), action,
                                                  this.currentState);
+        } else if (mode == CSMQBean.MODE_COPY_EXISTING) {
+            CSMQBean.logger.info(userBean.getCaller() + " CALLING: saveDetails");
+            results = WhodUtils.copyDetails(currentDictContentID, getCurrentTermLevelNumber(), getCurrentTermName());
         } else {
-
             CSMQBean.logger.info(userBean.getCaller() + " CALLING: saveDetails");
             String designeeListString = "";
             if (designeeList != null)
@@ -643,15 +561,8 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
             this.currentContentCode = (String)results.get("NEW_DICT_CONTENT_CODE"); //
             this.copiedDictContentID = this.getCurrentDictContentID();
             this.currentDictContentID = (String)results.get("NEW_DICT_CONTENT_ID"); //newDictContentID;
-            //            this.currentDateRequested = (oracle.jbo.domain.Date)results.get("CURRENT_DATE_REQUESTED");
-            // if it's new, copy all the relations, too
             if (this.mode == CSMQBean.MODE_COPY_EXISTING) {
-                CSMQBean.logger.info(userBean.getCaller() + " currentContentCode:" + currentContentCode);
-                CSMQBean.logger.info(userBean.getCaller() + " currentDictContentID:" + currentDictContentID);
-                CSMQBean.logger.info(userBean.getCaller() + " copiedDictContentID:" + copiedDictContentID);
-                copyAllRelations();
-                // also copy the inf notes, homes
-                saveAllInfNotes();
+                WhodUtils.getInfNotes(currentDictContentID);
             }
         }
 
@@ -910,19 +821,6 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
             return currentCreatedBy;
         return currentRequestor;
     }
-
-    /* @author MTW
-     * 06/12/2014
-     * NMAT-UC01.02 & NMAT-UC11.02
-
-    public void setCurrentDesignee(String currentDesignee) {
-        this.currentDesignee = currentDesignee;
-    }
-
-    public String getCurrentDesignee() {
-        return currentDesignee;
-    }
-    */
 
     public void setUpdateParam(String updateParam) {
         this.updateParam = updateParam;
@@ -1603,13 +1501,19 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
 
     public void loadAllLOVs() {
         try {
-            getWhodExtensionSI();
+            String mode = (String)ADFContext.getCurrent().getPageFlowScope().get("setMode");
+            if ("update".equals(mode) || "create".equals(mode)) {
+                getWhodExtensionSI();
+            }
             getWhodProductSI();
             getWhodGroupSI();
             getWhodStateSI();
             getWhodReleaseStatusSI();
             getWhodDictinoriesSI();
             getWhodDesigneeSI();
+            if (!("update".equals(mode) || "copy".equals(mode))) {
+                getWhodDictinoryLevelsSI();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1674,8 +1578,8 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
     public List<SelectItem> getWhodDesigneeSI() {
         if (whodDesigneeSI == null) {
             whodDesigneeSI =
-                    ADFUtils.selectItemsForIteratorbyPageDef(WHOD_ADD_PAGE_DEF, "designeeListVO1Iterator", "OaAccountName",
-                                                             "PersonName");
+                    ADFUtils.selectItemsForIteratorbyPageDef(WHOD_ADD_PAGE_DEF, "WhoDesigneeListVO1Iterator", "DesigneeValue",
+                                                             "LovFullName");
         }
         return whodDesigneeSI;
     }
@@ -1687,8 +1591,8 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
     public List<SelectItem> getWhodStateSI() {
         if (whodStateSI == null) {
             whodStateSI =
-                    ADFUtils.selectItemsForIterator(WHOD_SEARCH_PAGE_DEF, "WHODStateListVO1Iterator", "ShortValue",
-                                                    "LongValue");
+                    ADFUtils.selectItemsForIteratorbyPageDef(WHOD_SEARCH_PAGE_DEF, "WHODStateListVO1Iterator", "ShortValue",
+                                                             "LongValue");
         }
         return whodStateSI;
     }
@@ -1718,15 +1622,15 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
                     ADFUtils.selectItemsForIteratorbyPageDef(WHOD_SEARCH_PAGE_DEF, "WhodDictionariesListVO1Iterator",
                                                              "ShortValue", "LongValue");
             Object mode = ADFContext.getCurrent().getPageFlowScope().get("setMode");
-            
-            if(mode != null && mode.toString().equals("update")){
-                for(SelectItem selectItem : selectItems){
-                    if(selectItem.getValue().toString().equals("UMCSDG2"))
-                    selectItemsToSet.add(selectItem) ;
+
+            if (mode != null && mode.toString().equals("update")) {
+                for (SelectItem selectItem : selectItems) {
+                    if (selectItem.getValue().toString().equals(CSMQBean.WHOD_FILTER_DICTIONARY))
+                        selectItemsToSet.add(selectItem);
                 }
-                whodDictinoriesSI =selectItemsToSet;
-            }else {
-                whodDictinoriesSI =selectItems; 
+                whodDictinoriesSI = selectItemsToSet;
+            } else {
+                whodDictinoriesSI = selectItems;
             }
         }
         return whodDictinoriesSI;
@@ -1738,5 +1642,59 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
 
     public String getCurrentRelaseStatus() {
         return currentRelaseStatus;
+    }
+
+    public void setWhodDictinoryLevelsSI(List<SelectItem> whodDictinoryLevelsSI) {
+        this.whodDictinoryLevelsSI = whodDictinoryLevelsSI;
+    }
+
+    public List<SelectItem> getWhodDictinoryLevelsSI() {
+        if (whodDictinoryLevelsSI == null) {
+            loadWhodDictinoryLevelsBasedonDictinory();
+            whodDictinoryLevelsSI =
+                    ADFUtils.selectItemsForIteratorbyPageDef(WHOD_ADD_PAGE_DEF, "WhoDictionaryLevelListVO1Iterator",
+                                                             "PropValue", "PropValue");
+            for (SelectItem si : whodDictinoryLevelsSI) {
+                if (si.getValue() != null && si.getValue().toString().equals("%")) {
+                    si.setLabel("ALL");
+                    break;
+                }
+            }
+        }
+        return whodDictinoryLevelsSI;
+    }
+
+    private void loadWhodDictinoryLevelsBasedonDictinory() {
+        DCIteratorBinding dciterb = ADFUtils.findIterator(WHOD_ADD_PAGE_DEF, "WhoDictionaryLevelListVO1Iterator");
+        ViewObject vo = dciterb.getViewObject();
+        String modeStr = (String)ADFContext.getCurrent().getPageFlowScope().get("setMode");
+        String paramLevelGroup = "CDG";
+        if ("create".equals(modeStr)) {
+            paramLevelGroup = "CDG";
+            currentDictionary = cSMQBean.WHOD_FILTER_DICTIONARY;
+            setCurrentTermLevel("1");
+            setCurrentExtension("CDG");
+        } else {
+            WhodWizardSearchBean whodWizardSearchBean = WhodUtils.getWhodWizardSearchBean();
+            paramLevelGroup = whodWizardSearchBean.getParamLevelGroup();
+        }
+
+        if (CSMQBean.WHOD_BASE_DICTIONARY.equals(getCurrentDictionary())) {
+            vo.setNamedWhereClauseParam("propName", "BASE%");
+        } else if (CSMQBean.WHOD_FILTER_DICTIONARY.equals(getCurrentDictionary())) {
+            if (paramLevelGroup != null) {
+                if ("CDG".equals(paramLevelGroup)) {
+                    vo.setNamedWhereClauseParam("propName", "FILTER_CUSTOM%");
+                } else if ("SDG".equals(paramLevelGroup)) {
+                    vo.setNamedWhereClauseParam("propName", "FILTER_VENDOR%");
+                } else if ("%DG".equals(paramLevelGroup)) {
+                    vo.setNamedWhereClauseParam("propName", "FILTER_CUSTOM%");
+                }
+            }
+        } else {
+            vo.setNamedWhereClauseParam("propName", "%");
+        }
+        vo.setNamedWhereClauseParam("includeAllFlag", "Y");
+        vo.executeQuery();
     }
 }

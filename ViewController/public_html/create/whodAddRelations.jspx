@@ -201,7 +201,7 @@
                                                         <af:selectOneChoice label="Dictionary" id="soc9"
                                                                             autoSubmit="true"
                                                                             valueChangeListener="#{pageFlowScope.WhodSourceTermSearchBean.dictionaryTypeChanged}"
-                                                                            value="UMCWHO2"
+                                                                            value="#{pageFlowScope.WhodWizardBean.currentDictionary}"
                                                                             binding="#{pageFlowScope.WhodSourceTermSearchBean.controlDictionaryType}"
                                                                             valuePassThru="true">
                                                             <f:selectItems value="#{pageFlowScope.WhodWizardBean.whodDictinoriesSI}"

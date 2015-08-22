@@ -1,19 +1,12 @@
 package com.dbms.csmq.view.util;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-
 import java.util.Map;
 
 import javax.el.ELContext;
 import javax.el.ExpressionFactory;
-
 import javax.el.MethodExpression;
-
-import oracle.adf.controller.ControllerContext;
-
-import oracle.adf.view.rich.component.rich.RichPopup;
 
 import javax.faces.application.Application;
 import javax.faces.application.NavigationHandler;
@@ -29,15 +22,11 @@ import oracle.adf.model.BindingContext;
 import oracle.adf.model.binding.DCBindingContainer;
 import oracle.adf.model.binding.DCIteratorBinding;
 import oracle.adf.model.binding.DCParameter;
+import oracle.adf.view.rich.component.rich.RichPopup;
 import oracle.adf.view.rich.component.rich.fragment.RichRegion;
-
 import oracle.adf.view.rich.context.AdfFacesContext;
 
 import oracle.adfinternal.controller.state.BackingBeanScopeProviderImpl;
-
-import oracle.adfinternal.controller.state.PageFlowScope;
-import oracle.adfinternal.controller.state.RootViewPortContextImpl;
-import oracle.adfinternal.controller.state.ViewScope;
 
 import oracle.binding.AttributeBinding;
 import oracle.binding.BindingContainer;
@@ -47,7 +36,6 @@ import oracle.binding.OperationBinding;
 import oracle.jbo.ApplicationModule;
 import oracle.jbo.Key;
 import oracle.jbo.Row;
-
 
 import org.apache.myfaces.trinidad.context.RequestContext;
 
@@ -174,7 +162,7 @@ public class ADFUtils {
     }
 
     public static List<SelectItem> selectItemsForIteratorbyPageDef(String pageDefName, String iteratorName,
-                                                          String valueAttrName, String displayAttrName) {
+                                                                   String valueAttrName, String displayAttrName) {
         return selectItemsForIterator(findIterator(pageDefName, iteratorName), valueAttrName, displayAttrName);
     }
 
@@ -342,7 +330,11 @@ public class ADFUtils {
                                                           String displayAttrName) {
         List<SelectItem> selectItems = new ArrayList<SelectItem>();
         for (Row r : iter.getAllRowsInRange()) {
-            selectItems.add(new SelectItem(r.getAttribute(valueAttrName), (String)r.getAttribute(displayAttrName)));
+            if (r.getAttribute(valueAttrName) != null) {
+                selectItems.add(new SelectItem(r.getAttribute(valueAttrName),
+                                               (String)r.getAttribute(displayAttrName)));
+            }
+
         }
         return selectItems;
     }

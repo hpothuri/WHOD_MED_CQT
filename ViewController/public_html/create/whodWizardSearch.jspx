@@ -29,8 +29,8 @@
                                                                     helpTopicId="NMAT_HELP_TERMINOLOGY"
                                                                     valueChangeListener="#{pageFlowScope.WhodWizardSearchBean.dictionaryChange}"
                                                                     value="#{pageFlowScope.WhodWizardBean.currentDictionary}"
-                                                                    labelStyle="white-space:nowrap"
-                                                                    valuePassThru="true" readOnly="false">
+                                                                    labelStyle="white-space:nowrap" valuePassThru="true"
+                                                                    readOnly="false">
                                                     <f:selectItems value="#{pageFlowScope.WhodWizardBean.whodDictinoriesSI}"
                                                                    id="si30"/>
                                                 </af:selectOneChoice>
@@ -50,10 +50,11 @@
                                                                     autoSubmit="true" helpTopicId="NMAT_HELP_QUERY_TYPE"
                                                                     value="#{pageFlowScope.WhodWizardSearchBean.paramLevelGroup}"
                                                                     rendered="#{!(pageFlowScope.setMode eq 'update' or pageFlowScope.setMode eq 'create')}"
+                                                                    valueChangeListener="#{pageFlowScope.WhodWizardSearchBean.onLevelGroupChange}"
                                                                     partialTriggers="soc2">
                                                     <f:selectItems value="#{pageFlowScope.WhodWizardSearchBean.whodLevelGroupSI}"
                                                                    id="si311"/>
-                                                    <af:selectItem id="si3011" label="ALL" value="%"
+                                                    <af:selectItem id="si3011" label="ALL" value="%DG%"
                                                                    rendered="#{pageFlowScope.WhodWizardBean.currentDictionary ne 'UMCWHO2'}"/>
                                                 </af:selectOneChoice>
                                                 <af:selectOneChoice label="Release Group" id="smc4"
@@ -68,13 +69,12 @@
                                                 <af:selectOneChoice label="Release Status" id="smc1"
                                                                     showRequired="false"
                                                                     helpTopicId="NMAT_HELP_RELEASE_STATUS"
-                                                                    labelStyle="white-space:nowrap" value="#{pageFlowScope.WhodWizardSearchBean.currentRelaseStatus}"
+                                                                    labelStyle="white-space:nowrap"
+                                                                    value="#{pageFlowScope.WhodWizardSearchBean.currentRelaseStatus}"
                                                                     autoSubmit="true"
                                                                     valueChangeListener="#{pageFlowScope.WhodWizardSearchBean.releaseStatusChanged}">
                                                     <af:selectItem label="All" value="ALL" id="si3"
                                                                    rendered='#{securityContext.userInRole["MQM"] or securityContext.userInRole ["Requestor"]}'/>
-                                                    <!--af:selectItem label="Current" value="CURRENT" id="si3a"/>
-                                                    <af:selectItem label="Pending" value="PENDING" id="si2"/-->
                                                     <f:selectItems value="#{pageFlowScope.WhodWizardSearchBean.whodReleaseStatusSI}"
                                                                    id="si8"/>
                                                 </af:selectOneChoice>
@@ -86,17 +86,10 @@
                                                 </af:selectOneChoice>
                                                 <af:selectOneChoice label="Level" id="soc1" autoSubmit="true"
                                                                     value="#{pageFlowScope.WhodWizardSearchBean.paramLevel}"
-                                                                    labelStyle="white-space:nowrap"
-                                                                    valuePassThru="true" partialTriggers="soc61">
-                                                    <af:selectItem label="1" value="1" id="si20"/>
-                                                    <af:selectItem label="2" value="2" id="si36"/>
-                                                    <af:selectItem label="3" value="3" id="si361"
-                                                                   rendered="#{pageFlowScope.WhodWizardSearchBean.paramLevelGroup eq 'ATC'}"/>
-                                                    <af:selectItem label="4" value="4" id="si362"
-                                                                   rendered="#{pageFlowScope.WhodWizardSearchBean.paramLevelGroup eq 'ATC'}"/>
-                                                    <af:selectItem label="5" value="5" id="si3623"
-                                                                   rendered="#{pageFlowScope.WhodWizardSearchBean.paramLevelGroup eq 'ATC'}"/>
-                                                    <af:selectItem label="All Levels" value="%" id="si28"/>
+                                                                    labelStyle="white-space:nowrap" valuePassThru="true"
+                                                                    partialTriggers="soc61 soc2">
+                                                    <f:selectItems value="#{pageFlowScope.WhodWizardBean.whodDictinoryLevelsSI}"
+                                                                   id="si4"/>
                                                 </af:selectOneChoice>
                                             </af:panelFormLayout>
                                             <af:panelFormLayout id="pgl7" maxColumns="1" rows="2">
@@ -176,15 +169,15 @@
                                               emptyText="#{bindings.WHODSimpleSearch1.viewable ? 'No data to display.' : 'Access Denied.'}"
                                               fetchSize="#{bindings.WHODSimpleSearch1.rangeSize}" rowBandingInterval="0"
                                               id="it1" columnStretching="column:c20" width="1134" rowSelection="single"
-                                              columnSelection="single" partialTriggers="::s4:cb2"    
-                                              selectionListener="#{pageFlowScope.WhodWizardSearchBean.onTableNodeSelection}"  
+                                              columnSelection="single" partialTriggers="::s4:cb2"
+                                              selectionListener="#{pageFlowScope.WhodWizardSearchBean.onTableNodeSelection}"
                                               contentDelivery="immediate" filterVisible="true" autoHeightRows="-1"
                                               inlineStyle="height:230px;" persist="ALL"
                                               summary="This table gives search result"
                                               binding="#{pageFlowScope.WhodWizardSearchBean.ctrlSearchResults}"
                                               editingMode="clickToEdit">
                                         <af:column sortProperty="Term" sortable="true" headerText="Term" id="c20"
-                                                   filterable="true" width="300" align="left"> 
+                                                   filterable="true" width="300" align="left">
                                             <af:outputText value="#{row.Term}" id="ot16"/>
                                         </af:column>
                                         <af:column sortProperty="Status" sortable="true" headerText="Status" id="c4"
@@ -195,13 +188,12 @@
                                                    headerText="Release Status" id="c8" width="80" filterable="true">
                                             <af:outputText value="#{row.ReleaseStatus}" id="ot6"/>
                                         </af:column>
-                                       <af:column sortProperty="ReleaseType" sortable="true"
-                                                   headerText="Release Type" id="c10" width="80" displayIndex="-1"
-                                                   filterable="true">
+                                        <af:column sortProperty="ReleaseType" sortable="true" headerText="Release Type"
+                                                   id="c10" width="80" displayIndex="-1" filterable="true">
                                             <af:outputText value="#{row.ReleaseType}" id="ot3"/>
                                         </af:column>
-                                        <af:column sortProperty="Value4" sortable="true" headerText="Group"
-                                                   id="c15" width="60" filterable="true">
+                                        <af:column sortProperty="Value4" sortable="true" headerText="Group" id="c15"
+                                                   width="60" filterable="true">
                                             <af:outputText value="#{row.Value4}" id="ot20"/>
                                         </af:column>
                                         <af:column sortable="true" headerText="Level" id="c18" width="40"
@@ -214,7 +206,7 @@
                                             <af:outputText value="#{row.DictContentCode}" id="ot11"/>
                                         </af:column>
                                         <af:column sortable="true" headerText="Scope" id="c1" width="40"
-                                                   filterable="true" >
+                                                   filterable="true">
                                             <af:outputText value="Y" id="ot12"/>
                                         </af:column>
                                         <af:column sortable="true" headerText="State" id="c3" width="40"
@@ -232,7 +224,7 @@
                                         <af:column id="c25" sortProperty="DictionaryName" headerText="Extension"
                                                    sortable="false" width="90">
                                             <af:outputText value="#{fn:substring(row.LevelName,0,3)}" id="ot24"/>
-                                        </af:column>  
+                                        </af:column>
                                     </af:table>
                                 </af:panelGroupLayout>
                                 <f:facet name="toolbar"/>

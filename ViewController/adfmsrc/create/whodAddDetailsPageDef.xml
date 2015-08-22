@@ -6,10 +6,6 @@
         <variableIterator id="variables"/>
         <iterator Binds="releaseGroups1" RangeSize="25" DataControl="ReleaseGroupModuleDataControl"
                   id="releaseGroupsSearch1Iterator"/>
-        <!--iterator Binds="SmallTreeVO1" RangeSize="-1" DataControl="HierarchyModuleDataControl" id="SmallTreeVO1Iterator"
-                  Refresh="renderModel" RefreshCondition="#{!adfFacesContext.initialRender}"/-->
-        <iterator Binds="designeeListVO1" RangeSize="-1" DataControl="DesigneeModuleDataControl"
-                  id="designeeListVO1Iterator"/>
         <iterator Binds="WHODExtentionListVO1" RangeSize="25" DataControl="WHODModuleDataControl"
                   id="WHODExtentionListVO1Iterator"/>
         <iterator Binds="WHODProductList1" RangeSize="-1" DataControl="WHODProductModuleDataControl"
@@ -20,42 +16,10 @@
                   RangeSize="-1"/>
         <iterator id="WHODReleaseStatuListVO1Iterator" Binds="WHODReleaseStatuListVO1"
                   DataControl="WHODModuleDataControl" RangeSize="-1"/>
+        <iterator id="WhoDesigneeListVO1Iterator" Binds="WhoDesigneeListVO1" DataControl="WHODModuleDataControl"
+                  RangeSize="-1"/>
+        <iterator id="WhoDictionaryLevelListVO1Iterator" Binds="WhoDictionaryLevelListVO1"
+                  DataControl="WHODModuleDataControl" RangeSize="-1"/>
     </executables>
-    <bindings>
-        <!--tree IterBinding="SmallTreeVO1Iterator" id="SmallTreeVO1">
-            <nodeDefinition DefName="com.dbms.csmq.model.hierarchy.SmallTreeVO" Name="SmallTreeVO10">
-                <AttrNames>
-                    <Item Value="Level"/>
-                    <Item Value="DictContentId"/>
-                    <Item Value="DictShortName"/>
-                    <Item Value="LevelName"/>
-                    <Item Value="Parent"/>
-                    <Item Value="Prikey"/>
-                    <Item Value="Term"/>
-                    <Item Value="ApprovedFlag"/>
-                    <Item Value="DictContentAltCode"/>
-                    <Item Value="Status"/>
-                    <Item Value="Termcat"/>
-                    <Item Value="Termlvl"/>
-                    <Item Value="Termscp"/>
-                    <Item Value="Termweig"/>
-                </AttrNames>
-            </nodeDefinition>
-        </tree-->
-        <action IterBinding="releaseGroupsSearch1Iterator" id="EWP_releaseGroupsSearch1Iterator"
-                InstanceName="ReleaseGroupModuleDataControl.releaseGroups1" DataControl="ReleaseGroupModuleDataControl"
-                RequiresUpdateModel="true" Action="executeWithParams">
-            <NamedData NDName="dictShortName" NDValue="#{pageFlowScope.NMQWizardBean.currentFilterDictionaryShortName}"
-                       NDType="java.lang.String"/>
-        </action>
-        <tree IterBinding="designeeListVO1Iterator" id="designeeListVO1">
-            <nodeDefinition DefName="com.dbms.csmq.model.designee.designeeListVO" Name="designeeListVO10">
-                <AttrNames>
-                    <Item Value="PersonName"/>
-                    <Item Value="OracleNmatRole"/>
-                    <Item Value="OracleUser"/>
-                </AttrNames>
-            </nodeDefinition>
-        </tree>
-    </bindings>
+    <bindings></bindings>
 </pageDefinition>

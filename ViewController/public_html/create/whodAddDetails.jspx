@@ -24,11 +24,17 @@
                                         <af:panelFormLayout id="pfl1">
                                             <af:selectOneChoice value="#{pageFlowScope.WhodWizardBean.currentExtension}"
                                                                 label="Extension" id="soc5" autoSubmit="true"
-                                                                rendered="#{WhodRenderingRulesBean.wizardDetailsRenderExtension}"
+                                                                rendered="#{!pageFlowScope.setMode eq 'create'}"
                                                                 contentStyle="color:#000000;" disabled="true">
-                                                <!--disabled="#{WhodRenderingRulesBean.wizardDetailsDisableExtention}-->
-                                                <f:selectItems value="#{pageFlowScope.WhodWizardBean.whodExtensionSI}"
+                                                <f:selectItems value="#{pageFlowScope.WhodWizardSearchBean.whodLevelGroupSI}"
                                                                id="si31"/>
+                                            </af:selectOneChoice>
+                                            <af:selectOneChoice value="#{pageFlowScope.WhodWizardBean.currentExtension}"
+                                                                label="Extension" id="soc4" autoSubmit="true"
+                                                                rendered="#{pageFlowScope.setMode eq 'create'}"
+                                                                contentStyle="color:#000000;">
+                                                <f:selectItems value="#{pageFlowScope.WhodWizardBean.whodExtensionSI}"
+                                                               id="si5"/>
                                             </af:selectOneChoice>
                                             <af:inputText label="Name" id="it10" columns="75" showRequired="true"
                                                           requiredMessageDetail="An MQ Name is required."
@@ -37,10 +43,18 @@
                                                           readOnly="#{WhodRenderingRulesBean.wizardDetailsDisableNMQName}"
                                                           labelStyle="white-space:nowrap"
                                                           contentStyle="color:#000000;"/>
-                                            <af:inputText label="Filter Dictionary" id="it4"
+                                            <!--<af:inputText label="Filter Dictionary" id="it4"
                                                           value="#{pageFlowScope.WhodWizardBean.currentFilterDictionaryShortName}"
                                                           columns="50" labelStyle="white-space:nowrap" readOnly="true"
-                                                          inlineStyle="color:Black;" contentStyle="color:#000000;"/>
+                                                          inlineStyle="color:Black;" contentStyle="color:#000000;"/>-->
+                                            <af:selectOneChoice id="soc3" autoSubmit="true" label="Dictionary"
+                                                                helpTopicId="NMAT_HELP_TERMINOLOGY"
+                                                                value="#{pageFlowScope.WhodWizardBean.currentFilterDictionaryShortName}"
+                                                                labelStyle="white-space:nowrap" valuePassThru="true"
+                                                                readOnly="true">
+                                                <f:selectItems value="#{pageFlowScope.WhodWizardBean.whodDictinoriesSI}"
+                                                               id="si30"/>
+                                            </af:selectOneChoice>
                                             <af:selectOneChoice label="Release Group" id="selectOneChoice2"
                                                                 required="false" autoSubmit="false"
                                                                 value="#{pageFlowScope.WhodWizardBean.currentPredictGroups}"
@@ -104,18 +118,8 @@
                                                                 value="#{pageFlowScope.WhodWizardBean.currentTermLevel}"
                                                                 labelStyle="white-space:nowrap"
                                                                 readOnly="#{WhodRenderingRulesBean.wizardDetailsDisableNMQLevel}">
-                                                <af:selectItem label="1" value="SDG1"
-                                                               rendered="#{pageFlowScope.WhodWizardBean.currentExtension eq 'SDG'}"
+                                                <f:selectItems value="#{pageFlowScope.WhodWizardBean.whodDictinoryLevelsSI}"
                                                                id="si1"/>
-                                                <af:selectItem label="2" value="SDG2"
-                                                               rendered="#{pageFlowScope.WhodWizardBean.currentExtension eq 'SDG'}"
-                                                               id="si14"/>
-                                                <af:selectItem label="1" value="CDG1"
-                                                               rendered="#{pageFlowScope.WhodWizardBean.currentExtension eq 'CDG'}"
-                                                               id="si5"/>
-                                                <af:selectItem label="2" value="CDG2"
-                                                               rendered="#{pageFlowScope.WhodWizardBean.currentExtension eq 'CDG'}"
-                                                               id="si6"/>
                                             </af:selectOneChoice>
                                             <af:selectOneChoice label="Scope" id="soc2"
                                                                 value="#{pageFlowScope.WhodWizardBean.currentScope}"
@@ -141,7 +145,7 @@
                                                                id="si7"/>
                                             </af:selectManyChoice>
                                             <af:inputText label="Code" id="it7" readOnly="true" columns="8" rows="1"
-                                                          labelStyle="white-space:nowrap" contentStyle="color:#000000;"
+                                                          labelStyle="white-space:nowrap" contentStyle="color:#000000;" partialTriggers="cb1"
                                                           value="#{(WhodRenderingRulesBean.wizardDetailsDisplayContentCode || pageFlowScope.WhodWizardBean.saved) ? pageFlowScope.WhodWizardBean.currentContentCode : null}"/>
                                         </af:panelFormLayout>
                                     </af:panelGroupLayout>

@@ -3,7 +3,9 @@ package com.dbms.csmq.view.backing.whod;
 
 import com.dbms.csmq.CSMQBean;
 import com.dbms.csmq.UserBean;
+import com.dbms.csmq.model.infNotes.WHODInfoNotesVORowImpl;
 import com.dbms.csmq.view.util.ADFUtils;
+import com.dbms.util.Utils;
 import com.dbms.util.dml.DMLUtils;
 import com.dbms.util.logged.CallableStatement;
 
@@ -21,10 +23,14 @@ import java.util.Map;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
+import oracle.adf.model.binding.DCIteratorBinding;
 import oracle.adf.share.ADFContext;
 import oracle.adf.view.rich.context.AdfFacesContext;
 
+import oracle.jbo.ViewObject;
 import oracle.jbo.server.DBTransaction;
+
+import oracle.jdbc.OracleTypes;
 
 
 public class WhodUtils {
@@ -953,53 +959,42 @@ new FacesMessage(FacesMessage.SEVERITY_INFO, "Impacted list refreshed for dictio
 
 
     public static Hashtable<String, String> getActivationInfo(String dictContentID, String dictionaryID) {
-
         /*
-        PROCEDURE nmat_ui_pkg.s_get_Activation_Info_By_MQ (
-            pDictionaryName         IN      tms.tms_def_dictionaries.short_name%TYPE,
-            pdictContentID          IN      tms.tms_dict_contents.dict_content_id%TYPE,
-            pInitialCreationDate    OUT     DATE,
-            pInitialCreationBy      OUT     VARCHAR2,
-            pLastActivationDate     OUT     DATE,
-            pActivationBy           OUT     VARCHAR2
-            )
+        PROCEDURE get_activation_info
+                (pdictContentID         IN  NUMBER,
+                 pInitialCreationDate   OUT DATE,
+                 pInitialCreationBy     OUT VARCHAR2,
+                 pLastActivationDate    OUT DATE,
+                 pActivationBy          OUT VARCHAR2)
         */
 
         CSMQBean.logger.info("*** GETTING ACTIVATION INFO ***");
         CSMQBean.logger.info("pDictionaryId: " + dictionaryID);
         CSMQBean.logger.info("pdictContentID: " + dictContentID);
 
-        String sql = "{call NMAT_UI_PKG.s_get_Activation_Info_By_MQ(?,?,?,?,?,?)}";
+        String sql = "{call cqt_whod_ui_tms_utils.get_activation_info(?,?,?,?,?)}";
         DBTransaction dBTransaction = DMLUtils.getDBTransaction();
-        FacesMessage msg;
         CallableStatement cstmt =
             new CallableStatement(dBTransaction.createCallableStatement(sql, DBTransaction.DEFAULT),
-                                  "NMAT_UI_PKG.s_get_Activation_Info_By_MQ");
-        String messageText;
+                                  "cqt_whod_ui_tms_utils.get_activation_info");
         Hashtable<String, String> retVal =
             new Hashtable<String, String>(); // array to return the new state and message
 
         try {
-            cstmt.setString(1, dictionaryID);
-            cstmt.setString(2, dictContentID);
-
-            cstmt.registerOutParameter(3, oracle.jdbc.OracleTypes.DATE);
-            cstmt.registerOutParameter(4, oracle.jdbc.OracleTypes.CHAR);
-            cstmt.registerOutParameter(5, oracle.jdbc.OracleTypes.DATE);
-            cstmt.registerOutParameter(6, oracle.jdbc.OracleTypes.CHAR);
-
+            cstmt.setString(1, dictContentID);
+            cstmt.registerOutParameter(2, oracle.jdbc.OracleTypes.DATE);
+            cstmt.registerOutParameter(3, OracleTypes.VARCHAR);
+            cstmt.registerOutParameter(4, oracle.jdbc.OracleTypes.DATE);
+            cstmt.registerOutParameter(5, oracle.jdbc.OracleTypes.VARCHAR);
             cstmt.executeUpdate();
-
-            String initialCreationDate = cstmt.getString(3) != null ? cstmt.getString(3) : "";
-            String initialCreationBy = cstmt.getString(4) != null ? cstmt.getString(4) : "";
-            String lastActivationDate = cstmt.getString(5) != null ? cstmt.getString(5) : "";
-            String activationBy = cstmt.getString(6) != null ? cstmt.getString(6) : "";
-
+            String initialCreationDate = cstmt.getString(2) != null ? cstmt.getString(2) : "";
+            String initialCreationBy = cstmt.getString(3) != null ? cstmt.getString(3) : "";
+            String lastActivationDate = cstmt.getString(4) != null ? cstmt.getString(4) : "";
+            String activationBy = cstmt.getString(5) != null ? cstmt.getString(5) : "";
             retVal.put("initialCreationDate", initialCreationDate);
             retVal.put("initialCreationBy", initialCreationBy);
             retVal.put("lastActivationDate", lastActivationDate);
             retVal.put("activationBy", activationBy);
-
             cstmt.close();
             return retVal;
         } catch (SQLException e) {
@@ -1052,6 +1047,12 @@ new FacesMessage(FacesMessage.SEVERITY_INFO, "Impacted list refreshed for dictio
         return whodWizardBean;
     }
 
+    public static WhodWizardSearchBean getWhodWizardSearchBean() {
+        WhodWizardSearchBean whodWizardSearchBean =
+            (WhodWizardSearchBean)getPageFlowScope().get("WhodWizardSearchBean");
+        return whodWizardSearchBean;
+    }
+
     public static void clearRelations() {
         getWhodSourceTermSearchBean().clearTree();
         getWhodWizardBean().clearRelations();
@@ -1071,7 +1072,7 @@ new FacesMessage(FacesMessage.SEVERITY_INFO, "Impacted list refreshed for dictio
                                         String dGScopeFlag, String dGActiveStatus, String dGProductLIST,
                                         String dGGroupLIST, String commentText, String designee, String userRole,
                                         String action) {
-
+        System.out.println("saveDetails() designee==" + designee);
         // CALL PROC TO SAVE
         /*
          * cqt_whod_ui_tms_utils
@@ -1090,8 +1091,7 @@ new FacesMessage(FacesMessage.SEVERITY_INFO, "Impacted list refreshed for dictio
              RETURN VARCHAR2;
         */
         dGActiveStatus = "A"; //TODO need to remove this hard coding
-        designee = "TEST_REQUESTOR|CQT|CQTOWNER"; //TODO need to remove this hard coding
-        String sql = "{ ? = call cqt_whod_ui_tms_utils.insert_content_data(?,?,?,?,?,  ?,?,?,?,?,  ?)}";
+        String sql = "{ ? = call cqt_whod_ui_tms_utils.insert_content_data(?,?,?,?,?,  ?,?,?,?,?,  ?,?)}";
         DBTransaction dBTransaction = DMLUtils.getDBTransaction();
         Integer newDictContentID = null;
         Hashtable retVal = new Hashtable(); // array to return the new state and message
@@ -1111,15 +1111,18 @@ new FacesMessage(FacesMessage.SEVERITY_INFO, "Impacted list refreshed for dictio
             cstmt.setString(10, commentText);
             cstmt.setString(11, designee);
             cstmt.registerOutParameter(12, Types.INTEGER);
+            cstmt.registerOutParameter(13, Types.VARCHAR);
             cstmt.executeQuery();
             newDictContentID = cstmt.getInt(12);
+            String newDictContentCode = cstmt.getString(13);
             cstmt.close();
-            System.out.println("newDictContentID==" + newDictContentID);
-            if (newDictContentID != null)
+            System.out.println("newDictContentID==" + newDictContentID + ";;; newDictContentCode ==" +
+                               newDictContentCode);
+            System.out.println();
+            if (newDictContentID != null) {
                 retVal.put("NEW_DICT_CONTENT_ID", "" + newDictContentID);
-            //            String newDictContentCode = cstmt.getString(1);
-            //           System.out.println("newDictContentCode ==" + newDictContentCode);
-            //            retVal.put("NEW_DICT_CONTENT_CODE", "" + newDictContentCode);
+                retVal.put("NEW_DICT_CONTENT_CODE", newDictContentCode);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
             String messageText;
@@ -1146,14 +1149,34 @@ new FacesMessage(FacesMessage.SEVERITY_INFO, "Impacted list refreshed for dictio
         return retVal;
     }
 
+    public static void getInfNotes(String currentDictContentID) {
+        try {
+            DCIteratorBinding dciterb = ADFUtils.findIterator("WHODInfoNotesIterator");
+            ViewObject vo = dciterb.getViewObject();
+            vo.setNamedWhereClauseParam("dDictContentId", currentDictContentID);
+            vo.executeQuery();
+            WhodWizardBean whodWizardBean = WhodUtils.getWhodWizardBean();
+            if (vo.getRowCount() > 0) {
+                while (vo.hasNext()) {
+                    WHODInfoNotesVORowImpl row = (WHODInfoNotesVORowImpl)vo.next();
+                    if (row.getInfoNoteType() != null && row.getInfoNoteType().equals("DESC"))
+                        whodWizardBean.setCurrentInfNoteDescription(Utils.getAsString(row, "InfoNoteValue"));
+                    if (row.getInfoNoteType() != null && row.getInfoNoteType().equals("NOTE"))
+                        whodWizardBean.setCurrentInfNoteNotes(Utils.getAsString(row, "InfoNoteValue"));
+                }
+            }
+        } catch (java.util.NoSuchElementException e) {
+            CSMQBean.logger.error(e.getMessage(), e);
+        }
+    }
+
     public static Hashtable saveUpdatedDetails(String currentDictContentID, String levelName, String levelExtension,
                                                String approvedFlag, String termName, String dGScopeFlag,
                                                String dGActiveStatus, String dGProductLIST, String dGGroupLIST,
                                                String commentText, String designee, String userRole, String action,
                                                String state) {
-
+        System.out.println("saveUpdatedDetails() designee==" + designee);
         dGActiveStatus = "A"; //TODO need to remove this hard coding
-        designee = "TEST_REQUESTOR|CQT|CQTOWNER"; //TODO need to remove this hard coding
         String sql = "{ ? = call cqt_whod_ui_tms_utils.update_content_data(?,?,?,?,?,  ?,?,?,?,?,  ?)}";
         DBTransaction dBTransaction = DMLUtils.getDBTransaction();
         Integer newDictContentID = null;
@@ -1251,6 +1274,72 @@ new FacesMessage(FacesMessage.SEVERITY_INFO, "Impacted list refreshed for dictio
             return new String("-1");
         }
         return predictInfoHdrID;
+    }
+
+    public static Hashtable copyDetails(String fromDictContentID, String newLevel, String newTerm) {
+        System.out.println("copyDetails() fromDictContentID==" + fromDictContentID + ";; newTerm=" + newTerm +
+                           ";; newLevel=" + newLevel);
+        // CALL PROC TO SAVE
+        /*
+         * cqt_whod_ui_tms_utils
+        FUNCTION copy_all_data
+               (pCopyDictContentID   IN  NUMBER,
+                pNewLevel            IN  VARCHAR2,
+                pNewTerm             IN  VARCHAR2,
+                pNewDictContentID    OUT NUMBER,
+                pNewDictContentCode  OUT VARCHAR2,
+                pConfirmMsg          OUT VARCHAR2)
+             RETURN VARCHAR;
+        */
+        String sql = "{ ? = call cqt_whod_ui_tms_utils.copy_all_data(?,?,?,?,?,  ?)}";
+        DBTransaction dBTransaction = DMLUtils.getDBTransaction();
+        Integer newDictContentID = null;
+        Hashtable retVal = new Hashtable(); // array to return the new state and message
+        try {
+            CallableStatement cstmt =
+                new CallableStatement(dBTransaction.createCallableStatement(sql, DBTransaction.DEFAULT),
+                                      "cqt_whod_ui_tms_utils.insert_content_data");
+            cstmt.registerOutParameter(1, Types.VARCHAR);
+            cstmt.setInt(2, new Integer(fromDictContentID));
+            cstmt.setString(3, newLevel);
+            cstmt.setString(4, newTerm);
+            cstmt.registerOutParameter(5, Types.INTEGER);
+            cstmt.registerOutParameter(6, Types.VARCHAR);
+            cstmt.registerOutParameter(7, Types.VARCHAR);
+            cstmt.executeQuery();
+            newDictContentID = cstmt.getInt(5);
+            String newDictContentCode = cstmt.getString(6);
+            cstmt.close();
+            System.out.println("newDictContentID==" + newDictContentID + ";;; newDictContentCode ==" +
+                               newDictContentCode);
+            System.out.println();
+            if (newDictContentID != null) {
+                retVal.put("NEW_DICT_CONTENT_ID", "" + newDictContentID);
+                retVal.put("NEW_DICT_CONTENT_CODE", newDictContentCode);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            String messageText;
+
+            if (e.getMessage().indexOf(CSMQBean.NAME_IN_USE_ERROR) > -1) { // it's a name already in use error
+                messageText = "The name: " + newTerm + " is already in use.  Please use another name";
+            } else if (e.getMessage().indexOf(CSMQBean.INVALID_STATE_CHANGE_ERROR) >
+                       -1) { // it's a name already in use error
+                messageText =
+                        newTerm + " is Pending Impact Assessment and must be deleted in Impact Assessment to Update the Current NMQ.";
+            } else { // it's something else
+                messageText = "The following error occurred.  " + newTerm + " was not copy successfully.\n" +
+                        e.getMessage();
+                e.printStackTrace();
+            }
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, messageText, "");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+        return retVal;
     }
 
     public static String getDelimStr(List<String> items, char delim) {
