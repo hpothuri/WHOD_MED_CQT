@@ -66,8 +66,8 @@ public class WhodSourceTermSearchBean extends HierarchyAccessor {
     private boolean impactSearch = false;
     private boolean multiSearch = false;
 
-    boolean showBaseLevelSelItems = true; // this is the default
-    boolean showFilterSelItems = false;
+    boolean showBaseLevelSelItems = false; // this is the default
+    boolean showFilterSelItems = true;
 
     private String currentDictId;
     private GenericTreeNode currentRowData;
