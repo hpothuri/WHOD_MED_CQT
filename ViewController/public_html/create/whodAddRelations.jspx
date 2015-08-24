@@ -204,7 +204,7 @@
                                                                             value="#{pageFlowScope.WhodWizardBean.currentDictionary}"
                                                                             binding="#{pageFlowScope.WhodSourceTermSearchBean.controlDictionaryType}"
                                                                             valuePassThru="true">
-                                                            <f:selectItems value="#{pageFlowScope.WhodWizardBean.whodDictinoriesSI}"
+                                                            <f:selectItems value="#{pageFlowScope.WhodWizardBean.whodHierarchyDictinoriesSI}"
                                                                            id="si1"/>
                                                         </af:selectOneChoice>
                                                         <af:selectOneChoice id="soc10" label="Level"

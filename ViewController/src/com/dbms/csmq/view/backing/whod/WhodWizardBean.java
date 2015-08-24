@@ -160,6 +160,7 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
     private List<SelectItem> whodStateSI;
     private List<SelectItem> whodReleaseStatusSI;
     private List<SelectItem> whodDictinoriesSI;
+    private List<SelectItem> whodHierarchyDictinoriesSI;
     private List<SelectItem> whodDictinoryLevelsSI;
 
     public WhodWizardBean() {
@@ -1696,5 +1697,18 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
         }
         vo.setNamedWhereClauseParam("includeAllFlag", "Y");
         vo.executeQuery();
+    }
+
+    public void setWhodHierarchyDictinoriesSI(List<SelectItem> whodHierarchyDictinoriesSI) {
+        this.whodHierarchyDictinoriesSI = whodHierarchyDictinoriesSI;
+    }
+
+    public List<SelectItem> getWhodHierarchyDictinoriesSI() {
+        if (whodHierarchyDictinoriesSI == null) {
+            whodHierarchyDictinoriesSI =
+                    ADFUtils.selectItemsForIteratorbyPageDef(WHOD_SEARCH_PAGE_DEF, "WhodDictionariesListVO1Iterator",
+                                                             "ShortValue", "LongValue");
+        }
+        return whodHierarchyDictinoriesSI;
     }
 }
