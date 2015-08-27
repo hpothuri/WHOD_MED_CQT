@@ -54,7 +54,7 @@
                                                                     partialTriggers="soc2">
                                                     <f:selectItems value="#{pageFlowScope.WhodWizardSearchBean.whodLevelGroupSI}"
                                                                    id="si311"/>
-                                                    <af:selectItem id="si3011" label="ALL" value="%DG%"
+                                                    <af:selectItem id="si3011" label="ALL" value="%"
                                                                    rendered="#{pageFlowScope.WhodWizardBean.currentDictionary ne 'UMCWHO2'}"/>
                                                 </af:selectOneChoice>
                                                 <af:selectOneChoice label="Release Group" id="smc4"
@@ -107,13 +107,9 @@
                                                                     labelStyle="white-space:nowrap"
                                                                     value="#{pageFlowScope.WhodWizardSearchBean.paramStatus}"
                                                                     autoSubmit="true">
-                                                    <af:selectItem label="All" value="%" id="si19"
-                                                                   rendered='#{securityContext.userInRole["MQM"] or securityContext.userInRole ["Requestor"]}'/>
-                                                    <af:selectItem label="Active" value="A" id="si19a"
-                                                                   rendered='#{securityContext.userInRole["MQM"] or securityContext.userInRole ["Requestor"]}'/>
-                                                    <af:selectItem label="Inactive" value="I" id="si16"
-                                                                   rendered='#{securityContext.userInRole["MQM"] or securityContext.userInRole ["Requestor"]}'/>
-                                                    <af:selectItem label="Pending" value="P" id="si18"/>
+                                                    <af:selectItem label="All" value="%" id="si19"/>
+                                                    <af:selectItem label="Active" value="A" id="si19a"/>
+                                                    <af:selectItem label="Inactive" value="I" id="si16"/>
                                                 </af:selectOneChoice>
                                             </af:panelFormLayout>
                                             <af:panelFormLayout id="pgl8" maxColumns="1" rows="2">

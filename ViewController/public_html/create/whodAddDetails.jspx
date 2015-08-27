@@ -65,7 +65,7 @@
                                                 <f:selectItems value="#{pageFlowScope.WhodWizardBean.whodReleaseGroupSI}"
                                                                id="si4"/>
                                             </af:selectOneChoice>
-                                            <af:inputText label="Release Status" id="it11"
+                                            <af:inputText label="Release Status - #{pageFlowScope.WhodWizardBean.currentStatus}" id="it11"
                                                           value="#{pageFlowScope.WhodWizardBean.currentStatus ne 'CURRENT' ? pageFlowScope.WhodWizardBean.currentStatus : ''}"
                                                           showRequired="true" readOnly="true" columns="20" rows="1"
                                                           wrap="off" binding="#{WhodWizardUIBean.controlMQStatus}"
@@ -98,8 +98,6 @@
                                     </af:panelGroupLayout>
                                     <af:panelGroupLayout id="pgl5">
                                         <af:panelFormLayout id="pfl3">
-                                            <af:spacer width="10" height="10" id="s4"/>
-                                            <af:spacer width="10" height="10" id="s2"/>
                                             <af:inputText label="Algorithm  " id="it14"
                                                           binding="#{WhodWizardUIBean.controlMqAlgorithm}"
                                                           maximumLength="300"

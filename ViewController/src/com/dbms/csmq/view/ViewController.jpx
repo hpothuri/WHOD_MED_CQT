@@ -46,4 +46,8 @@
       <Attr Name="_AM" Value="true"/>
     </DesignTime>
   </Containee>
+  <Containee
+    Name="WHOD"
+    PackageName="com.dbms.csmq.model.WHOD"
+    ObjectType="JboPackage"/>
 </JboProject>

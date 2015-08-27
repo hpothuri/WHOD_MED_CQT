@@ -178,7 +178,6 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
         this.currentMQType = cSMQBean.getCustomMQName();
         if (!dictionaryInfoFetched)
             getDictionaryInfo();
-        loadAllLOVs();
     }
 
 
@@ -275,8 +274,9 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
                 this.updateParam = CSMQBean.DML_UPDATE;
             }
         }
-        CSMQBean.logger.info(userBean.getCaller() + " SETTING MODE: " + this.mode);
         setDefaultDictionary();
+        loadAllLOVs();
+        CSMQBean.logger.info(userBean.getCaller() + " SETTING MODE: " + this.mode);
         return null;
     }
 
