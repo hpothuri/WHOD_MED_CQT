@@ -188,7 +188,12 @@ public class WhodWizardSearchBean {
         WhodWizardBean whodWizardBean = WhodUtils.getWhodWizardBean();
         vo.setNamedWhereClauseParam("approvedFlag", getParamApproved());
         vo.setNamedWhereClauseParam("levelName", getSearchLevelParam());
+        if(getParamExtension() != null && getParamExtension().equalsIgnoreCase("CDG"))
         vo.setNamedWhereClauseParam("dGActiveStatus", getParamStatus());
+        else if(getParamLevelGroup() != null && getParamLevelGroup().equals("CDG"))
+        vo.setNamedWhereClauseParam("dGActiveStatus", getParamStatus());   
+        else
+        vo.setNamedWhereClauseParam("dGActiveStatus", "%");
         vo.setNamedWhereClauseParam("dGGroupLIST", getParamGroupList()); // search needs ^ as the delimiter
         vo.setNamedWhereClauseParam("dGProductLIST", getParamProductList()); // search needs ^ as the delimiter
         vo.setNamedWhereClauseParam("dGScopeFlag", getParamScope());

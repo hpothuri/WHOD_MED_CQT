@@ -15,6 +15,7 @@
     <Attr Name="_appModuleNames1" Value="com.dbms.csmq.model.NMQ.NMQModule"/>
     <Attr Name="_appModuleNames2" Value="com.dbms.csmq.model.designee.DesigneeModule"/>
     <Attr Name="_appModuleNames3" Value="com.dbms.csmq.model.product.WHODProductModule"/>
+    <Attr Name="_appModuleNames4" Value="com.dbms.csmq.model.WHOD.WHODModule"/>
   </DesignTime>
   <Containee
     Name="designee"
@@ -49,5 +50,11 @@
   <Containee
     Name="WHOD"
     PackageName="com.dbms.csmq.model.WHOD"
-    ObjectType="JboPackage"/>
+    ObjectType="JboPackage">
+    <DesignTime>
+      <Attr Name="_VO" Value="true"/>
+      <Attr Name="_AM" Value="true"/>
+      <Attr Name="_LocationURL" Value="../../Model/src/"/>
+    </DesignTime>
+  </Containee>
 </JboProject>

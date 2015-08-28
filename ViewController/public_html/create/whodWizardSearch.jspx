@@ -178,14 +178,15 @@
                                         </af:column>
                                         <af:column sortProperty="Status" sortable="true" headerText="Status" id="c4"
                                                    width="40" filterable="true">
-                                            <af:outputText value="#{row.Status}" id="ot7"/>
+                                            <af:outputText value="#{row.Value1 eq 'A' ? 'Active' : (row.Value1 eq 'I' ? 'Inactive' : '')}" id="ot7"/>
                                         </af:column>
                                         <af:column sortProperty="ReleaseStatus" sortable="true"
                                                    headerText="Release Status" id="c8" width="80" filterable="true">
                                             <af:outputText value="#{row.ReleaseStatus}" id="ot6"/>
                                         </af:column>
                                         <af:column sortProperty="ReleaseType" sortable="true" headerText="Release Type"
-                                                   id="c10" width="80" displayIndex="-1" filterable="true">
+                                                   id="c10" width="80" displayIndex="-1" filterable="true"
+                                                   visible="false">
                                             <af:outputText value="#{row.ReleaseType}" id="ot3"/>
                                         </af:column>
                                         <af:column sortProperty="Value4" sortable="true" headerText="Group" id="c15"
