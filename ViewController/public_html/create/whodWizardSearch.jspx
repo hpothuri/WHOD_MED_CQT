@@ -208,7 +208,7 @@
                                         </af:column>
                                         <af:column sortable="true" headerText="State" id="c3" width="40"
                                                    filterable="true" sortProperty="Value1">
-                                            <af:outputText value="#{row.Value1 eq 'I' ? 'I' : 'A'}" id="ot13"/>
+                                            <af:outputText value="#{row.State}" id="ot13"/>
                                         </af:column>
                                         <af:column sortProperty="Value4" sortable="false" headerText="Product" id="c9"
                                                    width="150" minimumWidth="25" rendered="true">

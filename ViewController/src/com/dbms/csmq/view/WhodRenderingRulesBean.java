@@ -249,12 +249,12 @@ public class WhodRenderingRulesBean {
 
         // STATES
         if (nMQWizardBean.getCurrentState() != null) {
-            STATE_APPROVED = (nMQWizardBean.getCurrentState().equals(CSMQBean.STATE_APPROVED));
-            STATE_PUBLISHED = (nMQWizardBean.getCurrentState().equals(CSMQBean.STATE_PUBLISHED));
-            STATE_PROPOSED = (nMQWizardBean.getCurrentState().equals(CSMQBean.STATE_PROPOSED));
-            STATE_DRAFT = (nMQWizardBean.getCurrentState().equals(CSMQBean.STATE_DRAFT));
-            STATE_REQUESTED = (nMQWizardBean.getCurrentState().equals(CSMQBean.STATE_REQUESTED));
-            STATE_REVIEWED = (nMQWizardBean.getCurrentState().equals(CSMQBean.STATE_REVIEWED));
+            STATE_APPROVED = (nMQWizardBean.getCurrentState().equalsIgnoreCase(CSMQBean.STATE_APPROVED));
+            STATE_PUBLISHED = (nMQWizardBean.getCurrentState().equalsIgnoreCase(CSMQBean.STATE_PUBLISHED));
+            STATE_PROPOSED = (nMQWizardBean.getCurrentState().equalsIgnoreCase(CSMQBean.STATE_PROPOSED));
+            STATE_DRAFT = (nMQWizardBean.getCurrentState().equalsIgnoreCase(CSMQBean.STATE_DRAFT));
+            STATE_REQUESTED = (nMQWizardBean.getCurrentState().equalsIgnoreCase(CSMQBean.STATE_REQUESTED));
+            STATE_REVIEWED = (nMQWizardBean.getCurrentState().equalsIgnoreCase(CSMQBean.STATE_REVIEWED));
         }
 
         // RELEASE STATUS

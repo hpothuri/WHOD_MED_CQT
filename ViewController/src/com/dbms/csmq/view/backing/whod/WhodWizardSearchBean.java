@@ -330,6 +330,7 @@ public class WhodWizardSearchBean {
         whodWizardBean.setCurrentProduct(currentMqproduct);
         whodWizardBean.setCurrentMQGROUP(currentMqgroups);
         setParamLevelGroup(currentExtension);
+        whodWizardBean.setCurrentState(currentState);
 
         /*
          * //TODO:WHOD need to verify - What are all the correct values.

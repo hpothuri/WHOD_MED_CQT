@@ -57,6 +57,7 @@
                     <Item Value="Value4"/>
                     <Item Value="ReleaseType"/>
                     <Item Value="LevelExtension"/>
+                    <Item Value="State"/>
                 </AttrNames>
             </nodeDefinition>
         </tree>

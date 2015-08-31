@@ -353,24 +353,13 @@ new FacesMessage(FacesMessage.SEVERITY_INFO, "MedDRA Query State Changed Success
     public static Hashtable changeStateFromDraftToPublish(String dictContentIDs, String state, String currentUser,
                                                           String currentUserRole, oracle.jbo.domain.Date dueDate,
                                                           String comment, String activationGroup) {
-
         /*
-       PROCEDURE workflow_pkg.change_state_draft_to_publish (
-                 i_dict_content_id IN tms_predict_contents.predict_content_id%TYPE,
-                 i_new_state       IN nmq_track_state.state%TYPE,
-                 i_user_id         IN nmq_track_state.created_user%TYPE,
-                 i_role_name        IN user_role_privs.granted_role%TYPE,
-                 i_due_date        IN nmq_track_state.due_date_ts%TYPE,
-                 i_comment         IN nmq_track_state.description%TYPE,
-                 i_group_name      IN tms.tms_predict_groups.name%TYPE,
-                 o_new_state        OUT nmq_track_state.state%TYPE,
-                 o_approval_reason  OUT nmq_track_state.description%TYPE)
-
-
+        FUNCTION promote_to_published
+                (pDictContentID  IN NUMBER,
+                 pConfirmMsg    OUT VARCHAR2)
+              RETURN VARCHAR;
         */
-
         state = "Published";
-
         CSMQBean.logger.info("*** CHANGING STATE FROM DRAFT TO PUBLISH ***");
         CSMQBean.logger.info("i_dict_content_id: " + dictContentIDs);
         CSMQBean.logger.info("i_new_state: " + state);
@@ -379,50 +368,25 @@ new FacesMessage(FacesMessage.SEVERITY_INFO, "MedDRA Query State Changed Success
         CSMQBean.logger.info("i_comment: " + comment);
         CSMQBean.logger.info("i_group_name: " + activationGroup);
 
-
-        String sql = "{call workflow_pkg.change_state_draft_to_publish(?,?,?,?,?,?,?,?,?)}";
+        String sql = "{call CQT_WHOD_UI_TMS_UTILS.promote_to_published(?,?)}";
         DBTransaction dBTransaction = DMLUtils.getDBTransaction();
         FacesMessage msg;
         CallableStatement cstmt =
             new CallableStatement(dBTransaction.createCallableStatement(sql, DBTransaction.DEFAULT),
-                                  "workflow_pkg.change_state_draft_to_publish");
+                                  "CQT_WHOD_UI_TMS_UTILS.promote_to_published");
         String messageText;
         Hashtable retVal = new Hashtable(); // array to return the new state and message
 
         try {
-            cstmt.setString("i_dict_content_id", dictContentIDs);
-            cstmt.setString("i_new_state", state);
-            cstmt.setString("i_user_id", currentUser);
-            cstmt.setString("i_role_name", currentUserRole);
-
-            if (dueDate == null)
-                cstmt.setNull("i_due_date", Types.DATE);
-            else
-                cstmt.setDate("i_due_date", dueDate.dateValue());
-
-            cstmt.setString("i_comment", comment);
-            cstmt.setString("i_group_name", activationGroup);
-            //cstmt.setNull("i_transaction_date", Types.DATE);
-
-            cstmt.setString("o_new_state", "");
-            cstmt.registerOutParameter("o_new_state", Types.NVARCHAR);
-
-            cstmt.setString("o_approval_reason", "");
-            cstmt.registerOutParameter("o_approval_reason", Types.NVARCHAR);
-
+            cstmt.setString("pDictContentID", dictContentIDs);
+            cstmt.registerOutParameter("pConfirmMsg", Types.VARCHAR);
             cstmt.executeUpdate();
-
-            String tempState = cstmt.getString("o_new_state");
-            String tempReason = cstmt.getString("o_approval_reason");
-
-            if (tempState != null)
-                retVal.put("STATE", tempState);
-            if (tempReason != null)
-                retVal.put("REASON", tempReason);
+            String confirmMsg = cstmt.getString("pConfirmMsg");
+            if (confirmMsg != null)
+                retVal.put("ConfirmMsg", confirmMsg);
 
             cstmt.close();
-            msg =
-new FacesMessage(FacesMessage.SEVERITY_INFO, "MedDRA Query State Changed Successfully to " + state, null);
+            msg = new FacesMessage(FacesMessage.SEVERITY_INFO, confirmMsg, null);
         } catch (SQLException e) {
             e.printStackTrace();
 
@@ -442,9 +406,7 @@ new FacesMessage(FacesMessage.SEVERITY_INFO, "MedDRA Query State Changed Success
                 messageText = CSMQBean.getProperty("DATABASE_CONFIGURATION_ERROR");
             } else if (e.getMessage().indexOf(CSMQBean.INVALID_STATE_CHANGE_FROM_PENDING_TO_DRAFT_ERROR) > -1) {
                 messageText = CSMQBean.getProperty("INVALID_STATE_CHANGE_FROM_PENDING_TO_DRAFT_ERROR");
-            }
-
-            else { // it's something else
+            } else { // it's something else
                 messageText = "The following error occurred: " + e.getMessage();
                 e.printStackTrace();
             }
@@ -1133,7 +1095,7 @@ new FacesMessage(FacesMessage.SEVERITY_INFO, "Impacted list refreshed for dictio
                 pPredictContentID    OUT NUMBER)
              RETURN VARCHAR2;
         */
-        dGActiveStatus = "A"; //TODO need to remove this hard coding
+        dGActiveStatus = "D"; //TODO need to remove this hard coding
         String sql = "{ ? = call cqt_whod_ui_tms_utils.insert_content_data(?,?,?,?,?,  ?,?,?,?,?,  ?,?)}";
         DBTransaction dBTransaction = DMLUtils.getDBTransaction();
         Integer newDictContentID = null;
@@ -1396,5 +1358,312 @@ new FacesMessage(FacesMessage.SEVERITY_INFO, "Impacted list refreshed for dictio
         if (temp != null & temp.length() > 0)
             delimStr = temp.substring(0, temp.length() - 1);
         return delimStr;
+    }
+    
+        public static Hashtable demoteToDraft(String dictContentIDs) {
+        /*
+        FUNCTION demote_to_draft
+                (pDictContentID  IN NUMBER,
+                 pConfirmMsg    OUT VARCHAR2)
+              RETURN VARCHAR;
+        */
+        CSMQBean.logger.info("*** CHANGING STATE FROM DEMOTE TO DRAFT ***");
+        CSMQBean.logger.info("i_dict_content_id: " + dictContentIDs);
+
+        String sql = "{call ? = CQT_WHOD_UI_TMS_UTILS.demote_to_draft(?,?)}";
+        //String sql = "{ ? = call cqt_whod_ui_tms_utils.copy_all_data(?,?,?,?,?,  ?)}";
+        DBTransaction dBTransaction = DMLUtils.getDBTransaction();
+        FacesMessage msg;
+        CallableStatement cstmt =
+            new CallableStatement(dBTransaction.createCallableStatement(sql, DBTransaction.DEFAULT),
+                                  "CQT_WHOD_UI_TMS_UTILS.demote_to_draft");
+        String messageText;
+        Hashtable retVal = new Hashtable(); // array to return the new state and message
+
+        try {
+            cstmt.registerOutParameter(1, Types.VARCHAR);
+            cstmt.setString(2, dictContentIDs);
+            cstmt.registerOutParameter(3, Types.VARCHAR);
+            cstmt.executeUpdate();
+            String confirmMsg = cstmt.getString(3);
+            if (confirmMsg != null)
+                retVal.put("ConfirmMsg", confirmMsg);
+
+            cstmt.close();
+            msg = new FacesMessage(FacesMessage.SEVERITY_INFO, confirmMsg, null);
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+            if (e.getMessage().indexOf(CSMQBean.INVALID_PROMOTION_ERROR) > -1) {
+                messageText = CSMQBean.getProperty("INVALID_PROMOTION_ERROR");
+            } else if (e.getMessage().indexOf(CSMQBean.INVALID_PROMOTION_SEQUENCE_ERROR) > -1) {
+                messageText = CSMQBean.getProperty("INVALID_PROMOTION_SEQUENCE_ERROR");
+            } else if (e.getMessage().indexOf(CSMQBean.PROMOTION_DEPENDENCY_ERROR) > -1) {
+                messageText = CSMQBean.getProperty("PROMOTION_DEPENDENCY_ERROR");
+            } else if (e.getMessage().indexOf(CSMQBean.INVALID_STATE_CHANGE_ERROR) > -1) {
+                messageText = e.getMessage(); //CSMQBean.getProperty("INVALID_STATE_CHANGE_ERROR");
+            } else if (e.getMessage().indexOf(CSMQBean.MUST_BE_NMQ_OR_SMQ_ERROR) > -1) {
+                messageText = CSMQBean.getProperty("MUST_BE_NMQ_OR_SMQ_ERROR");
+            } else if (e.getMessage().indexOf(CSMQBean.GENERIC_ACTIVATION_ERROR) > -1) {
+                messageText = CSMQBean.getProperty("GENERIC_ACTIVATION_ERROR") + "DETAILS: " + e.getMessage();
+            } else if (e.getMessage().indexOf(CSMQBean.DATABASE_CONFIGURATION_ERROR) > -1) {
+                messageText = CSMQBean.getProperty("DATABASE_CONFIGURATION_ERROR");
+            } else if (e.getMessage().indexOf(CSMQBean.INVALID_STATE_CHANGE_FROM_PENDING_TO_DRAFT_ERROR) > -1) {
+                messageText = CSMQBean.getProperty("INVALID_STATE_CHANGE_FROM_PENDING_TO_DRAFT_ERROR");
+            } else { // it's something else
+                messageText = "The following error occurred: " + e.getMessage();
+                e.printStackTrace();
+            }
+            msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, messageText, "");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            return null;
+        }
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+        return retVal;
+    }
+
+    public static Hashtable promoteAllToPublished() {
+        /*
+    PROCEDURE promote_all_to_published
+            (pConfirmMsg    OUT VARCHAR2);
+    */
+        CSMQBean.logger.info("*** CHANGING STATE promote_all_to_published ***");
+
+        String sql = "{call CQT_WHOD_UI_TMS_UTILS.promote_all_to_published(?)}";
+        DBTransaction dBTransaction = DMLUtils.getDBTransaction();
+        FacesMessage msg;
+        CallableStatement cstmt =
+            new CallableStatement(dBTransaction.createCallableStatement(sql, DBTransaction.DEFAULT),
+                                  "CQT_WHOD_UI_TMS_UTILS.promote_all_to_published");
+        String messageText;
+        Hashtable retVal = new Hashtable(); // array to return the new state and message
+
+        try {
+            cstmt.registerOutParameter(1, Types.VARCHAR);
+            cstmt.executeUpdate();
+            String confirmMsg = cstmt.getString(1);
+            if (confirmMsg != null)
+                retVal.put("ConfirmMsg", confirmMsg);
+
+            cstmt.close();
+            msg = new FacesMessage(FacesMessage.SEVERITY_INFO, confirmMsg, null);
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+            if (e.getMessage().indexOf(CSMQBean.INVALID_PROMOTION_ERROR) > -1) {
+                messageText = CSMQBean.getProperty("INVALID_PROMOTION_ERROR");
+            } else if (e.getMessage().indexOf(CSMQBean.INVALID_PROMOTION_SEQUENCE_ERROR) > -1) {
+                messageText = CSMQBean.getProperty("INVALID_PROMOTION_SEQUENCE_ERROR");
+            } else if (e.getMessage().indexOf(CSMQBean.PROMOTION_DEPENDENCY_ERROR) > -1) {
+                messageText = CSMQBean.getProperty("PROMOTION_DEPENDENCY_ERROR");
+            } else if (e.getMessage().indexOf(CSMQBean.INVALID_STATE_CHANGE_ERROR) > -1) {
+                messageText = e.getMessage(); //CSMQBean.getProperty("INVALID_STATE_CHANGE_ERROR");
+            } else if (e.getMessage().indexOf(CSMQBean.MUST_BE_NMQ_OR_SMQ_ERROR) > -1) {
+                messageText = CSMQBean.getProperty("MUST_BE_NMQ_OR_SMQ_ERROR");
+            } else if (e.getMessage().indexOf(CSMQBean.GENERIC_ACTIVATION_ERROR) > -1) {
+                messageText = CSMQBean.getProperty("GENERIC_ACTIVATION_ERROR") + "DETAILS: " + e.getMessage();
+            } else if (e.getMessage().indexOf(CSMQBean.DATABASE_CONFIGURATION_ERROR) > -1) {
+                messageText = CSMQBean.getProperty("DATABASE_CONFIGURATION_ERROR");
+            } else if (e.getMessage().indexOf(CSMQBean.INVALID_STATE_CHANGE_FROM_PENDING_TO_DRAFT_ERROR) > -1) {
+                messageText = CSMQBean.getProperty("INVALID_STATE_CHANGE_FROM_PENDING_TO_DRAFT_ERROR");
+            } else { // it's something else
+                messageText = "The following error occurred: " + e.getMessage();
+                e.printStackTrace();
+            }
+            msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, messageText, "");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            return null;
+        }
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+        return retVal;
+    }
+
+    public static Hashtable manageWorkflowState(String dictContentIDs, String requestedState, String requestedDesc) {
+        /*
+    PROCEDURE auto_manage_workflow_state
+            (pDictContentID     IN NUMBER,
+             pRequestedState    IN VARCHAR2   DEFAULT NULL,
+             pRequestedDesc     IN VARCHAR2   DEFAULT NULL)
+    */
+        CSMQBean.logger.info("*** manageWorkflowState ***");
+        CSMQBean.logger.info("dictContentIDs: " + dictContentIDs);
+
+        String sql = "{call CQT_WHOD_UI_TMS_UTILS.auto_manage_workflow_state(?,?,?)}";
+        DBTransaction dBTransaction = DMLUtils.getDBTransaction();
+        FacesMessage msg;
+        CallableStatement cstmt =
+            new CallableStatement(dBTransaction.createCallableStatement(sql, DBTransaction.DEFAULT),
+                                  "CQT_WHOD_UI_TMS_UTILS.auto_manage_workflow_state");
+        String messageText;
+        Hashtable retVal = new Hashtable(); // array to return the new state and message
+
+        try {
+            cstmt.setString(1, dictContentIDs);
+            cstmt.setString(2, requestedState);
+            cstmt.setString(3, requestedDesc);
+            cstmt.executeUpdate();
+            cstmt.close();
+            msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Success manage Workflow State", null);//TODO need towrite msg
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+            if (e.getMessage().indexOf(CSMQBean.INVALID_PROMOTION_ERROR) > -1) {
+                messageText = CSMQBean.getProperty("INVALID_PROMOTION_ERROR");
+            } else if (e.getMessage().indexOf(CSMQBean.INVALID_PROMOTION_SEQUENCE_ERROR) > -1) {
+                messageText = CSMQBean.getProperty("INVALID_PROMOTION_SEQUENCE_ERROR");
+            } else if (e.getMessage().indexOf(CSMQBean.PROMOTION_DEPENDENCY_ERROR) > -1) {
+                messageText = CSMQBean.getProperty("PROMOTION_DEPENDENCY_ERROR");
+            } else if (e.getMessage().indexOf(CSMQBean.INVALID_STATE_CHANGE_ERROR) > -1) {
+                messageText = e.getMessage(); //CSMQBean.getProperty("INVALID_STATE_CHANGE_ERROR");
+            } else if (e.getMessage().indexOf(CSMQBean.MUST_BE_NMQ_OR_SMQ_ERROR) > -1) {
+                messageText = CSMQBean.getProperty("MUST_BE_NMQ_OR_SMQ_ERROR");
+            } else if (e.getMessage().indexOf(CSMQBean.GENERIC_ACTIVATION_ERROR) > -1) {
+                messageText = CSMQBean.getProperty("GENERIC_ACTIVATION_ERROR") + "DETAILS: " + e.getMessage();
+            } else if (e.getMessage().indexOf(CSMQBean.DATABASE_CONFIGURATION_ERROR) > -1) {
+                messageText = CSMQBean.getProperty("DATABASE_CONFIGURATION_ERROR");
+            } else if (e.getMessage().indexOf(CSMQBean.INVALID_STATE_CHANGE_FROM_PENDING_TO_DRAFT_ERROR) > -1) {
+                messageText = CSMQBean.getProperty("INVALID_STATE_CHANGE_FROM_PENDING_TO_DRAFT_ERROR");
+            } else { // it's something else
+                messageText = "The following error occurred: " + e.getMessage();
+                e.printStackTrace();
+            }
+            msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, messageText, "");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            return null;
+        }
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+        return retVal;
+    }
+
+    public static Hashtable promoteToPublished(String dictContentIDs) {
+        /*
+    FUNCTION promote_to_published
+            (pDictContentID  IN NUMBER,
+             pConfirmMsg    OUT VARCHAR2)
+          RETURN VARCHAR;
+    */
+        CSMQBean.logger.info("*** CHANGING STATE FROM promote To Published ***");
+        CSMQBean.logger.info("i_dict_content_id: " + dictContentIDs);
+
+        String sql = "{call ? = CQT_WHOD_UI_TMS_UTILS.promote_to_published(?,?)}";
+        //String sql = "{ ? = call cqt_whod_ui_tms_utils.copy_all_data(?,?,?,?,?,  ?)}";
+        DBTransaction dBTransaction = DMLUtils.getDBTransaction();
+        FacesMessage msg;
+        CallableStatement cstmt =
+            new CallableStatement(dBTransaction.createCallableStatement(sql, DBTransaction.DEFAULT),
+                                  "CQT_WHOD_UI_TMS_UTILS.promote_to_published");
+        String messageText;
+        Hashtable retVal = new Hashtable(); // array to return the new state and message
+
+        try {
+            cstmt.registerOutParameter(1, Types.VARCHAR);
+            cstmt.setString(2, dictContentIDs);
+            cstmt.registerOutParameter(3, Types.VARCHAR);
+            cstmt.executeUpdate();
+            String confirmMsg = cstmt.getString(3);
+            if (confirmMsg != null)
+                retVal.put("ConfirmMsg", confirmMsg);
+
+            cstmt.close();
+            msg = new FacesMessage(FacesMessage.SEVERITY_INFO, confirmMsg, null);
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+            if (e.getMessage().indexOf(CSMQBean.INVALID_PROMOTION_ERROR) > -1) {
+                messageText = CSMQBean.getProperty("INVALID_PROMOTION_ERROR");
+            } else if (e.getMessage().indexOf(CSMQBean.INVALID_PROMOTION_SEQUENCE_ERROR) > -1) {
+                messageText = CSMQBean.getProperty("INVALID_PROMOTION_SEQUENCE_ERROR");
+            } else if (e.getMessage().indexOf(CSMQBean.PROMOTION_DEPENDENCY_ERROR) > -1) {
+                messageText = CSMQBean.getProperty("PROMOTION_DEPENDENCY_ERROR");
+            } else if (e.getMessage().indexOf(CSMQBean.INVALID_STATE_CHANGE_ERROR) > -1) {
+                messageText = e.getMessage(); //CSMQBean.getProperty("INVALID_STATE_CHANGE_ERROR");
+            } else if (e.getMessage().indexOf(CSMQBean.MUST_BE_NMQ_OR_SMQ_ERROR) > -1) {
+                messageText = CSMQBean.getProperty("MUST_BE_NMQ_OR_SMQ_ERROR");
+            } else if (e.getMessage().indexOf(CSMQBean.GENERIC_ACTIVATION_ERROR) > -1) {
+                messageText = CSMQBean.getProperty("GENERIC_ACTIVATION_ERROR") + "DETAILS: " + e.getMessage();
+            } else if (e.getMessage().indexOf(CSMQBean.DATABASE_CONFIGURATION_ERROR) > -1) {
+                messageText = CSMQBean.getProperty("DATABASE_CONFIGURATION_ERROR");
+            } else if (e.getMessage().indexOf(CSMQBean.INVALID_STATE_CHANGE_FROM_PENDING_TO_DRAFT_ERROR) > -1) {
+                messageText = CSMQBean.getProperty("INVALID_STATE_CHANGE_FROM_PENDING_TO_DRAFT_ERROR");
+            } else { // it's something else
+                messageText = "The following error occurred: " + e.getMessage();
+                e.printStackTrace();
+            }
+            msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, messageText, "");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            return null;
+        }
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+        return retVal;
+    }
+    
+    public static Hashtable reactivateRetiredTerm(String dictContentIDs) {
+        /*
+        FUNCTION reactivate_retired_term
+                (pDictContentID  IN  NUMBER)
+              RETURN VARCHAR2;
+    */
+        CSMQBean.logger.info("*** CHANGING STATE FROM reactivate_retired_term ***");
+        CSMQBean.logger.info("i_dict_content_id: " + dictContentIDs);
+
+        String sql = "{call ? = CQT_WHOD_UI_TMS_UTILS.reactivate_retired_term(?)}";
+        DBTransaction dBTransaction = DMLUtils.getDBTransaction();
+        FacesMessage msg;
+        CallableStatement cstmt =
+            new CallableStatement(dBTransaction.createCallableStatement(sql, DBTransaction.DEFAULT),
+                                  "CQT_WHOD_UI_TMS_UTILS.reactivate_retired_term");
+        String messageText;
+        Hashtable retVal = new Hashtable(); // array to return the new state and message
+
+        try {
+            cstmt.registerOutParameter(1, Types.VARCHAR);
+            cstmt.setString(2, dictContentIDs);
+            cstmt.executeUpdate();
+            cstmt.close();
+            msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Term Ractivated Successfully", null);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            messageText = "The following error occurred: " + e.getMessage();
+            msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, messageText, "");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            return null;
+        }
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+        return retVal;
+    }
+    
+    public static Hashtable retireTerm(String dictContentIDs) {
+        /*
+        FUNCTION retire_term
+               (pDictContentID  IN  NUMBER)
+             RETURN VARCHAR2;
+    */
+        CSMQBean.logger.info("*** CHANGING STATE FROM retireTerm ***");
+        CSMQBean.logger.info("i_dict_content_id: " + dictContentIDs);
+
+        String sql = "{call ? = CQT_WHOD_UI_TMS_UTILS.retire_term(?)}";
+        DBTransaction dBTransaction = DMLUtils.getDBTransaction();
+        FacesMessage msg;
+        CallableStatement cstmt =
+            new CallableStatement(dBTransaction.createCallableStatement(sql, DBTransaction.DEFAULT),
+                                  "CQT_WHOD_UI_TMS_UTILS.retire_term");
+        String messageText;
+        Hashtable retVal = new Hashtable(); // array to return the new state and message
+
+        try {
+            cstmt.registerOutParameter(1, Types.VARCHAR);
+            cstmt.setString(2, dictContentIDs);
+            cstmt.executeUpdate();
+            cstmt.close();
+            msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Term retired Successfully", null);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            messageText = "The following error occurred: " + e.getMessage();
+            msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, messageText, "");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            return null;
+        }
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+        return retVal;
     }
 }

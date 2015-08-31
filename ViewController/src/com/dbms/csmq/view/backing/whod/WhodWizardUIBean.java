@@ -415,8 +415,8 @@ public class WhodWizardUIBean implements TransactionalDataControl, UpdateableDat
     }
 
     public void reactivate(DialogEvent dialogEvent) {
-        if (WhodUtils.activate(whodWizardBean.getCurrentDictContentID(), whodWizardBean.getCurrentContentCode(),
-                               userBean.getUserRole(), userBean.getCurrentUser())) {
+        Hashtable result = WhodUtils.reactivateRetiredTerm(whodWizardBean.getCurrentDictContentID());
+        if (result != null) {
             whodWizardBean.setCurrentMQStatus(CSMQBean.ACTIVE_ACTIVITY_STATUS);
             whodWizardBean.setCurrentStatus(CSMQBean.PENDING_RELEASE_STATUS);
             whodWizardBean.setCurrentState(CSMQBean.STATE_DRAFT);
@@ -428,8 +428,8 @@ public class WhodWizardUIBean implements TransactionalDataControl, UpdateableDat
     }
 
     public void retire(DialogEvent dialogEvent) {
-        if (WhodUtils.retire(whodWizardBean.getCurrentDictContentID(), whodWizardBean.getCurrentContentCode(),
-                             userBean.getUserRole(), userBean.getCurrentUser())) {
+        Hashtable result = WhodUtils.retireTerm(whodWizardBean.getCurrentDictContentID());
+        if (result != null) {
             whodWizardBean.setCurrentMQStatus(CSMQBean.INACTIVE_ACTIVITY_STATUS);
             whodWizardBean.setCurrentStatus(CSMQBean.PENDING_RELEASE_STATUS);
             whodWizardBean.setCurrentState(CSMQBean.STATE_DRAFT);
@@ -451,14 +451,15 @@ public class WhodWizardUIBean implements TransactionalDataControl, UpdateableDat
     }
 
     public void demoteToDraft(DialogEvent dialogEvent) {
-        Hashtable result =
-            WhodUtils.changeState(whodWizardBean.getCurrentDictContentID(), CSMQBean.STATE_DRAFT, userBean.getCurrentUser(),
-                                  userBean.getUserRole(), whodWizardBean.getCurrentRequestedByDate(), null,
-                                  cSMQBean.getDefaultDraftReleaseGroup());
+        //        Hashtable result =
+        //            WhodUtils.changeState(whodWizardBean.getCurrentDictContentID(), CSMQBean.STATE_DRAFT, userBean.getCurrentUser(),
+        //                                  userBean.getUserRole(), whodWizardBean.getCurrentRequestedByDate(), null,
+        //                                  cSMQBean.getDefaultDraftReleaseGroup());
+        Hashtable result = WhodUtils.promoteToPublished(whodWizardBean.getCurrentDictContentID());
         if (result != null) {
             whodWizardBean.setCurrentPredictGroups(cSMQBean.getDefaultDraftReleaseGroup());
-            whodWizardBean.setCurrentState((String)result.get("STATE"));
-            whodWizardBean.setCurrentReasonForApproval((String)result.get("REASON"));
+            whodWizardBean.setCurrentState(CSMQBean.STATE_DRAFT);
+            whodWizardBean.setCurrentReasonForApproval("");
             AdfFacesContext.getCurrentInstance().addPartialTarget(cntrlConfirmDetailsPanel);
             AdfFacesContext.getCurrentInstance().partialUpdateNotify(cntrlConfirmDetailsPanel);
             AdfFacesContext.getCurrentInstance().addPartialTarget(cntrlConfirmToolbar);
@@ -506,14 +507,15 @@ public class WhodWizardUIBean implements TransactionalDataControl, UpdateableDat
             FacesContext.getCurrentInstance().addMessage(null, msg);
             return;
         }
-        Hashtable result =
-            WhodUtils.changeState(whodWizardBean.getCurrentDictContentID(), CSMQBean.STATE_REQUESTED, userBean.getCurrentUser(),
-                                  userBean.getUserRole(), whodWizardBean.getCurrentRequestedByDate(),
-                                  whodWizardBean.getCurrentReasonForRequest(), cSMQBean.getDefaultDraftReleaseGroup());
+        //        Hashtable result =
+        //            WhodUtils.changeState(whodWizardBean.getCurrentDictContentID(), CSMQBean.STATE_REQUESTED, userBean.getCurrentUser(),
+        //                                  userBean.getUserRole(), whodWizardBean.getCurrentRequestedByDate(),
+        //                                  whodWizardBean.getCurrentReasonForRequest(), cSMQBean.getDefaultDraftReleaseGroup());
+        Hashtable result = WhodUtils.promoteToPublished(whodWizardBean.getCurrentDictContentID());
         if (result != null) {
             whodWizardBean.setCurrentPredictGroups(cSMQBean.getDefaultDraftReleaseGroup());
-            whodWizardBean.setCurrentState((String)result.get("STATE"));
-            whodWizardBean.setCurrentReasonForApproval((String)result.get("REASON"));
+            whodWizardBean.setCurrentState(CSMQBean.STATE_PUBLISHED);
+            whodWizardBean.setCurrentReasonForApproval("");
             AdfFacesContext.getCurrentInstance().addPartialTarget(cntrlConfirmDetailsPanel);
             AdfFacesContext.getCurrentInstance().partialUpdateNotify(cntrlConfirmDetailsPanel);
             AdfFacesContext.getCurrentInstance().addPartialTarget(cntrlConfirmToolbar);
