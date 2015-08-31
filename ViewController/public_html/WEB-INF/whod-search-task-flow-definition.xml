@@ -121,6 +121,14 @@
         <fixed-outcome>goToSearch</fixed-outcome>
       </outcome>
     </method-call>
+    <view id="whodConfirm">
+      <page>/create/whodConfirm.jspx</page>
+      <train-stop>
+      <display-name>Confirm</display-name>
+        <sequential>false</sequential>
+        <ignore>#{pageFlowScope.setMode eq 'browseAndSearch'}</ignore>
+      </train-stop>
+    </view>
     <train/>
     <control-flow-rule id="__101">
       <from-activity-id>setMode</from-activity-id>
@@ -132,13 +140,6 @@
       <from-activity-id>*</from-activity-id>
       <control-flow-case id="__17">
         <from-outcome>CANCEL</from-outcome>
-        <to-activity-id>cancelFlow</to-activity-id>
-      </control-flow-case>
-    </control-flow-rule>
-    <control-flow-rule id="__3">
-      <from-activity-id>whodAddRelations</from-activity-id>
-      <control-flow-case id="__4">
-        <from-outcome>CLEARED</from-outcome>
         <to-activity-id>cancelFlow</to-activity-id>
       </control-flow-case>
     </control-flow-rule>
@@ -154,6 +155,13 @@
       <control-flow-case id="__22">
         <from-outcome>goToSearch</from-outcome>
         <to-activity-id>whodWizardSearch</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__3">
+      <from-activity-id>whodConfirm</from-activity-id>
+      <control-flow-case id="__4">
+        <from-outcome>CLEARED</from-outcome>
+        <to-activity-id>cancelFlow</to-activity-id>
       </control-flow-case>
     </control-flow-rule>
     <critical/>

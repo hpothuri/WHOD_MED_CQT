@@ -42,39 +42,82 @@ public class WhodUtils {
     public static boolean delete(String dictContentID, String predictGroupName) {
 
         /*
-       PROCEDURE cleanup_predict
-           (pPredictConID             IN tms.tms_predict_contents.predict_content_id%TYPE,
-           pPredictGroupName           IN tms.tms_predict_groups.name%TYPE,
-           pDelRelatOrConfirmPageInd  IN VARCHAR2,
-           pNotesDeleteInd            IN VARCHAR2)
+        FUNCTION delete_content_data
 
-        pDelRelatOrConfirmPageInd: pass ‘C’ for Confirm page, ‘R’ for Relation Page
+               (pDictContentID   IN  NUMBER,
+
+                pOutDeleteAction OUT VARCHAR2)
+
+             RETURN VARCHAR2;
+
+        - This API may ONLY be Used to Delete a Pre-Existing PREDICT  ***
+
+        --    ***       Content INSERT/UPDATE Record within the DRAFT Activation    ***
+
+        --    ***       Group that is No Longer Desired.                            ***
+
+        --    ***       If the Record is an INSERT of a New "Company" Term that     ***
+
+        --    ***       has Never been "ACTIVATED" within the TMS Repository, this  ***
+
+        --    ***       API will DELETE the Term from PREDICT Record as well as     ***
+
+        --    ***       any Corresponding TMS Components in PREDICT Such as         ***
+
+        --    ***       Informative Notes and Relationships.  In Addition, the      ***
+
+        --    ***       Workflow State and Designee Records will Also be DELETED.   ***
+
+        --    ***       This API will Essentially Eradicate the Term from TMS.      ***
+
+        --    ***       If the Record is an UPDATE of a "Company" Term then this    ***
+
+        --    ***       API will Delete Only the CONTENT Term witin the DRAFT       ***
+
+        --    ***       Activation Group.  If there are No Other Related Components ***
+
+        --    ***       Associated with the Term in PREDICT Such as Informative     ***
+
+        --    ***       Notes or Relationships then the Workflow State will be      ***
+
+        --    ***       Updated back to "ACTIVATED".  If Other TMS Components Exist ***
+
+        --    ***       for the Specified Term in PREDICT within the DRAFT          ***
+
+        --    ***       Activation Group then the Workflow State will Remain as is  ***
+
+        --    ***       and No Update will be Done.                                 ***
+
+        --    ***       TMS "Company" Filter Dictionary Terms may NEVER be DELETED  ***
+
+        --    ***       See Also API RETIRE_TERM in the Delete API Section.
 
          */
         boolean retVal = false;
 
         CSMQBean.logger.info("DELETING: " + dictContentID + " FROM : " + predictGroupName);
-        String sql = "{call NMAT_UI_pkg.cleanup_predict(?,?,?,?)}";
+        String sql = "{? = call cqt_whod_ui_tms_utils.delete_content_data(?,?)}";
         DBTransaction dBTransaction = DMLUtils.getDBTransaction();
         FacesMessage msg;
         CallableStatement cstmt =
             new CallableStatement(dBTransaction.createCallableStatement(sql, DBTransaction.DEFAULT),
-                                  "NMAT_UI_pkg.cleanup_predict");
+                                  "cqt_whod_ui_tms_utils.delete_content_data");
 
-        try {
-            cstmt.setString("pPredictConID", dictContentID);
-            cstmt.setString("pPredictGroupName", predictGroupName);
-            cstmt.setString("pDelRelatOrConfirmPageInd", "C"); // the UI only ever calls this from the confirm page
-            cstmt.setString("pNotesDeleteInd", CSMQBean.TRUE);
+        try {cstmt.registerOutParameter(1, Types.VARCHAR);
+            cstmt.setInt(2, new Integer(dictContentID));
+            //cstmt.setString(2, dictContentID);
+            cstmt.registerOutParameter(3, Types.VARCHAR);
 
             cstmt.executeUpdate();
+            predictGroupName = cstmt.getString(3) != null ? cstmt.getString(3) : "";
+            System.out.println("------"+predictGroupName);
             cstmt.close();
-            msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "MedDRA Query Deleted Successfully", null);
+            msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Term Deleted Successfully", null);
             retVal = true;
         } catch (SQLException e) {
             CSMQBean.logger.error(e.getMessage());
             e.printStackTrace();
-            msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Unable to Delete MedDRA Query", e.getMessage());
+            msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Unable to Delete Query", e.getMessage());
             retVal = true;
         }
         FacesContext.getCurrentInstance().addMessage(null, msg);

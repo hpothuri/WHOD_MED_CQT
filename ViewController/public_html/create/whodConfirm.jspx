@@ -6,7 +6,7 @@
     <af:document id="d1" title="Confirm">
             <af:popup id="confirmDelete">
                 <af:dialog title="Confirm Delete" dialogListener="#{WhodWizardUIBean.delete}" id="d2">
-                    <af:activeOutputText value="Are you sure you want to delete this MedDRA Query?" id="aot1"/>
+                    <af:activeOutputText value="Are you sure you want to delete this Query?" id="aot1"/>
                 </af:dialog>
             </af:popup>
             <af:popup id="confirmRetire">

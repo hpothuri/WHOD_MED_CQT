@@ -224,6 +224,7 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
             this.setCurrentState(CSMQBean.STATE_PROPOSED);
         } else {
             this.setCurrentState(CSMQBean.STATE_DRAFT);
+            //this.setCurrentStatus(CSMQBean.STATE_DRAFT);
         }
         if (isNMQ)
             productList.add(CSMQBean.DEFAULT_PRODUCT); // add the default product only if it is new or copy NMQ
