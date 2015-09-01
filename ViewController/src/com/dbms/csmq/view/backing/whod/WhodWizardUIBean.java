@@ -455,7 +455,7 @@ public class WhodWizardUIBean implements TransactionalDataControl, UpdateableDat
         //            WhodUtils.changeState(whodWizardBean.getCurrentDictContentID(), CSMQBean.STATE_DRAFT, userBean.getCurrentUser(),
         //                                  userBean.getUserRole(), whodWizardBean.getCurrentRequestedByDate(), null,
         //                                  cSMQBean.getDefaultDraftReleaseGroup());
-        Hashtable result = WhodUtils.promoteToPublished(whodWizardBean.getCurrentDictContentID());
+        Hashtable result = WhodUtils.demoteToDraft(whodWizardBean.getCurrentDictContentID());
         if (result != null) {
             whodWizardBean.setCurrentPredictGroups(cSMQBean.getDefaultDraftReleaseGroup());
             whodWizardBean.setCurrentState(CSMQBean.STATE_DRAFT);

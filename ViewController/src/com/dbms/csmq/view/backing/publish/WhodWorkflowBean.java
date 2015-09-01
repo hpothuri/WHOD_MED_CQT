@@ -1,5 +1,6 @@
 package com.dbms.csmq.view.backing.publish;
 
+
 import com.dbms.csmq.CSMQBean;
 import com.dbms.csmq.UserBean;
 import com.dbms.csmq.view.backing.whod.WhodUtils;
@@ -43,6 +44,7 @@ import oracle.jbo.uicli.binding.JUCtrlHierNodeBinding;
 import org.apache.myfaces.trinidad.event.SelectionEvent;
 import org.apache.myfaces.trinidad.model.RowKeySet;
 
+
 public class WhodWorkflowBean {
 
 
@@ -65,7 +67,7 @@ public class WhodWorkflowBean {
     public String init() {
         //userBean.setCurrentMenuPath("Publish");
         //userBean.setCurrentMenu("NON_IMPACT_PUBLISH");
-        
+
         return null;
     }
 
@@ -82,32 +84,31 @@ public class WhodWorkflowBean {
         currentRequestor = userBean.getCurrentUser();
         userBean.setCurrentMenuPath("Confirm");
         userBean.setCurrentMenu("CONFIRM");
-    
-        }
 
-    private void loadPromoteToPublished () { 
+    }
+
+    private void loadPromoteToPublished() {
 
         //BindingContext bc = BindingContext.getCurrent();
         //DCBindingContainer binding = (DCBindingContainer)bc.getCurrentBindingsEntry();
-        
+
         DCBindingContainer binding = (DCBindingContainer)BindingContext.getCurrent().getCurrentBindingsEntry();
-        
+
         DCIteratorBinding dciterb = (DCIteratorBinding)binding.get("ViewObjTermsByState1Iterator");
         ViewObject vo = dciterb.getViewObject();
         vo.setNamedWhereClauseParam("state", CSMQBean.STATE_APPROVED);
-        vo.setNamedWhereClauseParam("activationGroup", csmqBean.getDefaultPublishReleaseGroup());      
-    
+        vo.setNamedWhereClauseParam("activationGroup", csmqBean.getDefaultPublishReleaseGroup());
+
         CSMQBean.logger.info(userBean.getCaller() + " ** REQUERY **");
         CSMQBean.logger.info(userBean.getCaller() + " Iterator: ViewObjTermsByState1Iterator");
         CSMQBean.logger.info(userBean.getCaller() + " state: " + CSMQBean.STATE_APPROVED);
         CSMQBean.logger.info(userBean.getCaller() + " activationGroup: " + csmqBean.getDefaultPublishReleaseGroup());
         vo.executeQuery();
-        
+
         AdfFacesContext.getCurrentInstance().addPartialTarget(sms1);
         AdfFacesContext.getCurrentInstance().partialUpdateNotify(sms1);
-        
-        }
 
+    }
 
 
     public List getSelectedTerms() {
@@ -128,12 +129,12 @@ public class WhodWorkflowBean {
     public void demoteToDraft(DialogEvent actionEvent) {
         changeState(CSMQBean.STATE_DRAFT, CSMQBean.getProperty("DEFAULT_DRAFT_RELEASE_GROUP"));
     }
-    
-    public void demoteToPendingImpactAssessment (DialogEvent actionEvent) {
+
+    public void demoteToPendingImpactAssessment(DialogEvent actionEvent) {
         changeState(CSMQBean.STATE_PENDING_IMPACT_ASSESSMENT, CSMQBean.getProperty("DEFAULT_DRAFT_RELEASE_GROUP"));
     }
-    
-    public void activateInCheckMode(ActionEvent actionEvent) {  
+
+    public void activateInCheckMode(ActionEvent actionEvent) {
         if (WhodUtils.activateGroupInCheckMode(CSMQBean.getProperty("DEFAULT_PUBLISH_RELEASE_GROUP"))) {
             this.cntrlActivateButton.setDisabled(false);
             AdfFacesContext.getCurrentInstance().addPartialTarget(cntrlActivateButton);
@@ -142,122 +143,124 @@ public class WhodWorkflowBean {
             AdfFacesContext.getCurrentInstance().partialUpdateNotify(cntrlRelationErrors);
             AdfFacesContext.getCurrentInstance().addPartialTarget(cntrlContentErrors);
             AdfFacesContext.getCurrentInstance().partialUpdateNotify(cntrlContentErrors);
-            }
         }
+    }
 
     public void promoteToPublished(DialogEvent actionEvent) {
         changeState(CSMQBean.STATE_PUBLISHED, CSMQBean.getProperty("DEFAULT_PUBLISH_RELEASE_GROUP"));
         AdfFacesContext.getCurrentInstance().addPartialTarget(sms1);
         AdfFacesContext.getCurrentInstance().partialUpdateNotify(sms1);
-        }
+    }
 
 
-    public void promoteSingleMQToPublished(DialogEvent actionEvent)  {
+    public void promoteSingleMQToPublished(DialogEvent actionEvent) {
         Hashtable h = new Hashtable();
-        h = WhodUtils.changeStateFromDraftToPublish(nMQWizardBean.getCurrentDictContentID(), CSMQBean.STATE_REQUESTED, userBean.getCurrentUser(), userBean.getUserRole(), null, "Publish MedDRA Query", CSMQBean.getProperty("DEFAULT_PUBLISH_RELEASE_GROUP"));           
+        //h = WhodUtils.changeStateFromDraftToPublish(nMQWizardBean.getCurrentDictContentID(), CSMQBean.STATE_REQUESTED, userBean.getCurrentUser(), userBean.getUserRole(), null, "Publish MedDRA Query", CSMQBean.getProperty("DEFAULT_PUBLISH_RELEASE_GROUP"));
+        Hashtable result = WhodUtils.promoteToPublished(nMQWizardBean.getCurrentDictContentID());
         System.out.println("Changing state : " + h);
-        if (h.get("STATE").equals("Published")) {
+        if (result != null) {
             nMQWizardBean.setCurrentState(CSMQBean.STATE_PUBLISHED);
             AdfFacesContext.getCurrentInstance().addPartialTarget(cb1);
             AdfFacesContext.getCurrentInstance().partialUpdateNotify(cb1);
             AdfFacesContext.getCurrentInstance().addPartialTarget(controlMQState);
             AdfFacesContext.getCurrentInstance().partialUpdateNotify(controlMQState);
-            
-            }
-            
-         /*   
+
+        }
+
+        /*
         if (nMQWizardBean.getCurrentState().equals(CSMQBean.STATE_PROPOSED )){
                 System.out.println("*** CHANGING STATE FROM STATE_PROPOSED TO:");
                 h = NMQUtils.changeState(nMQWizardBean.getCurrentDictContentID(), CSMQBean.STATE_REQUESTED, userBean.getCurrentUser(), userBean.getUserRole(), null, "Publish MedDRA Query", CSMQBean.getProperty("DEFAULT_DRAFT_RELEASE_GROUP"), false);
                 System.out.println("...STATE_PROPOSED: " + h);
                 try {Thread.sleep(5000);} catch (InterruptedException e) {}
-                
+
                 h = NMQUtils.changeState(nMQWizardBean.getCurrentDictContentID(), CSMQBean.STATE_DRAFT, userBean.getCurrentUser(), userBean.getUserRole(), null, null, CSMQBean.getProperty("DEFAULT_DRAFT_RELEASE_GROUP"), false);
                 System.out.println("...STATE_DRAFT: " + h);
                 try {Thread.sleep(5000);} catch (InterruptedException e) {}
-                
+
                 h = NMQUtils.changeState(nMQWizardBean.getCurrentDictContentID(), CSMQBean.STATE_REVIEWED, userBean.getCurrentUser(), userBean.getUserRole(), nMQWizardBean.getCurrentRequestedByDate(), null, CSMQBean.getProperty("DEFAULT_DRAFT_RELEASE_GROUP"), false);
                 System.out.println("...STATE_REVIEWED: " + h);
                 try {Thread.sleep(5000);} catch (InterruptedException e) {}
-                
+
                 h = NMQUtils.changeState(nMQWizardBean.getCurrentDictContentID(), CSMQBean.STATE_APPROVED, userBean.getCurrentUser(), userBean.getUserRole(), nMQWizardBean.getCurrentRequestedByDate(), null, CSMQBean.getProperty("DEFAULT_DRAFT_RELEASE_GROUP"), false);
                 System.out.println("...STATE_APPROVED: " + h);
                 try {Thread.sleep(5000);} catch (InterruptedException e) {}
-                
+
                 h = NMQUtils.changeState(nMQWizardBean.getCurrentDictContentID(), CSMQBean.STATE_PUBLISHED, userBean.getCurrentUser(), userBean.getUserRole(), null, null, CSMQBean.getProperty("DEFAULT_PUBLISH_RELEASE_GROUP"), true);
                 System.out.println("...STATE_PUBLISHED: " + h);
                 }
-        
+
             else if (nMQWizardBean.getCurrentState().equals(CSMQBean.STATE_REQUESTED)){
                 System.out.println("*** CHANGING STATE FROM STATE_REQUESTED TO:");
                 h = NMQUtils.changeState(nMQWizardBean.getCurrentDictContentID(), CSMQBean.STATE_DRAFT, userBean.getCurrentUser(), userBean.getUserRole(), null, null, CSMQBean.getProperty("DEFAULT_DRAFT_RELEASE_GROUP"), false);
                 System.out.println("...STATE_DRAFT: " + h);
                 try {Thread.sleep(5000);} catch (InterruptedException e) {}
-                
+
                 h = NMQUtils.changeState(nMQWizardBean.getCurrentDictContentID(), CSMQBean.STATE_REVIEWED, userBean.getCurrentUser(), userBean.getUserRole(), nMQWizardBean.getCurrentRequestedByDate(), null, CSMQBean.getProperty("DEFAULT_DRAFT_RELEASE_GROUP"), false);
                 System.out.println("...STATE_REVIEWED: " + h);
                 try {Thread.sleep(5000);} catch (InterruptedException e) {}
-                
+
                 h = NMQUtils.changeState(nMQWizardBean.getCurrentDictContentID(), CSMQBean.STATE_APPROVED, userBean.getCurrentUser(), userBean.getUserRole(), nMQWizardBean.getCurrentRequestedByDate(), null, CSMQBean.getProperty("DEFAULT_DRAFT_RELEASE_GROUP"), false);
                 System.out.println("...STATE_APPROVED: " + h);
                 try {Thread.sleep(5000);} catch (InterruptedException e) {}
-                
+
                 h = NMQUtils.changeState(nMQWizardBean.getCurrentDictContentID(), CSMQBean.STATE_PUBLISHED, userBean.getCurrentUser(), userBean.getUserRole(), null, null, CSMQBean.getProperty("DEFAULT_PUBLISH_RELEASE_GROUP"), true);
                 System.out.println("...STATE_PUBLISHED: " + h);
                 }
-            
+
             else if (nMQWizardBean.getCurrentState().equals(CSMQBean.STATE_DRAFT)){
                 System.out.println("*** CHANGING STATE FROM STATE_DRAFT TO:");
                 h = NMQUtils.changeState(nMQWizardBean.getCurrentDictContentID(), CSMQBean.STATE_REVIEWED, userBean.getCurrentUser(), userBean.getUserRole(), nMQWizardBean.getCurrentRequestedByDate(), null, CSMQBean.getProperty("DEFAULT_DRAFT_RELEASE_GROUP"), false);
                     System.out.println("...STATE_REVIEWED: " + h);
                 try {Thread.sleep(5000);} catch (InterruptedException e) {}
-                
+
                 h = NMQUtils.changeState(nMQWizardBean.getCurrentDictContentID(), CSMQBean.STATE_APPROVED, userBean.getCurrentUser(), userBean.getUserRole(), nMQWizardBean.getCurrentRequestedByDate(), null, CSMQBean.getProperty("DEFAULT_DRAFT_RELEASE_GROUP"), false);
                     System.out.println("...STATE_APPROVED: " + h);
                 try {Thread.sleep(5000);} catch (InterruptedException e) {}
-                
+
                 h = NMQUtils.changeState(nMQWizardBean.getCurrentDictContentID(), CSMQBean.STATE_PUBLISHED, userBean.getCurrentUser(), userBean.getUserRole(), null, null, CSMQBean.getProperty("DEFAULT_PUBLISH_RELEASE_GROUP"), true);
                     System.out.println("...STATE_PUBLISHED: " + h);
-                }    
-           
+                }
+
             else if (nMQWizardBean.getCurrentState().equals(CSMQBean.STATE_REVIEWED)){
                 System.out.println("*** CHANGING STATE FROM STATE_REVIEWED TO:");
                 h = NMQUtils.changeState(nMQWizardBean.getCurrentDictContentID(), CSMQBean.STATE_APPROVED, userBean.getCurrentUser(), userBean.getUserRole(), nMQWizardBean.getCurrentRequestedByDate(), null, CSMQBean.getProperty("DEFAULT_DRAFT_RELEASE_GROUP"), false);
                     System.out.println("...STATE_APPROVED: " + h);
                 try {Thread.sleep(5000);} catch (InterruptedException e) {}
-                
+
                 h = NMQUtils.changeState(nMQWizardBean.getCurrentDictContentID(), CSMQBean.STATE_PUBLISHED, userBean.getCurrentUser(), userBean.getUserRole(), null, null, CSMQBean.getProperty("DEFAULT_PUBLISH_RELEASE_GROUP"), true);
                     System.out.println("...STATE_PUBLISHED: " + h);
-                }     
-            
+                }
+
             else if (nMQWizardBean.getCurrentState().equals(CSMQBean.STATE_APPROVED)){
                 System.out.println("*** CHANGING STATE FROM STATE_APPROVED TO:");
                 h = NMQUtils.changeState(nMQWizardBean.getCurrentDictContentID(), CSMQBean.STATE_PUBLISHED, userBean.getCurrentUser(), userBean.getUserRole(), null, null, CSMQBean.getProperty("DEFAULT_PUBLISH_RELEASE_GROUP"), true);
                     System.out.println("...STATE_PUBLISHED: " + h);
-                }    
+                }
             */
-            
-            }
+
+    }
 
     public void promoteToPublishedIA(DialogEvent actionEvent) {
         changeState(CSMQBean.IA_STATE_PUBLISHED, CSMQBean.getProperty("DEFAULT_MEDDRA_RELEASE_GROUP"));
         AdfFacesContext.getCurrentInstance().addPartialTarget(sms1);
         AdfFacesContext.getCurrentInstance().partialUpdateNotify(sms1);
-        }
+    }
 
 
     private void changeState(String state, String activationGroup) {
         String terms = "";
         for (int i = 0; i < list.size(); i++)
             terms += list.get(i) + ",";
-        
-        if (terms.length() < 1) {    
+
+        if (terms.length() < 1) {
             FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please select at least one term.", "");
             FacesContext.getCurrentInstance().addMessage(null, msg);
             return;
-            }
+        }
         terms = terms.substring(0, terms.length() - 1);
-        WhodUtils.changeState(terms, state, userBean.getCurrentUser(), userBean.getUserRole(), null, null, activationGroup);
+        WhodUtils.changeState(terms, state, userBean.getCurrentUser(), userBean.getUserRole(), null, null,
+                              activationGroup);
     }
 
     public void setSms1(RichSelectManyShuttle sms1) {
@@ -314,7 +317,7 @@ public class WhodWorkflowBean {
             Object o = object.getRowData();
             JUCtrlHierNodeBinding rowData = (JUCtrlHierNodeBinding)o;
             row = rowData.getRow();
-            }
+        }
 
         if (row == null)
             return;
@@ -322,7 +325,7 @@ public class WhodWorkflowBean {
         dictContentIDWithError = Utils.getAsString(row, "PredictContentId");
         AdfFacesContext.getCurrentInstance().addPartialTarget(cntrlRelationErrors);
         AdfFacesContext.getCurrentInstance().partialUpdateNotify(cntrlRelationErrors);
-        }
+    }
 
 
     public Object resolveMethodExpression(String expression, Class returnType, Class[] argTypes, Object[] argValues) {
@@ -337,33 +340,36 @@ public class WhodWorkflowBean {
 
     public void demoteSelected(DialogEvent dialogEvent) {
         String terms = "";
-        
+
         RowKeySet rksSelectedRows = this.cntrlContentErrors.getSelectedRowKeys();
         Iterator itrSelectedRows = rksSelectedRows.iterator();
-     
+
         // Get the data control that is bound to the table - e.g. OpenSupportItemsIterator
         DCBindingContainer bindings = (DCBindingContainer)BindingContext.getCurrent().getCurrentBindingsEntry();
-        DCIteratorBinding dcIteratorBindings = bindings.findIteratorBinding("ViewObjActivationErrors_Contents1Iterator");
+        DCIteratorBinding dcIteratorBindings =
+            bindings.findIteratorBinding("ViewObjActivationErrors_Contents1Iterator");
         RowSetIterator rsiSelectedRows = dcIteratorBindings.getRowSetIterator();
 
         while (itrSelectedRows.hasNext()) {
             Key key = (Key)((List)itrSelectedRows.next()).get(0);
             Row myRow = rsiSelectedRows.getRow(key);
             String pci = myRow.getAttribute("PredictContentId").toString();
-            terms+=pci + ",";
-            }
-
-        terms = terms.substring(0, terms.length()-1);
-        WhodUtils.changeState(terms, CSMQBean.STATE_DRAFT, userBean.getCurrentUser(), userBean.getUserRole(), null, null, CSMQBean.getProperty("DEFAULT_DRAFT_RELEASE_GROUP")); 
+            terms += pci + ",";
         }
+
+        terms = terms.substring(0, terms.length() - 1);
+        WhodUtils.changeState(terms, CSMQBean.STATE_DRAFT, userBean.getCurrentUser(), userBean.getUserRole(), null,
+                              null, CSMQBean.getProperty("DEFAULT_DRAFT_RELEASE_GROUP"));
+    }
 
 
     public void setCntrlContentErrors(RichTable cntrlContentErrors) {
         this.cntrlContentErrors = cntrlContentErrors;
-        }
+    }
 
     public RichTable getCntrlContentErrors() {
-        if (cntrlContentErrors != null) errorCount = cntrlContentErrors.getRowCount();
+        if (cntrlContentErrors != null)
+            errorCount = cntrlContentErrors.getRowCount();
         return cntrlContentErrors;
     }
 
@@ -385,7 +391,7 @@ public class WhodWorkflowBean {
     }
 
     public String test() {
-        loadPromoteToPublished ();
+        loadPromoteToPublished();
         return null;
     }
 

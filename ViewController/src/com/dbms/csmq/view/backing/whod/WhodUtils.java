@@ -1369,8 +1369,8 @@ new FacesMessage(FacesMessage.SEVERITY_INFO, "Impacted list refreshed for dictio
         */
         CSMQBean.logger.info("*** CHANGING STATE FROM DEMOTE TO DRAFT ***");
         CSMQBean.logger.info("i_dict_content_id: " + dictContentIDs);
-
-        String sql = "{call ? = CQT_WHOD_UI_TMS_UTILS.demote_to_draft(?,?)}";
+        //String sql = "{? = call cqt_whod_ui_tms_utils.delete_content_data(?,?)}";
+        String sql = "{? = call CQT_WHOD_UI_TMS_UTILS.demote_to_draft(?,?)}";
         //String sql = "{ ? = call cqt_whod_ui_tms_utils.copy_all_data(?,?,?,?,?,  ?)}";
         DBTransaction dBTransaction = DMLUtils.getDBTransaction();
         FacesMessage msg;
@@ -1545,7 +1545,7 @@ new FacesMessage(FacesMessage.SEVERITY_INFO, "Impacted list refreshed for dictio
         CSMQBean.logger.info("*** CHANGING STATE FROM promote To Published ***");
         CSMQBean.logger.info("i_dict_content_id: " + dictContentIDs);
 
-        String sql = "{call ? = CQT_WHOD_UI_TMS_UTILS.promote_to_published(?,?)}";
+        String sql = "{? = call  CQT_WHOD_UI_TMS_UTILS.promote_to_published(?,?)}";
         //String sql = "{ ? = call cqt_whod_ui_tms_utils.copy_all_data(?,?,?,?,?,  ?)}";
         DBTransaction dBTransaction = DMLUtils.getDBTransaction();
         FacesMessage msg;
@@ -1606,7 +1606,7 @@ new FacesMessage(FacesMessage.SEVERITY_INFO, "Impacted list refreshed for dictio
         CSMQBean.logger.info("*** CHANGING STATE FROM reactivate_retired_term ***");
         CSMQBean.logger.info("i_dict_content_id: " + dictContentIDs);
 
-        String sql = "{call ? = CQT_WHOD_UI_TMS_UTILS.reactivate_retired_term(?)}";
+        String sql = "{? = call CQT_WHOD_UI_TMS_UTILS.reactivate_retired_term(?)}";
         DBTransaction dBTransaction = DMLUtils.getDBTransaction();
         FacesMessage msg;
         CallableStatement cstmt =
@@ -1641,7 +1641,7 @@ new FacesMessage(FacesMessage.SEVERITY_INFO, "Impacted list refreshed for dictio
         CSMQBean.logger.info("*** CHANGING STATE FROM retireTerm ***");
         CSMQBean.logger.info("i_dict_content_id: " + dictContentIDs);
 
-        String sql = "{call ? = CQT_WHOD_UI_TMS_UTILS.retire_term(?)}";
+        String sql = "{? = call CQT_WHOD_UI_TMS_UTILS.retire_term(?)}";
         DBTransaction dBTransaction = DMLUtils.getDBTransaction();
         FacesMessage msg;
         CallableStatement cstmt =
