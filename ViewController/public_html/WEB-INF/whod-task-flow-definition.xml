@@ -124,6 +124,13 @@
         <to-activity-id>whodAddDetails</to-activity-id>
       </control-flow-case>
     </control-flow-rule>
+    <control-flow-rule id="__17">
+      <from-activity-id>*</from-activity-id>
+      <control-flow-case id="__18">
+        <from-outcome>CANCEL</from-outcome>
+        <to-activity-id>cancelFlow</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
     <critical/>
   </task-flow-definition>
 </adfc-config>
