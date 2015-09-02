@@ -118,6 +118,7 @@ public class WhodTermHierarchySourceBean extends Hierarchy {
             termNode.setLevelName(Utils.getAsString(row, "LevelName"));
             termNode.setDictContentId(Utils.getAsString(row, "DictContentId"));
             termNode.setDictContentCode(Utils.getAsString(row, "DictContentCode"));
+            //termNode.setDictRelationId(Utils.getAsString(row,"DictRelationId"));
             termNode.setPrikey(termNode.getDictContentId() + "." + termNode.getDictContentCode());
             root.getChildren().add(termNode);
         }
@@ -153,6 +154,7 @@ public class WhodTermHierarchySourceBean extends Hierarchy {
         root.setTermScope(Utils.getAsNumber(row, "Termscp"));
         root.setTermWeight(Utils.getAsString(row, "Termweig"));
         root.setFormattedScope(Utils.getAsString(row, "FormattedScope"));
+        //root.setDictRelationId(Utils.getAsString(row, "DictRelationId"));
         //        root.setPrimaryLink(Utils.getAsBoolean(row, "PrimLinkFlag"));
         CSMQBean.logger.info(userBean.getCaller() + " ADDING ROOT: " + root);
         // generate a temp prikey to use as a key for inserts in the hierarchy assessor

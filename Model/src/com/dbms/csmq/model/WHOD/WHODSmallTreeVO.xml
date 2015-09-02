@@ -57,7 +57,8 @@
         ''  SORT_ORDER,
         'Y' CHILD_EXISTS,
         NAMED_RELATION,
-        LEVEL_REF_NAME
+        LEVEL_REF_NAME,
+        dict_relation_id
 FROM TABLE (CQT_WHOD_UI_TMS_UTILS.QUERY_RELATION_DATA_BELOW(
           pDictContentId     => :dictContentID,
           pReleaseStatus     => :dReleaseStatus,
@@ -369,6 +370,20 @@ ORDER BY LEVEL_REF_NAME desc, child_term asc]]></SQLQuery>
     SQLType="VARCHAR">
     <DesignTime>
       <Attr Name="_DisplaySize" Value="40"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="DictRelationId"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    AliasName="DICT_RELATION_ID"
+    Expression="DICT_RELATION_ID"
+    SQLType="NUMERIC">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="22"/>
     </DesignTime>
   </ViewAttribute>
   <ResourceBundle>

@@ -17,6 +17,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Types;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -47,6 +48,8 @@ import oracle.jbo.server.DBTransaction;
 
 import org.apache.myfaces.trinidad.event.SelectionEvent;
 import org.apache.myfaces.trinidad.model.RowKeySet;
+import org.apache.myfaces.trinidad.model.RowKeySetTreeImpl;
+import org.apache.myfaces.trinidad.model.TreeModel;
 
 
 public class WhodSourceTermSearchBean extends HierarchyAccessor {
@@ -461,10 +464,75 @@ public class WhodSourceTermSearchBean extends HierarchyAccessor {
     }
 
     public void deleteSelected(DialogEvent dialogEvent) {
-        termHierarchyBean.showStatus(CSMQBean.MQ_MODIFIED);
-        super.processDeleteSelected(dialogEvent, termHierarchyBean.getTargetTree(), termHierarchyBean.getTreemodel());
+        //termHierarchyBean.showStatus(CSMQBean.MQ_MODIFIED);
+        processDeleteSelected(dialogEvent, termHierarchyBean.getTargetTree(), termHierarchyBean.getTreemodel());
     }
+    
+    public void processDeleteSelected(DialogEvent dialogEvent, RichTreeTable tree, TreeModel treeModel) {
+        int numberOfTermsToBeDeleted = 0;
+        List immediateChildren = ((GenericTreeNode)tree.getRowData(0)).getChildren();
+        ArrayList<GenericTreeNode> nodesToBeDeleted = new ArrayList<GenericTreeNode>();
 
+        Iterator iterator = immediateChildren.iterator();
+
+        CSMQBean.logger.info(userBean.getCaller() + " ** CREATING LIST FOR DELETE **");
+
+        while (iterator.hasNext()) {
+            GenericTreeNode genericTreeNode = (GenericTreeNode)iterator.next();
+            if (genericTreeNode.isMarkedForDeletion()) {
+                CSMQBean.logger.info(userBean.getCaller() + " ADDING TO DELETE LIST: " + genericTreeNode.toString());
+                nodesToBeDeleted.add(genericTreeNode);
+                numberOfTermsToBeDeleted++;
+            }
+        }
+
+        if (dialogEvent.getOutcome().equals(DialogEvent.Outcome.ok)) {
+            CSMQBean.logger.info(userBean.getCaller() + " DELETING");
+            for (GenericTreeNode gtn : nodesToBeDeleted) {
+                
+                String sql = "{? = call cqt_whod_ui_tms_utils.DELETE_RELATION_DATA(?,?)}";
+                DBTransaction dBTransaction = DMLUtils.getDBTransaction();
+                String newDictContentCode = "";
+                FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "MQ updated successfully.", null);
+                    CallableStatement cstmt = dBTransaction.createCallableStatement(sql, DBTransaction.DEFAULT);
+                    Connection con;
+                try {
+                            con = cstmt.getConnection();
+                
+                            CSMQBean.logger.info(userBean.getCaller() + " ** SAVING RELATIONS");
+
+                            cstmt.registerOutParameter(1, Types.VARCHAR);
+                            cstmt.setLong(2, new Long(gtn.getDictRelationId()));
+                            cstmt.registerOutParameter(3, Types.VARCHAR);
+                            cstmt.execute();
+                            newDictContentCode = "" + cstmt.getString(3);
+                    con.commit();
+                    cstmt.close();
+                    BindingContext bc = BindingContext.getCurrent();
+                    DCBindingContainer binding = (DCBindingContainer)bc.getCurrentBindingsEntry();
+                    DCIteratorBinding dciterb = (DCIteratorBinding)binding.get("WHODSmallTreeVO1Iterator");
+                    ViewObject vo = dciterb.getViewObject();
+                    vo.setNamedWhereClauseParam("dictContentID", gtn.getDictContentId());
+                    vo.executeQuery();
+                    termHierarchyBean.getRoot().getParentNode().getChildren().remove(gtn);
+                    //termHierarchyBean.getTreemodel().getParentNode().getChildren().remove(gtn); // GET THE PARRENT AND REMOVE ITSELF
+                    RowKeySet rks = new RowKeySetTreeImpl(true);
+                    rks.setCollectionModel(treeModel);
+                    tree.setDisclosedRowKeys(rks);
+                    AdfFacesContext.getCurrentInstance().addPartialTarget(termHierarchyBean.getTargetTree());
+                    AdfFacesContext.getCurrentInstance().partialUpdateNotify(termHierarchyBean.getTargetTree());
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                //  18-JUL-2012  - ADD IT TO THE DELETES ARRAY
+               // deletes.put(gtn.getPrikey(), gtn);
+            }
+        } else {
+            CSMQBean.logger.info(userBean.getCaller() + " NOT DELETING");
+        }
+
+    }
+    
     public void dictionaryTypeChanged(ValueChangeEvent valueChangeEvent) {
         if (valueChangeEvent == null)
             return;

@@ -16,7 +16,7 @@
                         <af:group id="g1">
                             <af:popup id="confirm">
                                 <af:dialog title="Confirm"
-                                           dialogListener="#{pageFlowScope.WhodSourceTermSearchBean.deleteSelected}"
+                                           dialogListener="#{pageFlowScope.WhodTermHierarchyBean.deleteSelected}"
                                            id="d2">
                                     <af:activeOutputText value="Delete all selected terms?" id="aot1"/>
                                 </af:dialog>
@@ -25,7 +25,7 @@
                                          text="Relations" showDisclosure="false">
                                 <af:panelGroupLayout id="pgl1" layout="horizontal"
                                                      inlineStyle="height:355px; width:1230px; padding:5px;"
-                                                     halign="left" valign="top">
+                                                     halign="left" valign="top" partialTriggers="pc1:ctb2">
                                     <af:panelCollection id="pc1" inlineStyle="width:1199px; height:345px; padding:0px;">
                                         <f:facet name="toolbar">
                                             <af:toolbar id="t2">
@@ -36,7 +36,8 @@
                                                 <af:commandToolbarButton text="Delete selected"
                                                                          icon="/image/hierarchy/DELETE.png" id="ctb2"
                                                                          rendered="#{WhodRenderingRulesBean.wizardRelationsRenderDelete}"
-                                                                         disabled="#{WhodRenderingRulesBean.wizardRelationsDisableDelete}">
+                                                                         disabled="#{WhodRenderingRulesBean.wizardRelationsDisableDelete}"
+                                                                         partialSubmit="true">
                                                     <af:showPopupBehavior popupId="::confirm" triggerType="action"
                                                                           align="afterEnd"/>
                                                 </af:commandToolbarButton>

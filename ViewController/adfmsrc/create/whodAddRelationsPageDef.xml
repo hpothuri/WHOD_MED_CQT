@@ -103,6 +103,7 @@
                     <Item Value="TermPath"/>
                     <Item Value="Termscp"/>
                     <Item Value="Termweig"/>
+                    <Item Value="DictRelationId"/>
                 </AttrNames>
             </nodeDefinition>
         </tree>
@@ -202,6 +203,7 @@
                     <Item Value="ParentTerm"/>
                     <Item Value="NamedRelation"/>
                     <Item Value="LevelRefName"/>
+                    <Item Value="DictRelationId"/>
                 </AttrNames>
             </nodeDefinition>
         </tree>

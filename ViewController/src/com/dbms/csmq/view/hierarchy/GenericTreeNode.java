@@ -33,6 +33,7 @@ public class GenericTreeNode {
     private Number level;           
     private String dictShortName;   
     private String dictContentId;
+    private String dictRelationId;
     private String dictContentCode;
     private String dictContentAltCode;
     private String approvedFlag;
@@ -438,4 +439,11 @@ public class GenericTreeNode {
     }
 
 
+    public void setDictRelationId(String dictRelationId) {
+        this.dictRelationId = dictRelationId;
+    }
+
+    public String getDictRelationId() {
+        return dictRelationId;
+    }
 }
