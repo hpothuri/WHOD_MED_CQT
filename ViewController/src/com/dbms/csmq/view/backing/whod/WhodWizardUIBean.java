@@ -795,4 +795,12 @@ public class WhodWizardUIBean implements TransactionalDataControl, UpdateableDat
     public boolean resetState() {
         return false;
     }
+
+    public void checkActivation(ActionEvent actionEvent) {
+        WhodUtils.checkActivation();
+    }
+
+    public void transferActivation(ActionEvent actionEvent) {
+        WhodUtils.transferActivation();
+    }
 }

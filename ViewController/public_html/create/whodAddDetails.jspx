@@ -60,7 +60,7 @@
                                                                 value="ALL"
                                                                 labelStyle="white-space:nowrap"
                                                                 readOnly="#{WhodRenderingRulesBean.wizardDetailsDisableReleaseGroup}"
-                                                                rendered="#{WhodRenderingRulesBean.wizardDetailsRenderReleaseGroup}"
+                                                                rendered="false"
                                                                 contentStyle="color:#000000;">
                                                 <f:selectItems value="#{pageFlowScope.WhodWizardBean.whodReleaseGroupSI}"
                                                                id="si4"/>
@@ -86,7 +86,7 @@
                                                                  label="Product" id="smc2" autoSubmit="true"
                                                                  valuePassThru="true"
                                                                  requiredMessageDetail="An Product is required."
-                                                                 labelStyle="white-space:nowrap"
+                                                                 labelStyle="white-space:nowrap" contentStyle="white-space: pre-wrap;max-width:400px;"
                                                                  selectAllVisible="false"
                                                                  readOnly="#{WhodRenderingRulesBean.wizardDetailsDisableNMQProduct}"
                                                                  inlineStyle="width:130px;">
@@ -148,7 +148,7 @@
                                                                  autoSubmit="true"
                                                                  readOnly="#{WhodRenderingRulesBean.wizardDetailsDisableNMQGroup}"
                                                                  labelStyle='white-space:nowrap" inlineStyle="width:130px;'
-                                                                 contentStyle="color:#000000;">
+                                                                 contentStyle="white-space: pre-wrap;max-width:400px;color:#000000;">
                                                 <f:selectItems value="#{pageFlowScope.WhodWizardBean.whodGroupSI}"
                                                                id="si7"/>
                                             </af:selectManyChoice>

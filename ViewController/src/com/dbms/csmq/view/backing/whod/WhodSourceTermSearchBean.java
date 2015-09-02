@@ -239,7 +239,7 @@ public class WhodSourceTermSearchBean extends HierarchyAccessor {
             nMQSourceTermSearchUIBean.getControlTerm().getValue() != null &&
             !nMQSourceTermSearchUIBean.getControlTerm().getValue().toString().equalsIgnoreCase("null") &&
             nMQSourceTermSearchUIBean.getControlTerm().getValue().toString().length() > 0)
-            paramTerm = nMQSourceTermSearchUIBean.getControlTerm().getValue().toString();
+            paramTerm = nMQSourceTermSearchUIBean.getControlTerm().getValue().toString() + CSMQBean.WILDCARD;
         return paramTerm;
     }
 

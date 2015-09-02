@@ -103,14 +103,15 @@ public class WhodUtils {
             new CallableStatement(dBTransaction.createCallableStatement(sql, DBTransaction.DEFAULT),
                                   "cqt_whod_ui_tms_utils.delete_content_data");
 
-        try {cstmt.registerOutParameter(1, Types.VARCHAR);
+        try {
+            cstmt.registerOutParameter(1, Types.VARCHAR);
             cstmt.setInt(2, new Integer(dictContentID));
             //cstmt.setString(2, dictContentID);
             cstmt.registerOutParameter(3, Types.VARCHAR);
 
             cstmt.executeUpdate();
             predictGroupName = cstmt.getString(3) != null ? cstmt.getString(3) : "";
-            System.out.println("------"+predictGroupName);
+            System.out.println("------" + predictGroupName);
             cstmt.close();
             msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Term Deleted Successfully", null);
             retVal = true;
@@ -1242,15 +1243,15 @@ new FacesMessage(FacesMessage.SEVERITY_INFO, "Impacted list refreshed for dictio
                              ":; infoNotes=" + infoNotes + ":; infoDesc=" + infoDesc + ";;");
         Hashtable retVal = new Hashtable(); // array to return the new state and message
         String notesPredictInfoHdrID = null;
-        if(infoNotes != null)
-        notesPredictInfoHdrID = saveNoteInfo(dictContentId, "SDGNOTE", infoNotes);
+        if (infoNotes != null)
+            notesPredictInfoHdrID = saveNoteInfo(dictContentId, "SDGNOTE", infoNotes);
         String descPredictInfoHdrID = null;
-        if(infoDesc != null)
-        descPredictInfoHdrID = saveNoteInfo(dictContentId, "SDGDESC", infoDesc);
-        if(notesPredictInfoHdrID != null)
-        retVal.put("NOTES_PRED_ID", notesPredictInfoHdrID);
-        if(descPredictInfoHdrID != null)
-        retVal.put("DESC_PRED_ID", descPredictInfoHdrID);
+        if (infoDesc != null)
+            descPredictInfoHdrID = saveNoteInfo(dictContentId, "SDGDESC", infoDesc);
+        if (notesPredictInfoHdrID != null)
+            retVal.put("NOTES_PRED_ID", notesPredictInfoHdrID);
+        if (descPredictInfoHdrID != null)
+            retVal.put("DESC_PRED_ID", descPredictInfoHdrID);
         return retVal;
     }
 
@@ -1365,8 +1366,8 @@ new FacesMessage(FacesMessage.SEVERITY_INFO, "Impacted list refreshed for dictio
             delimStr = temp.substring(0, temp.length() - 1);
         return delimStr;
     }
-    
-        public static Hashtable demoteToDraft(String dictContentIDs) {
+
+    public static Hashtable demoteToDraft(String dictContentIDs) {
         /*
         FUNCTION demote_to_draft
                 (pDictContentID  IN NUMBER,
@@ -1509,7 +1510,8 @@ new FacesMessage(FacesMessage.SEVERITY_INFO, "Impacted list refreshed for dictio
             cstmt.setString(3, requestedDesc);
             cstmt.executeUpdate();
             cstmt.close();
-            msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Success manage Workflow State", null);//TODO need towrite msg
+            msg =
+new FacesMessage(FacesMessage.SEVERITY_INFO, "Success manage Workflow State", null); //TODO need towrite msg
         } catch (SQLException e) {
             e.printStackTrace();
 
@@ -1602,7 +1604,7 @@ new FacesMessage(FacesMessage.SEVERITY_INFO, "Impacted list refreshed for dictio
         FacesContext.getCurrentInstance().addMessage(null, msg);
         return retVal;
     }
-    
+
     public static Hashtable reactivateRetiredTerm(String dictContentIDs) {
         /*
         FUNCTION reactivate_retired_term
@@ -1637,7 +1639,7 @@ new FacesMessage(FacesMessage.SEVERITY_INFO, "Impacted list refreshed for dictio
         FacesContext.getCurrentInstance().addMessage(null, msg);
         return retVal;
     }
-    
+
     public static Hashtable retireTerm(String dictContentIDs) {
         /*
         FUNCTION retire_term
@@ -1666,6 +1668,117 @@ new FacesMessage(FacesMessage.SEVERITY_INFO, "Impacted list refreshed for dictio
             e.printStackTrace();
             messageText = "The following error occurred: " + e.getMessage();
             msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, messageText, "");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            return null;
+        }
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+        return retVal;
+    }
+
+    public static Hashtable checkActivation() {
+        /*
+        FUNCTION run_check_activation
+                 (pContentErrorCount    OUT NUMBER,
+                  pRelationsErrorCount  OUT NUMBER,
+                  pInfoNoteErrorCount   OUT NUMBER,
+                  pConfirmMsg           OUT VARCHAR2)
+              RETURN VARCHAR2
+    */
+        CSMQBean.logger.info("*** CHANGING STATE FROM checkActivation ***");
+
+        String sql = "{? = call CQT_WHOD_UI_TMS_UTILS.run_check_activation(?,?,?,?)}";
+        DBTransaction dBTransaction = DMLUtils.getDBTransaction();
+        FacesMessage msg;
+        CallableStatement cstmt =
+            new CallableStatement(dBTransaction.createCallableStatement(sql, DBTransaction.DEFAULT),
+                                  "CQT_WHOD_UI_TMS_UTILS.run_check_activation");
+        String messageText;
+        Hashtable retVal = new Hashtable(); // array to return the new state and message
+
+        try {
+            cstmt.registerOutParameter(1, Types.VARCHAR);
+            cstmt.registerOutParameter(2, Types.INTEGER);
+            cstmt.registerOutParameter(3, Types.INTEGER);
+            cstmt.registerOutParameter(4, Types.INTEGER);
+            cstmt.registerOutParameter(5, Types.VARCHAR);
+            cstmt.executeUpdate();
+            cstmt.close();
+            int contentErrorCount = cstmt.getInt(2);
+            int relationsErrorCount = cstmt.getInt(3);
+            int infoNoteErrorCount = cstmt.getInt(4);
+            String confirmMsg = cstmt.getString(5);
+            String retVar = cstmt.getString(1);
+            if (contentErrorCount == 0 && relationsErrorCount == 0 && infoNoteErrorCount == 0) {
+                messageText = "The check activation completed successfully for the CDG.";
+            } else {
+                messageText =
+                        "The check activation completed with errors for the CDG; please contact the CQT administrator.";
+            }
+            msg = new FacesMessage(FacesMessage.SEVERITY_INFO, messageText, null);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            messageText =
+                    "The check activation completed with errors for the CDG; please contact the CQT administrator.";
+            msg = new FacesMessage(FacesMessage.SEVERITY_INFO, messageText, "");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            return null;
+        }
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+        return retVal;
+    }
+
+    public static Hashtable transferActivation() {
+        /*
+        FUNCTION run_transfer_activation
+                 (pContentErrorCount      OUT NUMBER,
+                  pRelationsErrorCount    OUT NUMBER,
+                  pInfoNoteErrorCount     OUT NUMBER,
+                  pWFTermPublishedCount   OUT NUMBER,
+                  pWFTermActivatedCount   OUT NUMBER,
+                  pConfirmMsg             OUT VARCHAR2)
+              RETURN VARCHAR2
+    */
+        CSMQBean.logger.info("*** CHANGING STATE FROM transferActivation() ***");
+
+        String sql = "{? = call CQT_WHOD_UI_TMS_UTILS.run_transfer_activation(?,?,?,?,?,?)}";
+        DBTransaction dBTransaction = DMLUtils.getDBTransaction();
+        FacesMessage msg;
+        CallableStatement cstmt =
+            new CallableStatement(dBTransaction.createCallableStatement(sql, DBTransaction.DEFAULT),
+                                  "CQT_WHOD_UI_TMS_UTILS.run_transfer_activation");
+        String messageText;
+        Hashtable retVal = new Hashtable(); // array to return the new state and message
+
+        try {
+            cstmt.registerOutParameter(1, Types.VARCHAR);
+            cstmt.registerOutParameter(2, Types.INTEGER);
+            cstmt.registerOutParameter(3, Types.INTEGER);
+            cstmt.registerOutParameter(4, Types.INTEGER);
+            cstmt.registerOutParameter(5, Types.INTEGER);
+            cstmt.registerOutParameter(6, Types.INTEGER);
+            cstmt.registerOutParameter(7, Types.VARCHAR);
+            cstmt.executeUpdate();
+            cstmt.close();
+            int contentErrorCount = cstmt.getInt(2);
+            int relationsErrorCount = cstmt.getInt(3);
+            int infoNoteErrorCount = cstmt.getInt(4);
+            int wFTermPublishedCount = cstmt.getInt(5);
+            int wFTermActivatedCount = cstmt.getInt(6);
+            String confirmMsg = cstmt.getString(7);
+            String retVar = cstmt.getString(1);
+            if (contentErrorCount == 0 && relationsErrorCount == 0 && infoNoteErrorCount == 0 &&
+                wFTermPublishedCount == 0 && wFTermActivatedCount == 0) {
+                messageText = "The transfer activation completed successfully for the CDG.";
+            } else {
+                messageText =
+                        "The transfer activation completed with errors for the CDG; please contact the CQT administrator.";
+            }
+            msg = new FacesMessage(FacesMessage.SEVERITY_INFO, messageText, null);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            messageText =
+                    "The transfer activation completed with errors for the CDG; please contact the CQT administrator.";
+            msg = new FacesMessage(FacesMessage.SEVERITY_INFO, messageText, "");
             FacesContext.getCurrentInstance().addMessage(null, msg);
             return null;
         }
