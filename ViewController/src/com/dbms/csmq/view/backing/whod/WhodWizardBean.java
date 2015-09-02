@@ -25,6 +25,7 @@ import java.util.regex.Pattern;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
@@ -1711,5 +1712,9 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
                                                              "ShortValue", "LongValue");
         }
         return whodHierarchyDictinoriesSI;
+    }
+
+    public void navigateToSearch(ActionEvent actionEvent) {
+        // Add event code here...
     }
 }

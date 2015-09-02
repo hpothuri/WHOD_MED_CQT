@@ -113,7 +113,7 @@ public class WhodUtils {
             predictGroupName = cstmt.getString(3) != null ? cstmt.getString(3) : "";
             System.out.println("------" + predictGroupName);
             cstmt.close();
-            msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Term Deleted Successfully", null);
+            //msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Term Deleted Successfully", null);
             retVal = true;
         } catch (SQLException e) {
             CSMQBean.logger.error(e.getMessage());
@@ -121,7 +121,7 @@ public class WhodUtils {
             msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Unable to Delete Query", e.getMessage());
             retVal = true;
         }
-        FacesContext.getCurrentInstance().addMessage(null, msg);
+        //FacesContext.getCurrentInstance().addMessage(null, msg);
         return retVal;
     }
 

@@ -22,9 +22,9 @@
       <property
          name="y">240.48242</property>
       <property
-         name="x">-656.0</property>
-      <property
          name="pageFragment">false</property>
+      <property
+         name="x">-656.0</property>
    </View>
    <View
       id="View5">
@@ -41,9 +41,9 @@
       <property
          name="y">236.13184</property>
       <property
-         name="x">-476.0</property>
-      <property
          name="pageFragment">false</property>
+      <property
+         name="x">-476.0</property>
    </View>
    <TrainFlow
       islink="true"
@@ -68,9 +68,9 @@
       <property
          name="y">233.58594</property>
       <property
-         name="x">-294.0</property>
-      <property
          name="pageFragment">false</property>
+      <property
+         name="x">-294.0</property>
    </View>
    <TrainFlow
       islink="true"
@@ -95,9 +95,9 @@
       <property
          name="y">237.53418</property>
       <property
-         name="x">-144.0</property>
-      <property
          name="pageFragment">false</property>
+      <property
+         name="x">-144.0</property>
    </View>
    <TrainFlow
       islink="true"
@@ -156,5 +156,24 @@
          name="fromOutcome">*</property>
       <property
          name="sdm:polyPoints">R50,-797.0,239.49414,-697.0,240.13184,L50</property>
+   </ControlFlowCase>
+   <WildcardControlFlowRule
+      id="WildcardControlFlowRule14">
+      <property
+         name="activityId">*</property>
+      <property
+         name="y">383.29883</property>
+      <property
+         name="x">-188.0</property>
+   </WildcardControlFlowRule>
+   <ControlFlowCase
+      islink="true"
+      id="ControlFlowCase15"
+      from="WildcardControlFlowRule14"
+      to="TaskFlowReturn13">
+      <property
+         name="fromOutcome">CANCEL</property>
+      <property
+         name="sdm:polyPoints">R50,-152.0,383.44824,-1.0,295.79297,B50</property>
    </ControlFlowCase>
 </SDM>

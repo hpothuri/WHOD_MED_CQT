@@ -18,6 +18,7 @@ import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.ValueChangeEvent;
 
+import oracle.adf.view.rich.component.rich.RichPopup;
 import oracle.adf.view.rich.component.rich.input.RichInputDate;
 import oracle.adf.view.rich.component.rich.input.RichInputText;
 import oracle.adf.view.rich.component.rich.input.RichSelectBooleanCheckbox;
@@ -95,6 +96,7 @@ public class WhodWizardUIBean implements TransactionalDataControl, UpdateableDat
     private WhodWizardBean whodWizardBean;
     private WhodTermHierarchyBean termHierarchyBean;
     private UISelectItems cntrlProductSelectItems;
+    private RichPopup deleteSuccessPopup;
 
 
     public WhodWizardUIBean() {
@@ -447,6 +449,8 @@ public class WhodWizardUIBean implements TransactionalDataControl, UpdateableDat
             AdfFacesContext.getCurrentInstance().partialUpdateNotify(cntrlConfirmDetailsPanel);
             AdfFacesContext.getCurrentInstance().addPartialTarget(cntrlConfirmToolbar);
             AdfFacesContext.getCurrentInstance().partialUpdateNotify(cntrlConfirmToolbar);
+            RichPopup.PopupHints hints = new RichPopup.PopupHints();
+            deleteSuccessPopup.show(hints);
         }
     }
 
@@ -795,12 +799,20 @@ public class WhodWizardUIBean implements TransactionalDataControl, UpdateableDat
     public boolean resetState() {
         return false;
     }
-
     public void checkActivation(ActionEvent actionEvent) {
         WhodUtils.checkActivation();
     }
 
     public void transferActivation(ActionEvent actionEvent) {
         WhodUtils.transferActivation();
+    }  public void setDeleteSuccessPopup(RichPopup deleteSuccessPopup) {
+        this.deleteSuccessPopup = deleteSuccessPopup;
     }
-}
+
+    public RichPopup getDeleteSuccessPopup() {
+        return deleteSuccessPopup;
+    }
+
+    public void navigateToSearch(ActionEvent actionEvent) {
+        deleteSuccessPopup.hide();
+    }}

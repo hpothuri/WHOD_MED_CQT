@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1" xmlns:f="http://java.sun.com/jsf/core"
-          xmlns:af="http://xmlns.oracle.com/adf/faces/rich">
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich" xmlns:h="http://java.sun.com/jsf/html">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <f:view>
         <af:document id="d1" title="Confirm">
@@ -261,6 +261,20 @@
                     <f:attribute name="currentPage"
                                  value="Create New #{applicationScope.CSMQBean.customMQName} Wizard"/>
                 </af:pageTemplate>
+            </af:form>
+            <af:form id="f2">
+                <af:popup childCreation="deferred" autoCancel="disabled" id="p1"
+                          binding="#{WhodWizardUIBean.deleteSuccessPopup}">
+                    <af:dialog id="d10" type="none" title="Information message">
+                        <af:outputText value="Term Deleted Successfully" id="aot81"/>
+                        <f:facet name="buttonBar">
+                             <af:commandButton text="Ok" id="cb2"
+                                               actionListener="#{WhodWizardUIBean.navigateToSearch}" action="CANCEL"
+                                               immediate="true" partialSubmit="true">
+                            </af:commandButton>
+                        </f:facet>
+                    </af:dialog>
+                </af:popup>
             </af:form>
         </af:document>
     </f:view>
