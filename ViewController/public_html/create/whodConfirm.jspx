@@ -159,7 +159,7 @@
                                 </af:panelFormLayout>
                             </af:panelBox>
                             <af:spacer width="10" height="1" id="s3"/>
-                            <af:panelBox text="Workflow" id="pb1" inlineStyle="width:1195px; padding:5px;"
+                            <af:panelBox text="" id="pb1" inlineStyle="width:1195px; padding:5px;"
                                          showDisclosure="false">
                                 <f:facet name="toolbar">
                                     <af:toolbar id="t3" binding="#{WhodWizardUIBean.cntrlConfirmToolbar}">
@@ -217,7 +217,7 @@
                                         </af:commandButton>
                                     </af:toolbar>
                                 </f:facet>
-                                <af:panelFormLayout id="pfl3">
+                                <af:panelFormLayout id="pfl3" rendered="false">
                                     <f:facet name="footer"/>
                                     <af:inputText id="it1" label="Reason for Request" readOnly="false"
                                                   labelStyle="white-space:nowrap" rows="2" columns="150"
@@ -268,7 +268,7 @@
                     <af:dialog id="d10" type="none" title="Information message">
                         <af:outputText value="Term Deleted Successfully" id="aot81"/>
                         <f:facet name="buttonBar">
-                             <af:commandButton text="Ok" id="cb2"
+                             <af:commandButton text="Ok" id="cb21"
                                                actionListener="#{WhodWizardUIBean.navigateToSearch}" action="CANCEL"
                                                immediate="true" partialSubmit="true">
                             </af:commandButton>

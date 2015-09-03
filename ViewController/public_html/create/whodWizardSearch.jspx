@@ -40,7 +40,7 @@
                                                                     autoSubmit="true" helpTopicId="NMAT_HELP_QUERY_TYPE"
                                                                     value="#{pageFlowScope.WhodWizardSearchBean.paramExtension}"
                                                                     valueChangeListener="#{pageFlowScope.WhodWizardSearchBean.extensionChanged}"
-                                                                    rendered="#{pageFlowScope.setMode eq 'update' or pageFlowScope.setMode eq 'create'}">
+                                                                    rendered="#{pageFlowScope.setMode eq 'update' or pageFlowScope.setMode eq 'copy'}">
                                                     <f:selectItems value="#{pageFlowScope.WhodWizardBean.whodExtensionSI}"
                                                                    id="si31"/>
                                                     <af:selectItem id="si301" label="ALL" value="%"/>
@@ -49,7 +49,7 @@
                                                                     labelStyle="white-space:nowrap" valuePassThru="true"
                                                                     autoSubmit="true" helpTopicId="NMAT_HELP_QUERY_TYPE"
                                                                     value="#{pageFlowScope.WhodWizardSearchBean.paramLevelGroup}"
-                                                                    rendered="#{!(pageFlowScope.setMode eq 'update' or pageFlowScope.setMode eq 'create')}"
+                                                                    rendered="#{!(pageFlowScope.setMode eq 'update' or pageFlowScope.setMode eq 'copy')}"
                                                                     valueChangeListener="#{pageFlowScope.WhodWizardSearchBean.onLevelGroupChange}"
                                                                     partialTriggers="soc2">
                                                     <f:selectItems value="#{pageFlowScope.WhodWizardSearchBean.whodLevelGroupSI}"

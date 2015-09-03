@@ -326,7 +326,11 @@ public class WhodWizardSearchBean {
         whodWizardBean.setCurrentVersion(currentVersion);
         whodWizardBean.setCurrentCreatedBy(currentCreatedBy);
         whodWizardBean.setCurrentExtension(currentExtension);
+        if(whodWizardBean.getMode() == CSMQBean.MODE_COPY_EXISTING){
+        whodWizardBean.setCurrentStatus("PENDING");   
+        }else{
         whodWizardBean.setCurrentStatus(currentStatus);
+        }
         whodWizardBean.setCurrentProduct(currentMqproduct);
         whodWizardBean.setCurrentMQGROUP(currentMqgroups);
         setParamLevelGroup(currentExtension);

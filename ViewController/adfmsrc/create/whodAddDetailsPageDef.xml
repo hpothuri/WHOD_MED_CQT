@@ -20,6 +20,8 @@
                   RangeSize="-1"/>
         <iterator id="WhoDictionaryLevelListVO1Iterator" Binds="WhoDictionaryLevelListVO1"
                   DataControl="WHODModuleDataControl" RangeSize="-1"/>
+        <iterator id="WHODInfoNotesIterator" Binds="WHODInfoNotes" DataControl="WHODInfoNotesModuleDataControl"
+                  RangeSize="25"/>
     </executables>
     <bindings></bindings>
 </pageDefinition>
