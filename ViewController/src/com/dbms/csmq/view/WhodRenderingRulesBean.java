@@ -264,12 +264,12 @@ public class WhodRenderingRulesBean {
         }
 
         // ACTIVITY STATUS
-        String tempActivityStatus = nMQWizardBean.getCurrentStatus();
+        String tempActivityStatus = nMQWizardBean.getCurrentMQStatus();
 
         if (tempActivityStatus != null) {
-            ACTIVE_ACTIVITY_STATUS = (tempActivityStatus.equals(CSMQBean.ACTIVE_ACTIVITY_STATUS));
-            INACTIVE_ACTIVITY_STATUS = (tempActivityStatus.equals(CSMQBean.INACTIVE_ACTIVITY_STATUS));
-            PENDING_ACTIVITY_STATUS = (tempActivityStatus.equals(CSMQBean.PENDING_ACTIVITY_STATUS));
+            ACTIVE_ACTIVITY_STATUS = (tempActivityStatus.equalsIgnoreCase(CSMQBean.ACTIVE_ACTIVITY_STATUS));
+            INACTIVE_ACTIVITY_STATUS = (tempActivityStatus.equalsIgnoreCase(CSMQBean.INACTIVE_ACTIVITY_STATUS));
+            PENDING_ACTIVITY_STATUS = (tempActivityStatus.equalsIgnoreCase(CSMQBean.PENDING_ACTIVITY_STATUS));
         }
     }
 
@@ -807,7 +807,8 @@ public class WhodRenderingRulesBean {
     }
 
     public boolean isWizardConfirmDisableReactivate() {
-        if (!USER_MQM || !INACTIVE_ACTIVITY_STATUS)
+        //if (!USER_MQM || !INACTIVE_ACTIVITY_STATUS)
+        if (!USER_MQM || !MODE_UPDATE || !CURRENT_RELEASE_STATUS || !INACTIVE_ACTIVITY_STATUS)
             wizardConfirmDisableReactivate = true;
         return wizardConfirmDisableReactivate;
     }
@@ -817,7 +818,7 @@ public class WhodRenderingRulesBean {
     }
 
     public boolean isWizardConfirmDisableRetire() {
-        if (!USER_MQM || MODE_EDIT_SMQ || PENDING_RELEASE_STATUS || INACTIVE_ACTIVITY_STATUS)
+        if (!USER_MQM || !MODE_UPDATE || !CURRENT_RELEASE_STATUS || !ACTIVE_ACTIVITY_STATUS)
             wizardConfirmDisableRetire = true;
         return wizardConfirmDisableRetire;
     }

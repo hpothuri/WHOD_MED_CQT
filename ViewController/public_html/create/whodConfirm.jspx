@@ -169,15 +169,15 @@
                                             <af:showPopupBehavior popupId="::submitToMQM" triggerType="action"
                                                                   align="afterEnd"/>
                                         </af:commandButton>
+                                         <af:commandButton text="Check Activation" id="cb2" partialSubmit="true"
+                                                          actionListener="#{WhodWizardUIBean.checkActivation}"></af:commandButton>
+                                        <af:commandButton text="Transfer Activate" id="cb3" partialSubmit="true"
+                                                          actionListener="#{WhodWizardUIBean.transferActivation}"></af:commandButton>
                                         <af:commandButton text="Reactivate" id="cb9"
                                                           disabled="#{WhodRenderingRulesBean.wizardConfirmDisableReactivate}">
                                             <af:showPopupBehavior popupId="::confirmReactivate" triggerType="action"
                                                                   align="afterEnd"/>
-                                        </af:commandButton>
-                                        <af:commandButton text="Check Activation" id="cb2" partialSubmit="true"
-                                                          actionListener="#{WhodWizardUIBean.checkActivation}"></af:commandButton>
-                                        <af:commandButton text="Transfer Activate" id="cb3" partialSubmit="true"
-                                                          actionListener="#{WhodWizardUIBean.transferActivation}"></af:commandButton>
+                                        </af:commandButton>                                       
                                         <af:commandButton text="Retire" id="cb10"
                                                           disabled="#{WhodRenderingRulesBean.wizardConfirmDisableRetire}">
                                             <af:showPopupBehavior popupId="::confirmRetire" triggerType="action"
