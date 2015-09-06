@@ -32,7 +32,7 @@ public class ReportDownloadBean {
         cSMQBean = (CSMQBean)ADFContext.getCurrent().getApplicationScope().get("CSMQBean");
         reportDirectory = cSMQBean.getProperty("DOWNLOAD_DIRECTORY");
         reports = new ArrayList<String>();
-       // loadReportList();
+        loadReportList();
         if (cntrlReportList != null) cntrlReportList.setValue(reports.get(0));
         }
 
