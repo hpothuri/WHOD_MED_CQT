@@ -142,6 +142,12 @@
       <value>#{pageFlowScope.setMode}</value>
     </input-parameter>
   </task-flow-call>
+  <task-flow-call id="whod_report-task-flow-definition">
+    <task-flow-reference>
+      <document>/WEB-INF/whod_report-task-flow-definition.xml</document>
+      <id>whod_report-task-flow-definition</id>
+    </task-flow-reference>
+  </task-flow-call>
   <control-flow-rule id="__2">
     <control-flow-case id="__32">
       <from-outcome id="__33">CREATE_NEW_NMQ</from-outcome>
@@ -230,6 +236,10 @@
     <control-flow-case id="__75">
       <from-outcome>CDG_MEDDRA_IMPACT_ASSESSMENT</from-outcome>
       <to-activity-id>whod-impact-task-flow-definition</to-activity-id>
+    </control-flow-case>
+    <control-flow-case id="__61">
+      <from-outcome>CQT_REPORTS</from-outcome>
+      <to-activity-id>whod_report-task-flow-definition</to-activity-id>
     </control-flow-case>
   </control-flow-rule>
   <control-flow-rule id="__52">
@@ -374,6 +384,16 @@
   <managed-bean id="__77">
     <managed-bean-name>WhodWizardUIBean</managed-bean-name>
     <managed-bean-class>com.dbms.csmq.view.backing.whod.WhodWizardUIBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+  <managed-bean id="__68">
+    <managed-bean-name>WhodReportBean</managed-bean-name>
+    <managed-bean-class>com.dbms.csmq.view.reports.WhodReportBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+  <managed-bean id="__72">
+    <managed-bean-name>WhodReportDownloadBean</managed-bean-name>
+    <managed-bean-class>com.dbms.csmq.view.reports.WhodReportDownloadBean</managed-bean-class>
     <managed-bean-scope>request</managed-bean-scope>
   </managed-bean>
 </adfc-config>

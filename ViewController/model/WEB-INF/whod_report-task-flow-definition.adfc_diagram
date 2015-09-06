@@ -2,25 +2,6 @@
 <SDM>
    <OverallProperties
       id="OverallProperties1"/>
-   <View
-      id="View2">
-      <property
-         name="activityId">reports</property>
-      <property
-         name="page">/report/reports.jspx</property>
-      <property
-         name="start">true</property>
-      <property
-         name="description">&lt;html>&lt;p>&lt;b>reports&lt;/b> (Default Activity)&lt;/p>&lt;p>Activity Type:  View&lt;/p></property>
-      <property
-         name="trainStop">true</property>
-      <property
-         name="exceptionHandler">false</property>
-      <property
-         name="y">187.0459</property>
-      <property
-         name="x">407.5</property>
-   </View>
    <MethodCall
       id="MethodCall3">
       <property
@@ -30,9 +11,9 @@
       <property
          name="exceptionHandler">false</property>
       <property
-         name="y">185.64355</property>
+         name="y">154.84473</property>
       <property
-         name="x">594.5</property>
+         name="x">282.0</property>
    </MethodCall>
    <TaskFlowReturn
       id="TaskFlowReturn4">
@@ -45,28 +26,47 @@
       <property
          name="exceptionHandler">false</property>
       <property
-         name="y">174.64355</property>
+         name="y">157.94824</property>
       <property
-         name="x">823.5</property>
+         name="x">471.0</property>
    </TaskFlowReturn>
    <ControlFlowCase
       islink="true"
       id="ControlFlowCase5"
-      from="View2"
-      to="MethodCall3">
-      <property
-         name="fromOutcome">CANCEL</property>
-      <property
-         name="sdm:polyPoints">R50,448.5,186.69531,553.5,185.29297,L50</property>
-   </ControlFlowCase>
-   <ControlFlowCase
-      islink="true"
-      id="ControlFlowCase6"
       from="MethodCall3"
       to="TaskFlowReturn4">
       <property
          name="fromOutcome">CLEARED</property>
       <property
-         name="sdm:polyPoints">R50,635.5,185.29297,782.5,174.29297,L50</property>
+         name="sdm:polyPoints">R50,323.0,154.49414,430.0,157.59766,L50</property>
+   </ControlFlowCase>
+   <View
+      id="View7">
+      <property
+         name="activityId">whodReports</property>
+      <property
+         name="page">/report/whodReports.jspx</property>
+      <property
+         name="start">true</property>
+      <property
+         name="description">&lt;html>&lt;p>&lt;b>whodReports&lt;/b> (Default Activity)&lt;/p>&lt;p>Activity Type:  View&lt;/p></property>
+      <property
+         name="trainStop">true</property>
+      <property
+         name="exceptionHandler">false</property>
+      <property
+         name="y">160.99414</property>
+      <property
+         name="x">106.35254</property>
+   </View>
+   <ControlFlowCase
+      islink="true"
+      id="ControlFlowCase8"
+      from="View7"
+      to="MethodCall3">
+      <property
+         name="fromOutcome">CANCEL</property>
+      <property
+         name="sdm:polyPoints">R50,147.35254,160.64355,241.0,154.49414,L50</property>
    </ControlFlowCase>
 </SDM>

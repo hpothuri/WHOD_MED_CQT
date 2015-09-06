@@ -180,6 +180,16 @@
                 <name>/WEB-INF/whod-search-task-flow-definition.xml#search-whod-task-flow-definition</name>
                 <actions>view</actions>
               </permission>
+              <permission>
+                <class>oracle.adf.controller.security.TaskFlowPermission</class>
+                <name>/WEB-INF/whod_report-task-flow-definition.xml#whod_report-task-flow-definition</name>
+                <actions>view</actions>
+              </permission>
+              <permission>
+                <class>oracle.adf.share.security.authorization.RegionPermission</class>
+                <name>report.whodReportsPageDef</name>
+                <actions>view</actions>
+              </permission>
             </permissions>
           </grant>
           <grant>
@@ -469,6 +479,16 @@
                 <name>/WEB-INF/whod-search-task-flow-definition.xml#search-whod-task-flow-definition</name>
                 <actions>view</actions>
               </permission>
+              <permission>
+                <class>oracle.adf.controller.security.TaskFlowPermission</class>
+                <name>/WEB-INF/whod_report-task-flow-definition.xml#whod_report-task-flow-definition</name>
+                <actions>view</actions>
+              </permission>
+              <permission>
+                <class>oracle.adf.share.security.authorization.RegionPermission</class>
+                <name>report.whodReportsPageDef</name>
+                <actions>view</actions>
+              </permission>
             </permissions>
           </grant>
           <grant>
@@ -671,6 +691,16 @@
                 <name>/WEB-INF/whod-search-task-flow-definition.xml#search-whod-task-flow-definition</name>
                 <actions>view</actions>
               </permission>
+              <permission>
+                <class>oracle.adf.controller.security.TaskFlowPermission</class>
+                <name>/WEB-INF/whod_report-task-flow-definition.xml#whod_report-task-flow-definition</name>
+                <actions>view</actions>
+              </permission>
+              <permission>
+                <class>oracle.adf.share.security.authorization.RegionPermission</class>
+                <name>report.whodReportsPageDef</name>
+                <actions>view</actions>
+              </permission>
             </permissions>
           </grant>
           <grant>
@@ -826,6 +856,16 @@
               <permission>
                 <class>oracle.adf.controller.security.TaskFlowPermission</class>
                 <name>/WEB-INF/whod-search-task-flow-definition.xml#search-whod-task-flow-definition</name>
+                <actions>view</actions>
+              </permission>
+              <permission>
+                <class>oracle.adf.controller.security.TaskFlowPermission</class>
+                <name>/WEB-INF/whod_report-task-flow-definition.xml#whod_report-task-flow-definition</name>
+                <actions>view</actions>
+              </permission>
+              <permission>
+                <class>oracle.adf.share.security.authorization.RegionPermission</class>
+                <name>report.whodReportsPageDef</name>
                 <actions>view</actions>
               </permission>
             </permissions>

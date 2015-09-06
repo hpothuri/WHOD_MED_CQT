@@ -40,6 +40,7 @@
         <page path="/workflow/whodIaDemoteToDraft.jspx" usageId="com_dbms_csmq_view_whodIaDemoteToDraftPageDef"/>
         <page path="/WEB-INF/whod-search-task-flow-definition.xml#search-whod-task-flow-definition@setFocusBack"
               usageId="com_dbms_csmq_view_whod_search_task_flow_definition_search_whod_task_flow_definition_setFocusBackPageDef"/>
+        <page path="/report/whodReports.jspx" usageId="com_dbms_csmq_view_whodReportsPageDef"/>
     </pageMap>
     <pageDefinitionUsages>
         <page id="com_dbms_csmq_view_loginPageDef" path="com.dbms.csmq.view.pageDefs.loginPageDef"/>
@@ -121,6 +122,7 @@
         <page id="com_dbms_csmq_view_whodIaDemoteToDraftPageDef" path="workflow.whodIaDemoteToDraftPageDef"/>
         <page id="com_dbms_csmq_view_whod_search_task_flow_definition_search_whod_task_flow_definition_setFocusBackPageDef"
               path="com.dbms.csmq.view.pageDefs.whod_search_task_flow_definition_search_whod_task_flow_definition_setFocusBackPageDef"/>
+        <page id="com_dbms_csmq_view_whodReportsPageDef" path="report.whodReportsPageDef"/>
     </pageDefinitionUsages>
     <dataControlUsages>
         <dc id="ReportDownloadBean" path="com.dbms.csmq.view.ReportDownloadBean"/>

@@ -154,4 +154,19 @@
                        xmlns="http://xmlns.oracle.com/adfm/adapter/bean"/>
     </Source>
   </AdapterDataControl>
+  <AdapterDataControl id="WhodReportDownloadBean" FactoryClass="oracle.adf.model.adapter.DataControlFactoryImpl"
+                      ImplDef="oracle.adf.model.adapter.bean.BeanDCDefinition" SupportsTransactions="false"
+                      SupportsSortCollection="true" SupportsResetState="false" SupportsRangesize="false"
+                      SupportsFindMode="false" SupportsUpdates="true"
+                      Definition="com.dbms.csmq.view.reports.WhodReportDownloadBean"
+                      BeanClass="com.dbms.csmq.view.reports.WhodReportDownloadBean"
+                      xmlns="http://xmlns.oracle.com/adfm/datacontrol">
+    <CreatableTypes>
+      <TypeInfo FullName="com.dbms.csmq.view.reports.WhodReportDownloadBean"/>
+    </CreatableTypes>
+    <Source>
+      <bean-definition BeanClass="com.dbms.csmq.view.reports.WhodReportDownloadBean"
+                       xmlns="http://xmlns.oracle.com/adfm/adapter/bean"/>
+    </Source>
+  </AdapterDataControl>
 </DataControlConfigs>
