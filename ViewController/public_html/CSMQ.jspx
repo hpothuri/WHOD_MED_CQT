@@ -243,7 +243,7 @@
                                 <af:commandMenuItem text="NMQ" id="pt_cmi4" action="REPORTS"
                                                     inlineStyle="font-weight:#{UserBean.currentMenu eq 'REPORTS' ? 'bold' : 'normal'};"
                                                     disabled="false"/>
-                                <af:commandMenuItem text="CDG" id="pt_cmi21" action="REPORTS"
+                                <af:commandMenuItem text="CDG" id="pt_cmi21" action="CQT_REPORTS"
                                                     inlineStyle="font-weight:#{UserBean.currentMenu eq 'CQT_REPORTS' ? 'bold' : 'normal'};"
                                                     disabled="false"/>
                             </af:menu>

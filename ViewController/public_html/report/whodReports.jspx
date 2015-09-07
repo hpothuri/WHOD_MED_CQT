@@ -19,8 +19,9 @@
                                                             value="NULL" autoSubmit="true" valuePassThru="true"
                                                             valueChangeListener="#{WhodReportBean.reportNameChanged}">
                                             <af:selectItem label="--Select a report--" value="NULL" id="si48"/>
-                                            <f:selectItems value="#{applicationScope.CSMQBean.reportsSelectItems}" id="si2a"/>
-        
+                                           <!-- <f:selectItems value="#{applicationScope.CSMQBean.reportsSelectItems}" id="si2a"/>-->
+                                           <af:selectItem label="WHODrug Query Report" value="WHO_REPORT" id="si21"/>
+                                           <af:selectItem label="Current WHODrug Queries" value="WHO_QUERY" id="si22"/>      
                                         </af:selectOneChoice>
                                         <af:inputDate id="id1" binding="#{WhodReportBean.cntrlStartDate}" columns="10" label="Start Date">
                                             <f:convertDateTime pattern="dd-MMM-yyyy"/>
@@ -40,7 +41,7 @@
                                                                            filename="#{WhodReportBean.generatedReport}"/>
                                         </af:commandButton>
                                     </af:panelHeader>
-                                    <af:panelHeader text="MedDRA Versioning Reports" id="ph2" size="3"
+                                    <af:panelHeader text="Versioning Reports" id="ph2" size="3"
                                                     inlineStyle="height:130px; padding:5px;">
                                         <af:selectOneChoice label="Report" id="soc2"  autoSubmit="true" valuePassThru="true"
                                                             binding="#{pageFlowScope.WhodReportDownloadBean.cntrlReportList}"

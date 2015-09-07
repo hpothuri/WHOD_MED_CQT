@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import java.util.ArrayList;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,7 +19,6 @@ import javax.faces.event.ValueChangeEvent;
 import oracle.adf.share.ADFContext;
 import oracle.adf.view.rich.component.rich.input.RichSelectOneChoice;
 
-import oracle.binding.DataControl;
 import oracle.binding.ManagedDataControl;
 import oracle.binding.OperationBinding;
 
@@ -37,9 +35,9 @@ public class WhodReportDownloadBean implements ManagedDataControl {
     public WhodReportDownloadBean() {
         super();
         cSMQBean = (CSMQBean)ADFContext.getCurrent().getApplicationScope().get("CSMQBean");
-        reportDirectory = cSMQBean.getProperty("DOWNLOAD_DIRECTORY");
+        reportDirectory = cSMQBean.getWhodProperty("DOWNLOAD_DIRECTORY");
         reports = new ArrayList<String>();
-        // loadReportList();
+        loadReportList();
         if (cntrlReportList != null)
             cntrlReportList.setValue(reports.get(0));
     }
@@ -55,13 +53,13 @@ public class WhodReportDownloadBean implements ManagedDataControl {
             return;
         File folder = new File(reportDirectory);
         File[] listOfFiles = folder.listFiles();
-
+        if(listOfFiles != null){
         for (int i = 0; i < listOfFiles.length; i++) {
             if (listOfFiles[i].isFile()) {
                 reports.add(listOfFiles[i].getName());
             }
         }
-
+        }
     }
 
 

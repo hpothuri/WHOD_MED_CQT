@@ -116,7 +116,7 @@ public class WhodReportBean {
         
         reportName = cntrlReportList.getValue().toString();
         reportFormat = cntrlFormatList.getValue().toString();
-        String sourceDirectory = CSMQBean.getProperty("REPORT_SOURCE");
+        String sourceDirectory = CSMQBean.getWhodProperty("REPORT_SOURCE");
         String reportFile = sourceDirectory + reportName + ".jrxml";
 
         //BindingContainer bindings = BindingContext.getCurrent().getCurrentBindingsEntry();

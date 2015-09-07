@@ -1626,7 +1626,7 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
                                                              "ShortValue", "LongValue");
             Object mode = ADFContext.getCurrent().getPageFlowScope().get("setMode");
 
-            if (mode != null && mode.toString().equals("update")) {
+            if (mode != null && (mode.toString().equals("update") || mode.toString().equals("copy"))) {
                 for (SelectItem selectItem : selectItems) {
                     if (selectItem.getValue().toString().equals(CSMQBean.WHOD_FILTER_DICTIONARY))
                         selectItemsToSet.add(selectItem);
