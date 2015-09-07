@@ -3,6 +3,7 @@ package com.dbms.csmq.view.reports;
 
 import com.dbms.csmq.CSMQBean;
 import com.dbms.csmq.UserBean;
+import com.dbms.csmq.view.backing.whod.WhodUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -54,9 +55,6 @@ public class WhodReportBean {
 
     private RichSelectOneChoice cntrlReportList;
     private RichSelectOneChoice cntrlFormatList;
-    //private RichSelectManyChoice cntrlStateList;
-    //private RichSelectOneChoice cntrlReleaseGroupList;
-    //private RichSelectOneChoice cntrlRequestorList;
     private RichInputDate cntrlStartDate;
     private RichInputDate cntrlEndDate;
 
@@ -67,165 +65,87 @@ public class WhodReportBean {
     private Date paramStartDate = null;
     private Date paramEndDate = null;
     private oracle.jbo.domain.Date paramLastActivationDate = null;
-    
-    private String paramProposed = CSMQBean.TRUE;
-    private String paramRequested = CSMQBean.TRUE;
-    private String paramDraft = CSMQBean.TRUE;
-    private String paramPending = CSMQBean.TRUE;
-    private String paramReviewed = CSMQBean.TRUE;
-    private String paramApproved = CSMQBean.TRUE;
-    private String paramPublished = CSMQBean.TRUE;
-    private String paramActivated = CSMQBean.TRUE;  
-    private String paramRetired = CSMQBean.TRUE;
-    private String paramReActivated = CSMQBean.TRUE; 
-    
     public static final String GROUP_DELIMETER = ",";
     private RichGoButton cntrlOpenReport;
-
     private String reportURL;
-    //private RichSelectBooleanCheckbox cntrlProposed;
-    //private RichSelectBooleanCheckbox cntrlRequested;
-    //private RichSelectBooleanCheckbox cntrlDraft;
-    //private RichSelectBooleanCheckbox cntrlReviewed;
-    //private RichSelectBooleanCheckbox cntrlPublished;
-    //private RichSelectBooleanCheckbox cntrlPending;
-    //private RichSelectBooleanCheckbox cntrlApproved;
-    //private RichSelectBooleanCheckbox cntrlActivated;
-    //private RichSelectBooleanCheckbox cntrlRetired;
-
-    /**
-     */
     private RichSelectBooleanCheckbox cntrlReactivated;
-    
-    private ArrayList <SelectItem> releaseGroupSelectItems;
+    private ArrayList<SelectItem> releaseGroupSelectItems;
     private CSMQBean cSMQBean;
     private UserBean userBean;
     private String generatedReport;
     private RichCommandButton generateReport;
-    private String version;
 
     public WhodReportBean() {
         cSMQBean = (CSMQBean)ADFContext.getCurrent().getApplicationScope().get("CSMQBean");
         releaseGroupSelectItems = cSMQBean.getAGsForDictionary(null);
         userBean = (UserBean)ADFContext.getCurrent().getSessionScope().get("UserBean");
         userBean.setCurrentMenuPath("Reports");
-        userBean.setCurrentMenu("REPORTS");
-        }
+        userBean.setCurrentMenu("CQT_REPORTS");
+    }
 
     public void printReport(FacesContext facesContext, OutputStream outputStream) {
-        
+
         reportName = cntrlReportList.getValue().toString();
         reportFormat = cntrlFormatList.getValue().toString();
         String sourceDirectory = CSMQBean.getWhodProperty("REPORT_SOURCE");
+        sourceDirectory = "F:\\mine\\CQT\\docs\\rewhodcqtreports\\"; //TODO need to remove before commit
         String reportFile = sourceDirectory + reportName + ".jrxml";
 
-        //BindingContainer bindings = BindingContext.getCurrent().getCurrentBindingsEntry();
-        //AttributeBinding attr = (AttributeBinding)bindings.getControlBinding("Version");
-        //version = (String) attr.getInputValue();
-
-
-        //if (cntrlReleaseGroupList.getValue() != null)
-        //    paramReleaseGroup = cntrlReleaseGroupList.getValue().toString();
-
-        //if (cntrlRequestorList.getValue() != null)
-         //   paramRequestor = cntrlRequestorList.getValue().toString();
-
-        if (cntrlStartDate.getValue() != null)
+        if (cntrlStartDate.getValue() != null) {
             paramStartDate = (Date)cntrlStartDate.getValue();
+        } else {
+            paramStartDate = WhodUtils.getDate("01-JAN-1800", "dd-MMM-yy");
+        }
 
-        if (cntrlEndDate.getValue() != null)
+        if (cntrlEndDate.getValue() != null) {
             paramEndDate = (Date)cntrlEndDate.getValue();
-        
-    //        paramProposed = (((Boolean)cntrlProposed.getValue()) ? CSMQBean.TRUE : CSMQBean.FALSE);
-    //        paramRequested = (((Boolean)cntrlRequested.getValue()) ? CSMQBean.TRUE : CSMQBean.FALSE);
-    //        paramDraft = (((Boolean)cntrlDraft.getValue()) ? CSMQBean.TRUE : CSMQBean.FALSE);
-    //        paramPending = (((Boolean)cntrlPending.getValue()) ? CSMQBean.TRUE : CSMQBean.FALSE);
-    //        paramReviewed = (((Boolean)cntrlReviewed.getValue()) ? CSMQBean.TRUE : CSMQBean.FALSE);
-    //        paramApproved = (((Boolean)cntrlApproved.getValue()) ? CSMQBean.TRUE : CSMQBean.FALSE);
-    //        paramPublished = (((Boolean)cntrlPublished.getValue()) ? CSMQBean.TRUE : CSMQBean.FALSE);
-    //        paramActivated = (((Boolean)cntrlActivated.getValue()) ? CSMQBean.TRUE : CSMQBean.FALSE);
-    //        paramRetired = (((Boolean)cntrlActivated.getValue()) ? CSMQBean.TRUE : CSMQBean.FALSE);
-    //        paramReActivated = (((Boolean)cntrlActivated.getValue()) ? CSMQBean.TRUE : CSMQBean.FALSE);
-        
+        } else {
+            paramEndDate = WhodUtils.getDate("15-AUG-3501", "dd-MMM-yy");
+        }
+
         Map parameters = new HashMap();
-        parameters.put("ReportTitle", reportName);
-        parameters.put("reportFormat", reportFormat);
-        parameters.put("REPORT_DIRECTORY", sourceDirectory);
-        parameters.put("release_group", paramReleaseGroup);
-        parameters.put("requestor", paramRequestor);
         parameters.put("trans_start_date", paramStartDate);
         parameters.put("trans_end_date", paramEndDate);
-        parameters.put("proposed_yn", paramProposed);
-        parameters.put("requested_yn", paramRequested);
-        parameters.put("draft_yn", paramDraft);
-        parameters.put("pending_yn", paramPending);
-        parameters.put("reviewed_yn", paramReviewed);
-        parameters.put("approved_yn", paramApproved);
-        parameters.put("published_yn", paramPublished);
-        parameters.put("activated_yn", paramActivated);
-        parameters.put("reactivated_yn", paramReActivated);
-        parameters.put("retired_yn", paramRetired);
-        //parameters.put("DICTIONARY_VERSION", version);
-        //parameters.put("LAST_ACTIVATON_DATE", this.getParamLastActivationDate());
+        parameters.put("REPORT_DIRECTORY", sourceDirectory);
+        parameters.put("ReportTitle", reportName);
 
-        
         CSMQBean.logger.info(userBean.getCaller() + " *** RUNNING REPORT ***");
-        CSMQBean.logger.info(userBean.getCaller() + " user: " +  userBean.getUsername());
-        CSMQBean.logger.info(userBean.getCaller() + " ReportTitle: " +  reportName);
-        CSMQBean.logger.info(userBean.getCaller() + " reportSourceFile: " +  reportFile);
-        CSMQBean.logger.info(userBean.getCaller() + " generatedReport: " +  reportName);
-        CSMQBean.logger.info(userBean.getCaller() + " REPORT_DIRECTORY: " +  sourceDirectory);
-        CSMQBean.logger.info(userBean.getCaller() + " release_group: " +  paramReleaseGroup);
-        CSMQBean.logger.info(userBean.getCaller() + " requestor: " +  paramRequestor);
-        CSMQBean.logger.info(userBean.getCaller() + " trans_start_date: " +  paramStartDate);
-        CSMQBean.logger.info(userBean.getCaller() + " trans_end_date: " +  paramEndDate);
-        CSMQBean.logger.info(userBean.getCaller() + " proposed_yn: " +  paramProposed);
-        CSMQBean.logger.info(userBean.getCaller() + " requested_yn: " +  paramRequested);
-        CSMQBean.logger.info(userBean.getCaller() + " draft_yn: " +  paramDraft);
-        CSMQBean.logger.info(userBean.getCaller() + " pending_yn: " +  paramPending);
-        CSMQBean.logger.info(userBean.getCaller() + " reviewed_yn: " +  paramReviewed);
-        CSMQBean.logger.info(userBean.getCaller() + " approved_yn: " +  paramApproved);
-        CSMQBean.logger.info(userBean.getCaller() + " published_yn: " +  paramPublished);
-        CSMQBean.logger.info(userBean.getCaller() + " activated_yn: " +  paramActivated);
-        CSMQBean.logger.info(userBean.getCaller() + " reactivated_yn: " +  paramReActivated);
-        CSMQBean.logger.info(userBean.getCaller() + " retired_yn: " +  paramRetired);
-        //CSMQBean.logger.info(userBean.getCaller() + " LAST_ACTIVATON_DATE: " +  this.getParamLastActivationDate());
+        CSMQBean.logger.info(userBean.getCaller() + " trans_start_date: " + paramStartDate);
+        CSMQBean.logger.info(userBean.getCaller() + " trans_end_date: " + paramEndDate);
 
         try {
             InitialContext initialContext = new InitialContext();
-            DataSource ds = (DataSource)initialContext.lookup(CSMQBean.getProperty("DATABASE_URL")); // get from your application module configuration
+            //DataSource ds = (DataSource)initialContext.lookup(CSMQBean.getProperty("DATABASE_URL")); // get from your application module configuration
+            DataSource ds = (DataSource)initialContext.lookup("jdbc/WHODDS"); //TODO need to remove before commit
             Connection conn = ds.getConnection();
             InputStream is = new FileInputStream(new File(reportFile));
             JasperDesign jasperDesign = JRXmlLoader.load(is);
             JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
             JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, conn);
-            
+
             if (reportFormat.equals("PDF")) {
                 JasperExportManager.exportReportToPdfStream(jasperPrint, outputStream);
-                }
-            else if (reportFormat.equals("XLS")) {
+            } else if (reportFormat.equals("XLS")) {
                 JRXlsExporter exporterXLS = new JRXlsExporter();
                 exporterXLS.setParameter(JRXlsExporterParameter.JASPER_PRINT, jasperPrint);
                 exporterXLS.setParameter(JRXlsExporterParameter.IS_DETECT_CELL_TYPE, Boolean.TRUE);
                 exporterXLS.setParameter(JRXlsExporterParameter.IS_WHITE_PAGE_BACKGROUND, Boolean.FALSE);
                 exporterXLS.setParameter(JRXlsExporterParameter.OUTPUT_STREAM, outputStream);
-                exporterXLS.setParameter(JRXlsAbstractExporterParameter.IS_REMOVE_EMPTY_SPACE_BETWEEN_ROWS, Boolean.TRUE);
-                exporterXLS.setParameter(JRXlsAbstractExporterParameter.IS_REMOVE_EMPTY_SPACE_BETWEEN_COLUMNS, Boolean.TRUE); 
-                
+                exporterXLS.setParameter(JRXlsAbstractExporterParameter.IS_REMOVE_EMPTY_SPACE_BETWEEN_ROWS,
+                                         Boolean.TRUE);
+                exporterXLS.setParameter(JRXlsAbstractExporterParameter.IS_REMOVE_EMPTY_SPACE_BETWEEN_COLUMNS,
+                                         Boolean.TRUE);
                 exporterXLS.exportReport();
-                
-                }
-            
+            }
+
             is.close();
             conn.close();
             outputStream.close();
-            }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    
 
     public void setCntrlReportList(RichSelectOneChoice cntrlReportList) {
         this.cntrlReportList = cntrlReportList;
@@ -238,34 +158,10 @@ public class WhodReportBean {
     public void setCntrlFormatList(RichSelectOneChoice cntrlFormatList) {
         this.cntrlFormatList = cntrlFormatList;
     }
+
     public RichSelectOneChoice getCntrlFormatList() {
         return cntrlFormatList;
     }
-    //
-    //
-    //    public void setCntrlStateList(RichSelectManyChoice cntrlStateList) {
-    //        this.cntrlStateList = cntrlStateList;
-    //    }
-    //
-    //    public RichSelectManyChoice getCntrlStateList() {
-    //        return cntrlStateList;
-    //    }
-    //
-    //    public void setCntrlReleaseGroupList(RichSelectOneChoice cntrlReleaseGroupList) {
-    //        this.cntrlReleaseGroupList = cntrlReleaseGroupList;
-    //    }
-    //
-    //    public RichSelectOneChoice getCntrlReleaseGroupList() {
-    //        return cntrlReleaseGroupList;
-    //    }
-    //
-    //    public void setCntrlRequestorList(RichSelectOneChoice cntrlRequestorList) {
-    //        this.cntrlRequestorList = cntrlRequestorList;
-    //    }
-    //
-    //    public RichSelectOneChoice getCntrlRequestorList() {
-    //        return cntrlRequestorList;
-    //    }
 
     public void setCntrlStartDate(RichInputDate startDate) {
         this.cntrlStartDate = startDate;
@@ -331,88 +227,6 @@ public class WhodReportBean {
         return reportURL;
     }
 
-    
-
-    //    public void setCntrlProposed(RichSelectBooleanCheckbox cntrlProposed) {
-    //        this.cntrlProposed = cntrlProposed;
-    //    }
-    //
-    //    public RichSelectBooleanCheckbox getCntrlProposed() {
-    //        return cntrlProposed;
-    //    }
-    //
-    //    public void setCntrlRequested(RichSelectBooleanCheckbox cntrlRequested) {
-    //        this.cntrlRequested = cntrlRequested;
-    //    }
-    //
-    //    public RichSelectBooleanCheckbox getCntrlRequested() {
-    //        return cntrlRequested;
-    //    }
-    //
-    //    public void setCntrlDraft(RichSelectBooleanCheckbox cntrlDraft) {
-    //        this.cntrlDraft = cntrlDraft;
-    //    }
-    //
-    //    public RichSelectBooleanCheckbox getCntrlDraft() {
-    //        return cntrlDraft;
-    //    }
-    //
-    //    public void setCntrlReviewed(RichSelectBooleanCheckbox cntrlReviewed) {
-    //        this.cntrlReviewed = cntrlReviewed;
-    //    }
-    //
-    //    public RichSelectBooleanCheckbox getCntrlReviewed() {
-    //        return cntrlReviewed;
-    //    }
-    //
-    //    public void setCntrlPublished(RichSelectBooleanCheckbox cntrlPublished) {
-    //        this.cntrlPublished = cntrlPublished;
-    //    }
-    //
-    //    public RichSelectBooleanCheckbox getCntrlPublished() {
-    //        return cntrlPublished;
-    //    }
-    //
-    //    public void setCntrlPending(RichSelectBooleanCheckbox cntrlPending) {
-    //        this.cntrlPending = cntrlPending;
-    //    }
-    //
-    //    public RichSelectBooleanCheckbox getCntrlPending() {
-    //        return cntrlPending;
-    //    }
-    //
-    //    public void setCntrlApproved(RichSelectBooleanCheckbox cntrlApproved) {
-    //        this.cntrlApproved = cntrlApproved;
-    //    }
-    //
-    //    public RichSelectBooleanCheckbox getCntrlApproved() {
-    //        return cntrlApproved;
-    //    }
-    //
-    //    public void setCntrlActivated(RichSelectBooleanCheckbox cntrlActivated) {
-    //        this.cntrlActivated = cntrlActivated;
-    //    }
-    //
-    //    public RichSelectBooleanCheckbox getCntrlActivated() {
-    //        return cntrlActivated;
-    //    }
-
-    public void setReleaseGroupSelectItems(ArrayList<SelectItem> releaseGroupSelectItems) {
-        this.releaseGroupSelectItems = releaseGroupSelectItems;
-    }
-
-    public ArrayList<SelectItem> getReleaseGroupSelectItems() {
-        return releaseGroupSelectItems;
-    }
-    //
-    //    public void setCntrlRetired(RichSelectBooleanCheckbox cntrlRetired) {
-    //        this.cntrlRetired = cntrlRetired;
-    //    }
-    //
-    //    public RichSelectBooleanCheckbox getCntrlRetired() {
-    //        return cntrlRetired;
-    //    }
-
     public void setCntrlReactivated(RichSelectBooleanCheckbox cntrlReactivated) {
         this.cntrlReactivated = cntrlReactivated;
     }
@@ -429,11 +243,12 @@ public class WhodReportBean {
         BindingContext bc = BindingContext.getCurrent();
         DCBindingContainer binding = (DCBindingContainer)bc.getCurrentBindingsEntry();
         DCIteratorBinding dciterb = (DCIteratorBinding)binding.get("ViewObjLatestActivationState1Iterator");
-        
+
         Enumeration rows = dciterb.getRowSetIterator().enumerateRowsInRange();
         Row row = (Row)rows.nextElement();
         Object tVal = row.getAttribute("LastActivationDate");
-        if (tVal == null) return null;
+        if (tVal == null)
+            return null;
         oracle.jbo.domain.Date paramLastActivationDate = (oracle.jbo.domain.Date)tVal;
         return paramLastActivationDate.dateValue();
     }
@@ -445,7 +260,7 @@ public class WhodReportBean {
     public String getGeneratedReport() {
         reportName = cntrlReportList.getValue().toString();
         reportFormat = cntrlFormatList.getValue().toString();
-        generatedReport = reportName + "."+ reportFormat;
+        generatedReport = reportName + "." + reportFormat;
         return generatedReport;
     }
 

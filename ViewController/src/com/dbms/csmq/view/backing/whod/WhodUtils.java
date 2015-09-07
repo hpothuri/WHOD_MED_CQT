@@ -16,6 +16,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
+import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
@@ -1784,5 +1785,15 @@ new FacesMessage(FacesMessage.SEVERITY_INFO, "Success manage Workflow State", nu
         }
         FacesContext.getCurrentInstance().addMessage(null, msg);
         return retVal;
+    }
+
+    public static Date getDate(String dateStr, String dateFormat) {
+        DateFormat formatter = new SimpleDateFormat(dateFormat);
+        java.util.Date date = null;
+        try {
+            date = formatter.parse(dateStr);
+        } catch (java.text.ParseException e) {
+        }
+        return date;
     }
 }
