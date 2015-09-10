@@ -88,7 +88,6 @@ public class WhodReportBean {
         reportName = cntrlReportList.getValue().toString();
         reportFormat = cntrlFormatList.getValue().toString();
         String sourceDirectory = CSMQBean.getWhodProperty("REPORT_SOURCE");
-        sourceDirectory = "F:\\mine\\CQT\\docs\\rewhodcqtreports\\"; //TODO need to remove before commit
         String reportFile = sourceDirectory + reportName + ".jrxml";
 
         if (cntrlStartDate.getValue() != null) {

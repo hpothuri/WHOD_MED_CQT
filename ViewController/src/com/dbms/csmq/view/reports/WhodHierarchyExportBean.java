@@ -1,10 +1,11 @@
 package com.dbms.csmq.view.reports;
 
+
 import com.dbms.csmq.CSMQBean;
 import com.dbms.csmq.UserBean;
-import com.dbms.csmq.view.backing.whod.WhodUtils;
 import com.dbms.csmq.view.backing.impact.ImpactAnalysisBean;
 import com.dbms.csmq.view.backing.impact.ImpactAnalysisUIBean;
+import com.dbms.csmq.view.backing.whod.WhodUtils;
 import com.dbms.csmq.view.backing.whod.WhodWizardBean;
 import com.dbms.csmq.view.hierarchy.GenericTreeNode;
 import com.dbms.csmq.view.hierarchy.WhodTermHierarchyBean;
@@ -20,7 +21,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 
-import oracle.adf.model.BindingContext;
 import oracle.adf.share.ADFContext;
 import oracle.adf.view.rich.component.rich.RichPopup;
 import oracle.adf.view.rich.component.rich.data.RichTreeTable;
@@ -31,11 +31,9 @@ import oracle.adf.view.rich.context.AdfFacesContext;
 import oracle.adf.view.rich.event.PopupCanceledEvent;
 import oracle.adf.view.rich.event.PopupFetchEvent;
 
-import oracle.binding.AttributeBinding;
-import oracle.binding.BindingContainer;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.myfaces.trinidad.model.CollectionModel;
+
 
 public class WhodHierarchyExportBean {
     private CSMQBean cSMQBean;
@@ -121,12 +119,12 @@ public class WhodHierarchyExportBean {
         String hasScope = nMQWizardBean.getCurrentScope();
         String ignorePredict = nMQWizardBean.getIgnorePredict();
         
-        // GET DICT VERSIONS
-        BindingContainer bindings = BindingContext.getCurrent().getCurrentBindingsEntry();
-        AttributeBinding attr = (AttributeBinding)bindings.getControlBinding("Version");
-        version = (String) attr.getInputValue();
-        attr = (AttributeBinding)bindings.getControlBinding("LastUpdate");
-        lastUpdate = (String) attr.getInputValue();
+        // GET DICT VERSIONS //TODO need to get this info
+//        BindingContainer bindings = BindingContext.getCurrent().getCurrentBindingsEntry();
+//        AttributeBinding attr = (AttributeBinding)bindings.getControlBinding("Version");
+//        version = (String) attr.getInputValue();
+//        attr = (AttributeBinding)bindings.getControlBinding("LastUpdate");
+//        lastUpdate = (String) attr.getInputValue();
         
         String performImpact = isImpact ? CSMQBean.TRUE : CSMQBean.FALSE;
         
@@ -154,6 +152,8 @@ public class WhodHierarchyExportBean {
             reportList =  new String [] {defaultExportChangedReportName};
         else     
             reportList =  new String [] {defaultExportReportName};
+        
+        reportList = new String [] {"WHOD_EXPORT"}; //TODO need to remove hardcoding
             
         CSMQBean.logger.info(userBean.getCaller() + " *** RUNNING REPORT ***");
         CSMQBean.logger.info(userBean.getCaller() + " user: " +  userBean.getUsername());

@@ -86,7 +86,7 @@ ORDER BY approval_reason, extension, term]]>
 			</staticText>
 			<image>
 				<reportElement x="3" y="0" width="236" height="60" uuid="db7ced25-028e-4010-aa9c-1bbc5f7e94af"/>
-				<imageExpression><![CDATA[$P{REPORT_DIRECTORY} +"\\app_logo.png"]]></imageExpression>
+				<imageExpression><![CDATA[$P{REPORT_DIRECTORY} +"/app_logo.png"]]></imageExpression>
 			</image>
 			<staticText>
 				<reportElement x="3" y="82" width="552" height="30" uuid="fdc1e3e8-1ee0-48b2-9f4d-85849d620b28"/>

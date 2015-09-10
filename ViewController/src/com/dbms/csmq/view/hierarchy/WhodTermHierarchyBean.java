@@ -157,6 +157,7 @@ public class WhodTermHierarchyBean extends Hierarchy {
         root.setApprovedFlag(Utils.getAsString(row, "ApprovedFlag"));
         root.setStatus(Utils.getAsString(row, "Status"));
         root.setDictRelationId(Utils.getAsString(row, "DictRelationId")); 
+        root.setFormattedScope("PARENT");
         // set it as expanded so that it won't get called again
         root.setIsExpanded(true);
         root.setEditable(true);

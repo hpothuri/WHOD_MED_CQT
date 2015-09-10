@@ -49,7 +49,6 @@ public class ReportEngine {
     public void exportAsExcelWorkbook (String [] reportNames, OutputStream outputStream, Map parameters, String caller, String performImpact) {
         String [] reportFiles = new String [reportNames.length];
         int i=0;  //report count
-        
         parameters.put("REPORT_DIRECTORY", sourceDirectory);
         parameters.put("PERFORM_IMPACT", performImpact);
         CSMQBean.logger.info(caller + "REPORTS: " +  reportNames);
@@ -70,9 +69,9 @@ public class ReportEngine {
         
         try {
             InitialContext initialContext = new InitialContext();
-            DataSource ds = (DataSource)initialContext.lookup(CSMQBean.getProperty("DATABASE_URL")); // get from your application module configuration
-            Connection conn = ds.getConnection();
-            
+            //DataSource ds = (DataSource)initialContext.lookup(CSMQBean.getProperty("DATABASE_URL")); // get from your application module configuration
+            DataSource ds = (DataSource)initialContext.lookup("jdbc/WHODDS");
+            Connection conn = ds.getConnection();            
             for (String reportName : reportNames) {
                 reportFiles[i] = sourceDirectory + reportName + ".jrxml";
                 CSMQBean.logger.info(caller + "RUNNING REPORT: " +  reportFiles[i]);

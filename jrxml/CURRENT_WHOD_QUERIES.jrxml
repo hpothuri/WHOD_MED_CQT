@@ -55,7 +55,7 @@
 		<band height="115">
 			<image>
 				<reportElement x="0" y="0" width="230" height="64" uuid="a553ebd6-2bcb-4fa1-8fa0-8ff47d10cfe9"/>
-				<imageExpression><![CDATA[$P{REPORT_DIRECTORY} +"\\app_logo.png"]]></imageExpression>
+				<imageExpression><![CDATA[$P{REPORT_DIRECTORY} +"/app_logo.png"]]></imageExpression>
 			</image>
 			<staticText>
 				<reportElement x="0" y="64" width="230" height="20" uuid="937200b1-9866-4506-97ff-14b6c45ab4e3"/>
