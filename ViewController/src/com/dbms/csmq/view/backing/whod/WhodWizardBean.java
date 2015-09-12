@@ -123,7 +123,7 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
     private String hierarchyParamScope = "-1";
     private String hierarchyParamSort = "scope";
     private String paramPrimLinkFlag = CSMQBean.FALSE;
-    private int maxLevels = Integer.parseInt(CSMQBean.getProperty("HIERARCHY_SUBSEQUENT_FETCH"));
+    private int maxLevels ; //= Integer.parseInt(CSMQBean.getProperty("HIERARCHY_SUBSEQUENT_FETCH"));
 
     BindingContext bc = BindingContext.getCurrent();
     DCBindingContainer binding = (DCBindingContainer)bc.getCurrentBindingsEntry();
@@ -163,9 +163,9 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
     private List<SelectItem> whodDictinoriesSI;
     private List<SelectItem> whodHierarchyDictinoriesSI;
     private List<SelectItem> whodDictinoryLevelsSI;
+    private Boolean openPopup = false;
 
     public WhodWizardBean() {
-        System.out.println("NMQWizardBean");
         productSelectItems = new ArrayList<SelectItem>();
         cSMQBean = (CSMQBean)ADFContext.getCurrent().getApplicationScope().get("CSMQBean");
         userBean = (UserBean)ADFContext.getCurrent().getSessionScope().get("UserBean");
@@ -176,7 +176,7 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
         this.noteInformativeNoteShortName = cSMQBean.getProperty("SMQ_NOTE_INFORMATIVE_NOTE");
         this.descriptionInformativeNoteShortName = cSMQBean.getProperty("SMQ_DESCRIPTION_INFORMATIVE_NOTE");
         this.sourceInformativeNoteShortName = cSMQBean.getProperty("SMQ_SOURCE_INFORMATIVE_NOTE");
-        this.currentMQType = cSMQBean.getCustomMQName();
+        //this.currentMQType = cSMQBean.getCustomMQName();
         if (!dictionaryInfoFetched)
             getDictionaryInfo();
     }
@@ -514,7 +514,7 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
                     NMQUtils.saveIADetails(tempName, currentProduct, currentTermLevel, currentScope, currentMQALGO, currentMQCRTEV,
                                            currentMQGROUP, currentContentCode, this.getUpdateParam(), currentRequestor,
                                            currentDictContentID, userBean.getUserRole(), action);
-        } else if (mode == CSMQBean.MODE_UPDATE_EXISTING) {
+        } else if (mode == CSMQBean.MODE_UPDATE_EXISTING || mode == CSMQBean.MODE_COPY_EXISTING) {
             CSMQBean.logger.info(userBean.getCaller() + " CALLING: saveDetails");
             String designeeListString = "";
             if (designeeList != null)
@@ -532,10 +532,12 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
                                                  getCurrentScope(), getCurrentStatus(), dGProductLIST, dGGroupLIST,
                                                  commentText, designee, userBean.getUserRole(), action,
                                                  this.currentState);
-        } else if (mode == CSMQBean.MODE_COPY_EXISTING) {
-            CSMQBean.logger.info(userBean.getCaller() + " CALLING: saveDetails");
-            results = WhodUtils.copyDetails(currentDictContentID, getCurrentTermLevelNumber(), getCurrentTermName());
-        } else {
+        } 
+//        else if (mode == CSMQBean.MODE_COPY_EXISTING) {
+//            CSMQBean.logger.info(userBean.getCaller() + " CALLING: saveDetails");
+//            results = WhodUtils.copyDetails(currentDictContentID, getCurrentTermLevelNumber(), getCurrentTermName());
+//        } 
+        else {
             CSMQBean.logger.info(userBean.getCaller() + " CALLING: saveDetails");
             String designeeListString = "";
             if (designeeList != null)
@@ -560,7 +562,7 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
         this.currentStatus = INITIAL_STATUS;
 
         //if it's new or a copy, update the content code & ID with the new values & change the mode from insert to update & save the old code
-        if (this.mode == CSMQBean.MODE_INSERT_NEW || this.mode == CSMQBean.MODE_COPY_EXISTING) {
+        if (this.mode == CSMQBean.MODE_INSERT_NEW) {
             this.currentContentCode = (String)results.get("NEW_DICT_CONTENT_CODE"); //
             this.copiedDictContentID = this.getCurrentDictContentID();
             this.currentDictContentID = (String)results.get("NEW_DICT_CONTENT_ID"); //newDictContentID;
@@ -585,7 +587,24 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
 
         return true;
     }
-
+    
+    public boolean copyAndSaveDetails(){
+        Hashtable results = null;
+        
+        CSMQBean.logger.info(userBean.getCaller() + " CALLING: saveDetails");
+        results = WhodUtils.copyDetails(currentDictContentID, getCurrentTermLevelNumber(), getCurrentTermName());
+        if(results != null && results.size()>0){
+        String newDictContentID = (String)results.get("NEW_DICT_CONTENT_ID");
+        String newDictContentCode = (String)results.get("NEW_DICT_CONTENT_CODE");
+        this.setCurrentDictContentID(newDictContentID);
+        this.setCurrentContentCode(newDictContentCode);
+        this.setCurrentState(CSMQBean.STATE_DRAFT);
+        this.setSaved(true);
+        return true;
+        }
+        
+       return false; 
+    }
 
     private void copyAllRelations() {
 
@@ -1716,5 +1735,13 @@ public class WhodWizardBean implements TransactionalDataControl, UpdateableDataC
 
     public void navigateToSearch(ActionEvent actionEvent) {
         // Add event code here...
+    }
+
+    public void setOpenPopup(Boolean openPopup) {
+        this.openPopup = openPopup;
+    }
+
+    public Boolean getOpenPopup() {
+        return openPopup;
     }
 }

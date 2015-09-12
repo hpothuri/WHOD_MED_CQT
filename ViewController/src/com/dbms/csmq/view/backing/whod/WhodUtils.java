@@ -1311,7 +1311,7 @@ new FacesMessage(FacesMessage.SEVERITY_INFO, "Impacted list refreshed for dictio
         try {
             CallableStatement cstmt =
                 new CallableStatement(dBTransaction.createCallableStatement(sql, DBTransaction.DEFAULT),
-                                      "cqt_whod_ui_tms_utils.insert_content_data");
+                                      "cqt_whod_ui_tms_utils.copy_all_data");
             cstmt.registerOutParameter(1, Types.VARCHAR);
             cstmt.setInt(2, new Integer(fromDictContentID));
             cstmt.setString(3, newLevel);

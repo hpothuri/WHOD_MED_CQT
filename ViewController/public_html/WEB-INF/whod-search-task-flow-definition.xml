@@ -74,6 +74,11 @@
       <managed-bean-class>com.dbms.csmq.view.backing.whod.WhodWizardSearchBean</managed-bean-class>
       <managed-bean-scope>pageFlow</managed-bean-scope>
     </managed-bean>
+    <managed-bean id="__23">
+      <managed-bean-name>WhodTranHandlerBean</managed-bean-name>
+      <managed-bean-class>com.dbms.csmq.view.backing.whod.WhodTranHandlerBean</managed-bean-class>
+      <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
     <view id="whodWizardSearch">
       <page>/create/whodWizardSearch.jspx</page>
       <train-stop>

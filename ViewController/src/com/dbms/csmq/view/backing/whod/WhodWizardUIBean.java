@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
 import javax.faces.component.UISelectItems;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
@@ -18,7 +19,13 @@ import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.ValueChangeEvent;
 
+import oracle.adf.controller.ControllerContext;
+import oracle.adf.controller.TaskFlowContext;
+import oracle.adf.controller.TaskFlowTrainModel;
+import oracle.adf.controller.TaskFlowTrainStopModel;
+import oracle.adf.controller.ViewPortContext;
 import oracle.adf.view.rich.component.rich.RichPopup;
+import oracle.adf.view.rich.component.rich.fragment.RichRegion;
 import oracle.adf.view.rich.component.rich.input.RichInputDate;
 import oracle.adf.view.rich.component.rich.input.RichInputText;
 import oracle.adf.view.rich.component.rich.input.RichSelectBooleanCheckbox;
@@ -97,7 +104,9 @@ public class WhodWizardUIBean implements TransactionalDataControl, UpdateableDat
     private WhodTermHierarchyBean termHierarchyBean;
     private UISelectItems cntrlProductSelectItems;
     private RichPopup deleteSuccessPopup;
-
+    private RichPopup copyPopup;
+    private WhodTranHandlerBean trainHandlerBeanHelper = null;
+    private Boolean isActionExecute = true;
 
     public WhodWizardUIBean() {
         whodWizardBean = (WhodWizardBean)AdfFacesContext.getCurrentInstance().getPageFlowScope().get("WhodWizardBean");
@@ -246,7 +255,14 @@ public class WhodWizardUIBean implements TransactionalDataControl, UpdateableDat
         adfFacesContext.partialUpdateNotify(cntrlTrain);
         return retVal;
     }
-
+    
+//    public boolean saveCopiedDetails(){
+//        boolean retVal = whodWizardBean.copyAndSaveDetails();
+//        queueTrainStopEventToRegion("#{viewScope.TrainHandlerBeanHelper.getSelectedTrainStopOutcome}",dialogEvent.getComponent());
+//        copyPopup.hide();
+//        return retVal;
+//    }
+    
 
     private void setCurrentDetailValuesFromUI() {
         /*
@@ -815,4 +831,133 @@ public class WhodWizardUIBean implements TransactionalDataControl, UpdateableDat
 
     public void navigateToSearch(ActionEvent actionEvent) {
         deleteSuccessPopup.hide();
-    }}
+    }
+    public String navigate() {
+        String nextStopAction = null;
+        if(isActionExecute){
+            ControllerContext controllerContext = ControllerContext.getInstance();
+            ViewPortContext currentViewPortCtx = controllerContext.getCurrentViewPort();
+            TaskFlowContext taskFlowCtx = currentViewPortCtx.getTaskFlowContext();
+            TaskFlowTrainModel taskFlowTrainModel = taskFlowCtx.getTaskFlowTrainModel();
+            TaskFlowTrainStopModel currentStop = taskFlowTrainModel.getCurrentStop();
+            TaskFlowTrainStopModel nextStop = taskFlowTrainModel.getNextStop(currentStop);
+            nextStopAction = nextStop.getOutcome();
+        }
+       return nextStopAction;
+    }
+    
+    public void openPopup(ActionEvent actionEvent) {
+        if(whodWizardBean.getCurrentDictContentID() != null){
+        if (whodWizardBean.getMode() == CSMQBean.MODE_COPY_EXISTING) {
+           // RichCommandNavigationItem rni = (RichCommandNavigationItem)actionEvent.getSource();
+
+//            FacesContext fctx = FacesContext.getCurrentInstance();
+//            ELContext elctx = fctx.getELContext();
+//            Application app = fctx.getApplication();
+//            ExpressionFactory exp = app.getExpressionFactory();
+//            ValueExpression valueExp = exp.createValueExpression(elctx, "#{trainNode}", Object.class);
+//            TaskFlowTrainStopModel tftsm = (TaskFlowTrainStopModel)valueExp.getValue(elctx);
+//            String output = tftsm.getLocalActivityId();
+//            System.out.println("output--"+output);
+            //TaskFlowTrainStopModel selectedTrainStop =(TaskFlowTrainStopModel)rni.getAttributes().get("trainStopNode");
+            // String outcome = selectedTrainStop.getOutcome();
+           // trainHandlerBeanHelper = new WhodTranHandlerBean();
+            //trainHandlerBeanHelper.setSelectedTrainStopOutcome(outcome); 
+            //if((!output.equalsIgnoreCase("whodWizardSearch")) && (!whodWizardBean.getOpenPopup())){
+            RichPopup.PopupHints hints = new RichPopup.PopupHints();
+            copyPopup.show(hints);
+            //}
+        }
+        }else{
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please select Row to copy", "");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+        }
+    }
+
+    public void setCopyPopup(RichPopup copyPopup) {
+        this.copyPopup = copyPopup;
+    }
+
+    public RichPopup getCopyPopup() {
+        return copyPopup;
+    }
+
+   
+
+    public String saveCopiedDetails() {
+        boolean retVal = whodWizardBean.copyAndSaveDetails();
+       // queueTrainStopEventToRegion("#{viewScope.TrainHandlerBeanHelper.getSelectedTrainStopOutcome}",actionEvent.getComponent());
+       String nextStopAction = null;
+        if(retVal){
+        ControllerContext controllerContext = ControllerContext.getInstance();
+        ViewPortContext currentViewPortCtx = controllerContext.getCurrentViewPort();
+        TaskFlowContext taskFlowCtx = currentViewPortCtx.getTaskFlowContext();
+        TaskFlowTrainModel taskFlowTrainModel = taskFlowCtx.getTaskFlowTrainModel();
+        TaskFlowTrainStopModel currentStop = taskFlowTrainModel.getCurrentStop();
+        TaskFlowTrainStopModel nextStop = taskFlowTrainModel.getNextStop(currentStop);
+        nextStopAction = nextStop.getOutcome();
+
+           whodWizardBean.setOpenPopup(true);
+            isActionExecute = false;
+            copyPopup.hide();
+//            ControllerContext controllerContext = ControllerContext.getInstance();
+//            ViewPortContext currentViewPortCtx = controllerContext.getCurrentViewPort();
+//            TaskFlowContext taskFlowCtx = currentViewPortCtx.getTaskFlowContext();
+//            TaskFlowTrainModel taskFlowTrainModel = taskFlowCtx.getTaskFlowTrainModel();
+//            TaskFlowTrainStopModel currentStop = taskFlowTrainModel.getCurrentStop();
+//            TaskFlowTrainStopModel nextStop = taskFlowTrainModel.getNextStop(currentStop);
+//            nextStopAction = nextStop.getOutcome();
+        return nextStopAction;
+        }else{
+            return nextStopAction;
+        }
+    }
+//    private void queueTrainStopEventToRegion(String outcomeEL,
+//     UIComponent searchComponentInRegion) {
+//     //This sample assumes bounded task flows to be exposed in an
+//     //af:region. So it is safe to assume a parent component to be of
+//     //type RichRegion. Let's find it to queue the train stop
+//     //outcome event for navigation.
+//     RichRegion adfRegion = null;
+//     adfRegion = this.findRichRegionContainer(searchComponentInRegion);
+//     FacesContext fctx = FacesContext.getCurrentInstance();
+//     ExpressionFactory expressionFactory =
+//     fctx.getApplication().getExpressionFactory();
+//     ELContext elctx = fctx.getELContext();
+//     MethodExpression methodExpression =
+//     expressionFactory.createMethodExpression(elctx,
+//     outcomeEL,
+//     String.class,
+//     new Class[] { });
+//     //queue action in region
+//     adfRegion.queueActionEventInRegion(
+//     methodExpression, null, null, false, 0, 0,
+//     PhaseId.INVOKE_APPLICATION);
+//     }
+    private RichRegion findRichRegionContainer(UIComponent uiComponent)
+    {
+     UIComponent currentComponent = uiComponent;
+     while(!(currentComponent instanceof RichRegion)){
+     //task flows in a region always have a RichRegion container
+     //sonewhere.
+     currentComponent = currentComponent.getParent();
+     }
+     return (RichRegion) currentComponent;
+    }
+
+    public void setTrainHandlerBeanHelper(WhodTranHandlerBean trainHandlerBeanHelper) {
+        this.trainHandlerBeanHelper = trainHandlerBeanHelper;
+    }
+
+    public WhodTranHandlerBean getTrainHandlerBeanHelper() {
+        return trainHandlerBeanHelper;
+    }
+
+    public void setIsActionExecute(Boolean isActionExecute) {
+        this.isActionExecute = isActionExecute;
+    }
+
+    public Boolean getIsActionExecute() {
+        return isActionExecute;
+    }
+}
