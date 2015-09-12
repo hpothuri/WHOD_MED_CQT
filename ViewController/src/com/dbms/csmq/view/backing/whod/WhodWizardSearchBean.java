@@ -11,17 +11,26 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.List;
 
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 
+import oracle.adf.controller.ControllerContext;
+import oracle.adf.controller.TaskFlowContext;
+import oracle.adf.controller.TaskFlowTrainModel;
+import oracle.adf.controller.TaskFlowTrainStopModel;
+import oracle.adf.controller.ViewPortContext;
 import oracle.adf.model.BindingContext;
 import oracle.adf.model.binding.DCBindingContainer;
 import oracle.adf.model.binding.DCIteratorBinding;
 import oracle.adf.share.ADFContext;
+import oracle.adf.view.rich.component.rich.RichPopup;
 import oracle.adf.view.rich.component.rich.data.RichTable;
 import oracle.adf.view.rich.context.AdfFacesContext;
 
@@ -60,6 +69,7 @@ public class WhodWizardSearchBean {
     private String currentStatus;
 
     private RichTable ctrlSearchResults;
+    private RichPopup copyPopup;
 
     public WhodWizardSearchBean() {
         super();
@@ -779,5 +789,53 @@ public class WhodWizardSearchBean {
 
     public String getParamLevelGroup() {
         return paramLevelGroup;
+    }
+    
+    public void openPopup(ActionEvent actionEvent) {
+        Iterator  itr = ctrlSearchResults.getSelectedRowKeys().iterator();
+        boolean isRowSeleted = itr.hasNext();
+        System.out.println("---"+itr.hasNext());
+        WhodWizardBean whodWizardBean = WhodUtils.getWhodWizardBean();
+        if(isRowSeleted){
+        if (whodWizardBean.getMode() == CSMQBean.MODE_COPY_EXISTING) {
+            RichPopup.PopupHints hints = new RichPopup.PopupHints();
+            copyPopup.show(hints);
+            //}
+        }
+        }else{
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please select Row to copy", "");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+        }
+    }
+
+    public void setCopyPopup(RichPopup copyPopup) {
+        this.copyPopup = copyPopup;
+    }
+
+    public RichPopup getCopyPopup() {
+        return copyPopup;
+    }
+    
+    public String saveCopiedDetails() {
+        
+        WhodWizardBean whodWizardBean = WhodUtils.getWhodWizardBean();
+        boolean retVal = whodWizardBean.copyAndSaveDetails();
+       // queueTrainStopEventToRegion("#{viewScope.TrainHandlerBeanHelper.getSelectedTrainStopOutcome}",actionEvent.getComponent());
+       String nextStopAction = null;
+        if(retVal){
+        ControllerContext controllerContext = ControllerContext.getInstance();
+        ViewPortContext currentViewPortCtx = controllerContext.getCurrentViewPort();
+        TaskFlowContext taskFlowCtx = currentViewPortCtx.getTaskFlowContext();
+        TaskFlowTrainModel taskFlowTrainModel = taskFlowCtx.getTaskFlowTrainModel();
+        TaskFlowTrainStopModel currentStop = taskFlowTrainModel.getCurrentStop();
+        TaskFlowTrainStopModel nextStop = taskFlowTrainModel.getNextStop(currentStop);
+        nextStopAction = nextStop.getOutcome();
+
+           whodWizardBean.setOpenPopup(true);
+            copyPopup.hide();
+        return nextStopAction;
+        }else{
+            return nextStopAction;
+        }
     }
 }

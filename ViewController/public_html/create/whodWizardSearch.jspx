@@ -158,8 +158,9 @@
                                                               partialSubmit="true"/>
                                             <af:spacer width="10" height="10" id="s10"/>
                                             <af:commandButton text="Copy" id="pt_cb3" disabled="false"
-                                                              actionListener="#{WhodWizardUIBean.openPopup}"
-                                                              rendered="#{pageFlowScope.setMode eq 'copy'}"/>
+                                                              actionListener="#{pageFlowScope.WhodWizardSearchBean.openPopup}"
+                                                              rendered="#{pageFlowScope.setMode eq 'copy'}"
+                                                              partialSubmit="true"/>
                                             
                                         </af:panelGroupLayout>
                                     </af:subform>
@@ -232,11 +233,11 @@
                                 </af:panelGroupLayout>
                                 <f:facet name="toolbar"/>
                                 <af:popup childCreation="deferred" autoCancel="disabled" id="pt_p3123"
-                              binding="#{WhodWizardUIBean.copyPopup}">
+                              binding="#{pageFlowScope.WhodWizardSearchBean.copyPopup}">
                         <af:dialog id="pt_d4" title="Enter the Term Name and Term Level for the new CDG" type="cancel">
                             <f:facet name="buttonBar">
                             <af:commandButton text="Copy" id="pt_cb31" disabled="false"
-                                              action="#{WhodWizardUIBean.saveCopiedDetails}"/>
+                                              action="#{pageFlowScope.WhodWizardSearchBean.saveCopiedDetails}" partialSubmit="true"/>
                             </f:facet>
                             <af:inputText label="Name" id="pt_it3"
                                           value="#{pageFlowScope.WhodWizardBean.currentTermName}" autoSubmit="true"/>
