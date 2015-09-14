@@ -72,35 +72,6 @@
 	<parameter name="INCLUDE_LLTS" class="java.lang.String"/>
 	<parameter name="I_IGNORE_PREDICT" class="java.lang.String"/>
 	<parameter name="I_RELEASE_STATUS" class="java.lang.String"/>
-	<!--queryString language="plsql">
-		<![CDATA[
-		   SELECT term                 PADDED_TERM,
-                  term                 TERM,
-				  DICT_CONTENT_ID               DICT_CONTENT_ID,
-                  DICT_CONTENT_CODE               DICT_CONTENT_CODE,
-                  LEVEL_NAME              DEF_LEVEL_REF_SHORT_NAME,
-                  'PARENT' FORMATTED_SCOPE, '' COMMENT_TEXT, 
-                  0 CONNECT_LEVEL, 
-                  '' DISPLAY_ATTRIBUTE
-           FROM TABLE (cqt_whod_ui_tms_utils.query_content_data
-                 (pReleaseTypeLIST   => 'PROD',
-                  pDictContentID         => $P{I_DICT_CONTENT_ID}))
-		   UNION
-		  SELECT * FROM (
-		    SELECT ref_term               PADDED_TERM,
-            ref_term               TERM,
-            dict_content_ref_id    DICT_CONTENT_ID,
-            dict_content_ref_code  DICT_CONTENT_CODE,
-            level_ref_name         DEF_LEVEL_REF_SHORT_NAME,
-            named_relation         FORMATTED_SCOPE,
-            COMMENT_TEXT           COMMENT_TEXT,
-		    to_number(SUBSTR(level_ref_name,4,1))   CONNECT_LEVEL,
-			COMMENT_TEXT DISPLAY_ATTRIBUTE
-      FROM TABLE (cqt_whod_ui_tms_utils.query_relation_data_below
-         (pDictcontentID     => $P{I_DICT_CONTENT_ID},
-          pReleaseTypeLIST   => 'PROD'))
-      ORDER BY ref_term)]]>
-	</queryString-->
 	<queryString language="plsql">
 		<![CDATA[
 		    SELECT * FROM (
@@ -131,7 +102,24 @@
 					(pDictcontentID     => $P{I_DICT_CONTENT_ID},
                      pReleaseTypeLIST   => 'PROD'))
 				ORDER BY display_order, TERM)]]>
-	</queryString>	                 
+	</queryString>	           
+	<!--field name="PADDED_TERM" class="java.lang.String"/>
+	<field name="DICT_CONTENT_ID" class="java.lang.String"/>
+	<field name="DICT_CONTENT_CODE" class="java.lang.String"/>
+	<field name="CONNECT_LEVEL" class="java.lang.Number"/>
+	<field name="DEF_LEVEL_REF_SHORT_NAME" class="java.lang.String"/>
+	<field name="DEF_DICTIONARY_SHORT_NAME" class="java.lang.String"/>
+	<field name="DICT_CONTENT_ALT_CODE" class="java.lang.String"/>
+	<field name="APPROVED_FLAG" class="java.lang.String"/>
+	<field name="STATUS" class="java.lang.String"/>
+	<field name="DEF_NAMED_REL_ID" class="java.lang.String"/>
+	<field name="COMMENT_TEXT" class="java.lang.String"/>
+	<field name="DICT_CONTENT_REF_ID" class="java.lang.String"/>
+	<field name="DISPLAY_ATTRIBUTE" class="java.lang.String"/>
+	<field name="TERM" class="java.lang.String"/>
+	<field name="FORMATTED_SCOPE" class="java.lang.Number"/>
+	<field name="DEF_LEVEL_SHORT_NAME" class="java.lang.String"/-->
+
 	<field name="PADDED_TERM" class="java.lang.String"/>
 	<field name="DICT_CONTENT_ID" class="java.lang.String"/>
 	<field name="DICT_CONTENT_CODE" class="java.lang.String"/>
@@ -141,6 +129,7 @@
 	<field name="DISPLAY_ATTRIBUTE" class="java.lang.String"/>
 	<field name="TERM" class="java.lang.String"/>
 	<field name="FORMATTED_SCOPE" class="java.lang.String"/>
+
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -174,17 +163,16 @@
 			<textField>
 				<reportElement mode="Opaque" x="0" y="156" width="520" height="13" uuid="c840aa6d-572c-4286-8b4b-aa92a2fb2219"/>
 				<textFieldExpression><![CDATA["Report Date/Time: " + new SimpleDateFormat("dd-MMM-yyyy h:mm a z").format(new Date())]]></textFieldExpression>
-			</textField>			
-			<staticText>
-				<reportElement key="" mode="Opaque" x="0" y="170" width="520" height="26" forecolor="#000000" backcolor="#C0C0C0" uuid="a699642d-f2a5-4bbe-9562-7ab4c775b686">
-					<property name="local_mesure_unitheight" value="pixel"/>
+			</textField>
+			<!--staticText>
+				<reportElement key="" mode="Opaque" x="678" y="170" width="50" height="26" forecolor="#000000" backcolor="#C0C0C0" uuid="20e53737-21f3-4da1-aebc-73d510098c32">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement>
-					<font isBold="true" isUnderline="false"/>
+					<font isBold="true"/>
 				</textElement>
-				<text><![CDATA[Term]]></text>
-			</staticText>
+				<text><![CDATA[Weight]]></text>
+			</staticText-->
 			<staticText>
 				<reportElement key="" mode="Opaque" x="520" y="170" width="66" height="26" forecolor="#000000" backcolor="#C0C0C0" uuid="3c7f7795-f117-4928-995e-0e2e320c5d9c">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -194,6 +182,15 @@
 				</textElement>
 				<text><![CDATA[Code]]></text>
 			</staticText>
+			<!--staticText>
+				<reportElement key="" mode="Opaque" x="625" y="170" width="53" height="26" forecolor="#000000" backcolor="#C0C0C0" uuid="6dcc7a2c-6693-49fd-af9d-d588e9965115">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Category]]></text>
+			</staticText-->
 			<staticText>
 				<reportElement key="" mode="Opaque" x="586" y="170" width="39" height="26" forecolor="#000000" backcolor="#C0C0C0" uuid="f414ef39-8a18-4592-9011-f0e565ec388d">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -204,13 +201,23 @@
 				<text><![CDATA[Level]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="" mode="Opaque" x="728" y="170" width="91" height="26" forecolor="#000000" backcolor="#C0C0C0" uuid="77a6900b-958e-4d9e-b72b-c9a62acebbc7">
+				<reportElement key="" mode="Opaque" x="625" y="170" width="120" height="26" forecolor="#000000" backcolor="#C0C0C0" uuid="77a6900b-958e-4d9e-b72b-c9a62acebbc7">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Scope]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="" mode="Opaque" x="0" y="170" width="520" height="26" forecolor="#000000" backcolor="#C0C0C0" uuid="a699642d-f2a5-4bbe-9562-7ab4c775b686">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[Term]]></text>
 			</staticText>
 		</band>
 	</title>
@@ -249,8 +256,28 @@ Boolean.valueOf($F{CONNECT_LEVEL}.intValue() == 9) ? "                          
 				</reportElement>
 				<textFieldExpression><![CDATA[$F{DEF_LEVEL_REF_SHORT_NAME}]]></textFieldExpression>
 			</textField>
+			<!--textField isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="625" y="0" width="53" height="26" uuid="a4d84219-25f3-4a81-b790-2f25dc9c3712"/>
+				<textFieldExpression><![CDATA[($P{HAS_SCOPE} == 'N' && ($F{DEF_LEVEL_REF_SHORT_NAME}.equals('SOC') 
+				   || $F{DEF_LEVEL_REF_SHORT_NAME}.equals('HLGT')
+				   || $F{DEF_LEVEL_REF_SHORT_NAME}.equals('HLT')
+				   || $F{DEF_LEVEL_REF_SHORT_NAME}.equals('PT')
+				   || $F{DEF_LEVEL_REF_SHORT_NAME}.equals('LLT'))) ? "" : 
+				   ($P{HAS_SCOPE} == 'Y' && $F{DEF_LEVEL_REF_SHORT_NAME}.equals('LLT')) ? "" : $F{STATUS}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="678" y="0" width="50" height="26" uuid="5282286f-f89c-4efe-9850-f8eeac3cf85b">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[($P{HAS_SCOPE} == 'N' && ($F{DEF_LEVEL_REF_SHORT_NAME}.equals('SOC') 
+				   || $F{DEF_LEVEL_REF_SHORT_NAME}.equals('HLGT')
+				   || $F{DEF_LEVEL_REF_SHORT_NAME}.equals('HLT')
+				   || $F{DEF_LEVEL_REF_SHORT_NAME}.equals('PT')
+				   || $F{DEF_LEVEL_REF_SHORT_NAME}.equals('LLT'))) ? "" : 
+				   ($P{HAS_SCOPE} == 'Y' && $F{DEF_LEVEL_REF_SHORT_NAME}.equals('LLT')) ? "" : $F{COMMENT_TEXT}]]></textFieldExpression>
+			</textField-->
 			<textField>
-				<reportElement stretchType="RelativeToTallestObject" x="728" y="0" width="91" height="26" uuid="baec73e4-747d-421e-959e-573a2b693848">
+				<reportElement stretchType="RelativeToTallestObject" x="625" y="0" width="91" height="26" uuid="baec73e4-747d-421e-959e-573a2b693848">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textFieldExpression><![CDATA[($P{HAS_SCOPE} == 'N' && ($F{DEF_LEVEL_REF_SHORT_NAME}.equals('SOC') 
