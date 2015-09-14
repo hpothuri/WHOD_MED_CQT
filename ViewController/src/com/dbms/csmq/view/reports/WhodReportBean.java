@@ -109,8 +109,8 @@ public class WhodReportBean {
         parameters.put("ReportTitle", reportName);
 
         CSMQBean.logger.info(userBean.getCaller() + " *** RUNNING REPORT ***");
-        CSMQBean.logger.info(userBean.getCaller() + " trans_start_date: " + paramStartDate);
-        CSMQBean.logger.info(userBean.getCaller() + " trans_end_date: " + paramEndDate);
+        CSMQBean.logger.info(userBean.getCaller() + " sourceDirectory: " + sourceDirectory + ";; reportName: " + reportName);
+        CSMQBean.logger.info(userBean.getCaller() + " trans_start_date: " + paramStartDate + ";; trans_end_date: " + paramEndDate);
 
         try {
             InitialContext initialContext = new InitialContext();
@@ -118,10 +118,12 @@ public class WhodReportBean {
             DataSource ds = (DataSource)initialContext.lookup("jdbc/WHODDS"); //TODO need to remove before commit
             Connection conn = ds.getConnection();
             InputStream is = new FileInputStream(new File(reportFile));
+            CSMQBean.logger.info(userBean.getCaller() + " is: " + is +";; conn="+conn);
             JasperDesign jasperDesign = JRXmlLoader.load(is);
             JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
+            CSMQBean.logger.info(userBean.getCaller() + " jasperDesign: " + jasperDesign +";; jasperReport="+jasperReport);
             JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, conn);
-
+            CSMQBean.logger.info(userBean.getCaller() + " jasperPrint: " + jasperPrint);
             if (reportFormat.equals("PDF")) {
                 JasperExportManager.exportReportToPdfStream(jasperPrint, outputStream);
             } else if (reportFormat.equals("XLS")) {
@@ -136,13 +138,15 @@ public class WhodReportBean {
                                          Boolean.TRUE);
                 exporterXLS.exportReport();
             }
-
+            CSMQBean.logger.info(userBean.getCaller() + " After exportReport task");
             is.close();
             conn.close();
             outputStream.close();
         } catch (Exception e) {
             e.printStackTrace();
+            CSMQBean.logger.info(userBean.getCaller() + " Execption in printReport() is " + e);
         }
+        CSMQBean.logger.info(userBean.getCaller() + " End of printReport () ");
     }
 
 

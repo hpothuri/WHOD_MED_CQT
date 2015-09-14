@@ -1796,4 +1796,14 @@ new FacesMessage(FacesMessage.SEVERITY_INFO, "Success manage Workflow State", nu
         }
         return date;
     }
+
+    public static String getDateStr(Date date, String dateFormat) {
+        DateFormat formatter = new SimpleDateFormat(dateFormat);
+        String dateStr = null;
+        try {
+            dateStr = formatter.format(date);
+        } catch (Exception e) {
+        }
+        return dateStr;
+    }
 }
