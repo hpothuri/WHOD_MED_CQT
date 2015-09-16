@@ -38,7 +38,7 @@ public class WhodUtils {
     public WhodUtils() {
         super();
     }
-
+    private static final String RETURN_SUCCESS = "0";
 
     public static boolean delete(String dictContentID, String predictGroupName) {
 
@@ -1308,8 +1308,9 @@ new FacesMessage(FacesMessage.SEVERITY_INFO, "Impacted list refreshed for dictio
         DBTransaction dBTransaction = DMLUtils.getDBTransaction();
         Integer newDictContentID = null;
         Hashtable retVal = new Hashtable(); // array to return the new state and message
+        CallableStatement cstmt = null;
         try {
-            CallableStatement cstmt =
+            cstmt =
                 new CallableStatement(dBTransaction.createCallableStatement(sql, DBTransaction.DEFAULT),
                                       "cqt_whod_ui_tms_utils.copy_all_data");
             cstmt.registerOutParameter(1, Types.VARCHAR);
@@ -1322,7 +1323,7 @@ new FacesMessage(FacesMessage.SEVERITY_INFO, "Impacted list refreshed for dictio
             cstmt.executeQuery();
             newDictContentID = cstmt.getInt(5);
             String newDictContentCode = cstmt.getString(6);
-            cstmt.close();
+           // cstmt.close();
             System.out.println("newDictContentID==" + newDictContentID + ";;; newDictContentCode ==" +
                                newDictContentCode);
             System.out.println();
@@ -1351,6 +1352,14 @@ new FacesMessage(FacesMessage.SEVERITY_INFO, "Impacted list refreshed for dictio
         } catch (Exception e) {
             e.printStackTrace();
             return null;
+        } finally {
+            if (null != cstmt){
+                try {
+                    cstmt.close();
+                }catch (SQLException e){
+                    CSMQBean.logger.error("*** Error while closing cstmt ***");
+                }
+            }
         }
         return retVal;
     }
@@ -1397,7 +1406,7 @@ new FacesMessage(FacesMessage.SEVERITY_INFO, "Impacted list refreshed for dictio
             if (confirmMsg != null)
                 retVal.put("ConfirmMsg", confirmMsg);
 
-            cstmt.close();
+           // cstmt.close();
             msg = new FacesMessage(FacesMessage.SEVERITY_INFO, confirmMsg, null);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -1425,6 +1434,14 @@ new FacesMessage(FacesMessage.SEVERITY_INFO, "Impacted list refreshed for dictio
             msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, messageText, "");
             FacesContext.getCurrentInstance().addMessage(null, msg);
             return null;
+        } finally {
+            if (null != cstmt){
+                try {
+                    cstmt.close();
+                }catch (SQLException e){
+                    CSMQBean.logger.error("*** Error while closing cstmt ***");
+                }
+            }
         }
         FacesContext.getCurrentInstance().addMessage(null, msg);
         return retVal;
@@ -1453,7 +1470,7 @@ new FacesMessage(FacesMessage.SEVERITY_INFO, "Impacted list refreshed for dictio
             if (confirmMsg != null)
                 retVal.put("ConfirmMsg", confirmMsg);
 
-            cstmt.close();
+           // cstmt.close();
             msg = new FacesMessage(FacesMessage.SEVERITY_INFO, confirmMsg, null);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -1481,6 +1498,14 @@ new FacesMessage(FacesMessage.SEVERITY_INFO, "Impacted list refreshed for dictio
             msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, messageText, "");
             FacesContext.getCurrentInstance().addMessage(null, msg);
             return null;
+        } finally {
+            if (null != cstmt){
+                try {
+                    cstmt.close();
+                }catch (SQLException e){
+                    CSMQBean.logger.error("*** Error while closing cstmt ***");
+                }
+            }
         }
         FacesContext.getCurrentInstance().addMessage(null, msg);
         return retVal;
@@ -1509,10 +1534,9 @@ new FacesMessage(FacesMessage.SEVERITY_INFO, "Impacted list refreshed for dictio
             cstmt.setString(1, dictContentIDs);
             cstmt.setString(2, requestedState);
             cstmt.setString(3, requestedDesc);
-            cstmt.executeUpdate();
+          //  cstmt.executeUpdate();
             cstmt.close();
-            msg =
-new FacesMessage(FacesMessage.SEVERITY_INFO, "Success manage Workflow State", null); //TODO need towrite msg
+            msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Success manage Workflow State", null); //TODO need towrite msg
         } catch (SQLException e) {
             e.printStackTrace();
 
@@ -1539,6 +1563,14 @@ new FacesMessage(FacesMessage.SEVERITY_INFO, "Success manage Workflow State", nu
             msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, messageText, "");
             FacesContext.getCurrentInstance().addMessage(null, msg);
             return null;
+        } finally {
+            if (null != cstmt){
+                try {
+                    cstmt.close();
+                }catch (SQLException e){
+                    CSMQBean.logger.error("*** Error while closing cstmt ***");
+                }
+            }
         }
         FacesContext.getCurrentInstance().addMessage(null, msg);
         return retVal;
@@ -1573,7 +1605,7 @@ new FacesMessage(FacesMessage.SEVERITY_INFO, "Success manage Workflow State", nu
             if (confirmMsg != null)
                 retVal.put("ConfirmMsg", confirmMsg);
 
-            cstmt.close();
+           // cstmt.close();
             msg = new FacesMessage(FacesMessage.SEVERITY_INFO, confirmMsg, null);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -1601,6 +1633,14 @@ new FacesMessage(FacesMessage.SEVERITY_INFO, "Success manage Workflow State", nu
             msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, messageText, "");
             FacesContext.getCurrentInstance().addMessage(null, msg);
             return null;
+        } finally {
+            if (null != cstmt){
+                try {
+                    cstmt.close();
+                }catch (SQLException e){
+                    CSMQBean.logger.error("*** Error while closing cstmt ***");
+                }
+            }
         }
         FacesContext.getCurrentInstance().addMessage(null, msg);
         return retVal;
@@ -1628,7 +1668,7 @@ new FacesMessage(FacesMessage.SEVERITY_INFO, "Success manage Workflow State", nu
             cstmt.registerOutParameter(1, Types.VARCHAR);
             cstmt.setString(2, dictContentIDs);
             cstmt.executeUpdate();
-            cstmt.close();
+           // cstmt.close();
             msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Term Ractivated Successfully", null);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -1636,6 +1676,14 @@ new FacesMessage(FacesMessage.SEVERITY_INFO, "Success manage Workflow State", nu
             msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, messageText, "");
             FacesContext.getCurrentInstance().addMessage(null, msg);
             return null;
+        } finally {
+            if (null != cstmt){
+                try {
+                    cstmt.close();
+                }catch (SQLException e){
+                    CSMQBean.logger.error("*** Error while closing cstmt ***");
+                }
+            }
         }
         FacesContext.getCurrentInstance().addMessage(null, msg);
         return retVal;
@@ -1663,7 +1711,7 @@ new FacesMessage(FacesMessage.SEVERITY_INFO, "Success manage Workflow State", nu
             cstmt.registerOutParameter(1, Types.VARCHAR);
             cstmt.setString(2, dictContentIDs);
             cstmt.executeUpdate();
-            cstmt.close();
+           // cstmt.close();
             msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Term retired Successfully", null);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -1671,6 +1719,14 @@ new FacesMessage(FacesMessage.SEVERITY_INFO, "Success manage Workflow State", nu
             msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, messageText, "");
             FacesContext.getCurrentInstance().addMessage(null, msg);
             return null;
+        } finally {
+            if (null != cstmt){
+                try {
+                    cstmt.close();
+                }catch (SQLException e){
+                    CSMQBean.logger.error("*** Error while closing cstmt ***");
+                }
+            }
         }
         FacesContext.getCurrentInstance().addMessage(null, msg);
         return retVal;
@@ -1695,7 +1751,8 @@ new FacesMessage(FacesMessage.SEVERITY_INFO, "Success manage Workflow State", nu
                                   "CQT_WHOD_UI_TMS_UTILS.run_check_activation");
         String messageText;
         Hashtable retVal = new Hashtable(); // array to return the new state and message
-
+        String confirmMsg = null;
+        String retVar = null;
         try {
             cstmt.registerOutParameter(1, Types.VARCHAR);
             cstmt.registerOutParameter(2, Types.INTEGER);
@@ -1703,18 +1760,24 @@ new FacesMessage(FacesMessage.SEVERITY_INFO, "Success manage Workflow State", nu
             cstmt.registerOutParameter(4, Types.INTEGER);
             cstmt.registerOutParameter(5, Types.VARCHAR);
             cstmt.executeUpdate();
-            cstmt.close();
             int contentErrorCount = cstmt.getInt(2);
             int relationsErrorCount = cstmt.getInt(3);
             int infoNoteErrorCount = cstmt.getInt(4);
-            String confirmMsg = cstmt.getString(5);
-            String retVar = cstmt.getString(1);
-            if (contentErrorCount == 0 && relationsErrorCount == 0 && infoNoteErrorCount == 0) {
+            confirmMsg = cstmt.getString(5);
+            retVar = cstmt.getString(1);
+            //if (contentErrorCount == 0 && relationsErrorCount == 0 && infoNoteErrorCount == 0) {
+            if (null != retVar && retVar.equals(RETURN_SUCCESS)) {
                 messageText = "The check activation completed successfully for the CDG.";
             } else {
                 messageText =
                         "The check activation completed with errors for the CDG; please contact the CQT administrator.";
+                CSMQBean.logger.info("*** contentErrorCount ==> " + contentErrorCount);
+                CSMQBean.logger.info("*** relationsErrorCount ==> " + relationsErrorCount);
+                CSMQBean.logger.info("*** infoNoteErrorCount ==> " + infoNoteErrorCount);
             }
+           // cstmt.close();
+            CSMQBean.logger.info("*** retVar ==> " + retVar);
+            CSMQBean.logger.info("*** confirmMsg ==> " + confirmMsg);
             msg = new FacesMessage(FacesMessage.SEVERITY_INFO, messageText, null);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -1722,7 +1785,17 @@ new FacesMessage(FacesMessage.SEVERITY_INFO, "Success manage Workflow State", nu
                     "The check activation completed with errors for the CDG; please contact the CQT administrator.";
             msg = new FacesMessage(FacesMessage.SEVERITY_INFO, messageText, "");
             FacesContext.getCurrentInstance().addMessage(null, msg);
+            CSMQBean.logger.error("*** In Exception block  retVar ==> " + retVar);
+            CSMQBean.logger.error("*** confirmMsg ==> " + confirmMsg);
             return null;
+        } finally {
+            if (null != cstmt){
+                try {
+                    cstmt.close();
+                }catch (SQLException e){
+                    CSMQBean.logger.error("*** Error while closing cstmt ***");
+                }
+            }
         }
         FacesContext.getCurrentInstance().addMessage(null, msg);
         return retVal;
@@ -1749,7 +1822,8 @@ new FacesMessage(FacesMessage.SEVERITY_INFO, "Success manage Workflow State", nu
                                   "CQT_WHOD_UI_TMS_UTILS.run_transfer_activation");
         String messageText;
         Hashtable retVal = new Hashtable(); // array to return the new state and message
-
+        String confirmMsg = null;
+        String retVar = null;
         try {
             cstmt.registerOutParameter(1, Types.VARCHAR);
             cstmt.registerOutParameter(2, Types.INTEGER);
@@ -1759,16 +1833,21 @@ new FacesMessage(FacesMessage.SEVERITY_INFO, "Success manage Workflow State", nu
             cstmt.registerOutParameter(6, Types.INTEGER);
             cstmt.registerOutParameter(7, Types.VARCHAR);
             cstmt.executeUpdate();
-            cstmt.close();
             int contentErrorCount = cstmt.getInt(2);
             int relationsErrorCount = cstmt.getInt(3);
             int infoNoteErrorCount = cstmt.getInt(4);
             int wFTermPublishedCount = cstmt.getInt(5);
             int wFTermActivatedCount = cstmt.getInt(6);
-            String confirmMsg = cstmt.getString(7);
-            String retVar = cstmt.getString(1);
-            if (contentErrorCount == 0 && relationsErrorCount == 0 && infoNoteErrorCount == 0 &&
-                wFTermPublishedCount == 0 && wFTermActivatedCount == 0) {
+            confirmMsg = cstmt.getString(7);
+            retVar = cstmt.getString(1);
+            CSMQBean.logger.info("*** wFTermPublishedCount ==> " + wFTermPublishedCount);
+            CSMQBean.logger.info("*** wFTermActivatedCount ==> " + wFTermActivatedCount);
+            CSMQBean.logger.info("*** retVar ==> " + retVar);
+            CSMQBean.logger.info("*** confirmMsg ==> " + confirmMsg);
+          //  cstmt.close();
+           // if (contentErrorCount == 0 && relationsErrorCount == 0 && infoNoteErrorCount == 0
+           //     && wFTermPublishedCount == wFTermActivatedCount) {
+           if (null != retVar && retVar.equals(RETURN_SUCCESS)) {
                 messageText = "The transfer activation completed successfully for the CDG.";
             } else {
                 messageText =
@@ -1781,7 +1860,17 @@ new FacesMessage(FacesMessage.SEVERITY_INFO, "Success manage Workflow State", nu
                     "The transfer activation completed with errors for the CDG; please contact the CQT administrator.";
             msg = new FacesMessage(FacesMessage.SEVERITY_INFO, messageText, "");
             FacesContext.getCurrentInstance().addMessage(null, msg);
+            CSMQBean.logger.error("*** In Exception block  retVar ==> " + retVar);
+            CSMQBean.logger.error("*** confirmMsg ==> " + confirmMsg);
             return null;
+        } finally {
+            if (null != cstmt){
+                try {
+                    cstmt.close();
+                }catch (SQLException e){
+                    CSMQBean.logger.error("*** Error while closing cstmt ***");
+                }
+            }
         }
         FacesContext.getCurrentInstance().addMessage(null, msg);
         return retVal;

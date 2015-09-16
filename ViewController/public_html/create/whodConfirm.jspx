@@ -54,9 +54,9 @@
                         </af:group>
                     </f:facet>
                     <f:facet name="main">
-                        <af:panelGroupLayout id="pgl1" layout="vertical" inlineStyle="width:1020px;" valign="top">
+                        <af:panelGroupLayout id="pgl1" layout="vertical" inlineStyle="width:1195px;" valign="top">
                             <af:panelBox text="  Details" id="ph2"
-                                         inlineStyle="width:1195px; padding:5px; height:175px;" showDisclosure="false">
+                                         inlineStyle="width:1195px;padding:5px; height:175px;" showDisclosure="false">
                                 <af:panelGroupLayout id="pfl1" inlineStyle="width:1190px; height:120px;"
                                                      binding="#{WhodWizardUIBean.cntrlConfirmDetailsPanel}"
                                                      layout="horizontal" valign="top">
@@ -75,8 +75,8 @@
                                                       contentStyle="color:#000000;" disabled="false"/>
                                         <af:inputText id="ot5" label="Product"
                                                       value="#{pageFlowScope.WhodWizardBean.currentProduct}"
-                                                      readOnly="true" labelStyle="white-space:nowrap"
-                                                      contentStyle="color:#000000;" disabled="false"/>
+                                                      readOnly="true" labelStyle="white-space:nowrap" rows="3" wrap="soft"
+                                                      contentStyle="color:#000000;width:300px" disabled="false"/>
                                         <af:inputText id="it8" label="Designee"
                                                       value="#{pageFlowScope.WhodWizardBean.designeeListAsString}"
                                                       readOnly="true" labelStyle="white-space:nowrap"
@@ -105,8 +105,8 @@
                                     </af:panelFormLayout>
                                     <af:panelFormLayout id="pgl5">
                                         <af:inputText value="#{pageFlowScope.WhodWizardBean.currentMQGROUP}"
-                                                      label="Group" id="ot9" readOnly="true"
-                                                      labelStyle="white-space:nowrap" contentStyle="color:#000000;"
+                                                      label="Group" id="ot9" readOnly="true" wrap="soft" rows="3"
+                                                      labelStyle="white-space:nowrap" contentStyle="color:#000000;width:300px;"
                                                       disabled="false"/>
                                         <af:inputText value="#{pageFlowScope.WhodWizardBean.currentMQStatus}"
                                                       label="Status " id="ot10" readOnly="true"
